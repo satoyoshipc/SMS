@@ -156,6 +156,7 @@
     <Compile Include="kaisenDS.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sagyoDS.cs" />
     <Compile Include="siteDS.cs" />
     <Compile Include="systemDS.cs" />
     <Compile Include="userDS.cs" />

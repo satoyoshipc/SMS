@@ -25,10 +25,10 @@ namespace SMSサンプル
         DataTable host_list;
         //インターフェイス情報表示用
         DataTable interface_list;
-
         //回線情報表示用
         DataTable kasen_list;
-
+        //作業情報
+        DataTable sagyo_list;
 
         //
         List<userDS> userDSList;
@@ -46,91 +46,6 @@ namespace SMSサンプル
         {
             try
             {
-
-
-
-
-
-
-                //監視インターフェイス
-                this.interfaceList.VirtualMode = true;
-                // １行全体選択
-                this.interfaceList.FullRowSelect = true;
-                this.interfaceList.HideSelection = false;
-                this.interfaceList.HeaderStyle = ColumnHeaderStyle.Clickable;
-                //Hook up handlers for VirtualMode events.
-                this.interfaceList.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(interfaceList_RetrieveVirtualItem);
-                this.interfaceList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
-                // Column追加
-                this.interfaceList.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-                this.interfaceList.Columns.Insert(1, "有効", 30, HorizontalAlignment.Left);
-                this.interfaceList.Columns.Insert(2, "インターフェイス名", 180, HorizontalAlignment.Left);
-                this.interfaceList.Columns.Insert(3, "監視タイプ", 30, HorizontalAlignment.Left);
-                this.interfaceList.Columns.Insert(4, "監視項目名", 30, HorizontalAlignment.Left);
-                this.interfaceList.Columns.Insert(5, "監視開始日時", 80, HorizontalAlignment.Left);
-                this.interfaceList.Columns.Insert(6, "監視終了日時", 180, HorizontalAlignment.Left);
-                this.interfaceList.Columns.Insert(7, "閾値", 180, HorizontalAlignment.Left);
-                this.interfaceList.Columns.Insert(8, "IPアドレス", 180, HorizontalAlignment.Left);
-                this.interfaceList.Columns.Insert(9, "IPアドレス(NAT)", 180, HorizontalAlignment.Left);
-                this.interfaceList.Columns.Insert(10, "更新日時", 80, HorizontalAlignment.Left);
-                this.interfaceList.Columns.Insert(11, "更新者", 180, HorizontalAlignment.Left);
-
-                //リストビューを初期化する
-                interface_list = new DataTable("table6");
-                interface_list.Columns.Add("No", Type.GetType("System.Int32"));
-                interface_list.Columns.Add("有効", Type.GetType("System.String"));
-                interface_list.Columns.Add("インターフェイス", Type.GetType("System.String"));
-                interface_list.Columns.Add("監視タイプ", Type.GetType("System.String"));
-                interface_list.Columns.Add("監視項目名", Type.GetType("System.String"));
-                interface_list.Columns.Add("監視開始日時", Type.GetType("System.String"));
-                interface_list.Columns.Add("監視終了日時", Type.GetType("System.String"));
-                interface_list.Columns.Add("閾値", Type.GetType("System.String"));
-                interface_list.Columns.Add("IPアドレス", Type.GetType("System.String"));
-                interface_list.Columns.Add("IPアドレス(NAT)", Type.GetType("System.String"));
-                interface_list.Columns.Add("更新日時", Type.GetType("System.String"));
-                interface_list.Columns.Add("更新者", Type.GetType("System.String"));
-
-
-                //回線情報
-                this.kaisenList.VirtualMode = false;
-                // １行全体選択
-                this.kaisenList.FullRowSelect = true;
-                this.kaisenList.HideSelection = false;
-                this.kaisenList.HeaderStyle = ColumnHeaderStyle.Clickable;
-                //Hook up handlers for VirtualMode events.
-                this.kaisenList.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(kaisenList_RetrieveVirtualItem);
-                this.kaisenList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
-                // Column追加
-                this.kaisenList.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-                this.kaisenList.Columns.Insert(1, "有効", 30, HorizontalAlignment.Left);
-                this.kaisenList.Columns.Insert(2, "インターフェイス名", 180, HorizontalAlignment.Left);
-                this.kaisenList.Columns.Insert(3, "監視タイプ", 30, HorizontalAlignment.Left);
-                this.kaisenList.Columns.Insert(4, "監視項目名", 30, HorizontalAlignment.Left);
-                this.kaisenList.Columns.Insert(5, "監視開始日時", 80, HorizontalAlignment.Left);
-                this.kaisenList.Columns.Insert(6, "監視終了日時", 180, HorizontalAlignment.Left);
-                this.kaisenList.Columns.Insert(7, "閾値", 180, HorizontalAlignment.Left);
-                this.kaisenList.Columns.Insert(8, "IPアドレス", 180, HorizontalAlignment.Left);
-                this.kaisenList.Columns.Insert(9, "IPアドレス(NAT)", 180, HorizontalAlignment.Left);
-                this.kaisenList.Columns.Insert(10, "更新日時", 80, HorizontalAlignment.Left);
-                this.kaisenList.Columns.Insert(11, "更新者", 180, HorizontalAlignment.Left);
-
-                //リストビューを初期化する
-                kasen_list = new DataTable("table5");
-                kasen_list.Columns.Add("No", Type.GetType("System.Int32"));
-                kasen_list.Columns.Add("有効", Type.GetType("System.String"));
-                kasen_list.Columns.Add("インターフェイス", Type.GetType("System.String"));
-                kasen_list.Columns.Add("監視タイプ", Type.GetType("System.String"));
-                kasen_list.Columns.Add("監視項目名", Type.GetType("System.String"));
-                kasen_list.Columns.Add("監視開始日時", Type.GetType("System.String"));
-                kasen_list.Columns.Add("監視終了日時", Type.GetType("System.String"));
-                kasen_list.Columns.Add("閾値", Type.GetType("System.String"));
-                kasen_list.Columns.Add("IPアドレス", Type.GetType("System.String"));
-                kasen_list.Columns.Add("IPアドレス(NAT)", Type.GetType("System.String"));
-                kasen_list.Columns.Add("更新日時", Type.GetType("System.String"));
-                kasen_list.Columns.Add("更新者", Type.GetType("System.String"));
-
 
 
                 //ツリービューの再表示
@@ -249,12 +164,13 @@ namespace SMSサンプル
 
         void userList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
-
-            //	e.Item = _item[e.ItemIndex];
-            DataRow row = user_list.Rows[e.ItemIndex];
-            e.Item = new ListViewItem(
-                new String[]
-                {
+            if (user_list.Rows.Count > 0)
+            {
+                //	e.Item = _item[e.ItemIndex];
+                DataRow row = user_list.Rows[e.ItemIndex];
+                e.Item = new ListViewItem(
+                    new String[]
+                    {
                     Convert.ToString(row[0]),
                     Convert.ToString(row[1]),
                     Convert.ToString(row[2]),
@@ -265,33 +181,39 @@ namespace SMSサンプル
                     Convert.ToString(row[7]),
                     Convert.ToString(row[8])
 
-                });
+                    });
+                }
         }
+        
         //システム
         void systemList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
-
-            //	e.Item = _item[e.ItemIndex];
-            DataRow row = system_list.Rows[e.ItemIndex];
-            e.Item = new ListViewItem(
-                new String[]
-                {
-                    Convert.ToString(row[0]),
-                    Convert.ToString(row[1]),
-                    Convert.ToString(row[2]),
-                    Convert.ToString(row[3]),
-                    Convert.ToString(row[4]),
-                    Convert.ToString(row[5])
+            if (system_list.Rows.Count > 0)
+            {
+                //	e.Item = _item[e.ItemIndex];
+                DataRow row = system_list.Rows[e.ItemIndex];
+                    e.Item = new ListViewItem(
+                    new String[]
+                    {
+                        Convert.ToString(row[0]),
+                        Convert.ToString(row[1]),
+                        Convert.ToString(row[2]),
+                        Convert.ToString(row[3]),
+                        Convert.ToString(row[4]),
+                        Convert.ToString(row[5])
                     
-                });
+                    });
+            }
+            
+
         }
         //拠点情報
         void siteList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
-
-            //	e.Item = _item[e.ItemIndex];
-            DataRow row = site_list.Rows[e.ItemIndex];
-            e.Item = new ListViewItem(
+            if(site_list.Rows.Count > 0) { 
+                //	e.Item = _item[e.ItemIndex];
+                DataRow row = site_list.Rows[e.ItemIndex];
+                e.Item = new ListViewItem(
                 new String[]
                 {
                     Convert.ToString(row[0]),
@@ -305,39 +227,44 @@ namespace SMSサンプル
                     Convert.ToString(row[8])
 
                 });
+            }
+
         }
         //機器情報一覧更新
         void hostList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
 
-            //	e.Item = _item[e.ItemIndex];
-            DataRow row = host_list.Rows[e.ItemIndex];
-            e.Item = new ListViewItem(
-                new String[]
-                {
-                    Convert.ToString(row[0]),
-                    Convert.ToString(row[1]),
-                    Convert.ToString(row[2]),
-                    Convert.ToString(row[3]),
-                    Convert.ToString(row[4]),
-                    Convert.ToString(row[5]),
-                    Convert.ToString(row[6]),
-                    Convert.ToString(row[7]),
-                    Convert.ToString(row[8]),
-                    Convert.ToString(row[9]),
-                    Convert.ToString(row[10]),
-                    Convert.ToString(row[11]),
-                    Convert.ToString(row[12]),
-                    Convert.ToString(row[13])
+            if (host_list.Rows.Count > 0)
+            {
+                //	e.Item = _item[e.ItemIndex];
+                DataRow row = host_list.Rows[e.ItemIndex];
+                e.Item = new ListViewItem(
+                    new String[]
+                    {
+                        Convert.ToString(row[0]),
+                        Convert.ToString(row[1]),
+                        Convert.ToString(row[2]),
+                        Convert.ToString(row[3]),
+                        Convert.ToString(row[4]),
+                        Convert.ToString(row[5]),
+                        Convert.ToString(row[6]),
+                        Convert.ToString(row[7]),
+                        Convert.ToString(row[8]),
+                        Convert.ToString(row[9]),
+                        Convert.ToString(row[10]),
+                        Convert.ToString(row[11]),
+                        Convert.ToString(row[12]),
+                        Convert.ToString(row[13])
 
-                });
+                    });
+            }
         }
         //インターフェイス監視一覧
         void interfaceList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
-
-            //	e.Item = _item[e.ItemIndex];
-            DataRow row = this.interface_list.Rows[e.ItemIndex];
+            if (interface_list.Rows.Count > 0) { 
+                //	e.Item = _item[e.ItemIndex];
+                DataRow row = this.interface_list.Rows[e.ItemIndex];
             e.Item = new ListViewItem(
                 new String[]
                 {
@@ -355,11 +282,52 @@ namespace SMSサンプル
                     Convert.ToString(row[11])
 
                 });
-
+            }
         }
+        
         //回線情報一覧
         void kaisenList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
+            //	e.Item = _item[e.ItemIndex];
+            if (kasen_list.Rows.Count > 0) { 
+                DataRow row = this.kasen_list.Rows[e.ItemIndex];
+                e.Item = new ListViewItem(
+                new String[]
+                {
+                            Convert.ToString(row[0]),
+                            Convert.ToString(row[1]),
+                            Convert.ToString(row[2]),
+                            Convert.ToString(row[3]),
+                            Convert.ToString(row[4]),
+                            Convert.ToString(row[5]),
+                            Convert.ToString(row[6]),
+                            Convert.ToString(row[7]),
+                            Convert.ToString(row[8]),
+                            Convert.ToString(row[9])
+
+                });
+    
+            }
+        }
+        //作業予定
+        void sagyoList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+        //	e.Item = _item[e.ItemIndex];
+        if (sagyo_list.Rows.Count > 0)
+        {
+            DataRow row = this.sagyo_list.Rows[e.ItemIndex];
+            e.Item = new ListViewItem(
+                new String[]
+                {
+                Convert.ToString(row[0]),
+                Convert.ToString(row[1]),
+                Convert.ToString(row[2]),
+                Convert.ToString(row[3]),
+                Convert.ToString(row[4]),
+                Convert.ToString(row[5])
+                });
+            }
+
 
         }
         private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
@@ -535,27 +503,26 @@ namespace SMSサンプル
 
 
                 }
-                this.userList.VirtualListSize = user_list.Rows.Count;
-                this.userList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+                    this.userList.VirtualListSize = user_list.Rows.Count;
+                    this.userList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
             }
 
         }
+        //システム情報の表示
         private void disp_system(DISP_dataSet dsp_L)
         {
             //システムリスト
             this.systemList.VirtualMode = true;
 
             // １行全体選択
-
-
             this.systemList.FullRowSelect = true;
             this.systemList.HideSelection = false;
             this.systemList.HeaderStyle = ColumnHeaderStyle.Clickable;
             //Hook up handlers for VirtualMode events.
             this.systemList.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(systemList_RetrieveVirtualItem);
             this.systemList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
 
             // Column追加
             this.systemList.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
@@ -589,11 +556,13 @@ namespace SMSサンプル
                     system_list.Rows.Add(row);
 
                 }
-                this.systemList.VirtualListSize = system_list.Rows.Count;
-                this.systemList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+ 
+                    this.systemList.VirtualListSize = system_list.Rows.Count;
+                    this.systemList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
             }
         }
+        //拠点情報一覧の表示
         private void disp_site(DISP_dataSet dsp_L)
         {
             //拠点
@@ -649,12 +618,12 @@ namespace SMSサンプル
                     site_list.Rows.Add(row);
 
                 }
-                this.siteList.VirtualListSize = site_list.Rows.Count;
-                this.siteList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+                    this.siteList.VirtualListSize = site_list.Rows.Count;
+                    this.siteList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
             }
-
-
+            
         }
 
 
@@ -727,9 +696,11 @@ namespace SMSサンプル
                     host_list.Rows.Add(row);
 
                 }
-                this.hostList.VirtualListSize = host_list.Rows.Count;
-                this.hostList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
+
+                    this.hostList.VirtualListSize = host_list.Rows.Count;
+                    this.hostList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+       
             }
 
         }
@@ -777,7 +748,6 @@ namespace SMSサンプル
             //インターフェイス情報
             if (dsp_L.watch_L != null)
             {
-
                 foreach (watch_InterfaceDS w in dsp_L.watch_L)
                 {
                     DataRow row = interface_list.NewRow();
@@ -794,87 +764,224 @@ namespace SMSサンプル
                     row["更新日時"] = w.chk_date;
                     row["更新者"] = w.chk_name_id;
                     interface_list.Rows.Add(row);
-
                 }
-                this.interfaceList.VirtualListSize = interface_list.Rows.Count;
-                this.interfaceList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
+                    this.interfaceList.VirtualListSize = interface_list.Rows.Count;
+                    this.interfaceList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+           
             }
+        }
+        //回線情報
+        private void disp_kaisen(DISP_dataSet dsp_L)
+        {
+            //回線情報
+            this.kaisenList.VirtualMode = true;
 
+            // １行全体選択
+            this.kaisenList.FullRowSelect = true;
+            this.kaisenList.HideSelection = false;
+            this.kaisenList.HeaderStyle = ColumnHeaderStyle.Clickable;
+            //Hook up handlers for VirtualMode events.
+            this.kaisenList.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(kaisenList_RetrieveVirtualItem);
+            this.kaisenList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+            // Column追加
+            this.kaisenList.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(1, "有効", 30, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(2, "キャリア", 180, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(3, "回線種別", 30, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(4, "回線ID", 180, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(5, "ISP", 100, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(6, "サービス種別", 100, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(7, "サービスID", 30, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(8, "更新日時", 80, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(9, "更新者", 80, HorizontalAlignment.Left);
+
+            //リストビューを初期化する
+            kasen_list = new DataTable("table7");
+            kasen_list.Columns.Add("No", Type.GetType("System.Int32"));
+            kasen_list.Columns.Add("有効", Type.GetType("System.String"));
+            kasen_list.Columns.Add("キャリア", Type.GetType("System.String"));
+            kasen_list.Columns.Add("回線種別", Type.GetType("System.String"));
+            kasen_list.Columns.Add("回線ID", Type.GetType("System.String"));
+            kasen_list.Columns.Add("ISP", Type.GetType("System.String"));
+            kasen_list.Columns.Add("サービス種別", Type.GetType("System.String"));
+            kasen_list.Columns.Add("サービスID", Type.GetType("System.String"));
+            kasen_list.Columns.Add("更新日時", Type.GetType("System.String"));
+            kasen_list.Columns.Add("更新者", Type.GetType("System.String"));
+            //回線情報
+            if (dsp_L.kaisen_L != null)
+            {
+
+                foreach (kaisenDS ka in dsp_L.kaisen_L)
+                {
+                    DataRow row = kasen_list.NewRow();
+                    row["No"] = ka.kaisenno;
+                    row["有効"] = ka.status;
+                    row["キャリア"] = ka.career;
+                    row["回線種別"] = ka.type;
+                    row["回線ID"] = ka.kaisenid;
+                    row["ISP"] = ka.isp;
+                    row["サービス種別"] = ka.servicetype;
+                    row["サービスID"] = ka.serviceid;
+                    row["更新日時"] = ka.chk_date;
+                    row["更新者"] = ka.chk_name_id;
+                    kasen_list.Rows.Add(row);
+                }
+                
+                this.kaisenList.VirtualListSize = kasen_list.Rows.Count;
+                this.kaisenList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                
+            }
         }
 
+        //作業情報
+        private void disp_sagyo(DISP_dataSet dsp_L)
+        {
+            //作業情報
+            this.sagyoList.VirtualMode = true;
+            // １行全体選択
+            this.sagyoList.FullRowSelect = true;
+            this.sagyoList.HideSelection = false;
+            this.sagyoList.HeaderStyle = ColumnHeaderStyle.Clickable;
+            //Hook up handlers for VirtualMode events.
+            this.sagyoList.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(sagyoList_RetrieveVirtualItem);
+            this.sagyoList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
+            // Column追加
+            this.sagyoList.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
+            this.sagyoList.Columns.Insert(1, "作業内容", 30, HorizontalAlignment.Left);
+            this.sagyoList.Columns.Insert(2, "開始日時", 180, HorizontalAlignment.Left);
+            this.sagyoList.Columns.Insert(3, "終了日時", 30, HorizontalAlignment.Left);
+            this.sagyoList.Columns.Insert(4, "更新日時", 80, HorizontalAlignment.Left);
+            this.sagyoList.Columns.Insert(5, "更新者", 80, HorizontalAlignment.Left);
+
+            //リストビューを初期化する
+            sagyo_list = new DataTable("table8");
+            sagyo_list.Columns.Add("No", Type.GetType("System.Int32"));
+            sagyo_list.Columns.Add("作業内容", Type.GetType("System.String"));
+            sagyo_list.Columns.Add("開始日時", Type.GetType("System.String"));
+            sagyo_list.Columns.Add("終了日時", Type.GetType("System.String"));
+            sagyo_list.Columns.Add("更新日時", Type.GetType("System.String"));
+            sagyo_list.Columns.Add("更新者", Type.GetType("System.String"));
+
+            //作業情報
+            if (dsp_L.sagyo_L != null)
+            {
+                foreach (sagyoDS sa in dsp_L.sagyo_L)
+                {
+                    DataRow row = sagyo_list.NewRow();
+                    row["No"] = sa.taskno;
+                    row["作業内容"] = sa.text;
+                    row["開始日時"] = sa.start_date;
+                    row["終了日時"] = sa.end_date;
+                    row["更新日時"] = sa.chk_date;
+                    row["更新者"] = sa.chk_name_id;
+                    sagyo_list.Rows.Add(row);
+
+                }
+
+                //リストビューの更新
+                this.sagyoList.VirtualListSize = sagyo_list.Rows.Count;
+                //リストビューのカラムサイズの変更
+                this.sagyoList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+            }
+        }
 
         //検索ボタンが押されたとき
         private void button1_Click(object sender, EventArgs e)
         {
-            userList.Clear();
-            systemList.Clear();
-            siteList.Clear();
-            hostList.Clear();
-            interfaceList.Clear();
-            kaisenList.Clear();
-            sagyoList.Clear();
+            this.button1.Enabled = false;
+            try { 
+                userList.Clear();
+                systemList.Clear();
+                siteList.Clear();
+                hostList.Clear();
+                interfaceList.Clear();
+                kaisenList.Clear();
+                sagyoList.Clear();
 
 
-            Dictionary<string, string> param_dict = new Dictionary<string, string>();
-            Class_common common = new Class_common();
-            var con = common.DB_connection();
+                Dictionary<string, string> param_dict = new Dictionary<string, string>();
+                Class_common common = new Class_common();
+                var con = common.DB_connection();
 
-            Class_Detaget getdata = new Class_Detaget();
+                Class_Detaget getdata = new Class_Detaget();
 
-            DISP_dataSet dsp_L = new DISP_dataSet();
+                DISP_dataSet dsp_L = new DISP_dataSet();
 
-            //IPアドレス
-            if (m_ipaddress.Text != "")
-            {
-                param_dict["IPaddress"] = m_ipaddress.Text;
-                dsp_L = getdata.getSelectKouseiInfo(param_dict, con);
+                //IPアドレス
+                if (m_ipaddress.Text != "")
+                {
+                    param_dict["IPaddress"] = m_ipaddress.Text;
+                    dsp_L = getdata.getSelectInterface(param_dict, con);
 
-            }
+                }
 
-            //ユーザ名コンボボックス
-            if (m_usernameCombo.Text != "" )
-            {
-                param_dict["username"] = m_usernameCombo.Text;
-            }
-            //システム名コンボボックス
-            if (m_systemCombo.Text != "")
-            {
-                param_dict["systemname"] = m_systemCombo.Text;
+                //ホスト名コンボボックス
+                if (m_hostCombo.Text != "")
+                {
+                    param_dict["hostname"] = m_hostCombo.Text;
+                    dsp_L = getdata.getSelectHost(param_dict, con);
+                }
+                //拠点コンボボックス
+                if (m_siteCombo.Text != "")
+                {
+                    param_dict["sitename"] = m_siteCombo.Text;
+                    dsp_L = getdata.getSelectSite(param_dict, con);
 
-            }
-            //拠点コンボボックス
-            if (m_siteCombo.Text != "")
-            {
-                param_dict["sitename"] = m_siteCombo.Text;
+                }
+                //システム名コンボボックス
+                if (m_systemCombo.Text != "")
+                {
+                    param_dict["systemname"] = m_systemCombo.Text;
+                    dsp_L = getdata.getSelectSystem(param_dict, con);
+                }
+                //ユーザ名コンボボックス
+                if (m_usernameCombo.Text != "")
+                {
+                    param_dict["username"] = m_usernameCombo.Text;
+                    dsp_L = getdata.getSelectUser(param_dict, con);
 
-            }
-            //ホスト名コンボボックス
-            if (m_hostCombo.Text != "")
-            {
-                param_dict["hostname"] = m_hostCombo.Text;
-            }
+                }
+
+                //ユーザ情報の表示
+                disp_User( dsp_L);
+
+                disp_system(dsp_L);
+
+                disp_site(dsp_L);
             
-            con.Close();
+                disp_host(dsp_L);
 
-            disp_User( dsp_L);
+                disp_interface(dsp_L);
 
-            disp_system(dsp_L);
-
-            disp_site(dsp_L);
-            
-            disp_host(dsp_L);
-
-            disp_interface(dsp_L);
-
-            //回線情報を取得
-            if(dsp_L.user_L != null)
-            {
-                getSelectKaisenInfo(user_list, con);
+                //回線情報を取得
+                if(dsp_L.user_L != null)
+                {
+                    Class_Detaget dataget = new Class_Detaget();
+                    dataget.getSelectKaisenInfo(user_list, dsp_L, con);
+                    disp_kaisen(dsp_L);
+                }
+                //作業情報を取得
+                if (dsp_L.user_L != null)
+                {
+                    Class_Detaget dataget = new Class_Detaget();
+                    //SQL文の実行
+                    dataget.getSelectSagyoInfo(user_list, dsp_L, con);        
+                   disp_sagyo(dsp_L);
+                }
+                con.Close();
             }
-            //作業情報を取得
-
+            catch (Exception ex)
+            {
+                MessageBox.Show("構成情報の表示時にエラーが発生しました。" + ex.Message, "構成情報表示",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+            }
+            finally
+            {
+                this.button1.Enabled = true;
+            }
 
         }
 

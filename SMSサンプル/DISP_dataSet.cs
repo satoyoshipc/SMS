@@ -14,5 +14,7 @@ namespace SMSサンプル
         public List<hostDS>             host_L { get; set; }
         public List<watch_InterfaceDS>  watch_L { get; set; }
         public List<kaisenDS>           kaisen_L { get; set; }
+        public List<sagyoDS>            sagyo_L { get; set; }
+
     }
 }
