@@ -241,6 +241,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Form_MailTempleteInsert";
             this.Text = "メールテンプレート登録";
+            this.Load += new System.EventHandler(this.Form_MailTempleteInsert_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

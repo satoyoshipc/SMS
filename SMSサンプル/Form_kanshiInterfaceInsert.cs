@@ -13,7 +13,13 @@ namespace SMSサンプル
 {
     public partial class Form_kanshiInterfaceInsert : Form
     {
-        //ユーザ
+        //DBコネクション
+        public NpgsqlConnection con { get; set; }
+
+        public opeDS loginDS { get; set; }
+
+
+        //カスタマ
         public List<userDS> userList { get; set; }
         //システム
         public List<systemDS> systemList { get; set; }
@@ -29,6 +35,9 @@ namespace SMSサンプル
         //表示前処理
         private void Form_kanshiInterfaceInsert_Load(object sender, EventArgs e)
         {
+            m_idlabel.Text = loginDS.opeid;
+            m_labelinputOpe.Text = loginDS.lastname + loginDS.fastname;
+
             //コンボボックスの初期値
             m_statusCombo.SelectedIndex = 0;
 
@@ -40,7 +49,7 @@ namespace SMSサンプル
             if (userList == null)
                 return;
 
-            //ユーザ情報を取得する
+            //カスタマ情報を取得する
             foreach (userDS v in userList)
             {
                 DataRow row = cutomerTable.NewRow();
@@ -74,7 +83,7 @@ namespace SMSサンプル
 
             if (systemList == null)
                 return;
-            //ユーザ情報を取得する
+            //カスタマ情報を取得する
             foreach (systemDS v in systemList)
             {
                 if (m_usernameCombo.SelectedValue != null) { 
@@ -113,7 +122,7 @@ namespace SMSサンプル
             if (siteList == null)
                 return;
 
-            //ユーザ情報を取得する
+            //カスタマ情報を取得する
             foreach (siteDS v in siteList)
             {
                 if (m_systemCombo.SelectedValue != null)
@@ -144,7 +153,7 @@ namespace SMSサンプル
             Class_Detaget getuser = new Class_Detaget();
 
             //ホスト名を検索
-            List<hostDS> hostDSList = getuser.getHostList(siteno, true);
+            List<hostDS> hostDSList = getuser.getHostList(siteno, con,true);
             m_hostCombo.DataSource = hostDSList;
             m_hostCombo.DisplayMember = "hostname";
             m_hostCombo.ValueMember = "host_no";
@@ -155,10 +164,10 @@ namespace SMSサンプル
         //登録ボタン
         private void button3_Click(object sender, EventArgs e)
         {
-            //ユーザ名
+            //カスタマ名
             if (m_usernameCombo.Text == "")
             {
-                MessageBox.Show("ユーザ名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("カスタマ名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -189,7 +198,17 @@ namespace SMSサンプル
             string systemno = m_systemno.Text;
             string siteno = m_siteno.Text;
             string hostno = m_hostno.Text;
-            string status = m_statusCombo.SelectedIndex.ToString();
+
+            //ステータス
+            string status = "";
+            if (m_statusCombo.SelectedIndex == 0)
+                //有効
+                status = "1";
+
+            else
+                //無効
+                status = "0";
+
             string interfacename = m_interfacename.Text;
             string type = m_type.Text;
             string kanshi = m_koumoku.Text;
@@ -200,55 +219,51 @@ namespace SMSサンプル
             string ipaddressNAT = m_ipaddressNAT.Text;
             
             //DB接続
-            Class_common common = new Class_common();
+
             NpgsqlCommand cmd;
-            using (var con = common.DB_connection())
+            try
             {
-                try
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                Int32 rowsaffected;
+
+                //データ登録
+                cmd = new NpgsqlCommand(@"insert into watch_Interface(interfacename,status,type,kanshi,start_date,end_date,border,IPaddress,IPaddressNAT,host_no,userno,systemno,siteno,chk_name_id) 
+                    values ( :interfacename,:status,:type,:kanshi,:start_date,:end_date,:border,:IPaddress,:IPaddressNAT,:host_no,:userno,:systemno,:siteno,:chk_name_id)", con);
+                cmd.Parameters.Add(new NpgsqlParameter("interfacename", DbType.String) { Value = interfacename });
+                cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+                cmd.Parameters.Add(new NpgsqlParameter("type", DbType.String) { Value = type });
+                cmd.Parameters.Add(new NpgsqlParameter("kanshi", DbType.String) { Value = kanshi });
+                cmd.Parameters.Add(new NpgsqlParameter("start_date", DbType.DateTime) { Value = startdate });
+                cmd.Parameters.Add(new NpgsqlParameter("end_date", DbType.DateTime) { Value = enddate });
+                cmd.Parameters.Add(new NpgsqlParameter("border", DbType.String) { Value = border });
+                cmd.Parameters.Add(new NpgsqlParameter("IPaddress", DbType.String) { Value = ipaddress });
+                cmd.Parameters.Add(new NpgsqlParameter("IPaddressNAT", DbType.String) { Value = ipaddressNAT });
+                cmd.Parameters.Add(new NpgsqlParameter("host_no", DbType.Int32) { Value = hostno });
+                cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
+                cmd.Parameters.Add(new NpgsqlParameter("host_no", DbType.Int32) { Value = hostno });
+                cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
+                cmd.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = siteno });
+                cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
+                rowsaffected = cmd.ExecuteNonQuery();
+
+                if (rowsaffected != 1)
                 {
-                    con.Open();
-
-                    Int32 rowsaffected;
-
-                    //データ登録
-                    cmd = new NpgsqlCommand(@"insert into watch_Interface(interfacename,status,type,kanshi,start_date,end_date,border,IPaddress,IPaddressNAT,host_no,userno,systemno,siteno,chk_name_id) 
-                        values ( :interfacename,:status,:type,:kanshi,:start_date,:end_date,:border,:IPaddress,:IPaddressNAT,:host_no,:userno,:systemno,:siteno,:chk_name_id)", con);
-                    cmd.Parameters.Add(new NpgsqlParameter("interfacename", DbType.String) { Value = interfacename });
-                    cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
-                    cmd.Parameters.Add(new NpgsqlParameter("type", DbType.String) { Value = type });
-                    cmd.Parameters.Add(new NpgsqlParameter("kanshi", DbType.String) { Value = kanshi });
-                    cmd.Parameters.Add(new NpgsqlParameter("start_date", DbType.DateTime) { Value = startdate });
-                    cmd.Parameters.Add(new NpgsqlParameter("end_date", DbType.DateTime) { Value = enddate });
-                    cmd.Parameters.Add(new NpgsqlParameter("border", DbType.String) { Value = border });
-                    cmd.Parameters.Add(new NpgsqlParameter("IPaddress", DbType.String) { Value = ipaddress });
-                    cmd.Parameters.Add(new NpgsqlParameter("IPaddressNAT", DbType.String) { Value = ipaddressNAT });
-                    cmd.Parameters.Add(new NpgsqlParameter("host_no", DbType.Int32) { Value = hostno });
-                    cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
-                    cmd.Parameters.Add(new NpgsqlParameter("host_no", DbType.Int32) { Value = hostno });
-                    cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
-                    cmd.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = siteno });
-                    cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = "111" });
-                    rowsaffected = cmd.ExecuteNonQuery();
-
-                    if (rowsaffected != 1)
-                    {
-                        MessageBox.Show("登録できませんでした。", "監視インターフェイス登録");
-                        con.Close();
-                    }
-                    else
-                    {
-                        //登録成功
-                        MessageBox.Show("登録完了", "監視インターフェイス登録");
-                    }
+                    MessageBox.Show("登録できませんでした。", "監視インターフェイス登録");
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show("監視インターフェイス5登録時エラー " + ex.Message);
-                    con.Close();
-                    return;
+                    //登録成功
+                    MessageBox.Show("登録完了", "監視インターフェイス登録");
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("監視インターフェイス5登録時エラー " + ex.Message);
+                return;
+            }
 
+        
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -256,7 +271,7 @@ namespace SMSサンプル
             this.Close();
         }
 
-        //ユーザ名の値が変更されたとき
+        //カスタマ名の値が変更されたとき
         private void m_userCombo_SelectionChangeCommitted(object sender, EventArgs e)
         {
             Read_systemCombo();

@@ -11,8 +11,14 @@ using System.Windows.Forms;
 
 namespace SMSサンプル
 {
+    
     public partial class Form_opeInsert : Form
     {
+        //DBコネクション
+        public NpgsqlConnection con { get; set; }
+        //ログイン情報
+        public opeDS loginDS { get; set; }
+
         public Form_opeInsert()
         {
             InitializeComponent();
@@ -31,10 +37,11 @@ namespace SMSサンプル
 
             }
         }
-
+        //表示前処理
         private void Form_opeInsert_Load(object sender, EventArgs e)
         {
-
+            m_idlabel.Text =     loginDS.opeid;
+            m_labelinputOpe.Text = loginDS.lastname + loginDS.fastname;
         }
         //登録ボタン
         private void button3_Click(object sender, EventArgs e)
@@ -80,28 +87,65 @@ namespace SMSサンプル
                 type = "2";
 
             string biko = m_biko.Text;
-
-            Class_common common = new Class_common();
-            using (var con = common.DB_connection())
+            try
             {
-                con.Open();
+
+                if (con.FullState != ConnectionState.Open) con.Open();
+                Int32 rowsaffected;
 
                 //データ登録
                 cmd = new NpgsqlCommand(@"insert into ope(opeid,lastname,fastname,password,type,biko,chk_name_id) values 
-                    ( :opeid,:lastname,:fastname,:password,:type,:biko,:chk_name_id)", con);
+                    ( :opeid,:lastname,:fastname,:password,:type,:biko,:chk_name_id);" +
+                    "select currval('ope_openo_seq') ;", con);
                 cmd.Parameters.Add(new NpgsqlParameter("opeid", DbType.String) { Value = opeid });
                 cmd.Parameters.Add(new NpgsqlParameter("lastname", DbType.String) { Value = lastname });
                 cmd.Parameters.Add(new NpgsqlParameter("fastname", DbType.String) { Value = fastname });
                 cmd.Parameters.Add(new NpgsqlParameter("password", DbType.String) { Value = password });
                 cmd.Parameters.Add(new NpgsqlParameter("type", DbType.String) { Value = type });
                 cmd.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = biko });
-                cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = "111" });
-                cmd.ExecuteNonQuery();
+                cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
+                //OUTパラメータをセットする
+                NpgsqlParameter firstColumn = new NpgsqlParameter("firstcolumn", DbType.Int32);
+                firstColumn.Direction = ParameterDirection.Output;
+                cmd.Parameters.Add(firstColumn);
 
 
-                MessageBox.Show("オペレータの登録完了しました。","オペレータ登録");
-                con.Close();
+
+                rowsaffected = cmd.ExecuteNonQuery();
+
+                //値の取得
+                int currval = int.Parse(firstColumn.NpgsqlValue.ToString());
+
+                if (rowsaffected != 1)
+                {
+                    MessageBox.Show("登録できませんでした。", "オペレータ登録");
+                }
+                else
+                {
+                    //登録成功 YESを選択でメールアドレス登録画面に遷移
+                    if (MessageBox.Show("オペレータの登録完了しました。" + Environment.NewLine + " 続いてメールアドレスを登録しますか？", "オペレータ登録", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        Form_addressInsert addfm = new Form_addressInsert();
+                        addfm.loginDS = loginDS;
+                        addfm.con = con;
+                        //オペレータなので"1"
+                        addfm.kbn = 1;
+                        addfm.userid = currval.ToString();
+                        addfm.username = m_opeID.Text;
+
+                        addfm.Show();
+
+                    }
+
+                }
             }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("オペレータの登録時にエラーが発生しました。　" + ex.Message, "オペレータ登録", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -127,42 +171,37 @@ namespace SMSサンプル
             {
                 MessageBox.Show("オペレータIDを入力してください。","重複チェック",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
             }
-            Class_common common = new Class_common();
             NpgsqlCommand cmd;
 
-            using (var con = common.DB_connection())
+            try
             {
-                try
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                //データ検索
+                cmd = new NpgsqlCommand(@"select count(*) from ope where opeid= :operid", con);
+                cmd.Parameters.Add(new NpgsqlParameter("operid", DbType.String) { Value = m_opeID.Text });
+
+                //int count = cmd.ExecuteScalar();
+                int count = int.Parse(cmd.ExecuteScalar().ToString());
+                if (count > 0)
                 {
-                    con.Open();
-
-                    //データ検索
-                    cmd = new NpgsqlCommand(@"select count(*) from ope where opeid= :operid", con);
-                    cmd.Parameters.Add(new NpgsqlParameter("operid", DbType.String) { Value = m_opeID.Text });
-
-                    //int count = cmd.ExecuteScalar();
-                    int count = int.Parse(cmd.ExecuteScalar().ToString());
-                    if (count > 0)
-                    {
-                        m_duplicationResult.ForeColor = Color.Red;
-                        m_duplicationResult.Text = "そのIDは既に登録されています。";
-                    }
-                    else if (count == 0)
-                    {
-                        m_duplicationResult.ForeColor = Color.Green;
-
-                        m_duplicationResult.Text = "登録可能です。";
-                    }
-
-                    con.Close();
+                    m_duplicationResult.ForeColor = Color.Red;
+                    m_duplicationResult.Text = "そのIDは既に登録されています。";
                 }
-                catch (Exception ex)
+                else if (count == 0)
                 {
-                    MessageBox.Show("データ取得エラー", "重複チェック時に失敗しました。" + ex.Message);
-                    con.Close();
+                    m_duplicationResult.ForeColor = Color.Green;
+
+                    m_duplicationResult.Text = "登録可能です。";
                 }
+
 
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("データ取得エラー", "重複チェック時に失敗しました。" + ex.Message);
+            }
+
         }
     }
 }

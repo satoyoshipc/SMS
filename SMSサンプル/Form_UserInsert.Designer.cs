@@ -52,9 +52,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 53);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 12);
+            this.label1.Size = new System.Drawing.Size(52, 12);
             this.label1.TabIndex = 0;
-            this.label1.Text = "ユーザ名";
+            this.label1.Text = "カスタマ名";
             // 
             // m_username
             // 
@@ -79,18 +79,18 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 74);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(66, 12);
+            this.label2.Size = new System.Drawing.Size(71, 12);
             this.label2.TabIndex = 2;
-            this.label2.Text = "ユーザ名カナ";
+            this.label2.Text = "カスタマ名カナ";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 100);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 12);
+            this.label3.Size = new System.Drawing.Size(76, 12);
             this.label3.TabIndex = 4;
-            this.label3.Text = "ユーザ名略称";
+            this.label3.Text = "カスタマ名略称";
             // 
             // label4
             // 
@@ -196,7 +196,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(95, 23);
             this.button4.TabIndex = 7;
-            this.button4.Text = "アドレス登録";
+            this.button4.Text = "担当者登録";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -232,7 +232,8 @@
             this.Controls.Add(this.m_username);
             this.Controls.Add(this.label1);
             this.Name = "Form_UserInsert";
-            this.Text = "ユーザ登録";
+            this.Text = "カスタマ登録";
+            this.Load += new System.EventHandler(this.Form_UserInsert_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

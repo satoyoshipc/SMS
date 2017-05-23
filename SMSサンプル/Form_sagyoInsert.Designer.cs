@@ -133,9 +133,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(8, 41);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(47, 12);
+            this.label7.Size = new System.Drawing.Size(52, 12);
             this.label7.TabIndex = 147;
-            this.label7.Text = "ユーザ名";
+            this.label7.Text = "カスタマ名";
             // 
             // m_idlabel
             // 

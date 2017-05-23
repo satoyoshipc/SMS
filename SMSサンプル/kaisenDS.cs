@@ -9,7 +9,26 @@ namespace SMSサンプル
     public class kaisenDS
     {
         public String kaisenno { get; set; }
-        public String status { get; set; }
+        private string _status;
+        public String status
+        {
+            get
+            {
+                string retstr = "";
+                if (_status == "0")
+
+                    retstr = "無効";
+
+                else if (_status == "1")
+
+                    retstr = "有効";
+
+                return retstr;
+            }
+            set { this._status = value; }
+        }
+
+
         public String career { get; set; }
         public String type { get; set; }
         public String kaisenid { get; set; }

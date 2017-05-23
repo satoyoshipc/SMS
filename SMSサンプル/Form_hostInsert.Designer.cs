@@ -123,13 +123,13 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(12, 47);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(47, 12);
+            this.label7.Size = new System.Drawing.Size(52, 12);
             this.label7.TabIndex = 78;
-            this.label7.Text = "ユーザ名";
+            this.label7.Text = "カスタマ名";
             // 
             // m_idlabel
             // 
-            this.m_idlabel.Location = new System.Drawing.Point(111, 471);
+            this.m_idlabel.Location = new System.Drawing.Point(111, 448);
             this.m_idlabel.Name = "m_idlabel";
             this.m_idlabel.ReadOnly = true;
             this.m_idlabel.Size = new System.Drawing.Size(44, 19);
@@ -140,7 +140,7 @@
             // 
             this.m_location.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_location.Location = new System.Drawing.Point(111, 226);
+            this.m_location.Location = new System.Drawing.Point(111, 217);
             this.m_location.Name = "m_location";
             this.m_location.Size = new System.Drawing.Size(297, 19);
             this.m_location.TabIndex = 7;
@@ -148,7 +148,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(17, 230);
+            this.label6.Location = new System.Drawing.Point(17, 221);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 12);
             this.label6.TabIndex = 74;
@@ -158,7 +158,7 @@
             // 
             this.m_labelinputOpe.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_labelinputOpe.Location = new System.Drawing.Point(161, 471);
+            this.m_labelinputOpe.Location = new System.Drawing.Point(161, 448);
             this.m_labelinputOpe.Name = "m_labelinputOpe";
             this.m_labelinputOpe.ReadOnly = true;
             this.m_labelinputOpe.Size = new System.Drawing.Size(249, 19);
@@ -168,7 +168,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(17, 474);
+            this.label5.Location = new System.Drawing.Point(17, 451);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(51, 12);
             this.label5.TabIndex = 72;
@@ -177,7 +177,7 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(218, 501);
+            this.button3.Location = new System.Drawing.Point(214, 474);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
             this.button3.TabIndex = 14;
@@ -188,7 +188,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(319, 500);
+            this.button2.Location = new System.Drawing.Point(315, 473);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 23);
             this.button2.TabIndex = 15;
@@ -200,7 +200,7 @@
             // 
             this.m_hostname_ja.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_hostname_ja.Location = new System.Drawing.Point(111, 172);
+            this.m_hostname_ja.Location = new System.Drawing.Point(111, 170);
             this.m_hostname_ja.Name = "m_hostname_ja";
             this.m_hostname_ja.Size = new System.Drawing.Size(297, 19);
             this.m_hostname_ja.TabIndex = 5;
@@ -218,7 +218,7 @@
             // 
             this.m_biko.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_biko.Location = new System.Drawing.Point(111, 408);
+            this.m_biko.Location = new System.Drawing.Point(111, 385);
             this.m_biko.Multiline = true;
             this.m_biko.Name = "m_biko";
             this.m_biko.Size = new System.Drawing.Size(297, 59);
@@ -227,7 +227,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(16, 411);
+            this.label4.Location = new System.Drawing.Point(16, 388);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 12);
             this.label4.TabIndex = 66;
@@ -236,7 +236,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 175);
+            this.label3.Location = new System.Drawing.Point(12, 173);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(88, 12);
             this.label3.TabIndex = 65;
@@ -294,7 +294,7 @@
             // 
             this.m_usefor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_usefor.Location = new System.Drawing.Point(111, 253);
+            this.m_usefor.Location = new System.Drawing.Point(111, 241);
             this.m_usefor.Name = "m_usefor";
             this.m_usefor.Size = new System.Drawing.Size(297, 19);
             this.m_usefor.TabIndex = 8;
@@ -302,7 +302,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(17, 257);
+            this.label9.Location = new System.Drawing.Point(17, 245);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(29, 12);
             this.label9.TabIndex = 86;
@@ -311,7 +311,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(16, 287);
+            this.label10.Location = new System.Drawing.Point(16, 272);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(77, 12);
             this.label10.TabIndex = 88;
@@ -321,7 +321,7 @@
             // 
             this.m_startdate.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
             this.m_startdate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_startdate.Location = new System.Drawing.Point(111, 282);
+            this.m_startdate.Location = new System.Drawing.Point(111, 267);
             this.m_startdate.Name = "m_startdate";
             this.m_startdate.Size = new System.Drawing.Size(191, 19);
             this.m_startdate.TabIndex = 9;
@@ -331,7 +331,7 @@
             // 
             this.m_enddate.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
             this.m_enddate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_enddate.Location = new System.Drawing.Point(111, 314);
+            this.m_enddate.Location = new System.Drawing.Point(111, 291);
             this.m_enddate.Name = "m_enddate";
             this.m_enddate.Size = new System.Drawing.Size(191, 19);
             this.m_enddate.TabIndex = 10;
@@ -339,7 +339,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(16, 318);
+            this.label11.Location = new System.Drawing.Point(16, 295);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(77, 12);
             this.label11.TabIndex = 90;
@@ -350,7 +350,7 @@
             this.m_hosyuno.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_hosyuno.ImeMode = System.Windows.Forms.ImeMode.Alpha;
-            this.m_hosyuno.Location = new System.Drawing.Point(111, 344);
+            this.m_hosyuno.Location = new System.Drawing.Point(111, 321);
             this.m_hosyuno.Name = "m_hosyuno";
             this.m_hosyuno.Size = new System.Drawing.Size(297, 19);
             this.m_hosyuno.TabIndex = 11;
@@ -358,7 +358,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(16, 347);
+            this.label12.Location = new System.Drawing.Point(16, 324);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(77, 12);
             this.label12.TabIndex = 92;
@@ -368,7 +368,7 @@
             // 
             this.m_hosyuinfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_hosyuinfo.Location = new System.Drawing.Point(111, 371);
+            this.m_hosyuinfo.Location = new System.Drawing.Point(111, 348);
             this.m_hosyuinfo.Name = "m_hosyuinfo";
             this.m_hosyuinfo.Size = new System.Drawing.Size(297, 19);
             this.m_hosyuinfo.TabIndex = 12;
@@ -376,7 +376,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(16, 374);
+            this.label13.Location = new System.Drawing.Point(16, 351);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(53, 12);
             this.label13.TabIndex = 94;
@@ -409,7 +409,7 @@
             // 
             this.m_device.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_device.Location = new System.Drawing.Point(111, 197);
+            this.m_device.Location = new System.Drawing.Point(111, 193);
             this.m_device.Name = "m_device";
             this.m_device.Size = new System.Drawing.Size(297, 19);
             this.m_device.TabIndex = 6;
@@ -417,7 +417,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(17, 201);
+            this.label15.Location = new System.Drawing.Point(17, 197);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(29, 12);
             this.label15.TabIndex = 99;
@@ -427,7 +427,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(429, 534);
+            this.ClientSize = new System.Drawing.Size(429, 505);
             this.Controls.Add(this.m_device);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label14);

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,18 @@ namespace SMSサンプル
 {
     public partial class Form_TimerInsert : Form
     {
+        //DBコネクション
+        public NpgsqlConnection con { get; set; }
+
+        //ログイン情報
+        public opeDS loginDS { get; set; }
+
+        //カスタマ
+        public List<userDS> userList { get; set; }
+
+        //システム
+        public List<systemDS> systemList { get; set; }
+
         public Form_TimerInsert()
         {
             InitializeComponent();
@@ -52,6 +66,484 @@ namespace SMSサンプル
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        //登録ボタン
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //カスタマ名
+            if (m_usernameCombo.Text == "")
+            {
+                MessageBox.Show("カスタマ名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            //システム名
+            if (m_systemCombo.Text == "")
+            {
+                MessageBox.Show("システム名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (m_timer_name.Text == "")
+            {
+                MessageBox.Show("タイマー名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            
+            if (m_schedule_combo.Text == "")
+            {
+                MessageBox.Show("予定区分が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (m_alermDate.Text == "")
+            {
+                MessageBox.Show("アラーム日時が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (m_message.Text == "")
+            {
+                MessageBox.Show("アラームメッセージが入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (m_soudpath.Text == "" || System.IO.File.Exists(m_soudpath.Text) == false)
+            {
+
+
+                    MessageBox.Show("アラーム音が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string userno = m_userno.Text;
+            string systemno = m_systemno.Text;
+            string timername = m_timer_name.Text;
+            string schedule_type = m_schedule_combo.Text;
+            string type = schedule_type.Split(':')[0];
+            string message = m_message.Text;
+            //ステータス
+            string status = "";
+            if (m_radio_enable.Checked)
+                //有効
+                status = "1";
+
+            else
+                //無効
+                status = "0";
+
+            string repeat_type = "0"; 
+            if(m_radio_one.Checked)
+                repeat_type = "1";
+            else if (m_radio_hour.Checked)
+                    repeat_type = "2";
+            else if (m_radio_day.Checked)
+                repeat_type = "3";
+            else if (m_radio_week.Checked )
+                repeat_type = "4";
+            else if (m_radio_month.Checked)
+                repeat_type = "5";
+            
+
+            byte[] bytes = File.ReadAllBytes(m_soudpath.Text);
+
+            //開始日時
+            DateTime startdate = m_startDate.Value;
+            //終了日時
+            DateTime enddate = m_endDate.Value;
+
+
+            //DB接続
+            NpgsqlCommand cmd;
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+                Int32 rowsaffected;
+                //データ登録
+                cmd = new NpgsqlCommand(@"insert into schedule(userno,systemno,timer_name,schedule_type,repeat_type,start_date,end_date,alerm_message,status,sound,chk_name_id) 
+                    values ( :userno,:systemno,:timer_name,:schedule_type,:repeat_type,:start_date,:end_date,:alerm_message,:status,:sound,:chk_name_id); " +
+                    "select currval('schedule_schedule_no_seq') ;", con);
+
+                cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
+                cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
+                cmd.Parameters.Add(new NpgsqlParameter("timer_name", DbType.String) { Value = timername });
+                cmd.Parameters.Add(new NpgsqlParameter("schedule_type", DbType.String) { Value = type });
+                cmd.Parameters.Add(new NpgsqlParameter("repeat_type", DbType.String) { Value = repeat_type });
+                cmd.Parameters.Add(new NpgsqlParameter("start_date", DbType.DateTime) { Value = startdate });
+                cmd.Parameters.Add(new NpgsqlParameter("end_date", DbType.DateTime) { Value = enddate });
+                cmd.Parameters.Add(new NpgsqlParameter("alerm_message", DbType.String) { Value = message });
+                cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+                cmd.Parameters.Add(new NpgsqlParameter("sound", DbType.Binary) { Value = bytes });
+                cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
+                //OUTパラメータをセットする
+                NpgsqlParameter firstColumn = new NpgsqlParameter("firstcolumn", DbType.Int32);
+                firstColumn.Direction = ParameterDirection.Output;
+                cmd.Parameters.Add(firstColumn);
+                rowsaffected = cmd.ExecuteNonQuery();
+
+                int currval = int.Parse(firstColumn.NpgsqlValue.ToString());
+
+                if (rowsaffected != 1)
+                {
+                    MessageBox.Show("登録できませんでした。", "タイマー登録");
+                }
+                else
+                {
+                    if(currval > 0) { 
+                        
+                        //引き続きアラートデータを作成し登録する
+                        make_alert(currval,type);
+                        //登録成功
+                        MessageBox.Show("登録完了 " + "スケジュール番号" + currval, "タイマー登録");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("タイマー登録エラー " + ex.Message);
+                return;
+            }
+
+        }
+        // 引き続きアラートデータを作成し登録する
+        // タイマースケジュールを登録する
+        public void make_alert(int scheNO, string type)
+        {
+            //ステータス
+            if (m_radio_mukou.Checked)
+                return;
+            //アラーム周期            
+            //1回の時
+            if (m_radio_one.Checked)
+            {
+                //入力された日時を登録する
+                DateTime dd = m_alermDate.Value.Date;
+                alerm_insert(scheNO, type, dd);
+            }
+            //毎時の時
+            else if (m_radio_hour.Checked) {
+                DateTime alertdate = m_alermDate.Value.Date;
+                TimeSpan dtt = m_alermDate.Value.TimeOfDay;
+                alertdate = alertdate + dtt;
+                //開始日
+                DateTime startdt = m_startDate.Value;
+
+                //終了日
+                DateTime enddt = m_endDate.Value;
+
+                while (true)
+                {
+
+                    //開始日時以前なら登録しない
+                    if (startdt > alertdate)
+                    {
+                        alertdate = alertdate.AddHours(1);
+                        continue;
+                    }
+
+
+                    //終了日まで登録する。
+                    if (enddt <= alertdate.AddMinutes(-1))
+                    break;
+
+                    //時間毎に登録
+                    int ret =alerm_insert(scheNO, type, alertdate);
+                    if (ret == -1)
+                        break;
+
+                    //1時間プラス
+                    alertdate = alertdate.AddHours(1);
+                    //i++;
+                }
+            }
+            //日
+            else if (m_radio_day.Checked) {
+                
+                //開始日
+                DateTime alertdate = m_startDate.Value.Date;
+                TimeSpan dtt = m_alermDate.Value.TimeOfDay;
+                alertdate = alertdate + dtt;
+                
+                //開始日
+                DateTime startdt = m_startDate.Value;
+
+                //終了日
+                DateTime enddt = m_endDate.Value;
+
+                while (true)
+                {
+
+                    //開始日時以前なら登録しない
+                    if (startdt > alertdate) { 
+                        alertdate = alertdate.AddDays(1);
+                        continue;
+                    }
+
+                    //終了日まで登録する。
+                    if (enddt <= alertdate.AddMinutes(-1))
+                        break;
+
+                    //日付毎に登録
+                    int ret = alerm_insert(scheNO, type, alertdate);
+                    if (ret == -1)
+                        break;
+
+                    //1日プラス
+                    alertdate = alertdate.AddDays(1);
+                }
+            }
+            //週
+            else if (m_radio_week.Checked) {
+                int weeknumber  = (int)m_alermDate.Value.DayOfWeek;
+                TimeSpan dtt = m_alermDate.Value.TimeOfDay;
+                DateTime alertdate = m_startDate.Value.Date;
+                alertdate = alertdate + dtt;
+
+                //開始日
+                DateTime startdt = m_startDate.Value;
+                int startweekint = (int)m_startDate.Value.DayOfWeek;
+
+                //終了日
+                DateTime enddt = m_endDate.Value;
+                int endweekint = (int)m_endDate.Value.DayOfWeek;
+
+
+                int tmpweeknumber = startweekint;
+                while (true)
+                {
+
+                    //開始日時以前なら登録しない
+                    if (startdt > alertdate) {
+                        alertdate = alertdate.AddDays(1);
+                        tmpweeknumber = (int)alertdate.DayOfWeek;
+                        continue;
+                    }
+                    //終了日まで登録する。
+                    if (enddt <= alertdate.AddMinutes(-1))
+                        break;
+
+                    //同じ曜日であれば登録
+                    if(weeknumber == tmpweeknumber) { 
+
+                        //日付毎に登録
+                        int ret = alerm_insert(scheNO, type, alertdate);
+                        if (ret == -1)
+                            break;
+                    }
+
+                    //1日プラス
+                    alertdate = alertdate.AddDays(1);
+                    tmpweeknumber = (int)alertdate.DayOfWeek;
+
+                }
+            }
+            else if (m_radio_month.Checked) {
+
+                //開始日
+                DateTime alertdate = m_startDate.Value.Date;
+                TimeSpan dtt = m_alermDate.Value.TimeOfDay;
+                alertdate = alertdate + dtt;
+
+                //開始日
+                DateTime startdt = m_startDate.Value;
+
+                //終了日
+                DateTime enddt = m_endDate.Value;
+
+                while (true)
+                {
+
+                    //開始日時以前なら登録しない
+                    if (startdt > alertdate) {
+
+                        alertdate = alertdate.AddMonths(1);
+                        continue;
+                    }
+                    //終了日まで登録する。
+                    if (enddt <= alertdate.AddMinutes(-1))
+                        break;
+
+                    //日付毎に登録
+                    int ret = alerm_insert(scheNO, type, alertdate);
+                    if (ret == -1)
+                        break;
+
+                    //1月プラス
+                    alertdate = alertdate.AddMonths(1);
+                }
+                
+            }
+        }
+        //タイマー対応テーブルに登録する
+        int  alerm_insert(int scheNO, string type,DateTime alertdatetime)
+        {
+            //DB接続
+            NpgsqlCommand cmd;
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+                Int32 rowsaffected;
+                //データ登録
+                cmd = new NpgsqlCommand(@"insert into timer_taiou(schedule_no,schedule_type,alertdatetime,chk_name_id) 
+                    values ( :schedule_no,:schedule_type,:alertdatetime,:chk_name_id) ", con);
+
+                cmd.Parameters.Add(new NpgsqlParameter("schedule_no", DbType.Int32) { Value = scheNO });
+                cmd.Parameters.Add(new NpgsqlParameter("schedule_type", DbType.String) { Value = type });
+                cmd.Parameters.Add(new NpgsqlParameter("alertdatetime", DbType.DateTime) { Value = alertdatetime });
+                cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
+                rowsaffected = cmd.ExecuteNonQuery();
+
+                if (rowsaffected != 1)
+                {
+                    MessageBox.Show("タイマー対応テーブルに登録できませんでした。", "タイマー登録");
+                    return -1;
+                }
+                else
+                {
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("タイマー対応テーブル登録エラー " + ex.Message);
+                return -1;
+            }
+            return 1;
+
+        }
+        
+        //表示前処理
+        private void Form_TimerInsert_Load(object sender, EventArgs e)
+        {
+            m_idlabel.Text = loginDS.opeid;
+            m_labelinputOpe.Text = loginDS.lastname + loginDS.fastname;
+
+
+            //コンボボックス
+            DataTable cutomerTable = new DataTable();
+            cutomerTable.Columns.Add("ID", typeof(string));
+            cutomerTable.Columns.Add("NAME", typeof(string));
+            
+            Class_Detaget getuser = new Class_Detaget();
+            getuser.con = con;
+            userList = getuser.getUserList();
+            
+            if (userList == null)
+                return;
+
+            //カスタマ情報を取得する
+            foreach (userDS v in userList)
+            {
+                DataRow row = cutomerTable.NewRow();
+                row["ID"] = v.userno;
+                row["NAME"] = v.username;
+                cutomerTable.Rows.Add(row);
+            }
+         
+            //データテーブルを割り当てる
+            m_usernameCombo.DataSource = cutomerTable;
+            m_usernameCombo.DisplayMember = "NAME";
+            m_usernameCombo.ValueMember = "ID";
+
+            Read_systemCombo();
+            //利用不可にする
+            m_startDate.Enabled = false;
+            m_endDate.Enabled = false;
+        }
+
+        private void Read_systemCombo()
+        {
+            m_systemno.Text = "";
+
+            //1:インシデント処理 2:定期報告業務促し 3:作業情報の警告 4:資料展開 5:サブタスク
+            m_systemCombo.DataSource = null;
+
+            if (m_usernameCombo.SelectedValue != null)
+                m_userno.Text = m_usernameCombo.SelectedValue.ToString();
+
+            Class_Detaget getuser = new Class_Detaget();
+            List<systemDS> systemList = getuser.getSystemList(m_userno.Text, true);
+
+            //リストに入れる
+            if (systemList == null)
+                return;
+
+                //コンボボックス
+                DataTable systemTable = new DataTable();
+            systemTable.Columns.Add("ID", typeof(string));
+            systemTable.Columns.Add("NAME", typeof(string));
+
+            //システム情報を取得する
+            foreach (systemDS v in systemList)
+            {
+                DataRow row = systemTable.NewRow();
+                row["ID"] = v.systemno;
+                row["NAME"] = v.systemname;
+                systemTable.Rows.Add(row);
+            }
+            //データテーブルを割り当てる
+            m_systemCombo.DataSource = systemTable;
+            m_systemCombo.DisplayMember = "NAME";
+            m_systemCombo.ValueMember = "ID";
+            if (m_systemCombo.SelectedValue != null)
+                m_systemno.Text = m_systemCombo.SelectedValue.ToString();            
+        }
+        //システムコンボボックスが変更されたときにデータ取得されているかの確認
+        private void m_usernameCombo_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            Read_systemCombo();
+        }
+        //1回が選択されたとき
+        private void m_radio_one_CheckedChanged(object sender, EventArgs e)
+        {
+            //利用不可にする
+            m_startDate.Enabled = false;
+            m_endDate.Enabled = false;
+            m_alermDate.CustomFormat = "yyyy年M月d日(dddd) HH:mm";
+        }
+        //時間が選択されたとき
+        private void m_radio_hour_CheckedChanged(object sender, EventArgs e)
+        {
+            //利用可能にする
+            m_startDate.Enabled = true;
+            m_endDate.Enabled = true;
+            m_alermDate.CustomFormat = "mm分";
+
+
+        }
+        //日が選択されたとき
+        private void m_radio_day_CheckedChanged(object sender, EventArgs e)
+        {
+            //利用可能にする
+            m_startDate.Enabled = true;
+            m_endDate.Enabled = true;
+            m_alermDate.CustomFormat = "HH:mm";
+        }
+        //週が選択されたとき
+        private void m_radio_week_CheckedChanged(object sender, EventArgs e)
+        {
+            //利用可能にする
+            m_startDate.Enabled = true;
+            m_endDate.Enabled = true;
+            m_alermDate.CustomFormat = "(dddd) HH:mm";
+
+        }
+        //つきが選択されたとき
+        private void m_radio_month_CheckedChanged(object sender, EventArgs e)
+        {
+            //利用可能にする
+            m_startDate.Enabled = true;
+            m_endDate.Enabled = true;
+            m_alermDate.CustomFormat = "d日  HH:mm";
+
+        }
+        //予定区分が変更されたとき
+        private void m_schedule_combo_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if(m_schedule_combo.SelectedIndex == 1)
+            {
+
+            }
         }
     }
 }

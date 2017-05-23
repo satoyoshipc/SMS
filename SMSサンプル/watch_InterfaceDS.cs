@@ -11,7 +11,24 @@ namespace SMSサンプル
 
         public String kennshino { get; set; }
         public String interfacename { get; set; }
-        public String status { get; set; }
+        private string _status;
+        public String status
+        {
+            get
+            {
+                string retstr = "";
+                if (_status == "0")
+
+                    retstr = "無効";
+
+                else if (_status == "1")
+
+                    retstr = "有効";
+
+                return retstr;
+            }
+            set { this._status = value; }
+        }
         public String type { get; set; }
         public String kanshi { get; set; }
         public String start_date { get; set; }

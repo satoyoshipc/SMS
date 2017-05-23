@@ -13,7 +13,10 @@ namespace SMSサンプル
 {
     public partial class Form_siteInsert : Form
     {
-        //ユーザ
+
+        public opeDS loginDS { get; set; }
+
+        //カスタマ
         public List<userDS> userList { get; set; }
 
         //システム
@@ -28,6 +31,9 @@ namespace SMSサンプル
         //表示前処理
         private void Form_siteInsert_Load(object sender, EventArgs e)
         {
+            m_idlabel.Text = loginDS.opeid;
+            m_labelinputOpe.Text = loginDS.lastname + loginDS.fastname;
+
             //コンボボックスの初期値
             m_statusCombo.SelectedIndex = 0;
 
@@ -38,7 +44,7 @@ namespace SMSサンプル
 
             if (userList == null)
                 return;
-            //ユーザ情報を取得する
+            //カスタマ情報を取得する
             foreach (userDS v in userList)
             {
                 DataRow row = cutomerTable.NewRow();
@@ -69,10 +75,10 @@ namespace SMSサンプル
         //登録ボタン
         private void button3_Click(object sender, EventArgs e)
         {
-            //ユーザ名
+            //カスタマ名
             if (m_usernameCombo.Text == "")
             {
-                MessageBox.Show("ユーザ名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("カスタマ名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -98,7 +104,17 @@ namespace SMSサンプル
             string address1 = m_address1.Text;
             string address2 = m_address2.Text;
             string tel = m_tel.Text;
-            string status = m_statusCombo.SelectedIndex.ToString();
+
+            //ステータス
+            string status = "";
+            if (m_statusCombo.SelectedIndex == 0 )
+                //有効
+                status = "1";
+
+            else
+                //無効
+                status = "0";
+
             string biko = m_biko.Text;
 
             //DB接続
@@ -108,7 +124,7 @@ namespace SMSサンプル
             {
                 try
                 {
-                    con.Open();
+                    if (con.FullState != ConnectionState.Open) con.Open();
                     Int32 rowsaffected;
                     //データ登録
                     cmd = new NpgsqlCommand(@"insert into site(userno,systemno,sitename,address1,address2,telno,status,biko,chk_name_id) 
@@ -121,13 +137,12 @@ namespace SMSサンプル
                     cmd.Parameters.Add(new NpgsqlParameter("telno", DbType.String) { Value = tel });
                     cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
                     cmd.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = biko });
-                    cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = "111" });
+                    cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
                     rowsaffected = cmd.ExecuteNonQuery();
 
                     if (rowsaffected != 1)
                     {
                         MessageBox.Show("登録できませんでした。", "拠点登録");
-                        con.Close();
                     }
                     else
                     {
@@ -139,13 +154,12 @@ namespace SMSサンプル
                 catch (Exception ex)
                 {
                     MessageBox.Show("拠点登録時エラー " + ex.Message);
-                    con.Close();
                     return;
                 }
 
             }
         }
-        //ユーザコンボボックスが変更されたときに発生
+        //カスタマコンボボックスが変更されたときに発生
         private void m_usernameCombo_SelectionChangeCommitted(object sender, EventArgs e)
         {
             Read_systemCombo();
@@ -171,7 +185,7 @@ namespace SMSサンプル
             systemTable.Columns.Add("NAME", typeof(string));
 
 
-            //ユーザ情報を取得する
+            //カスタマ情報を取得する
             foreach (systemDS v in systemList)
             {
                 if (m_usernameCombo.SelectedValue != null) { 

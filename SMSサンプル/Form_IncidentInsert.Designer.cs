@@ -31,55 +31,56 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.m_content = new System.Windows.Forms.TextBox();
+            this.m_userno = new System.Windows.Forms.TextBox();
+            this.m_usernameCombo = new System.Windows.Forms.ComboBox();
             this.m_idlabel = new System.Windows.Forms.TextBox();
             this.m_labelinputOpe = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.m_fastname = new System.Windows.Forms.TextBox();
+            this.m_ScubeID = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.m_biko = new System.Windows.Forms.TextBox();
+            this.m_matcommand = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.m_lastname = new System.Windows.Forms.TextBox();
+            this.m_MSMSno = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.m_siteno = new System.Windows.Forms.TextBox();
+            this.m_siteCombo = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.m_hostno = new System.Windows.Forms.TextBox();
+            this.m_hostCombo = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.m_incident_kubun_combo = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker4 = new System.Windows.Forms.DateTimePicker();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.dateTimePicker5 = new System.Windows.Forms.DateTimePicker();
-            this.label15 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
+            this.m_uketukedate = new System.Windows.Forms.DateTimePicker();
+            this.m_tehaidate = new System.Windows.Forms.DateTimePicker();
+            this.m_fukyudate = new System.Windows.Forms.DateTimePicker();
+            this.m_enddate = new System.Windows.Forms.DateTimePicker();
             this.button4 = new System.Windows.Forms.Button();
-            this.label17 = new System.Windows.Forms.Label();
-            this.m_statusCombo = new System.Windows.Forms.ComboBox();
             this.label18 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.comboBox6 = new System.Windows.Forms.ComboBox();
+            this.m_matflgCombo = new System.Windows.Forms.ComboBox();
+            this.m_statuscheck = new System.Windows.Forms.CheckBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.m_systemno = new System.Windows.Forms.TextBox();
+            this.m_systemCombo = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.m_timer = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.m_kakunin = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 234);
+            this.label5.Location = new System.Drawing.Point(12, 249);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(127, 12);
             this.label5.TabIndex = 145;
@@ -88,7 +89,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 209);
+            this.label4.Location = new System.Drawing.Point(12, 224);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(84, 12);
             this.label4.TabIndex = 144;
@@ -97,65 +98,45 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 51);
+            this.label1.Location = new System.Drawing.Point(12, 44);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 12);
+            this.label1.Size = new System.Drawing.Size(52, 12);
             this.label1.TabIndex = 143;
-            this.label1.Text = "ユーザ名";
+            this.label1.Text = "カスタマ名";
             // 
-            // textBox5
+            // m_content
             // 
-            this.textBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.m_content.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox5.Location = new System.Drawing.Point(143, 254);
-            this.textBox5.Multiline = true;
-            this.textBox5.Name = "textBox5";
-            this.textBox5.PasswordChar = '*';
-            this.textBox5.Size = new System.Drawing.Size(445, 57);
-            this.textBox5.TabIndex = 8;
+            this.m_content.Location = new System.Drawing.Point(143, 244);
+            this.m_content.Name = "m_content";
+            this.m_content.Size = new System.Drawing.Size(445, 19);
+            this.m_content.TabIndex = 10;
             // 
-            // label10
+            // m_userno
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 257);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(84, 12);
-            this.label10.TabIndex = 140;
-            this.label10.Text = "インシデント原因";
+            this.m_userno.Location = new System.Drawing.Point(144, 41);
+            this.m_userno.Name = "m_userno";
+            this.m_userno.ReadOnly = true;
+            this.m_userno.Size = new System.Drawing.Size(44, 19);
+            this.m_userno.TabIndex = 138;
+            this.m_userno.TabStop = false;
             // 
-            // textBox4
+            // m_usernameCombo
             // 
-            this.textBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.m_usernameCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox4.Location = new System.Drawing.Point(143, 229);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.PasswordChar = '*';
-            this.textBox4.Size = new System.Drawing.Size(445, 19);
-            this.textBox4.TabIndex = 7;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(144, 48);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(44, 19);
-            this.textBox1.TabIndex = 138;
-            this.textBox1.TabStop = false;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(194, 47);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(397, 20);
-            this.comboBox1.TabIndex = 0;
+            this.m_usernameCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_usernameCombo.FormattingEnabled = true;
+            this.m_usernameCombo.Location = new System.Drawing.Point(194, 40);
+            this.m_usernameCombo.Name = "m_usernameCombo";
+            this.m_usernameCombo.Size = new System.Drawing.Size(397, 20);
+            this.m_usernameCombo.TabIndex = 2;
+            this.m_usernameCombo.SelectionChangeCommitted += new System.EventHandler(this.m_usernameCombo_SelectionChangeCommitted);
             // 
             // m_idlabel
             // 
-            this.m_idlabel.Location = new System.Drawing.Point(143, 496);
+            this.m_idlabel.Location = new System.Drawing.Point(143, 419);
             this.m_idlabel.Name = "m_idlabel";
             this.m_idlabel.ReadOnly = true;
             this.m_idlabel.Size = new System.Drawing.Size(44, 19);
@@ -166,83 +147,85 @@
             // 
             this.m_labelinputOpe.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_labelinputOpe.Location = new System.Drawing.Point(193, 496);
+            this.m_labelinputOpe.Location = new System.Drawing.Point(193, 419);
             this.m_labelinputOpe.Name = "m_labelinputOpe";
             this.m_labelinputOpe.ReadOnly = true;
             this.m_labelinputOpe.Size = new System.Drawing.Size(372, 19);
-            this.m_labelinputOpe.TabIndex = 133;
+            this.m_labelinputOpe.TabIndex = 17;
             this.m_labelinputOpe.TabStop = false;
             // 
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(368, 619);
+            this.button3.Location = new System.Drawing.Point(387, 560);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
             this.button3.TabIndex = 18;
             this.button3.Text = "登録";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(471, 619);
+            this.button2.Location = new System.Drawing.Point(490, 560);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 23);
             this.button2.TabIndex = 19;
             this.button2.Text = "キャンセル";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // m_fastname
+            // m_ScubeID
             // 
-            this.m_fastname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.m_ScubeID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_fastname.Location = new System.Drawing.Point(144, 177);
-            this.m_fastname.Name = "m_fastname";
-            this.m_fastname.Size = new System.Drawing.Size(445, 19);
-            this.m_fastname.TabIndex = 5;
+            this.m_ScubeID.Location = new System.Drawing.Point(144, 192);
+            this.m_ScubeID.Name = "m_ScubeID";
+            this.m_ScubeID.Size = new System.Drawing.Size(445, 19);
+            this.m_ScubeID.TabIndex = 8;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(14, 15);
+            this.button1.Location = new System.Drawing.Point(14, 8);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(95, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "CSV登録";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // m_biko
+            // m_matcommand
             // 
-            this.m_biko.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.m_matcommand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_biko.Location = new System.Drawing.Point(143, 376);
-            this.m_biko.Multiline = true;
-            this.m_biko.Name = "m_biko";
-            this.m_biko.Size = new System.Drawing.Size(445, 59);
-            this.m_biko.TabIndex = 11;
+            this.m_matcommand.Location = new System.Drawing.Point(143, 299);
+            this.m_matcommand.Multiline = true;
+            this.m_matcommand.Name = "m_matcommand";
+            this.m_matcommand.Size = new System.Drawing.Size(445, 59);
+            this.m_matcommand.TabIndex = 12;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 180);
+            this.label3.Location = new System.Drawing.Point(12, 195);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 12);
             this.label3.TabIndex = 127;
             this.label3.Text = "S-cube事例ID";
             // 
-            // m_lastname
+            // m_MSMSno
             // 
-            this.m_lastname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.m_MSMSno.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_lastname.Location = new System.Drawing.Point(143, 152);
-            this.m_lastname.Name = "m_lastname";
-            this.m_lastname.Size = new System.Drawing.Size(445, 19);
-            this.m_lastname.TabIndex = 4;
+            this.m_MSMSno.Location = new System.Drawing.Point(143, 167);
+            this.m_MSMSno.Name = "m_MSMSno";
+            this.m_MSMSno.Size = new System.Drawing.Size(445, 19);
+            this.m_MSMSno.TabIndex = 7;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 156);
+            this.label2.Location = new System.Drawing.Point(12, 171);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(116, 12);
             this.label2.TabIndex = 125;
@@ -251,85 +234,91 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 77);
+            this.label6.Location = new System.Drawing.Point(12, 92);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 12);
             this.label6.TabIndex = 148;
             this.label6.Text = "拠点名";
             // 
-            // textBox2
+            // m_siteno
             // 
-            this.textBox2.Location = new System.Drawing.Point(144, 74);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(44, 19);
-            this.textBox2.TabIndex = 147;
-            this.textBox2.TabStop = false;
+            this.m_siteno.Location = new System.Drawing.Point(144, 89);
+            this.m_siteno.Name = "m_siteno";
+            this.m_siteno.ReadOnly = true;
+            this.m_siteno.Size = new System.Drawing.Size(44, 19);
+            this.m_siteno.TabIndex = 147;
+            this.m_siteno.TabStop = false;
             // 
-            // comboBox2
+            // m_siteCombo
             // 
-            this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.m_siteCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(194, 73);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(397, 20);
-            this.comboBox2.TabIndex = 1;
+            this.m_siteCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_siteCombo.FormattingEnabled = true;
+            this.m_siteCombo.Location = new System.Drawing.Point(194, 88);
+            this.m_siteCombo.Name = "m_siteCombo";
+            this.m_siteCombo.Size = new System.Drawing.Size(397, 20);
+            this.m_siteCombo.TabIndex = 4;
+            this.m_siteCombo.SelectionChangeCommitted += new System.EventHandler(this.m_siteCombo_SelectionChangeCommitted);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 103);
+            this.label7.Location = new System.Drawing.Point(12, 118);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(44, 12);
             this.label7.TabIndex = 151;
             this.label7.Text = "ホスト名";
             // 
-            // textBox3
+            // m_hostno
             // 
-            this.textBox3.Location = new System.Drawing.Point(144, 100);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(44, 19);
-            this.textBox3.TabIndex = 150;
-            this.textBox3.TabStop = false;
+            this.m_hostno.Location = new System.Drawing.Point(144, 115);
+            this.m_hostno.Name = "m_hostno";
+            this.m_hostno.ReadOnly = true;
+            this.m_hostno.Size = new System.Drawing.Size(44, 19);
+            this.m_hostno.TabIndex = 150;
+            this.m_hostno.TabStop = false;
             // 
-            // comboBox3
+            // m_hostCombo
             // 
-            this.comboBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.m_hostCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(194, 99);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(397, 20);
-            this.comboBox3.TabIndex = 2;
+            this.m_hostCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_hostCombo.FormattingEnabled = true;
+            this.m_hostCombo.Location = new System.Drawing.Point(194, 114);
+            this.m_hostCombo.Name = "m_hostCombo";
+            this.m_hostCombo.Size = new System.Drawing.Size(397, 20);
+            this.m_hostCombo.TabIndex = 5;
+            this.m_hostCombo.SelectionChangeCommitted += new System.EventHandler(this.m_hostCombo_SelectionChangeCommitted);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 382);
+            this.label8.Location = new System.Drawing.Point(12, 305);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(88, 12);
             this.label8.TabIndex = 153;
             this.label8.Text = "MAT対応コマンド";
             // 
-            // comboBox4
+            // m_incident_kubun_combo
             // 
-            this.comboBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.m_incident_kubun_combo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(144, 203);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(444, 20);
-            this.comboBox4.TabIndex = 6;
+            this.m_incident_kubun_combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_incident_kubun_combo.FormattingEnabled = true;
+            this.m_incident_kubun_combo.Items.AddRange(new object[] {
+            "アラーム検知",
+            "障害申告",
+            "問い合わせ"});
+            this.m_incident_kubun_combo.Location = new System.Drawing.Point(144, 218);
+            this.m_incident_kubun_combo.Name = "m_incident_kubun_combo";
+            this.m_incident_kubun_combo.Size = new System.Drawing.Size(444, 20);
+            this.m_incident_kubun_combo.TabIndex = 9;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(87, 446);
+            this.label9.Location = new System.Drawing.Point(87, 369);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(53, 12);
             this.label9.TabIndex = 155;
@@ -338,7 +327,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(87, 474);
+            this.label11.Location = new System.Drawing.Point(87, 397);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(53, 12);
             this.label11.TabIndex = 156;
@@ -347,7 +336,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(348, 445);
+            this.label12.Location = new System.Drawing.Point(348, 368);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(53, 12);
             this.label12.TabIndex = 157;
@@ -356,139 +345,69 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(348, 472);
+            this.label13.Location = new System.Drawing.Point(348, 395);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(53, 12);
             this.label13.TabIndex = 158;
             this.label13.Text = "完了日時";
             // 
-            // dateTimePicker1
+            // m_uketukedate
             // 
-            this.dateTimePicker1.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(146, 442);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(173, 19);
-            this.dateTimePicker1.TabIndex = 12;
+            this.m_uketukedate.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
+            this.m_uketukedate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.m_uketukedate.Location = new System.Drawing.Point(146, 365);
+            this.m_uketukedate.Name = "m_uketukedate";
+            this.m_uketukedate.Size = new System.Drawing.Size(173, 19);
+            this.m_uketukedate.TabIndex = 13;
+            this.m_uketukedate.ValueChanged += new System.EventHandler(this.m_uketukedate_ValueChanged);
+            this.m_uketukedate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_uketukedate_KeyDown);
             // 
-            // dateTimePicker2
+            // m_tehaidate
             // 
-            this.dateTimePicker2.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
-            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker2.Location = new System.Drawing.Point(146, 470);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(173, 19);
-            this.dateTimePicker2.TabIndex = 14;
+            this.m_tehaidate.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
+            this.m_tehaidate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.m_tehaidate.Location = new System.Drawing.Point(146, 393);
+            this.m_tehaidate.Name = "m_tehaidate";
+            this.m_tehaidate.Size = new System.Drawing.Size(173, 19);
+            this.m_tehaidate.TabIndex = 14;
+            this.m_tehaidate.ValueChanged += new System.EventHandler(this.m_tehaidate_ValueChanged);
+            this.m_tehaidate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_tehaidate_KeyDown);
             // 
-            // dateTimePicker3
+            // m_fukyudate
             // 
-            this.dateTimePicker3.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
-            this.dateTimePicker3.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker3.Location = new System.Drawing.Point(405, 441);
-            this.dateTimePicker3.Name = "dateTimePicker3";
-            this.dateTimePicker3.Size = new System.Drawing.Size(182, 19);
-            this.dateTimePicker3.TabIndex = 13;
+            this.m_fukyudate.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
+            this.m_fukyudate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.m_fukyudate.Location = new System.Drawing.Point(405, 364);
+            this.m_fukyudate.Name = "m_fukyudate";
+            this.m_fukyudate.Size = new System.Drawing.Size(182, 19);
+            this.m_fukyudate.TabIndex = 15;
+            this.m_fukyudate.ValueChanged += new System.EventHandler(this.m_fukyudate_ValueChanged);
+            this.m_fukyudate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_fukyudate_KeyDown);
             // 
-            // dateTimePicker4
+            // m_enddate
             // 
-            this.dateTimePicker4.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
-            this.dateTimePicker4.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker4.Location = new System.Drawing.Point(405, 467);
-            this.dateTimePicker4.Name = "dateTimePicker4";
-            this.dateTimePicker4.Size = new System.Drawing.Size(182, 19);
-            this.dateTimePicker4.TabIndex = 15;
-            // 
-            // comboBox5
-            // 
-            this.comboBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(143, 317);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(444, 20);
-            this.comboBox5.TabIndex = 9;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(12, 324);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(41, 12);
-            this.label14.TabIndex = 163;
-            this.label14.Text = "対応者";
-            // 
-            // dateTimePicker5
-            // 
-            this.dateTimePicker5.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
-            this.dateTimePicker5.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker5.Location = new System.Drawing.Point(143, 521);
-            this.dateTimePicker5.Name = "dateTimePicker5";
-            this.dateTimePicker5.Size = new System.Drawing.Size(173, 19);
-            this.dateTimePicker5.TabIndex = 16;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(12, 529);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(41, 12);
-            this.label15.TabIndex = 166;
-            this.label15.Text = "タイマー";
-            // 
-            // textBox6
-            // 
-            this.textBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox6.Location = new System.Drawing.Point(144, 550);
-            this.textBox6.Multiline = true;
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(441, 59);
-            this.textBox6.TabIndex = 17;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(12, 553);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(41, 12);
-            this.label16.TabIndex = 169;
-            this.label16.Text = "要確認";
+            this.m_enddate.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
+            this.m_enddate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.m_enddate.Location = new System.Drawing.Point(405, 390);
+            this.m_enddate.Name = "m_enddate";
+            this.m_enddate.Size = new System.Drawing.Size(182, 19);
+            this.m_enddate.TabIndex = 16;
+            this.m_enddate.ValueChanged += new System.EventHandler(this.m_enddate_ValueChanged);
+            this.m_enddate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_enddate_KeyDown);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(115, 15);
+            this.button4.Location = new System.Drawing.Point(115, 8);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(95, 23);
             this.button4.TabIndex = 1;
             this.button4.Text = "メール出力";
             this.button4.UseVisualStyleBackColor = true;
             // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(12, 128);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(59, 12);
-            this.label17.TabIndex = 172;
-            this.label17.Text = "有効/無効";
-            // 
-            // m_statusCombo
-            // 
-            this.m_statusCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.m_statusCombo.FormattingEnabled = true;
-            this.m_statusCombo.Items.AddRange(new object[] {
-            "有効",
-            "無効"});
-            this.m_statusCombo.Location = new System.Drawing.Point(144, 125);
-            this.m_statusCombo.Name = "m_statusCombo";
-            this.m_statusCombo.Size = new System.Drawing.Size(68, 20);
-            this.m_statusCombo.TabIndex = 3;
-            // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(12, 503);
+            this.label18.Location = new System.Drawing.Point(12, 426);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(51, 12);
             this.label18.TabIndex = 173;
@@ -497,77 +416,175 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(12, 352);
+            this.label19.Location = new System.Drawing.Point(12, 275);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(53, 12);
             this.label19.TabIndex = 174;
             this.label19.Text = "MAT対応";
             // 
-            // comboBox6
+            // m_matflgCombo
             // 
-            this.comboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox6.FormattingEnabled = true;
-            this.comboBox6.Items.AddRange(new object[] {
+            this.m_matflgCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_matflgCombo.FormattingEnabled = true;
+            this.m_matflgCombo.Items.AddRange(new object[] {
             "あり",
             "なし"});
-            this.comboBox6.Location = new System.Drawing.Point(144, 347);
-            this.comboBox6.Name = "comboBox6";
-            this.comboBox6.Size = new System.Drawing.Size(68, 20);
-            this.comboBox6.TabIndex = 10;
+            this.m_matflgCombo.Location = new System.Drawing.Point(144, 270);
+            this.m_matflgCombo.Name = "m_matflgCombo";
+            this.m_matflgCombo.Size = new System.Drawing.Size(68, 20);
+            this.m_matflgCombo.TabIndex = 11;
+            // 
+            // m_statuscheck
+            // 
+            this.m_statuscheck.AutoSize = true;
+            this.m_statuscheck.Location = new System.Drawing.Point(146, 143);
+            this.m_statuscheck.Name = "m_statuscheck";
+            this.m_statuscheck.Size = new System.Drawing.Size(48, 16);
+            this.m_statuscheck.TabIndex = 6;
+            this.m_statuscheck.Text = "完了";
+            this.m_statuscheck.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 68);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(55, 12);
+            this.label10.TabIndex = 178;
+            this.label10.Text = "システム名";
+            // 
+            // m_systemno
+            // 
+            this.m_systemno.Location = new System.Drawing.Point(144, 65);
+            this.m_systemno.Name = "m_systemno";
+            this.m_systemno.ReadOnly = true;
+            this.m_systemno.Size = new System.Drawing.Size(44, 19);
+            this.m_systemno.TabIndex = 177;
+            this.m_systemno.TabStop = false;
+            // 
+            // m_systemCombo
+            // 
+            this.m_systemCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_systemCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_systemCombo.FormattingEnabled = true;
+            this.m_systemCombo.Location = new System.Drawing.Point(194, 64);
+            this.m_systemCombo.Name = "m_systemCombo";
+            this.m_systemCombo.Size = new System.Drawing.Size(397, 20);
+            this.m_systemCombo.TabIndex = 3;
+            this.m_systemCombo.SelectionChangeCommitted += new System.EventHandler(this.m_systemCombo_SelectionChangeCommitted);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Controls.Add(this.m_timer);
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this.m_kakunin);
+            this.groupBox1.Controls.Add(this.label15);
+            this.groupBox1.Location = new System.Drawing.Point(12, 448);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(575, 103);
+            this.groupBox1.TabIndex = 181;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "タイマー登録";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(189, 21);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(118, 12);
+            this.label14.TabIndex = 185;
+            this.label14.Text = "分後　（登録時に始動）";
+            // 
+            // m_timer
+            // 
+            this.m_timer.Location = new System.Drawing.Point(132, 18);
+            this.m_timer.Name = "m_timer";
+            this.m_timer.Size = new System.Drawing.Size(44, 19);
+            this.m_timer.TabIndex = 0;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(9, 46);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(86, 12);
+            this.label16.TabIndex = 183;
+            this.label16.Text = "要確認メッセージ";
+            // 
+            // m_kakunin
+            // 
+            this.m_kakunin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_kakunin.Location = new System.Drawing.Point(132, 43);
+            this.m_kakunin.Multiline = true;
+            this.m_kakunin.Name = "m_kakunin";
+            this.m_kakunin.Size = new System.Drawing.Size(406, 51);
+            this.m_kakunin.TabIndex = 1;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(9, 23);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(41, 12);
+            this.label15.TabIndex = 182;
+            this.label15.Text = "タイマー";
             // 
             // Form_IncidentInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(597, 654);
-            this.Controls.Add(this.comboBox6);
+            this.ClientSize = new System.Drawing.Size(597, 598);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.m_systemno);
+            this.Controls.Add(this.m_systemCombo);
+            this.Controls.Add(this.m_statuscheck);
+            this.Controls.Add(this.m_matflgCombo);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.label18);
-            this.Controls.Add(this.label17);
-            this.Controls.Add(this.m_statusCombo);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.label16);
-            this.Controls.Add(this.textBox6);
-            this.Controls.Add(this.dateTimePicker5);
-            this.Controls.Add(this.label15);
-            this.Controls.Add(this.comboBox5);
-            this.Controls.Add(this.label14);
-            this.Controls.Add(this.dateTimePicker4);
-            this.Controls.Add(this.dateTimePicker3);
-            this.Controls.Add(this.dateTimePicker2);
-            this.Controls.Add(this.dateTimePicker1);
+            this.Controls.Add(this.m_enddate);
+            this.Controls.Add(this.m_fukyudate);
+            this.Controls.Add(this.m_tehaidate);
+            this.Controls.Add(this.m_uketukedate);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.comboBox4);
+            this.Controls.Add(this.m_incident_kubun_combo);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.comboBox3);
+            this.Controls.Add(this.m_hostno);
+            this.Controls.Add(this.m_hostCombo);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.m_siteno);
+            this.Controls.Add(this.m_siteCombo);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.m_content);
+            this.Controls.Add(this.m_userno);
+            this.Controls.Add(this.m_usernameCombo);
             this.Controls.Add(this.m_idlabel);
             this.Controls.Add(this.m_labelinputOpe);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.m_fastname);
+            this.Controls.Add(this.m_ScubeID);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.m_biko);
+            this.Controls.Add(this.m_matcommand);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.m_lastname);
+            this.Controls.Add(this.m_MSMSno);
             this.Controls.Add(this.label2);
             this.Name = "Form_IncidentInsert";
             this.Text = "インシデント登録";
+            this.Load += new System.EventHandler(this.Form_IncidentInsert_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -578,48 +595,48 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.TextBox m_content;
+        private System.Windows.Forms.TextBox m_userno;
+        private System.Windows.Forms.ComboBox m_usernameCombo;
         private System.Windows.Forms.TextBox m_idlabel;
         private System.Windows.Forms.TextBox m_labelinputOpe;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox m_fastname;
+        private System.Windows.Forms.TextBox m_ScubeID;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox m_biko;
+        private System.Windows.Forms.TextBox m_matcommand;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox m_lastname;
+        private System.Windows.Forms.TextBox m_MSMSno;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.TextBox m_siteno;
+        private System.Windows.Forms.ComboBox m_siteCombo;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.TextBox m_hostno;
+        private System.Windows.Forms.ComboBox m_hostCombo;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox m_incident_kubun_combo;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
-        private System.Windows.Forms.DateTimePicker dateTimePicker3;
-        private System.Windows.Forms.DateTimePicker dateTimePicker4;
-        private System.Windows.Forms.ComboBox comboBox5;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.DateTimePicker dateTimePicker5;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.DateTimePicker m_uketukedate;
+        private System.Windows.Forms.DateTimePicker m_tehaidate;
+        private System.Windows.Forms.DateTimePicker m_fukyudate;
+        private System.Windows.Forms.DateTimePicker m_enddate;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.ComboBox m_statusCombo;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.ComboBox comboBox6;
+        private System.Windows.Forms.ComboBox m_matflgCombo;
+        private System.Windows.Forms.CheckBox m_statuscheck;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox m_systemno;
+        private System.Windows.Forms.ComboBox m_systemCombo;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox m_timer;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox m_kakunin;
+        private System.Windows.Forms.Label label15;
     }
 }

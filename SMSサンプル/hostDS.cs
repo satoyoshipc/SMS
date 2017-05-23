@@ -11,7 +11,25 @@ namespace SMSサンプル
         public String host_no { get; set; }
         public String hostname { get; set; }
         public String hostname_ja { get; set; }
-        public String status { get; set; }
+        private string _status;
+        public String status
+        {
+            get
+            {
+                string retstr = "";
+                if (_status == "0")
+
+                    retstr = "無効";
+
+                else if (_status == "1")
+
+                    retstr = "有効";
+
+                return retstr;
+            }
+            set { this._status = value; }
+        }
+
         public String device { get; set; }
         public String location { get; set; }
         public String usefor { get; set; }

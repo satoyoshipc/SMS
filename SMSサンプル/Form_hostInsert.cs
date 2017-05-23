@@ -13,13 +13,19 @@ namespace SMSサンプル
 {
     public partial class Form_hostInsert : Form
     {
-        //ユーザ
+        //カスタマ
         public List<userDS> userList { get; set; }
 
         //システム
         public List<systemDS> systemList { get; set; }
         //拠点
         public List<siteDS> siteList { get; set; }
+
+
+        //DBコネクション
+        public NpgsqlConnection con { get; set; }
+        public opeDS loginDS { get; set; }
+
 
         public Form_hostInsert()
         {
@@ -34,6 +40,9 @@ namespace SMSサンプル
         //表示前
         private void Form_hostInsert_Load(object sender, EventArgs e)
         {
+            m_idlabel.Text = loginDS.opeid;
+            m_labelinputOpe.Text = loginDS.lastname + loginDS.fastname;
+
             //コンボボックスの初期値
             m_statusCombo.SelectedIndex = 0;
 
@@ -42,7 +51,7 @@ namespace SMSサンプル
             cutomerTable.Columns.Add("ID", typeof(string));
             cutomerTable.Columns.Add("NAME", typeof(string));
 
-            //ユーザ情報を取得する
+            //カスタマ情報を取得する
             foreach (userDS v in userList)
             {
                 DataRow row = cutomerTable.NewRow();
@@ -70,14 +79,14 @@ namespace SMSサンプル
 
         }
 
-        //ユーザ名コンボボックスが変更されたときに発生
+        //カスタマ名コンボボックスが変更されたときに発生
         private void m_usernameCombo_SelectionChangeCommitted(object sender, EventArgs e)
         {
             
             Read_systemCombo();
             Read_siteCombo();
         }
-        //ユーザ名のコンボボックスが変更されたときの処理
+        //カスタマ名のコンボボックスが変更されたときの処理
         private void Read_systemCombo()
         {
 
@@ -85,7 +94,6 @@ namespace SMSサンプル
             m_systemno.Text = "";
             m_systemCombo.DataSource = null;
 
-            
 
             //ラベルに反映
             if (m_usernameCombo.SelectedValue != null)
@@ -102,7 +110,7 @@ namespace SMSサンプル
 
             foreach (systemDS v in systemList)
             {
-                //ユーザNOで区別する
+                //カスタマNOで区別する
                 if (m_usernameCombo.SelectedValue != null) { 
                     if (v.userno == m_usernameCombo.SelectedValue.ToString())
                     {
@@ -174,10 +182,10 @@ namespace SMSサンプル
         //ホスト名の登録
         private void button3_Click(object sender, EventArgs e)
         {
-            //ユーザ名
+            //カスタマ名
             if (m_usernameCombo.Text == "")
             {
-                MessageBox.Show("ユーザ名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("カスタマ名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -212,7 +220,16 @@ namespace SMSサンプル
             string hostname_ja = m_hostname_ja.Text;
             string device = m_device.Text;
             string location = m_location.Text;
-            string status = m_statusCombo.SelectedIndex.ToString();
+            //ステータス
+            string status = "";
+            if (m_statusCombo.SelectedIndex == 0)
+                //有効
+                status = "1";
+
+            else
+                //無効
+                status = "0";
+
             string usefor = m_usefor.Text;
             DateTime startdate = m_startdate.Value;
             DateTime enddate = m_enddate.Value;
@@ -223,54 +240,48 @@ namespace SMSサンプル
 
 
             //DB接続
-            Class_common common = new Class_common();
             NpgsqlCommand cmd;
-            using (var con = common.DB_connection())
+            try
             {
-                try
+                if (con.FullState != ConnectionState.Open) con.Open();
+                Int32 rowsaffected;
+                //データ登録
+                cmd = new NpgsqlCommand(@"insert into host(hostname,hostname_ja,status,device,location,usefor,kansiStartdate,kansiEndsdate,hosyukanri,hosyuinfo,biko,systemno,siteno,userno,chk_name_id) 
+                    values ( :hostname,:hostname_ja,:status,:device,:location,:usefor,:kansiStartdate,:kansiEndsdate,:hosyukanri,:hosyuinfo,:biko,:systemno,:siteno,:userno,:chk_name_id)", con);
+                cmd.Parameters.Add(new NpgsqlParameter("hostname", DbType.String) { Value = hostname });
+                cmd.Parameters.Add(new NpgsqlParameter("hostname_ja", DbType.String) { Value = hostname_ja });
+                cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+                cmd.Parameters.Add(new NpgsqlParameter("device", DbType.String) { Value = device });
+                cmd.Parameters.Add(new NpgsqlParameter("location", DbType.String) { Value = location });
+                cmd.Parameters.Add(new NpgsqlParameter("usefor", DbType.String) { Value = usefor });
+                cmd.Parameters.Add(new NpgsqlParameter("kansiStartdate", DbType.DateTime) { Value = startdate});
+                cmd.Parameters.Add(new NpgsqlParameter("kansiEndsdate", DbType.DateTime) { Value = enddate });
+                cmd.Parameters.Add(new NpgsqlParameter("hosyukanri", DbType.String) { Value = hosyuno });
+                cmd.Parameters.Add(new NpgsqlParameter("hosyuinfo", DbType.String) { Value = hosyuinfo });
+                cmd.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = biko });
+                cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
+                cmd.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = siteno });
+                cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
+                cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
+                rowsaffected = cmd.ExecuteNonQuery();
+
+                if (rowsaffected != 1)
                 {
-                    con.Open();
-                    Int32 rowsaffected;
-                    //データ登録
-                    cmd = new NpgsqlCommand(@"insert into host(hostname,hostname_ja,status,device,location,usefor,kansiStartdate,kansiEndsdate,hosyukanri,hosyuinfo,biko,systemno,siteno,userno,chk_name_id) 
-                        values ( :hostname,:hostname_ja,:status,:device,:location,:usefor,:kansiStartdate,:kansiEndsdate,:hosyukanri,:hosyuinfo,:biko,:systemno,:siteno,:userno,:chk_name_id)", con);
-                    cmd.Parameters.Add(new NpgsqlParameter("hostname", DbType.String) { Value = hostname });
-                    cmd.Parameters.Add(new NpgsqlParameter("hostname_ja", DbType.String) { Value = hostname_ja });
-                    cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
-                    cmd.Parameters.Add(new NpgsqlParameter("device", DbType.String) { Value = device });
-                    cmd.Parameters.Add(new NpgsqlParameter("location", DbType.String) { Value = location });
-                    cmd.Parameters.Add(new NpgsqlParameter("usefor", DbType.String) { Value = usefor });
-                    cmd.Parameters.Add(new NpgsqlParameter("kansiStartdate", DbType.DateTime) { Value = startdate});
-                    cmd.Parameters.Add(new NpgsqlParameter("kansiEndsdate", DbType.DateTime) { Value = enddate });
-                    cmd.Parameters.Add(new NpgsqlParameter("hosyukanri", DbType.String) { Value = hosyuno });
-                    cmd.Parameters.Add(new NpgsqlParameter("hosyuinfo", DbType.String) { Value = hosyuinfo });
-                    cmd.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = biko });
-                    cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
-                    cmd.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = siteno });
-                    cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
-                    cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = "111" });
-                    rowsaffected = cmd.ExecuteNonQuery();
-
-                    if (rowsaffected != 1)
-                    {
-                        MessageBox.Show("登録できませんでした。", "ホスト名登録");
-                        con.Close();
-                    }
-                    else
-                    {
-                        //登録成功
-                        MessageBox.Show("登録完了", "ホスト名登録");
-                    }
-
+                    MessageBox.Show("登録できませんでした。", "ホスト名登録");
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show("ホスト名登録時エラー " + ex.Message);
-                    con.Close();
-                    return;
+                    //登録成功
+                    MessageBox.Show("登録完了", "ホスト名登録");
                 }
 
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ホスト名登録時エラー " + ex.Message);
+                return;
+            }
+
 
         }
 

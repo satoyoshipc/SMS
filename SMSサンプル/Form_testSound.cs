@@ -17,6 +17,22 @@ namespace SMSサンプル
         //サウンドパスプロパティ
         public String strParam { get; set; }
 
+        //フォームインスタンスを保持するフィールド
+        private static Form_testSound _instance;
+
+        //フォームにアクセスするためのプロパティ
+        public static Form_testSound Instance
+        {
+            get
+            {
+                //_instanseがnullまたは破棄されているときは新しくインスタンスを生成
+                //新インスタンスを生成する
+                if (_instance == null || _instance.IsDisposed)
+                    _instance = new Form_testSound();
+                return _instance;
+            }
+        }
+
         public Form_testSound()
         {
             InitializeComponent();

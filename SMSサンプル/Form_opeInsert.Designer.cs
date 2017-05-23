@@ -47,7 +47,6 @@
             this.m_riyouRadio = new System.Windows.Forms.RadioButton();
             this.m_kanriRadio = new System.Windows.Forms.RadioButton();
             this.m_idlabel = new System.Windows.Forms.TextBox();
-            this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.m_duplicationResult = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
@@ -239,16 +238,6 @@
             this.m_idlabel.TabIndex = 7;
             this.m_idlabel.TabStop = false;
             // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(13, 312);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(115, 23);
-            this.button4.TabIndex = 9;
-            this.button4.Text = "メールアドレス登録";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
             // button5
             // 
             this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -276,7 +265,6 @@
             this.ClientSize = new System.Drawing.Size(521, 344);
             this.Controls.Add(this.m_duplicationResult);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
             this.Controls.Add(this.m_idlabel);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.m_pass);
@@ -325,7 +313,6 @@
         private System.Windows.Forms.RadioButton m_riyouRadio;
         private System.Windows.Forms.RadioButton m_kanriRadio;
         private System.Windows.Forms.TextBox m_idlabel;
-        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label m_duplicationResult;
     }

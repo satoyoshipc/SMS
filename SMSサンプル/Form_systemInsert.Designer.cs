@@ -166,11 +166,11 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(10, 53);
+            this.label6.Location = new System.Drawing.Point(10, 54);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(47, 12);
+            this.label6.Size = new System.Drawing.Size(52, 12);
             this.label6.TabIndex = 54;
-            this.label6.Text = "ユーザ名";
+            this.label6.Text = "カスタマ名";
             // 
             // m_usernameCombo
             // 

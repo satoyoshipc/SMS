@@ -13,7 +13,11 @@ namespace SMSサンプル
 {
     public partial class Form_kaisenInsert : Form
     {
-        //ユーザ
+        //DBコネクション
+        public NpgsqlConnection con { get; set; }
+        public opeDS loginDS { get; set; }
+
+        //カスタマ
         public List<userDS> userList { get; set; }
 
         //システム
@@ -29,10 +33,10 @@ namespace SMSサンプル
         //登録ボタン
         private void button3_Click(object sender, EventArgs e)
         {
-            //ユーザ名
+            //カスタマ名
             if (m_usernameCombo.Text == "")
             {
-                MessageBox.Show("ユーザ名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("カスタマ名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             //キャリア
@@ -49,7 +53,16 @@ namespace SMSサンプル
             Int32 systemno = (m_systemno.Text == "") ? 0 : int.Parse(m_systemno.Text);
             Int32 siteno = (m_siteno.Text == "") ? 0 : int.Parse(m_siteno.Text);
             Int32 hostno = (m_hostno.Text == "") ? 0 : int.Parse(m_hostno.Text);
-            string status = m_statusCombo.SelectedIndex.ToString();
+            //ステータス
+            string status = "";
+            if (m_statusCombo.SelectedIndex == 0)
+                //有効
+                status = "1";
+
+            else
+                //無効
+                status = "0";
+
             string career = m_career.Text;
             string kaisensyubetu = m_kaisensyubetu.Text;
             string kaisenid = m_kaisenid.Text;
@@ -60,50 +73,44 @@ namespace SMSサンプル
 
 
             //DB接続
-            Class_common common = new Class_common();
             NpgsqlCommand cmd;
-            using (var con = common.DB_connection())
+            try
             {
-                try
+                if (con.FullState != ConnectionState.Open) con.Open();
+                Int32 rowsaffected;
+                //データ登録
+                cmd = new NpgsqlCommand(@"insert into Kaisen(status,career,type,kaisenid,isp,servicetype,serviceid,siteno,userno,host_no,chk_name_id) 
+                    values ( :status,:career,:type,:kaisenid,:isp,:servicetype,:serviceid,:siteno,:userno,:host_no,:chk_name_id)", con);
+                cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+                cmd.Parameters.Add(new NpgsqlParameter("career", DbType.String) { Value = career });
+                cmd.Parameters.Add(new NpgsqlParameter("type", DbType.String) { Value = kaisensyubetu });
+                cmd.Parameters.Add(new NpgsqlParameter("kaisenid", DbType.String) { Value = kaisenid });
+                cmd.Parameters.Add(new NpgsqlParameter("isp", DbType.String) { Value = isp });
+                cmd.Parameters.Add(new NpgsqlParameter("servicetype", DbType.String) { Value = servicetype });
+                cmd.Parameters.Add(new NpgsqlParameter("serviceid", DbType.String) { Value = serviceid });
+                cmd.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = siteno });
+                cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
+                cmd.Parameters.Add(new NpgsqlParameter("host_no", DbType.Int32) { Value = hostno });
+                cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
+                rowsaffected = cmd.ExecuteNonQuery();
+
+                if (rowsaffected != 1)
                 {
-                    con.Open();
-                    Int32 rowsaffected;
-                    //データ登録
-                    cmd = new NpgsqlCommand(@"insert into Kaisen(status,career,type,kaisenid,isp,servicetype,serviceid,siteno,userno,host_no,chk_name_id) 
-                        values ( :status,:career,:type,:kaisenid,:isp,:servicetype,:serviceid,:siteno,:userno,:host_no,:chk_name_id)", con);
-                    cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
-                    cmd.Parameters.Add(new NpgsqlParameter("career", DbType.String) { Value = career });
-                    cmd.Parameters.Add(new NpgsqlParameter("type", DbType.String) { Value = kaisensyubetu });
-                    cmd.Parameters.Add(new NpgsqlParameter("kaisenid", DbType.String) { Value = kaisenid });
-                    cmd.Parameters.Add(new NpgsqlParameter("isp", DbType.String) { Value = isp });
-                    cmd.Parameters.Add(new NpgsqlParameter("servicetype", DbType.String) { Value = servicetype });
-                    cmd.Parameters.Add(new NpgsqlParameter("serviceid", DbType.String) { Value = serviceid });
-                    cmd.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = siteno });
-                    cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
-                    cmd.Parameters.Add(new NpgsqlParameter("host_no", DbType.Int32) { Value = hostno });
-                    cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = "111" });
-                    rowsaffected = cmd.ExecuteNonQuery();
-
-                    if (rowsaffected != 1)
-                    {
-                        MessageBox.Show("登録できませんでした。", "回線情報登録");
-                        con.Close();
-                    }
-                    else
-                    {
-                        //登録成功
-                        MessageBox.Show("登録完了", "回線情報登録");
-                    }
-
+                    MessageBox.Show("登録できませんでした。", "回線情報登録");
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show("回線情報登録時エラー " + ex.Message);
-                    con.Close();
-                    return;
+                    //登録成功
+                    MessageBox.Show("登録完了", "回線情報登録");
                 }
 
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("回線情報登録時エラー " + ex.Message);
+                return;
+            }
+
 
         
         }
@@ -111,6 +118,10 @@ namespace SMSサンプル
         //表示前処理
         private void Form_kaisenInsert_Load(object sender, EventArgs e)
         {
+            
+            m_idlabel.Text = loginDS.opeid;
+            m_labelinputOpe.Text = loginDS.lastname + loginDS.fastname;
+
             //コンボボックスの初期値
             m_statusCombo.SelectedIndex = 0;
 
@@ -118,7 +129,7 @@ namespace SMSサンプル
             DataTable cutomerTable = new DataTable();
             cutomerTable.Columns.Add("ID", typeof(string));
             cutomerTable.Columns.Add("NAME", typeof(string));
-            //ユーザ情報を取得する
+            //カスタマ情報を取得する
             if (userList == null)
                 return;
             foreach (userDS v in userList)
@@ -137,7 +148,7 @@ namespace SMSサンプル
             Read_systemCombo();
 
         }
-        //ユーザ名のコンボボックスが変更されたときの処理
+        //カスタマ名のコンボボックスが変更されたときの処理
         private void Read_systemCombo()
         {
             try {
@@ -163,7 +174,7 @@ namespace SMSサンプル
                     if (i == 0)
                         systemTable.Rows.Add("");
 
-                    //ユーザNOで区別する
+                    //カスタマNOで区別する
                     if (m_usernameCombo.SelectedValue != null)
                     {
                         if (v.userno == m_usernameCombo.SelectedValue.ToString())
@@ -263,7 +274,7 @@ namespace SMSサンプル
                 hostDSList.Add(tmp);
 
                 //リストの取得
-                List<hostDS> hostDSList1 = getuser.getHostList(siteno, true);
+                List<hostDS> hostDSList1 = getuser.getHostList(siteno, con,true);
                 hostDSList.AddRange(hostDSList1);
 
                 m_hostCombo.DataSource = hostDSList;
@@ -279,7 +290,7 @@ namespace SMSサンプル
                 MessageBox.Show(ex.Message,"ホスト情報の読み込みに失敗",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
             }
         }
-        //ユーザ名が選択されたときの処理
+        //カスタマ名が選択されたときの処理
         private void m_usernameCombo_SelectionChangeCommitted(object sender, EventArgs e)
         {
             m_systemno.Text = "";

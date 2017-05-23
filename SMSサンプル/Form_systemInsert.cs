@@ -14,8 +14,11 @@ namespace SMSサンプル
 
     public partial class Form_systemInsert : Form
     {
+        //DBコネクション
+        public NpgsqlConnection con { get; set; }
+        public opeDS loginDS { get; set; }
 
-        //ユーザ
+        //カスタマ
         public List<userDS> userList { get; set; }
 
 
@@ -27,13 +30,17 @@ namespace SMSサンプル
         //表示前処理
         private void Form_systemInsert_Load(object sender, EventArgs e)
         {
+            m_idlabel.Text = loginDS.opeid;
+            m_labelinputOpe.Text = loginDS.lastname + loginDS.fastname;
+
+
             DataTable cutomerTable = new DataTable();
             cutomerTable.Columns.Add("ID", typeof(string));
             cutomerTable.Columns.Add("NAME", typeof(string));
 
             if (userList == null)
                 return;
-            //ユーザ情報を取得する
+            //カスタマ情報を取得する
             foreach (userDS v in userList)
             {
                 DataRow row = cutomerTable.NewRow();
@@ -64,17 +71,17 @@ namespace SMSサンプル
             }
             catch (Exception ex )
             {
-                MessageBox.Show("ユーザ情報の取得に失敗しました。" + ex.Message);
+                MessageBox.Show("カスタマ情報の取得に失敗しました。" + ex.Message);
             }
 
         }
         //登録ボタン
         private void button3_Click(object sender, EventArgs e)
         {
-            //ユーザ名
+            //カスタマ名
             if (m_usernameCombo.Text == "")
             {
-                MessageBox.Show("ユーザ名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("カスタマ名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             //システム名
@@ -93,44 +100,38 @@ namespace SMSサンプル
             string userno = m_userID.Text;
             
             //DB接続
-            Class_common common = new Class_common();
             NpgsqlCommand cmd;
-            using (var con = common.DB_connection())
+            try
             {
-                try
+                if (con.FullState != ConnectionState.Open) con.Open();
+                Int32 rowsaffected;
+                //データ登録
+                cmd = new NpgsqlCommand(@"insert into system(systemname,systemkana,biko,userno,chk_name_id) 
+                    values ( :systemname,:systemkana,:biko,:userno,:chk_name_id)", con);
+                cmd.Parameters.Add(new NpgsqlParameter("systemname", DbType.String) { Value = systemname });
+                cmd.Parameters.Add(new NpgsqlParameter("systemkana", DbType.String) { Value = systemkana });
+                cmd.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = biko });
+                cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
+                cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
+                rowsaffected = cmd.ExecuteNonQuery();
+
+                if (rowsaffected != 1)
                 {
-                    con.Open();
-                    Int32 rowsaffected;
-                    //データ登録
-                    cmd = new NpgsqlCommand(@"insert into system(systemname,systemkana,biko,userno,chk_name_id) 
-                        values ( :systemname,:systemkana,:biko,:userno,:chk_name_id)", con);
-                    cmd.Parameters.Add(new NpgsqlParameter("systemname", DbType.String) { Value = systemname });
-                    cmd.Parameters.Add(new NpgsqlParameter("systemkana", DbType.String) { Value = systemkana });
-                    cmd.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = biko });
-                    cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
-                    cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = "111" });
-                    rowsaffected = cmd.ExecuteNonQuery();
-
-                    if (rowsaffected != 1)
-                    {
-                        MessageBox.Show("登録できませんでした。", "システム登録");
-                        con.Close();
-                    }
-                    else
-                    {
-                        //登録成功
-                        MessageBox.Show("登録完了", "システム登録");
-                    }
-
+                    MessageBox.Show("登録できませんでした。", "システム登録");
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show("システム登録時エラー " + ex.Message);
-                    con.Close();
-                    return;
+                    //登録成功
+                    MessageBox.Show("登録完了", "システム登録");
                 }
 
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("システム登録時エラー " + ex.Message);
+                return;
+            }
+
         }
     }
 }
