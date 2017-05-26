@@ -69,6 +69,24 @@
     <Compile Include="Form_alermlist.Designer.cs">
       <DependentUpon>Form_alermlist.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_KaisenDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_KaisenDetail.Designer.cs">
+      <DependentUpon>Form_KaisenDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_interfaceDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_interfaceDetail.Designer.cs">
+      <DependentUpon>Form_interfaceDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_HostDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_HostDetail.Designer.cs">
+      <DependentUpon>Form_HostDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_hostInsert.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +147,12 @@
     <Compile Include="Form_siteInsert.Designer.cs">
       <DependentUpon>Form_siteInsert.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_SiteDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_SiteDetail.Designer.cs">
+      <DependentUpon>Form_SiteDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_systemInsert.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +170,12 @@
     </Compile>
     <Compile Include="Form_TimerInsert.Designer.cs">
       <DependentUpon>Form_TimerInsert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_SystemDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_SystemDetail.Designer.cs">
+      <DependentUpon>Form_SystemDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_UserDetail.cs">
       <SubType>Form</SubType>
@@ -171,6 +201,12 @@
     <Compile Include="Form_UserTantouInsert.Designer.cs">
       <DependentUpon>Form_UserTantouInsert.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_user_tantou.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_user_tantou.Designer.cs">
+      <DependentUpon>Form_user_tantou.cs</DependentUpon>
+    </Compile>
     <Compile Include="hostDS.cs" />
     <Compile Include="incidentDS.cs" />
     <Compile Include="kaisenDS.cs" />
@@ -189,6 +225,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_alermlist.resx">
       <DependentUpon>Form_alermlist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_KaisenDetail.resx">
+      <DependentUpon>Form_KaisenDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_interfaceDetail.resx">
+      <DependentUpon>Form_interfaceDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_HostDetail.resx">
+      <DependentUpon>Form_HostDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_hostInsert.resx">
       <DependentUpon>Form_hostInsert.cs</DependentUpon>
@@ -220,6 +265,9 @@
     <EmbeddedResource Include="Form_siteInsert.resx">
       <DependentUpon>Form_siteInsert.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_SiteDetail.resx">
+      <DependentUpon>Form_SiteDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_systemInsert.resx">
       <DependentUpon>Form_systemInsert.cs</DependentUpon>
     </EmbeddedResource>
@@ -228,6 +276,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_TimerInsert.resx">
       <DependentUpon>Form_TimerInsert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_SystemDetail.resx">
+      <DependentUpon>Form_SystemDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_UserDetail.resx">
       <DependentUpon>Form_UserDetail.cs</DependentUpon>
@@ -240,6 +291,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_UserTantouInsert.resx">
       <DependentUpon>Form_UserTantouInsert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_user_tantou.resx">
+      <DependentUpon>Form_user_tantou.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

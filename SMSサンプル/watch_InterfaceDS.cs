@@ -9,7 +9,7 @@ namespace SMSサンプル
     public class watch_InterfaceDS
     {
 
-        public String kennshino { get; set; }
+        public String watch_Interfaceno { get; set; }
         public String interfacename { get; set; }
         private string _status;
         public String status

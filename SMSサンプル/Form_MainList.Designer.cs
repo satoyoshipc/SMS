@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_MainList));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.m_opename = new System.Windows.Forms.TextBox();
             this.m_refresh_btn = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -85,7 +86,6 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.m_opename = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -154,6 +154,17 @@
             this.splitContainer2.SplitterDistance = 48;
             this.splitContainer2.TabIndex = 1;
             // 
+            // m_opename
+            // 
+            this.m_opename.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_opename.Font = new System.Drawing.Font("MS UI Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.m_opename.Location = new System.Drawing.Point(3, 5);
+            this.m_opename.Name = "m_opename";
+            this.m_opename.ReadOnly = true;
+            this.m_opename.Size = new System.Drawing.Size(152, 18);
+            this.m_opename.TabIndex = 1;
+            // 
             // m_refresh_btn
             // 
             this.m_refresh_btn.Location = new System.Drawing.Point(7, 25);
@@ -207,12 +218,13 @@
             // linkLabel8
             // 
             this.linkLabel8.AutoSize = true;
-            this.linkLabel8.Location = new System.Drawing.Point(101, 193);
+            this.linkLabel8.Location = new System.Drawing.Point(111, 193);
             this.linkLabel8.Name = "linkLabel8";
             this.linkLabel8.Size = new System.Drawing.Size(29, 12);
             this.linkLabel8.TabIndex = 195;
             this.linkLabel8.TabStop = true;
             this.linkLabel8.Text = "登録";
+            this.linkLabel8.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel8_LinkClicked);
             // 
             // label14
             // 
@@ -225,13 +237,12 @@
             // 
             // m_teiki_List
             // 
-            this.m_teiki_List.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.m_teiki_List.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_teiki_List.GridLines = true;
-            this.m_teiki_List.Location = new System.Drawing.Point(8, 209);
+            this.m_teiki_List.Location = new System.Drawing.Point(8, 208);
             this.m_teiki_List.Name = "m_teiki_List";
-            this.m_teiki_List.Size = new System.Drawing.Size(960, 150);
+            this.m_teiki_List.Size = new System.Drawing.Size(960, 185);
             this.m_teiki_List.TabIndex = 193;
             this.m_teiki_List.UseCompatibleStateImageBehavior = false;
             this.m_teiki_List.View = System.Windows.Forms.View.Details;
@@ -239,12 +250,13 @@
             // linkLabel7
             // 
             this.linkLabel7.AutoSize = true;
-            this.linkLabel7.Location = new System.Drawing.Point(101, 14);
+            this.linkLabel7.Location = new System.Drawing.Point(111, 14);
             this.linkLabel7.Name = "linkLabel7";
             this.linkLabel7.Size = new System.Drawing.Size(29, 12);
             this.linkLabel7.TabIndex = 192;
             this.linkLabel7.TabStop = true;
             this.linkLabel7.Text = "登録";
+            this.linkLabel7.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel7_LinkClicked);
             // 
             // label13
             // 
@@ -257,8 +269,7 @@
             // 
             // m_incident_List
             // 
-            this.m_incident_List.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.m_incident_List.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_incident_List.GridLines = true;
             this.m_incident_List.Location = new System.Drawing.Point(8, 30);
@@ -271,12 +282,13 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(65, 412);
+            this.linkLabel1.Location = new System.Drawing.Point(111, 412);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(29, 12);
             this.linkLabel1.TabIndex = 189;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "登録";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // label12
             // 
@@ -289,13 +301,12 @@
             // 
             // m_keikaku_list
             // 
-            this.m_keikaku_list.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.m_keikaku_list.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_keikaku_list.GridLines = true;
-            this.m_keikaku_list.Location = new System.Drawing.Point(6, 428);
+            this.m_keikaku_list.Location = new System.Drawing.Point(10, 427);
             this.m_keikaku_list.Name = "m_keikaku_list";
-            this.m_keikaku_list.Size = new System.Drawing.Size(1037, 150);
+            this.m_keikaku_list.Size = new System.Drawing.Size(957, 196);
             this.m_keikaku_list.TabIndex = 187;
             this.m_keikaku_list.UseCompatibleStateImageBehavior = false;
             this.m_keikaku_list.View = System.Windows.Forms.View.Details;
@@ -338,7 +349,6 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer3.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Panel2_Paint);
             this.splitContainer3.Size = new System.Drawing.Size(968, 648);
             this.splitContainer3.SplitterDistance = 57;
             this.splitContainer3.TabIndex = 1;
@@ -544,6 +554,7 @@
             this.systemList.TabIndex = 191;
             this.systemList.UseCompatibleStateImageBehavior = false;
             this.systemList.View = System.Windows.Forms.View.Details;
+            this.systemList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.systemList_MouseDoubleClick);
             // 
             // label7
             // 
@@ -621,6 +632,7 @@
             this.siteList.TabIndex = 183;
             this.siteList.UseCompatibleStateImageBehavior = false;
             this.siteList.View = System.Windows.Forms.View.Details;
+            this.siteList.DoubleClick += new System.EventHandler(this.siteList_DoubleClick);
             // 
             // splitContainer6
             // 
@@ -680,6 +692,7 @@
             this.hostList.TabIndex = 184;
             this.hostList.UseCompatibleStateImageBehavior = false;
             this.hostList.View = System.Windows.Forms.View.Details;
+            this.hostList.DoubleClick += new System.EventHandler(this.hostList_DoubleClick);
             // 
             // linkLabel6
             // 
@@ -725,7 +738,7 @@
             this.kaisenList.TabIndex = 197;
             this.kaisenList.UseCompatibleStateImageBehavior = false;
             this.kaisenList.View = System.Windows.Forms.View.Details;
-            this.kaisenList.SelectedIndexChanged += new System.EventHandler(this.kaisenList_SelectedIndexChanged);
+            this.kaisenList.DoubleClick += new System.EventHandler(this.kaisenList_DoubleClick);
             // 
             // label10
             // 
@@ -748,6 +761,7 @@
             this.interfaceList.TabIndex = 195;
             this.interfaceList.UseCompatibleStateImageBehavior = false;
             this.interfaceList.View = System.Windows.Forms.View.Details;
+            this.interfaceList.DoubleClick += new System.EventHandler(this.interfaceList_DoubleClick);
             // 
             // splitter1
             // 
@@ -775,17 +789,6 @@
             // 
             this.timer1.Interval = 60000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // m_opename
-            // 
-            this.m_opename.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_opename.Font = new System.Drawing.Font("MS UI Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.m_opename.Location = new System.Drawing.Point(3, 5);
-            this.m_opename.Name = "m_opename";
-            this.m_opename.ReadOnly = true;
-            this.m_opename.Size = new System.Drawing.Size(152, 18);
-            this.m_opename.TabIndex = 1;
             // 
             // Form_MainList
             // 

@@ -84,12 +84,12 @@ namespace SMSサンプル
         {
             
             Read_systemCombo();
+
             Read_siteCombo();
         }
         //カスタマ名のコンボボックスが変更されたときの処理
         private void Read_systemCombo()
         {
-
 
             m_systemno.Text = "";
             m_systemCombo.DataSource = null;
@@ -147,8 +147,11 @@ namespace SMSサンプル
         //システム名のコンボボックスが変更されたときの処理
         private void Read_siteCombo()
         {
+
             m_siteCombo.DataSource = null;
             m_siteno.Text = "";
+            if (m_systemno.Text == "")
+                return;
 
             //コンボボックス
             DataTable siteTable = new DataTable();
@@ -156,27 +159,40 @@ namespace SMSサンプル
             siteTable.Columns.Add("NAME", typeof(string));
 
             //システム情報を取得する
-            if (siteList.Count <= 0)
-                return;
-            //拠点情報を取得する
-            foreach (siteDS v in siteList)
+
+            if (siteList == null || siteList.Count <= 0)
             {
-                if (m_systemCombo.SelectedValue != null) { 
-                    if (v.systemno == m_systemCombo.SelectedValue.ToString())
-                        { 
-                            DataRow row = siteTable.NewRow();
-                            row["ID"] = v.siteno;
-                            row["NAME"] = v.sitename;
-                            siteTable.Rows.Add(row);
-                        }
+
+                try { 
+                Class_Detaget getuser = new Class_Detaget();
+
+                //検索
+                List<siteDS> siteDSList = getuser.getSiteList(m_systemno.Text, con, true);
+
+                //空白行を追加
+                siteDS tmp = new siteDS();
+                tmp.sitename = "";
+                tmp.siteno = "";
+                List<siteDS> tmpsiteDSList = new List<siteDS>();
+                tmpsiteDSList.Add(tmp);
+
+                //取得した行を空行についか
+                if (tmpsiteDSList != null)
+                    tmpsiteDSList.AddRange(siteDSList);
+
+                m_siteCombo.DataSource = tmpsiteDSList;
+                m_siteCombo.DisplayMember = "sitename";
+                m_siteCombo.ValueMember = "siteno";
+                //拠点名ラベルを表示
+                if (siteDSList.Count > 0)
+                    m_siteno.Text = m_siteCombo.SelectedValue.ToString();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("拠点情報取得に失敗しました。  " + ex.Message,"ホスト登録",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 }
             }
-            //データテーブルを割り当てる
-            m_siteCombo.DataSource = siteTable;
-            m_siteCombo.DisplayMember = "NAME";
-            m_siteCombo.ValueMember = "ID";
-            if(siteTable.Rows.Count > 0) 
-                m_siteno.Text = m_siteCombo.SelectedValue.ToString();
+            return;
            
         }
         //ホスト名の登録

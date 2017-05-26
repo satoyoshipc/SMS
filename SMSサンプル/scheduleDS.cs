@@ -21,11 +21,11 @@ namespace SMSサンプル
                 string retstr = "";
                 if (_status == "0")
 
-                    retstr = "無効";
+                    retstr = "未完了";
 
                 else if (_status == "1")
 
-                    retstr = "有効";
+                    retstr = "完了";
 
                 return retstr;
             }

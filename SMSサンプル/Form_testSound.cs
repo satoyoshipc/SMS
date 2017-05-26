@@ -67,7 +67,7 @@ namespace SMSサンプル
                 player.Play();
 
                 //次のようにすると、ループ再生される
-                //player.PlayLooping();
+                player.PlayLooping();
 
                 //次のようにすると、最後まで再生し終えるまで待機する
                 //player.PlaySync();

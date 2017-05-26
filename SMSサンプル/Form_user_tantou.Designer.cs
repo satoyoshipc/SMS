@@ -1,0 +1,407 @@
+﻿namespace SMSサンプル
+{
+    partial class Form_user_tantou
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.m_customertantouList = new System.Windows.Forms.ListView();
+            this.m_selecttext = new System.Windows.Forms.TextBox();
+            this.m_selectCombo = new System.Windows.Forms.ComboBox();
+            this.m_select_btn = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.m_tantouno = new System.Windows.Forms.TextBox();
+            this.m_tantouname = new System.Windows.Forms.TextBox();
+            this.m_tantoukana = new System.Windows.Forms.TextBox();
+            this.m_busyoname = new System.Windows.Forms.TextBox();
+            this.m_tel1 = new System.Windows.Forms.TextBox();
+            this.m_tel2 = new System.Windows.Forms.TextBox();
+            this.m_yakusyoku = new System.Windows.Forms.TextBox();
+            this.m_statusCombo = new System.Windows.Forms.ComboBox();
+            this.m_biko = new System.Windows.Forms.TextBox();
+            this.m_kousin_btn = new System.Windows.Forms.Button();
+            this.m_cancelbtn = new System.Windows.Forms.Button();
+            this.m_updateOpe = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.m_update = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.splitContainer1.Location = new System.Drawing.Point(1, 1);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.m_select_btn);
+            this.splitContainer1.Panel1.Controls.Add(this.m_selectCombo);
+            this.splitContainer1.Panel1.Controls.Add(this.m_selecttext);
+            this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.m_customertantouList);
+            this.splitContainer1.Size = new System.Drawing.Size(844, 265);
+            this.splitContainer1.SplitterDistance = 31;
+            this.splitContainer1.TabIndex = 0;
+            // 
+            // m_customertantouList
+            // 
+            this.m_customertantouList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_customertantouList.GridLines = true;
+            this.m_customertantouList.Location = new System.Drawing.Point(0, 0);
+            this.m_customertantouList.Name = "m_customertantouList";
+            this.m_customertantouList.Size = new System.Drawing.Size(842, 228);
+            this.m_customertantouList.TabIndex = 0;
+            this.m_customertantouList.UseCompatibleStateImageBehavior = false;
+            this.m_customertantouList.View = System.Windows.Forms.View.Details;
+            this.m_customertantouList.DoubleClick += new System.EventHandler(this.m_customertantouList_DoubleClick);
+            // 
+            // m_selecttext
+            // 
+            this.m_selecttext.Location = new System.Drawing.Point(224, 3);
+            this.m_selecttext.Name = "m_selecttext";
+            this.m_selecttext.Size = new System.Drawing.Size(200, 19);
+            this.m_selecttext.TabIndex = 1;
+            // 
+            // m_selectCombo
+            // 
+            this.m_selectCombo.FormattingEnabled = true;
+            this.m_selectCombo.Location = new System.Drawing.Point(4, 2);
+            this.m_selectCombo.Name = "m_selectCombo";
+            this.m_selectCombo.Size = new System.Drawing.Size(212, 20);
+            this.m_selectCombo.TabIndex = 0;
+            // 
+            // m_select_btn
+            // 
+            this.m_select_btn.Location = new System.Drawing.Point(446, 3);
+            this.m_select_btn.Name = "m_select_btn";
+            this.m_select_btn.Size = new System.Drawing.Size(75, 23);
+            this.m_select_btn.TabIndex = 2;
+            this.m_select_btn.Text = "検索";
+            this.m_select_btn.UseVisualStyleBackColor = true;
+            this.m_select_btn.Click += new System.EventHandler(this.m_select_btn_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 288);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "担当者通番";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 311);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(41, 12);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "担当者";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 336);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(72, 12);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "担当者名カナ";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 362);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 12);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "部署名";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 383);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 12);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "電話番号1";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(12, 407);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(59, 12);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "電話番号2";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(12, 433);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(29, 12);
+            this.label7.TabIndex = 7;
+            this.label7.Text = "役職";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(12, 455);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(50, 12);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "ステータス";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(367, 291);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(29, 12);
+            this.label9.TabIndex = 9;
+            this.label9.Text = "備考";
+            // 
+            // m_tantouno
+            // 
+            this.m_tantouno.Location = new System.Drawing.Point(95, 285);
+            this.m_tantouno.Name = "m_tantouno";
+            this.m_tantouno.ReadOnly = true;
+            this.m_tantouno.Size = new System.Drawing.Size(222, 19);
+            this.m_tantouno.TabIndex = 0;
+            // 
+            // m_tantouname
+            // 
+            this.m_tantouname.Location = new System.Drawing.Point(95, 309);
+            this.m_tantouname.Name = "m_tantouname";
+            this.m_tantouname.Size = new System.Drawing.Size(222, 19);
+            this.m_tantouname.TabIndex = 1;
+            // 
+            // m_tantoukana
+            // 
+            this.m_tantoukana.Location = new System.Drawing.Point(95, 333);
+            this.m_tantoukana.Name = "m_tantoukana";
+            this.m_tantoukana.Size = new System.Drawing.Size(222, 19);
+            this.m_tantoukana.TabIndex = 2;
+            // 
+            // m_busyoname
+            // 
+            this.m_busyoname.Location = new System.Drawing.Point(95, 356);
+            this.m_busyoname.Name = "m_busyoname";
+            this.m_busyoname.Size = new System.Drawing.Size(222, 19);
+            this.m_busyoname.TabIndex = 3;
+            // 
+            // m_tel1
+            // 
+            this.m_tel1.Location = new System.Drawing.Point(95, 380);
+            this.m_tel1.Name = "m_tel1";
+            this.m_tel1.Size = new System.Drawing.Size(222, 19);
+            this.m_tel1.TabIndex = 4;
+            // 
+            // m_tel2
+            // 
+            this.m_tel2.Location = new System.Drawing.Point(95, 403);
+            this.m_tel2.Name = "m_tel2";
+            this.m_tel2.Size = new System.Drawing.Size(222, 19);
+            this.m_tel2.TabIndex = 5;
+            // 
+            // m_yakusyoku
+            // 
+            this.m_yakusyoku.Location = new System.Drawing.Point(95, 427);
+            this.m_yakusyoku.Name = "m_yakusyoku";
+            this.m_yakusyoku.Size = new System.Drawing.Size(222, 19);
+            this.m_yakusyoku.TabIndex = 6;
+            // 
+            // m_statusCombo
+            // 
+            this.m_statusCombo.FormattingEnabled = true;
+            this.m_statusCombo.Items.AddRange(new object[] {
+            "無効",
+            "有効"});
+            this.m_statusCombo.Location = new System.Drawing.Point(95, 453);
+            this.m_statusCombo.Name = "m_statusCombo";
+            this.m_statusCombo.Size = new System.Drawing.Size(75, 20);
+            this.m_statusCombo.TabIndex = 7;
+            // 
+            // m_biko
+            // 
+            this.m_biko.Location = new System.Drawing.Point(426, 288);
+            this.m_biko.Multiline = true;
+            this.m_biko.Name = "m_biko";
+            this.m_biko.Size = new System.Drawing.Size(254, 38);
+            this.m_biko.TabIndex = 8;
+            // 
+            // m_kousin_btn
+            // 
+            this.m_kousin_btn.Location = new System.Drawing.Point(672, 488);
+            this.m_kousin_btn.Name = "m_kousin_btn";
+            this.m_kousin_btn.Size = new System.Drawing.Size(78, 28);
+            this.m_kousin_btn.TabIndex = 9;
+            this.m_kousin_btn.Text = "更新";
+            this.m_kousin_btn.UseVisualStyleBackColor = true;
+            this.m_kousin_btn.Click += new System.EventHandler(this.m_kousin_btn_Click);
+            // 
+            // m_cancelbtn
+            // 
+            this.m_cancelbtn.Location = new System.Drawing.Point(756, 488);
+            this.m_cancelbtn.Name = "m_cancelbtn";
+            this.m_cancelbtn.Size = new System.Drawing.Size(78, 28);
+            this.m_cancelbtn.TabIndex = 10;
+            this.m_cancelbtn.Text = "キャンセル";
+            this.m_cancelbtn.UseVisualStyleBackColor = true;
+            this.m_cancelbtn.Click += new System.EventHandler(this.m_cancelbtn_Click);
+            // 
+            // m_updateOpe
+            // 
+            this.m_updateOpe.Location = new System.Drawing.Point(426, 367);
+            this.m_updateOpe.Name = "m_updateOpe";
+            this.m_updateOpe.ReadOnly = true;
+            this.m_updateOpe.Size = new System.Drawing.Size(166, 19);
+            this.m_updateOpe.TabIndex = 78;
+            this.m_updateOpe.TabStop = false;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(367, 370);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(41, 12);
+            this.label11.TabIndex = 77;
+            this.label11.Text = "更新者";
+            // 
+            // m_update
+            // 
+            this.m_update.Location = new System.Drawing.Point(426, 339);
+            this.m_update.Name = "m_update";
+            this.m_update.ReadOnly = true;
+            this.m_update.Size = new System.Drawing.Size(166, 19);
+            this.m_update.TabIndex = 76;
+            this.m_update.TabStop = false;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(367, 343);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(53, 12);
+            this.label12.TabIndex = 75;
+            this.label12.Text = "更新日時";
+            // 
+            // Form_user_tantou
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(846, 528);
+            this.Controls.Add(this.m_updateOpe);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.m_update);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.m_cancelbtn);
+            this.Controls.Add(this.m_kousin_btn);
+            this.Controls.Add(this.m_biko);
+            this.Controls.Add(this.m_statusCombo);
+            this.Controls.Add(this.m_yakusyoku);
+            this.Controls.Add(this.m_tel2);
+            this.Controls.Add(this.m_tel1);
+            this.Controls.Add(this.m_busyoname);
+            this.Controls.Add(this.m_tantoukana);
+            this.Controls.Add(this.m_tantouname);
+            this.Controls.Add(this.m_tantouno);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.splitContainer1);
+            this.Name = "Form_user_tantou";
+            this.Text = "カスタマ担当者";
+            this.Load += new System.EventHandler(this.Form_user_tantou_Load);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ListView m_customertantouList;
+        private System.Windows.Forms.Button m_select_btn;
+        private System.Windows.Forms.ComboBox m_selectCombo;
+        private System.Windows.Forms.TextBox m_selecttext;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox m_tantouno;
+        private System.Windows.Forms.TextBox m_tantouname;
+        private System.Windows.Forms.TextBox m_tantoukana;
+        private System.Windows.Forms.TextBox m_busyoname;
+        private System.Windows.Forms.TextBox m_tel1;
+        private System.Windows.Forms.TextBox m_tel2;
+        private System.Windows.Forms.TextBox m_yakusyoku;
+        private System.Windows.Forms.ComboBox m_statusCombo;
+        private System.Windows.Forms.TextBox m_biko;
+        private System.Windows.Forms.Button m_kousin_btn;
+        private System.Windows.Forms.Button m_cancelbtn;
+        private System.Windows.Forms.TextBox m_updateOpe;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox m_update;
+        private System.Windows.Forms.Label label12;
+    }
+}

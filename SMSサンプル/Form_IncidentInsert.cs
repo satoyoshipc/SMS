@@ -32,6 +32,9 @@ namespace SMSサンプル
         DateTime? dateTime_fukyudate;
         DateTime? dateTime_enddate;
 
+        DateTime? dateTime_Timer;
+
+
         public Form_IncidentInsert()
         {
             InitializeComponent();
@@ -49,11 +52,14 @@ namespace SMSサンプル
             dateTime_tehaidate = null;
             dateTime_fukyudate = null;
             dateTime_enddate = null;
+            dateTime_Timer = null;
+
             //日付コントロールを空白にする
             setDateTimePicker(dateTime_uketukedate, m_uketukedate);
             setDateTimePicker(dateTime_tehaidate, m_tehaidate);
             setDateTimePicker(dateTime_fukyudate, m_fukyudate);
             setDateTimePicker(dateTime_enddate, m_enddate);
+            setDateTimePicker(dateTime_Timer, m_timerpicker);
 
             //コンボボックス
             DataTable cutomerTable = new DataTable();
@@ -339,12 +345,12 @@ namespace SMSサンプル
                 matflg = "0";
 
             string matcommand = m_matcommand.Text;
-            int timer = 0;
-            if (m_timer.Text != "")
-            {
-                timer = int.Parse(m_timer.Text);
 
-            }
+            DateTime? timer = null;
+            if (m_timerpicker.Text.Trim() != "")
+                timer = m_timerpicker.Value;
+
+
             string kakunin = m_kakunin.Text;
 
             DateTime? uketukedate = null;
@@ -387,7 +393,7 @@ namespace SMSサンプル
                 cmd.Parameters.Add(new NpgsqlParameter("tehaidate", DbType.DateTime) { Value = tehaidate });
                 cmd.Parameters.Add(new NpgsqlParameter("fukyudate", DbType.DateTime) { Value = fukyudate });
                 cmd.Parameters.Add(new NpgsqlParameter("enddate", DbType.DateTime) { Value = enddate });
-                cmd.Parameters.Add(new NpgsqlParameter("timer", DbType.Int32) { Value = timer });
+                cmd.Parameters.Add(new NpgsqlParameter("timer", DbType.DateTime) { Value = timer });
                 cmd.Parameters.Add(new NpgsqlParameter("kakunin", DbType.String) { Value = kakunin });
                 cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
                 cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
@@ -411,11 +417,11 @@ namespace SMSサンプル
                     int currval = int.Parse(firstColumn.NpgsqlValue.ToString());
 
                     //スケジュールを登録
-                    if(timer > 0) {
-                        DateTime dt = DateTime.Now;
+                    if(timer != null) {
+                        DateTime alertTime = (DateTime)timer;
                     
-                        DateTime alertTime = dt.AddMinutes(timer);
-                        DateTime endTime = alertTime.AddMinutes(timer);
+                        //1時間出し続ける
+                        DateTime endTime = alertTime.AddMinutes(60);
                         //スケジュールを登録
                         try
                         {
@@ -457,14 +463,14 @@ namespace SMSサンプル
                                     //引き続きアラートデータを作成し登録する
                                     alerm_insert(currvalsch, alertTime);
                                     //登録成功
-                                    MessageBox.Show("登録完了 " + "スケジュール番号" + currval, "タイマー登録");
+                                    //MessageBox.Show("登録完了 " + "スケジュール番号" + currval, "タイマー登録");
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show("スケジュールに登録する際にエラーが発生しました。 " + ex.Message, "インシデント登録");
-
+                            return;
                         }
 
                     }
@@ -588,6 +594,23 @@ namespace SMSサンプル
                 //Deleteキーが押されたら、dateTimeにnullを設定してdateTimePicker1を非表示に
                 dateTime_enddate = null;
                 setDateTimePicker(dateTime_enddate, m_enddate);
+            }
+        }
+        //タイマー
+        private void m_timerpicker_ValueChanged(object sender, EventArgs e)
+        {
+            //dateTimePicker1の値が変更されたら表示する
+            dateTime_Timer = m_timerpicker.Value;
+            setDateTimePicker(dateTime_Timer, m_timerpicker);
+        }
+        //タイマー
+        private void m_timerpicker_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Delete)
+            {
+                //Deleteキーが押されたら、dateTimeにnullを設定してdateTimePicker1を非表示に
+                dateTime_Timer = null;
+                setDateTimePicker(dateTime_Timer, m_timerpicker);
             }
         }
     }

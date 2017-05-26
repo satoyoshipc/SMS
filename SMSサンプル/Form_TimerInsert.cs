@@ -123,11 +123,11 @@ namespace SMSサンプル
             //ステータス
             string status = "";
             if (m_radio_enable.Checked)
-                //有効
+                //完了
                 status = "1";
 
             else
-                //無効
+                //未完了
                 status = "0";
 
             string repeat_type = "0"; 

@@ -15,7 +15,8 @@ namespace SMSサンプル
     {
 
         public opeDS loginDS { get; set; }
-
+        //DBコネクション
+        public NpgsqlConnection con { get; set; }
         //カスタマ
         public List<userDS> userList { get; set; }
 

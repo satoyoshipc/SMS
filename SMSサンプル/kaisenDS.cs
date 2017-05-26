@@ -35,6 +35,11 @@ namespace SMSサンプル
         public String isp { get; set; }
         public String servicetype { get; set; }
         public String serviceid { get; set; }
+        public String host_no { get; set; }
+        public String userno { get; set; }
+        public String systemno { get; set; }
+        public String siteno { get; set; }
+
         public String chk_date { get; set; }
         public String chk_name_id { get; set; }
     }

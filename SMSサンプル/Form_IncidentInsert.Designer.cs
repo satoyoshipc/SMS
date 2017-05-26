@@ -70,10 +70,10 @@
             this.m_systemCombo = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.m_timer = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.m_kakunin = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.m_timerpicker = new System.Windows.Forms.DateTimePicker();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -478,8 +478,8 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.m_timerpicker);
             this.groupBox1.Controls.Add(this.label14);
-            this.groupBox1.Controls.Add(this.m_timer);
             this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.m_kakunin);
             this.groupBox1.Controls.Add(this.label15);
@@ -493,18 +493,10 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(189, 21);
+            this.label14.Location = new System.Drawing.Point(313, 21);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(118, 12);
+            this.label14.Size = new System.Drawing.Size(0, 12);
             this.label14.TabIndex = 185;
-            this.label14.Text = "分後　（登録時に始動）";
-            // 
-            // m_timer
-            // 
-            this.m_timer.Location = new System.Drawing.Point(132, 18);
-            this.m_timer.Name = "m_timer";
-            this.m_timer.Size = new System.Drawing.Size(44, 19);
-            this.m_timer.TabIndex = 0;
             // 
             // label16
             // 
@@ -519,7 +511,7 @@
             // 
             this.m_kakunin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_kakunin.Location = new System.Drawing.Point(132, 43);
+            this.m_kakunin.Location = new System.Drawing.Point(131, 43);
             this.m_kakunin.Multiline = true;
             this.m_kakunin.Name = "m_kakunin";
             this.m_kakunin.Size = new System.Drawing.Size(406, 51);
@@ -533,6 +525,17 @@
             this.label15.Size = new System.Drawing.Size(41, 12);
             this.label15.TabIndex = 182;
             this.label15.Text = "タイマー";
+            // 
+            // m_timerpicker
+            // 
+            this.m_timerpicker.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
+            this.m_timerpicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.m_timerpicker.Location = new System.Drawing.Point(131, 18);
+            this.m_timerpicker.Name = "m_timerpicker";
+            this.m_timerpicker.Size = new System.Drawing.Size(176, 19);
+            this.m_timerpicker.TabIndex = 186;
+            this.m_timerpicker.ValueChanged += new System.EventHandler(this.m_timerpicker_ValueChanged);
+            this.m_timerpicker.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_timerpicker_KeyDown);
             // 
             // Form_IncidentInsert
             // 
@@ -634,9 +637,9 @@
         private System.Windows.Forms.ComboBox m_systemCombo;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox m_timer;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox m_kakunin;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.DateTimePicker m_timerpicker;
     }
 }
