@@ -41,7 +41,9 @@
       <HintPath>bin\Debug\Npgsql.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,18 +58,67 @@
     <Compile Include="alermDS.cs" />
     <Compile Include="Class_common.cs" />
     <Compile Include="Class_Detaget.cs" />
+    <Compile Include="Class_ListViewColumnSorter.cs" />
     <Compile Include="DISP_dataSet.cs" />
+    <Compile Include="Form_Import.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Import.Designer.cs">
+      <DependentUpon>Form_Import.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_mailDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_mailDetail.Designer.cs">
+      <DependentUpon>Form_mailDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_print.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_print.Designer.cs">
+      <DependentUpon>Form_print.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_TimerList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_TimerList.Designer.cs">
+      <DependentUpon>Form_TimerList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_addressInsert.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form_addressInsert.Designer.cs">
       <DependentUpon>Form_addressInsert.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_addressSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_addressSelect.Designer.cs">
+      <DependentUpon>Form_addressSelect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_alermlist.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form_alermlist.Designer.cs">
       <DependentUpon>Form_alermlist.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_DispMail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_DispMail.Designer.cs">
+      <DependentUpon>Form_DispMail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_incidentDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_incidentDetail.Designer.cs">
+      <DependentUpon>Form_incidentDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_KeikakuDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_KeikakuDetail.Designer.cs">
+      <DependentUpon>Form_KeikakuDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_KaisenDetail.cs">
       <SubType>Form</SubType>
@@ -128,6 +179,12 @@
     </Compile>
     <Compile Include="Form_MailTempleteInsert.Designer.cs">
       <DependentUpon>Form_MailTempleteInsert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_mailTempleteList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_mailTempleteList.Designer.cs">
+      <DependentUpon>Form_mailTempleteList.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_opeInsert.cs">
       <SubType>Form</SubType>
@@ -201,15 +258,24 @@
     <Compile Include="Form_UserTantouInsert.Designer.cs">
       <DependentUpon>Form_UserTantouInsert.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_opeDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_opeDetail.Designer.cs">
+      <DependentUpon>Form_opeDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_user_tantou.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form_user_tantou.Designer.cs">
       <DependentUpon>Form_user_tantou.cs</DependentUpon>
     </Compile>
+    <Compile Include="mailTempleteDS.cs" />
     <Compile Include="hostDS.cs" />
     <Compile Include="incidentDS.cs" />
     <Compile Include="kaisenDS.cs" />
+    <Compile Include="MailaddressDS.cs" />
+    <Compile Include="mailsendaddressDS.cs" />
     <Compile Include="opeDS.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -220,11 +286,35 @@
     <Compile Include="tantouDS.cs" />
     <Compile Include="userDS.cs" />
     <Compile Include="watch_InterfaceDS.cs" />
+    <EmbeddedResource Include="Form_Import.resx">
+      <DependentUpon>Form_Import.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_mailDetail.resx">
+      <DependentUpon>Form_mailDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_print.resx">
+      <DependentUpon>Form_print.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_TimerList.resx">
+      <DependentUpon>Form_TimerList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_addressInsert.resx">
       <DependentUpon>Form_addressInsert.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_addressSelect.resx">
+      <DependentUpon>Form_addressSelect.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_alermlist.resx">
       <DependentUpon>Form_alermlist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_DispMail.resx">
+      <DependentUpon>Form_DispMail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_incidentDetail.resx">
+      <DependentUpon>Form_incidentDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_KeikakuDetail.resx">
+      <DependentUpon>Form_KeikakuDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_KaisenDetail.resx">
       <DependentUpon>Form_KaisenDetail.cs</DependentUpon>
@@ -255,6 +345,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_MailTempleteInsert.resx">
       <DependentUpon>Form_MailTempleteInsert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_mailTempleteList.resx">
+      <DependentUpon>Form_mailTempleteList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_opeInsert.resx">
       <DependentUpon>Form_opeInsert.cs</DependentUpon>
@@ -292,6 +385,9 @@
     <EmbeddedResource Include="Form_UserTantouInsert.resx">
       <DependentUpon>Form_UserTantouInsert.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_opeDetail.resx">
+      <DependentUpon>Form_opeDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_user_tantou.resx">
       <DependentUpon>Form_user_tantou.cs</DependentUpon>
     </EmbeddedResource>
@@ -303,6 +399,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -319,6 +416,40 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DBDataSet\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="標準サウンド.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Outlook">
+      <Guid>{00062FFF-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>9</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

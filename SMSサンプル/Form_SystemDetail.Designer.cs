@@ -34,6 +34,9 @@
             this.m_selecttext = new System.Windows.Forms.TextBox();
             this.m_selectKoumoku = new System.Windows.Forms.ComboBox();
             this.m_System_List = new System.Windows.Forms.ListView();
+            this.m_userno = new System.Windows.Forms.TextBox();
+            this.m_cutomername = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.m_updateOpe = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.m_update = new System.Windows.Forms.TextBox();
@@ -48,9 +51,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.m_cutomername = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.m_userno = new System.Windows.Forms.TextBox();
+            this.m_deleteBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -76,6 +77,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.m_deleteBtn);
             this.splitContainer1.Panel2.Controls.Add(this.m_userno);
             this.splitContainer1.Panel2.Controls.Add(this.m_cutomername);
             this.splitContainer1.Panel2.Controls.Add(this.label4);
@@ -155,7 +157,33 @@
             this.m_System_List.TabIndex = 1;
             this.m_System_List.UseCompatibleStateImageBehavior = false;
             this.m_System_List.View = System.Windows.Forms.View.Details;
+            this.m_System_List.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_System_List_ColumnClick);
             this.m_System_List.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_Ststem_List_MouseDoubleClick);
+            // 
+            // m_userno
+            // 
+            this.m_userno.Location = new System.Drawing.Point(121, 39);
+            this.m_userno.Name = "m_userno";
+            this.m_userno.ReadOnly = true;
+            this.m_userno.Size = new System.Drawing.Size(45, 19);
+            this.m_userno.TabIndex = 105;
+            // 
+            // m_cutomername
+            // 
+            this.m_cutomername.Location = new System.Drawing.Point(172, 39);
+            this.m_cutomername.Name = "m_cutomername";
+            this.m_cutomername.ReadOnly = true;
+            this.m_cutomername.Size = new System.Drawing.Size(385, 19);
+            this.m_cutomername.TabIndex = 104;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(18, 42);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(52, 12);
+            this.label4.TabIndex = 103;
+            this.label4.Text = "カスタマ名";
             // 
             // m_updateOpe
             // 
@@ -280,30 +308,17 @@
             this.label1.TabIndex = 89;
             this.label1.Text = "システム通番";
             // 
-            // m_cutomername
+            // m_deleteBtn
             // 
-            this.m_cutomername.Location = new System.Drawing.Point(172, 39);
-            this.m_cutomername.Name = "m_cutomername";
-            this.m_cutomername.ReadOnly = true;
-            this.m_cutomername.Size = new System.Drawing.Size(385, 19);
-            this.m_cutomername.TabIndex = 104;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(18, 42);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(52, 12);
-            this.label4.TabIndex = 103;
-            this.label4.Text = "カスタマ名";
-            // 
-            // m_userno
-            // 
-            this.m_userno.Location = new System.Drawing.Point(121, 39);
-            this.m_userno.Name = "m_userno";
-            this.m_userno.ReadOnly = true;
-            this.m_userno.Size = new System.Drawing.Size(45, 19);
-            this.m_userno.TabIndex = 105;
+            this.m_deleteBtn.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.m_deleteBtn.ForeColor = System.Drawing.Color.Red;
+            this.m_deleteBtn.Location = new System.Drawing.Point(748, 11);
+            this.m_deleteBtn.Name = "m_deleteBtn";
+            this.m_deleteBtn.Size = new System.Drawing.Size(76, 27);
+            this.m_deleteBtn.TabIndex = 182;
+            this.m_deleteBtn.Text = "削除";
+            this.m_deleteBtn.UseVisualStyleBackColor = true;
+            this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
             // 
             // Form_SystemDetail
             // 
@@ -353,5 +368,6 @@
         private System.Windows.Forms.TextBox m_cutomername;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox m_userno;
+        private System.Windows.Forms.Button m_deleteBtn;
     }
 }

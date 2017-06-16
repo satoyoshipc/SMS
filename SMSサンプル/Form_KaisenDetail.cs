@@ -27,7 +27,8 @@ namespace SMSサンプル
         //DBコネクション
         public NpgsqlConnection con { get; set; }
 
-
+        //ListViewのソートの際に使用する
+        private Class_ListViewColumnSorter _columnSorter;
 
         public Form_KaisenDetail()
         {
@@ -37,6 +38,8 @@ namespace SMSサンプル
         //表示前処理
         private void Form_InterfaceDetail_Load(object sender, EventArgs e)
         {
+            _columnSorter = new Class_ListViewColumnSorter();
+            m_kaisenList.ListViewItemSorter = _columnSorter;
 
             m_selectKoumoku.Items.Add("回線通番");
             m_selectKoumoku.Items.Add("ステータス");
@@ -110,9 +113,11 @@ namespace SMSサンプル
                         case 0:
                             param_dict["kaisenno"] = m_selecttext.Text;
                             break;
-                        //ホスト名
                         case 1:
-                            param_dict["status"] = m_selecttext.Text;
+                            if (m_selecttext.Text == "無効")
+                                param_dict["status"] = "0";
+                            else if (m_selecttext.Text == "有効")
+                                param_dict["status"] = "1";
                             break;
                         //ホスト名日本
                         case 2:
@@ -310,6 +315,100 @@ namespace SMSサンプル
             kaisendt.chk_name_id = this.m_kaisenList.Items[item[0]].SubItems[13].Text;
             getkaisen(kaisendt);
         }
-        
+        //一覧のカラムをクリックした時
+        private void m_kaisenList_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (e.Column == _columnSorter.SortColumn)
+            {
+                if (_columnSorter.Order == SortOrder.Ascending)
+                {
+                    _columnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    _columnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                _columnSorter.SortColumn = e.Column;
+                _columnSorter.Order = SortOrder.Ascending;
+            }
+            m_kaisenList.Sort();
+        }
+        //削除
+        private void m_deleteBtn_Click(object sender, EventArgs e)
+        {
+            int count = m_kaisenList.SelectedItems.Count;
+
+            //確認メッセージ
+            if (MessageBox.Show("一覧に選択された行 " + count + "件 の削除を行います。" + Environment.NewLine +
+                "よろしいですか？", "回線情報削除", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
+
+
+            int ret = deleteKaisen();
+            if (ret == -1)
+            {
+                return;
+            }
+
+            //リストの表示上からけす
+            foreach (ListViewItem item in m_kaisenList.SelectedItems)
+            {
+                m_kaisenList.Items.Remove(item);
+            }
+        }
+
+        //削除
+        private int deleteKaisen()
+        {
+
+            string kaisenno;
+
+            if (con.FullState != ConnectionState.Open) con.Open();
+
+            string sql = "DELETE FROM kaisen where kaisenno = :no ";
+
+            using (var transaction = con.BeginTransaction())
+            {
+
+                foreach (ListViewItem item in m_kaisenList.SelectedItems)
+                {
+                    kaisenno = item.SubItems[0].Text;
+
+
+                    var command = new NpgsqlCommand(@sql, con);
+                    command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = int.Parse(kaisenno) });
+
+                    Int32 rowsaffected;
+                    try
+                    {
+                        //削除処理
+                        rowsaffected = command.ExecuteNonQuery();
+                        transaction.Commit();
+
+                        if (rowsaffected != 1)
+                        {
+                            MessageBox.Show("削除できませんでした。回線ID:" + kaisenno, "回線情報削除");
+                            transaction.Rollback();
+                            return -1;
+                        }
+                        else {
+                            MessageBox.Show("削除完了しました。回線ID:" + kaisenno, "回線情報削除");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //エラー時メッセージ表示
+                        MessageBox.Show("回線情報削除時エラーが発生しました。 " + ex.Message);
+                        transaction.Rollback();
+                        return -1;
+                    }
+                }
+
+            }
+            return 1;
+        }
     }
 }

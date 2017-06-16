@@ -56,6 +56,7 @@
             this.m_alerm_list.TabIndex = 0;
             this.m_alerm_list.UseCompatibleStateImageBehavior = false;
             this.m_alerm_list.View = System.Windows.Forms.View.Details;
+            this.m_alerm_list.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_alerm_list_ColumnClick);
             this.m_alerm_list.MouseClick += new System.Windows.Forms.MouseEventHandler(this.m_alerm_list_MouseClick);
             this.m_alerm_list.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_alerm_list_MouseDoubleClick);
             // 
@@ -64,12 +65,13 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(15, 145);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 12);
+            this.label1.Size = new System.Drawing.Size(77, 12);
             this.label1.TabIndex = 1;
-            this.label1.Text = "未処理アラーム";
+            this.label1.Text = "未処理タイマー";
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button1.Location = new System.Drawing.Point(379, 359);
             this.button1.Name = "button1";
@@ -81,6 +83,7 @@
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Location = new System.Drawing.Point(459, 359);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(69, 31);
@@ -117,19 +120,23 @@
             // 
             // m_alermtitle
             // 
+            this.m_alermtitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_alermtitle.Location = new System.Drawing.Point(65, 31);
             this.m_alermtitle.Name = "m_alermtitle";
             this.m_alermtitle.ReadOnly = true;
-            this.m_alermtitle.Size = new System.Drawing.Size(395, 19);
+            this.m_alermtitle.Size = new System.Drawing.Size(463, 19);
             this.m_alermtitle.TabIndex = 11;
             // 
             // m_alerm_message
             // 
+            this.m_alerm_message.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_alerm_message.Location = new System.Drawing.Point(12, 102);
             this.m_alerm_message.Multiline = true;
             this.m_alerm_message.Name = "m_alerm_message";
             this.m_alerm_message.ReadOnly = true;
-            this.m_alerm_message.Size = new System.Drawing.Size(448, 39);
+            this.m_alerm_message.Size = new System.Drawing.Size(516, 39);
             this.m_alerm_message.TabIndex = 12;
             // 
             // label5
@@ -139,9 +146,9 @@
             this.label5.ForeColor = System.Drawing.Color.Red;
             this.label5.Location = new System.Drawing.Point(14, 10);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(95, 16);
+            this.label5.Size = new System.Drawing.Size(94, 16);
             this.label5.TabIndex = 13;
-            this.label5.Text = "アラーム情報";
+            this.label5.Text = "タイマー情報";
             // 
             // m_syoriDate
             // 
@@ -162,18 +169,22 @@
             // 
             // m_customer_name
             // 
+            this.m_customer_name.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_customer_name.Location = new System.Drawing.Point(64, 56);
             this.m_customer_name.Name = "m_customer_name";
             this.m_customer_name.ReadOnly = true;
-            this.m_customer_name.Size = new System.Drawing.Size(395, 19);
+            this.m_customer_name.Size = new System.Drawing.Size(463, 19);
             this.m_customer_name.TabIndex = 16;
             // 
             // m_system_name
             // 
+            this.m_system_name.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_system_name.Location = new System.Drawing.Point(65, 79);
             this.m_system_name.Name = "m_system_name";
             this.m_system_name.ReadOnly = true;
-            this.m_system_name.Size = new System.Drawing.Size(395, 19);
+            this.m_system_name.Size = new System.Drawing.Size(463, 19);
             this.m_system_name.TabIndex = 17;
             // 
             // label2
@@ -216,7 +227,8 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.m_alerm_list);
             this.Name = "Form_alermlist";
-            this.Text = "アラーム";
+            this.Text = "タイマー";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_alermlist_FormClosed);
             this.Load += new System.EventHandler(this.Form_alermlist_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

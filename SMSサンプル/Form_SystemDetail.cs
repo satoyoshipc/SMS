@@ -26,6 +26,10 @@ namespace SMSサンプル
         //DBコネクション
         public NpgsqlConnection con { get; set; }
 
+        //ListViewのソートの際に使用する
+        private Class_ListViewColumnSorter _columnSorter;
+
+
         public Form_SystemDetail()
         {
             InitializeComponent();
@@ -41,6 +45,8 @@ namespace SMSサンプル
         //取得したデータを読み取り表示する
         private void Form_SystemDetail_Load(object sender, EventArgs e)
         {
+            _columnSorter = new Class_ListViewColumnSorter();
+            m_System_List.ListViewItemSorter = _columnSorter;
 
             m_selectKoumoku.Items.Add("システム通番");
             m_selectKoumoku.Items.Add("システム名");
@@ -232,6 +238,111 @@ namespace SMSサンプル
                 }
             }
 
+        }
+        //カラムクリックからのソート
+        private void m_System_List_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (e.Column == _columnSorter.SortColumn)
+            {
+                if (_columnSorter.Order == SortOrder.Ascending)
+                {
+                    _columnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    _columnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                _columnSorter.SortColumn = e.Column;
+                _columnSorter.Order = SortOrder.Ascending;
+            }
+            m_System_List.Sort();
+        }
+
+        //削除ボタン
+        private void m_deleteBtn_Click(object sender, EventArgs e)
+        {
+            int count = m_System_List.SelectedItems.Count;
+
+            //確認メッセージ
+            if (MessageBox.Show("一覧に選択された行 " + count + "件 の削除を行います。その際参照している他のテーブルデータも削除されます。" + Environment.NewLine +
+                "よろしいですか？", "システム削除", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+
+                return;
+
+            int ret = deletesystem();
+            if (ret == -1)
+            {
+                return;
+            }
+
+            //リストの表示上からけす
+            foreach (ListViewItem item in m_System_List.SelectedItems)
+            {
+                m_System_List.Items.Remove(item);
+            }
+        }
+        //削除
+        private int deletesystem()
+        {
+
+            string systemno;
+
+            if (con.FullState != ConnectionState.Open) con.Open();
+
+            String sql = "WITH DELETED1 AS (DELETE FROM watch_interface WHERE systemno = :no " +
+                "RETURNING systemno), " +
+                "DELETED2 AS (DELETE FROM host WHERE systemno = :no " +
+                "RETURNING systemno), " +
+                "DELETED3 AS (DELETE FROM site WHERE systemno = :no " +
+                "RETURNING systemno) " +
+                "DELETE FROM system WHERE systemno = :no  ";
+
+            using (var transaction = con.BeginTransaction())
+            {
+                int ret = 0;
+                foreach (ListViewItem item in m_System_List.SelectedItems)
+                {
+                    systemno = item.SubItems[0].Text;
+
+
+                    var command = new NpgsqlCommand(@sql, con);
+                    command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = int.Parse(systemno) });
+
+                    Int32 rowsaffected;
+                    try
+                    {
+                        //削除処理
+                        rowsaffected = command.ExecuteNonQuery();
+
+                        if (rowsaffected < 1)
+                        {
+                            MessageBox.Show("削除できませんでした。システム通番:" + systemno, "システム情報削除");
+                            transaction.Rollback();
+                            return -1;
+                        }
+                        else {
+                            ret = 1;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //エラー時メッセージ表示
+                        MessageBox.Show("システム情報削除時エラーが発生しました。 " + ex.Message);
+                        if (transaction.Connection != null) transaction.Rollback();
+                        return -1;
+                    }
+                }
+                if (ret == 1)
+                {
+                    MessageBox.Show("削除完了しました。", "システム情報削除");
+                    transaction.Commit();
+
+                }
+            }
+            return 1;
         }
     }
 }

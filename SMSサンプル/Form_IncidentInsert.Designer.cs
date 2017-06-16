@@ -69,11 +69,11 @@
             this.m_systemno = new System.Windows.Forms.TextBox();
             this.m_systemCombo = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.m_timerpicker = new System.Windows.Forms.DateTimePicker();
             this.label14 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.m_kakunin = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.m_timerpicker = new System.Windows.Forms.DateTimePicker();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -157,7 +157,7 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(387, 560);
+            this.button3.Location = new System.Drawing.Point(389, 560);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
             this.button3.TabIndex = 18;
@@ -490,6 +490,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "タイマー登録";
             // 
+            // m_timerpicker
+            // 
+            this.m_timerpicker.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
+            this.m_timerpicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.m_timerpicker.Location = new System.Drawing.Point(131, 18);
+            this.m_timerpicker.Name = "m_timerpicker";
+            this.m_timerpicker.Size = new System.Drawing.Size(176, 19);
+            this.m_timerpicker.TabIndex = 186;
+            this.m_timerpicker.ValueChanged += new System.EventHandler(this.m_timerpicker_ValueChanged);
+            this.m_timerpicker.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_timerpicker_KeyDown);
+            // 
             // label14
             // 
             this.label14.AutoSize = true;
@@ -525,17 +536,6 @@
             this.label15.Size = new System.Drawing.Size(41, 12);
             this.label15.TabIndex = 182;
             this.label15.Text = "タイマー";
-            // 
-            // m_timerpicker
-            // 
-            this.m_timerpicker.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
-            this.m_timerpicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_timerpicker.Location = new System.Drawing.Point(131, 18);
-            this.m_timerpicker.Name = "m_timerpicker";
-            this.m_timerpicker.Size = new System.Drawing.Size(176, 19);
-            this.m_timerpicker.TabIndex = 186;
-            this.m_timerpicker.ValueChanged += new System.EventHandler(this.m_timerpicker_ValueChanged);
-            this.m_timerpicker.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_timerpicker_KeyDown);
             // 
             // Form_IncidentInsert
             // 

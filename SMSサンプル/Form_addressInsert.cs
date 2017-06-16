@@ -24,8 +24,7 @@ namespace SMSサンプル
 
         public string username { get; set; }
 
-
-
+       
         public Form_addressInsert()
         {
             InitializeComponent();
@@ -33,26 +32,21 @@ namespace SMSサンプル
         //表示前処理
         private void Form_addressInsert_Load(object sender, EventArgs e)
         {
+
             m_idlabel.Text = loginDS.opeid;
             m_labelinputOpe.Text = loginDS.lastname + loginDS.fastname;
 
             //区分
             //1:オペレータ 2:カスタマ担当者
             if (kbn == 1)
-            {
                 m_Customerkbn_combo.SelectedIndex = 0;
 
-            }
             else if(kbn == 2)
-            {
-
                 m_Customerkbn_combo.SelectedIndex = 1;
+                
 
-            }
-            //
             m_opeID.Text = userid;
             m_opename.Text = username;
-
         }
         //登録ボタン
         private void button3_Click(object sender, EventArgs e)
@@ -82,9 +76,17 @@ namespace SMSサンプル
             if (MessageBox.Show("メールアドレスを登録します。よろしいですか?", "メールアドレス登録", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
 
-            if(m_Customerkbn_combo.SelectedIndex == 0)
-            {
+            string kbn = "";
 
+            if (m_Customerkbn_combo.SelectedIndex == 0)
+            {
+                //オペレータ
+                kbn = "1";
+            }
+            else
+            {   
+                //カスタマ
+                kbn = "2";
             }
             NpgsqlCommand cmd;
 
@@ -95,7 +97,7 @@ namespace SMSサンプル
                 //データ登録
                 cmd = new NpgsqlCommand(@"insert into mailaddress(kubun,opetantouno,addressno,mailaddress,addressname,chk_name_id) 
                         values ( :kubun,:opetantouno,:addressno,:mailaddress,:addressname,:chk_name_id)" , con);
-                cmd.Parameters.Add(new NpgsqlParameter("kubun", DbType.String) { Value = m_Customerkbn_combo.SelectedIndex });
+                cmd.Parameters.Add(new NpgsqlParameter("kubun", DbType.String) { Value = kbn });
                 cmd.Parameters.Add(new NpgsqlParameter("opetantouno", DbType.Int32) { Value = m_opeID.Text });
                 cmd.Parameters.Add(new NpgsqlParameter("addressno", DbType.Int32) { Value = m_addressno.Text });
                 cmd.Parameters.Add(new NpgsqlParameter("mailaddress", DbType.String) { Value = m_address.Text });
@@ -103,7 +105,6 @@ namespace SMSサンプル
                 cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
                 
                 rowsaffected = cmd.ExecuteNonQuery();
-
 
                 if (rowsaffected != 1)
                 {
@@ -128,10 +129,22 @@ namespace SMSサンプル
         //キャンセルボタン
         private void button2_Click(object sender, EventArgs e)
         {
-
             this.Close();
         }
+        //数字の未入力可にする
+        private void m_opeID_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if('0' <= e.KeyChar &&  e.KeyChar <= '9' )
+            {
+            }
+            else if(e.KeyChar == '\b')
+            {
+            }
+            else
+            {
+                e.Handled = true;
+            }
 
-
+        }
     }
 }

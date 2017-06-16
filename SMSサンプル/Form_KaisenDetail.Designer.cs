@@ -57,6 +57,9 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_kaisenList = new System.Windows.Forms.ListView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.m_deleteBtn = new System.Windows.Forms.Button();
+            this.m_serviceType = new System.Windows.Forms.TextBox();
+            this.m_isp = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.m_kaisenno = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
@@ -66,8 +69,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.m_kaisenID = new System.Windows.Forms.TextBox();
             this.m_siteno = new System.Windows.Forms.TextBox();
-            this.m_serviceType = new System.Windows.Forms.TextBox();
-            this.m_isp = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -93,7 +94,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(481, 38);
+            this.label12.Location = new System.Drawing.Point(481, 56);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(43, 12);
             this.label12.TabIndex = 116;
@@ -101,7 +102,7 @@
             // 
             // m_systemno
             // 
-            this.m_systemno.Location = new System.Drawing.Point(537, 35);
+            this.m_systemno.Location = new System.Drawing.Point(537, 53);
             this.m_systemno.Name = "m_systemno";
             this.m_systemno.ReadOnly = true;
             this.m_systemno.Size = new System.Drawing.Size(45, 19);
@@ -109,7 +110,7 @@
             // 
             // m_systemname
             // 
-            this.m_systemname.Location = new System.Drawing.Point(588, 35);
+            this.m_systemname.Location = new System.Drawing.Point(588, 53);
             this.m_systemname.Name = "m_systemname";
             this.m_systemname.ReadOnly = true;
             this.m_systemname.Size = new System.Drawing.Size(182, 19);
@@ -337,6 +338,7 @@
             this.m_kaisenList.TabIndex = 0;
             this.m_kaisenList.UseCompatibleStateImageBehavior = false;
             this.m_kaisenList.View = System.Windows.Forms.View.Details;
+            this.m_kaisenList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_kaisenList_ColumnClick);
             this.m_kaisenList.DoubleClick += new System.EventHandler(this.m_host_List_DoubleClick);
             // 
             // splitContainer1
@@ -353,6 +355,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.m_deleteBtn);
             this.splitContainer1.Panel2.Controls.Add(this.m_serviceType);
             this.splitContainer1.Panel2.Controls.Add(this.m_isp);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
@@ -390,6 +393,33 @@
             this.splitContainer1.Size = new System.Drawing.Size(799, 554);
             this.splitContainer1.SplitterDistance = 246;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // m_deleteBtn
+            // 
+            this.m_deleteBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_deleteBtn.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.m_deleteBtn.ForeColor = System.Drawing.Color.Red;
+            this.m_deleteBtn.Location = new System.Drawing.Point(678, 8);
+            this.m_deleteBtn.Name = "m_deleteBtn";
+            this.m_deleteBtn.Size = new System.Drawing.Size(92, 33);
+            this.m_deleteBtn.TabIndex = 179;
+            this.m_deleteBtn.Text = "削除";
+            this.m_deleteBtn.UseVisualStyleBackColor = true;
+            this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
+            // 
+            // m_serviceType
+            // 
+            this.m_serviceType.Location = new System.Drawing.Point(140, 207);
+            this.m_serviceType.Name = "m_serviceType";
+            this.m_serviceType.Size = new System.Drawing.Size(325, 19);
+            this.m_serviceType.TabIndex = 5;
+            // 
+            // m_isp
+            // 
+            this.m_isp.Location = new System.Drawing.Point(140, 184);
+            this.m_isp.Name = "m_isp";
+            this.m_isp.Size = new System.Drawing.Size(325, 19);
+            this.m_isp.TabIndex = 4;
             // 
             // label1
             // 
@@ -466,20 +496,6 @@
             this.m_siteno.Size = new System.Drawing.Size(47, 19);
             this.m_siteno.TabIndex = 118;
             // 
-            // m_serviceType
-            // 
-            this.m_serviceType.Location = new System.Drawing.Point(140, 207);
-            this.m_serviceType.Name = "m_serviceType";
-            this.m_serviceType.Size = new System.Drawing.Size(325, 19);
-            this.m_serviceType.TabIndex = 5;
-            // 
-            // m_isp
-            // 
-            this.m_isp.Location = new System.Drawing.Point(140, 184);
-            this.m_isp.Name = "m_isp";
-            this.m_isp.Size = new System.Drawing.Size(325, 19);
-            this.m_isp.TabIndex = 4;
-            // 
             // Form_KaisenDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -545,5 +561,6 @@
         private System.Windows.Forms.TextBox m_kaisenno;
         private System.Windows.Forms.TextBox m_serviceType;
         private System.Windows.Forms.TextBox m_isp;
+        private System.Windows.Forms.Button m_deleteBtn;
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SMSサンプル
 {
-    class scheduleDS
+    public class scheduleDS
     {
         public String schedule_no { get; set; }
         public String timer_name { get; set; }
@@ -19,11 +19,11 @@ namespace SMSサンプル
             get
             {
                 string retstr = "";
-                if (_status == "0")
+                if (_status == "1")
 
                     retstr = "未完了";
 
-                else if (_status == "1")
+                else if (_status == "0")
 
                     retstr = "完了";
 
@@ -31,24 +31,8 @@ namespace SMSサンプル
             }
             set { this._status = value; }
         }
-        private string _repeat_type;
-        public String repeat_type
-        {
-            get
-            {
-                string retstr = "";
-                if (_repeat_type == "0")
 
-                    retstr = "無効";
-
-                else if (_repeat_type == "1")
-
-                    retstr = "有効";
-
-                return retstr;
-            }
-            set { this._repeat_type = value; }
-        }
+        public String repeat_type { get; set; }
         public String sound { get; set; }
         public String incident_no { get; set; }
         public String kakunin { get; set; }
@@ -56,9 +40,12 @@ namespace SMSサンプル
         public String username { get; set; }
         public String systemno { get; set; }
         public String systemname { get; set; }
+        public String siteno { get; set; }
+        public String sitename { get; set; }
         public String alerm_message { get; set; }
         public String chk_date { get; set; }
         public String chk_name_id { get; set; }
+        public String alertdate { get; set; }
 
     }
 }

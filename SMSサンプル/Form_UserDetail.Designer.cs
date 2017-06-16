@@ -34,6 +34,9 @@
             this.m_selecttext = new System.Windows.Forms.TextBox();
             this.m_selectKoumoku = new System.Windows.Forms.ComboBox();
             this.m_Customer_List = new System.Windows.Forms.ListView();
+            this.m_deleteBtn = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.m_tantouList = new System.Windows.Forms.ListView();
             this.m_updateOpe = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.m_update = new System.Windows.Forms.TextBox();
@@ -54,8 +57,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.m_tantouList = new System.Windows.Forms.ListView();
-            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -81,6 +82,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.m_deleteBtn);
             this.splitContainer1.Panel2.Controls.Add(this.label10);
             this.splitContainer1.Panel2.Controls.Add(this.m_tantouList);
             this.splitContainer1.Panel2.Controls.Add(this.m_updateOpe);
@@ -165,11 +167,49 @@
             this.m_Customer_List.TabIndex = 1;
             this.m_Customer_List.UseCompatibleStateImageBehavior = false;
             this.m_Customer_List.View = System.Windows.Forms.View.Details;
+            this.m_Customer_List.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_Customer_List_ColumnClick);
             this.m_Customer_List.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_Customer_List_MouseDoubleClick);
+            // 
+            // m_deleteBtn
+            // 
+            this.m_deleteBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_deleteBtn.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.m_deleteBtn.ForeColor = System.Drawing.Color.Red;
+            this.m_deleteBtn.Location = new System.Drawing.Point(741, 6);
+            this.m_deleteBtn.Name = "m_deleteBtn";
+            this.m_deleteBtn.Size = new System.Drawing.Size(92, 33);
+            this.m_deleteBtn.TabIndex = 181;
+            this.m_deleteBtn.Text = "削除";
+            this.m_deleteBtn.UseVisualStyleBackColor = true;
+            this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(11, 170);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(41, 12);
+            this.label10.TabIndex = 76;
+            this.label10.Text = "担当者";
+            // 
+            // m_tantouList
+            // 
+            this.m_tantouList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_tantouList.GridLines = true;
+            this.m_tantouList.Location = new System.Drawing.Point(11, 185);
+            this.m_tantouList.Name = "m_tantouList";
+            this.m_tantouList.Size = new System.Drawing.Size(822, 108);
+            this.m_tantouList.TabIndex = 75;
+            this.m_tantouList.UseCompatibleStateImageBehavior = false;
+            this.m_tantouList.View = System.Windows.Forms.View.Details;
+            this.m_tantouList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_tantouList_MouseDoubleClick);
             // 
             // m_updateOpe
             // 
-            this.m_updateOpe.Location = new System.Drawing.Point(631, 55);
+            this.m_updateOpe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_updateOpe.Location = new System.Drawing.Point(632, 150);
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
             this.m_updateOpe.Size = new System.Drawing.Size(166, 19);
@@ -178,8 +218,9 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(572, 58);
+            this.label6.Location = new System.Drawing.Point(573, 153);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 12);
             this.label6.TabIndex = 73;
@@ -187,7 +228,8 @@
             // 
             // m_update
             // 
-            this.m_update.Location = new System.Drawing.Point(631, 27);
+            this.m_update.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_update.Location = new System.Drawing.Point(632, 122);
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
             this.m_update.Size = new System.Drawing.Size(166, 19);
@@ -196,8 +238,9 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(572, 31);
+            this.label5.Location = new System.Drawing.Point(573, 126);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 71;
@@ -229,6 +272,7 @@
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Location = new System.Drawing.Point(757, 299);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(76, 33);
@@ -239,6 +283,7 @@
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(675, 299);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(76, 33);
@@ -249,6 +294,8 @@
             // 
             // m_biko
             // 
+            this.m_biko.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_biko.Location = new System.Drawing.Point(114, 130);
             this.m_biko.Multiline = true;
             this.m_biko.Name = "m_biko";
@@ -266,6 +313,8 @@
             // 
             // m_username_Ryaku
             // 
+            this.m_username_Ryaku.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_username_Ryaku.Location = new System.Drawing.Point(114, 79);
             this.m_username_Ryaku.Name = "m_username_Ryaku";
             this.m_username_Ryaku.Size = new System.Drawing.Size(436, 19);
@@ -273,6 +322,8 @@
             // 
             // m_username_kana
             // 
+            this.m_username_kana.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_username_kana.Location = new System.Drawing.Point(114, 55);
             this.m_username_kana.Name = "m_username_kana";
             this.m_username_kana.Size = new System.Drawing.Size(436, 19);
@@ -280,6 +331,8 @@
             // 
             // m_username
             // 
+            this.m_username.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_username.Location = new System.Drawing.Point(114, 30);
             this.m_username.Name = "m_username";
             this.m_username.Size = new System.Drawing.Size(436, 19);
@@ -348,26 +401,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "カスタマ通番";
             // 
-            // m_tantouList
-            // 
-            this.m_tantouList.GridLines = true;
-            this.m_tantouList.Location = new System.Drawing.Point(11, 185);
-            this.m_tantouList.Name = "m_tantouList";
-            this.m_tantouList.Size = new System.Drawing.Size(822, 108);
-            this.m_tantouList.TabIndex = 75;
-            this.m_tantouList.UseCompatibleStateImageBehavior = false;
-            this.m_tantouList.View = System.Windows.Forms.View.Details;
-            this.m_tantouList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_tantouList_MouseDoubleClick);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(11, 170);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(41, 12);
-            this.label10.TabIndex = 76;
-            this.label10.Text = "担当者";
-            // 
             // Form_UserDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -421,5 +454,6 @@
         private System.Windows.Forms.ComboBox m_selectKoumoku;
         private System.Windows.Forms.ListView m_tantouList;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button m_deleteBtn;
     }
 }

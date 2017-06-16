@@ -120,7 +120,10 @@ namespace SMSサンプル
             m_selectCombo.Items.Add("更新者ID");
 
             user_tanntou_Disp(tantoudt);
-            
+            //アドレスを表示
+            opeAddress();
+
+
         }
         //カスタマ担当者の表示
         private void user_tanntou_Disp(tantouDS tantoudt)
@@ -165,9 +168,59 @@ namespace SMSサンプル
                 tantoudt.status = "1";
             else
                 tantoudt.status = "0";
-
+            
+            //担当者番号
             user_tanntou_Disp(tantoudt);
+
+            //アドレスを表示
+            opeAddress();
+
+
         }
+
+        //アドレス
+        private void opeAddress()
+        {
+            m_addressslist.Clear();
+
+            Class_Detaget dg = new Class_Detaget();
+            List<MailaddressDS> addressList = new List<MailaddressDS>();
+            Dictionary<string, string> param_dict = new Dictionary<string, string>();
+            param_dict["opetantouno"] = m_tantouno.Text;
+
+            //アドレスを取得
+            addressList = dg.selectMailList_Tantou(param_dict, con);
+
+            this.m_addressslist.FullRowSelect = true;
+            this.m_addressslist.HideSelection = false;
+            this.m_addressslist.HeaderStyle = ColumnHeaderStyle.Clickable;
+
+            this.m_addressslist.Columns.Insert(0, "アドレス番号", 50, HorizontalAlignment.Left);
+            this.m_addressslist.Columns.Insert(1, "メールアドレス", 150, HorizontalAlignment.Left);
+            this.m_addressslist.Columns.Insert(2, "アドレス名", 150, HorizontalAlignment.Left);
+            this.m_addressslist.Columns.Insert(3, "更新日時", 120, HorizontalAlignment.Left);
+            this.m_addressslist.Columns.Insert(4, "更新者", 120, HorizontalAlignment.Left);
+
+            //リストに表示
+            if (addressList != null)
+            {
+                foreach (MailaddressDS ad_ds in addressList)
+                {
+
+                    ListViewItem itemx1 = new ListViewItem();
+                    itemx1.Text = ad_ds.addressNo;
+
+                    itemx1.SubItems.Add(ad_ds.mailAddress);
+                    itemx1.SubItems.Add(ad_ds.addressname);
+                    itemx1.SubItems.Add(ad_ds.chk_date);
+                    itemx1.SubItems.Add(ad_ds.chk_name_id);
+
+                    this.m_addressslist.Items.Add(itemx1);
+                }
+            }
+
+        }
+
 
         //検索ボタン
         private void m_select_btn_Click(object sender, EventArgs e)
@@ -211,7 +264,11 @@ namespace SMSサンプル
                             break;
 
                         case 7:
-                            param_dict["status"] = m_selecttext.Text;
+                            if (m_selecttext.Text == "無効")
+                                param_dict["status"] = "0";
+                            else if (m_selecttext.Text == "有効")
+                                param_dict["status"] = "1";
+
                             break;
                         case 8:
                             param_dict["biko"] = m_selecttext.Text;
@@ -275,6 +332,121 @@ namespace SMSサンプル
                     this.m_customertantouList.Items.Add(itemx1);
                 }
             }
+        }
+
+        //削除ボタン
+        private void m_deleteBtn_Click(object sender, EventArgs e)
+        {
+            int count = m_customertantouList.SelectedItems.Count;
+
+            //確認メッセージ
+            if (MessageBox.Show("一覧に選択された行 " + count + "件 の削除を行います。" + Environment.NewLine +
+                "よろしいですか？", "カスタマ担当者削除", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+
+                return;
+
+
+            int ret = deleteCustomer();
+            if (ret == -1)
+            {
+                return;
+            }
+
+            //リストの表示上からけす
+            foreach (ListViewItem item in m_customertantouList.SelectedItems)
+            {
+                m_customertantouList.Items.Remove(item);
+            }
+        }
+        //削除
+        private int deleteCustomer()
+        {
+
+            string user_tantou_no;
+            int ret = 0;
+            if (con.FullState != ConnectionState.Open) con.Open();
+
+            string sql = "DELETE FROM user_tanntou where user_tantou_no = :no";
+
+            using (var transaction = con.BeginTransaction())
+            {
+                foreach (ListViewItem item in m_customertantouList.SelectedItems)
+                {
+                    user_tantou_no = item.SubItems[0].Text;
+
+
+                    var command = new NpgsqlCommand(@sql, con);
+                    command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = int.Parse(user_tantou_no) });
+
+                    Int32 rowsaffected;
+                    try
+                    {
+                        //削除処理
+                        rowsaffected = command.ExecuteNonQuery();
+                        
+
+                        if (rowsaffected < 1)
+                        {
+                            MessageBox.Show("削除できませんでした。カスタマ担当者通番:" + user_tantou_no, "カスタマ担当者削除");
+                            transaction.Rollback();
+                            return -1;
+                        }
+                        else {
+
+                            ret = 1;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //エラー時メッセージ表示
+                        MessageBox.Show("カスタマ担当者削除時エラーが発生しました。 " + ex.Message);
+                        if (transaction.Connection != null) transaction.Rollback();
+                        return -1;
+                    }
+                }
+                if (ret==1)
+                {
+                    MessageBox.Show("削除完了しました。", "カスタマ担当者削除");
+                    transaction.Commit();
+                }
+            }
+            return 1;
+
+        }
+        //メールアドレス追加ボタン
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form_addressInsert addressIns = new Form_addressInsert();
+            addressIns.con = con;
+            addressIns.kbn = 2;
+            addressIns.userid = m_tantouno.Text;
+            addressIns.username = m_tantouname.Text;
+            addressIns.loginDS = loginDS;
+            addressIns.Show();
+        }
+
+        private void m_addressslist_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            ListView.SelectedIndexCollection item = m_addressslist.SelectedIndices;
+
+            Form_mailDetail addressDetail = new Form_mailDetail();
+            addressDetail.con = con;
+
+
+            MailaddressDS mailDt = new MailaddressDS();
+
+            mailDt.kubun = "2";
+            mailDt.opetantouno = this.m_tantouno.Text;
+            mailDt.addressNo = this.m_addressslist.Items[item[0]].SubItems[0].Text;
+            //mailDt.userno = this.m_addressslist.Items[item[0]].SubItems[1].Text;
+            mailDt.mailAddress = this.m_addressslist.Items[item[0]].SubItems[1].Text;
+            mailDt.addressname = this.m_addressslist.Items[item[0]].SubItems[2].Text;
+            mailDt.chk_date = this.m_addressslist.Items[item[0]].SubItems[3].Text;
+            mailDt.chk_name_id = this.m_addressslist.Items[item[0]].SubItems[4].Text;
+
+            addressDetail.addresssDS = mailDt;
+            addressDetail.loginDS = loginDS;
+            addressDetail.Show();
         }
     }
 }

@@ -10,15 +10,18 @@ namespace SMSサンプル
 {
     class Class_common
     {
+
         //DB接続
-        public NpgsqlConnection DB_connection() { 
+        public NpgsqlConnection DB_connection() {
 
             StringBuilder sb = new StringBuilder();
-            sb.Append("Server=192.168.12.8;");
-            sb.Append("Port=5432;");
-            sb.Append("User Id=smartwatch;");
-            sb.Append("Password=smartwatch;");
-            sb.Append("Database=SMS_DB");
+
+            sb.Append("Server=" + System.Configuration.ConfigurationManager.AppSettings["dbserverip"] + "; ");
+            sb.Append("Port=" + System.Configuration.ConfigurationManager.AppSettings["port"] + ";");
+            sb.Append("User Id=" + System.Configuration.ConfigurationManager.AppSettings["userid"] + ";");
+            sb.Append("Password=" + System.Configuration.ConfigurationManager.AppSettings["password"] + ";");
+            sb.Append("Database=" + System.Configuration.ConfigurationManager.AppSettings["dbname"]);
+
             NpgsqlConnection con = null;
 
             String connString = sb.ToString();
@@ -30,7 +33,6 @@ namespace SMSサンプル
                 MessageBox.Show("DB接続エラー" + ex.Message);
             }
             return con;
-
         }
         //ファイル選択ダイアログを表示
         public string Disp_FileSelectDlg(string file_extention = "*")

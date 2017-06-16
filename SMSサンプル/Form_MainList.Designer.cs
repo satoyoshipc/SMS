@@ -32,14 +32,24 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_MainList));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.button3 = new System.Windows.Forms.Button();
             this.m_opename = new System.Windows.Forms.TextBox();
             this.m_refresh_btn = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.linkLabel9 = new System.Windows.Forms.LinkLabel();
+            this.label16 = new System.Windows.Forms.Label();
+            this.m_tokubetu_list = new System.Windows.Forms.ListView();
+            this.keikakuContext = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.StatusChenge = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_printBtn = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
             this.linkLabel8 = new System.Windows.Forms.LinkLabel();
             this.label14 = new System.Windows.Forms.Label();
             this.m_teiki_List = new System.Windows.Forms.ListView();
+            this.teikiContext = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.linkLabel7 = new System.Windows.Forms.LinkLabel();
             this.label13 = new System.Windows.Forms.Label();
             this.m_incident_List = new System.Windows.Forms.ListView();
@@ -48,6 +58,7 @@
             this.m_keikaku_list = new System.Windows.Forms.ListView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.button1 = new System.Windows.Forms.Button();
             this.m_incidentTouroku = new System.Windows.Forms.Button();
             this.m_tourokuBtn = new System.Windows.Forms.Button();
             this.m_clear_btn = new System.Windows.Forms.Button();
@@ -76,7 +87,7 @@
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.label9 = new System.Windows.Forms.Label();
-            this.hostList = new System.Windows.Forms.ListView();
+            this.m_host_list = new System.Windows.Forms.ListView();
             this.linkLabel6 = new System.Windows.Forms.LinkLabel();
             this.linkLabel5 = new System.Windows.Forms.LinkLabel();
             this.label11 = new System.Windows.Forms.Label();
@@ -86,6 +97,13 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tokubetuContext = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.print_incident = new System.Windows.Forms.LinkLabel();
+            this.print_keikaku = new System.Windows.Forms.LinkLabel();
+            this.print_tokubetu = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -96,6 +114,8 @@
             this.splitContainer2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.keikakuContext.SuspendLayout();
+            this.teikiContext.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
@@ -113,6 +133,8 @@
             this.splitContainer6.Panel1.SuspendLayout();
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
+            this.tokubetuContext.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -131,7 +153,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Panel2.Controls.Add(this.splitter1);
             this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(1158, 687);
+            this.splitContainer1.Size = new System.Drawing.Size(1158, 764);
             this.splitContainer1.SplitterDistance = 168;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -144,15 +166,26 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.button3);
             this.splitContainer2.Panel1.Controls.Add(this.m_opename);
             this.splitContainer2.Panel1.Controls.Add(this.m_refresh_btn);
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.treeView1);
-            this.splitContainer2.Size = new System.Drawing.Size(164, 683);
-            this.splitContainer2.SplitterDistance = 48;
+            this.splitContainer2.Size = new System.Drawing.Size(164, 760);
+            this.splitContainer2.SplitterDistance = 53;
             this.splitContainer2.TabIndex = 1;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(3, 25);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(93, 20);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "全ノード展開";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // m_opename
             // 
@@ -167,9 +200,9 @@
             // 
             // m_refresh_btn
             // 
-            this.m_refresh_btn.Location = new System.Drawing.Point(7, 25);
+            this.m_refresh_btn.Location = new System.Drawing.Point(102, 25);
             this.m_refresh_btn.Name = "m_refresh_btn";
-            this.m_refresh_btn.Size = new System.Drawing.Size(75, 20);
+            this.m_refresh_btn.Size = new System.Drawing.Size(53, 20);
             this.m_refresh_btn.TabIndex = 0;
             this.m_refresh_btn.Text = "更新";
             this.m_refresh_btn.UseVisualStyleBackColor = true;
@@ -180,7 +213,7 @@
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(164, 631);
+            this.treeView1.Size = new System.Drawing.Size(164, 703);
             this.treeView1.TabIndex = 1;
             this.treeView1.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeExpand);
             this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
@@ -193,11 +226,19 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(982, 680);
+            this.tabControl1.Size = new System.Drawing.Size(982, 757);
             this.tabControl1.TabIndex = 186;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.print_tokubetu);
+            this.tabPage1.Controls.Add(this.print_keikaku);
+            this.tabPage1.Controls.Add(this.print_incident);
+            this.tabPage1.Controls.Add(this.linkLabel9);
+            this.tabPage1.Controls.Add(this.label16);
+            this.tabPage1.Controls.Add(this.m_tokubetu_list);
+            this.tabPage1.Controls.Add(this.m_printBtn);
+            this.tabPage1.Controls.Add(this.label15);
             this.tabPage1.Controls.Add(this.linkLabel8);
             this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.m_teiki_List);
@@ -210,10 +251,84 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(974, 654);
+            this.tabPage1.Size = new System.Drawing.Size(974, 731);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "タイマー情報";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // linkLabel9
+            // 
+            this.linkLabel9.AutoSize = true;
+            this.linkLabel9.Location = new System.Drawing.Point(111, 580);
+            this.linkLabel9.Name = "linkLabel9";
+            this.linkLabel9.Size = new System.Drawing.Size(29, 12);
+            this.linkLabel9.TabIndex = 200;
+            this.linkLabel9.TabStop = true;
+            this.linkLabel9.Text = "登録";
+            this.linkLabel9.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel9_LinkClicked);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 580);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(53, 12);
+            this.label16.TabIndex = 199;
+            this.label16.Text = "特別対応";
+            // 
+            // m_tokubetu_list
+            // 
+            this.m_tokubetu_list.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_tokubetu_list.ContextMenuStrip = this.keikakuContext;
+            this.m_tokubetu_list.GridLines = true;
+            this.m_tokubetu_list.Location = new System.Drawing.Point(10, 595);
+            this.m_tokubetu_list.Name = "m_tokubetu_list";
+            this.m_tokubetu_list.Size = new System.Drawing.Size(957, 138);
+            this.m_tokubetu_list.TabIndex = 198;
+            this.m_tokubetu_list.UseCompatibleStateImageBehavior = false;
+            this.m_tokubetu_list.View = System.Windows.Forms.View.Details;
+            this.m_tokubetu_list.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_tokubetu_list_ColumnClick);
+            this.m_tokubetu_list.MouseClick += new System.Windows.Forms.MouseEventHandler(this.m_tokubetu_list_MouseClick);
+            this.m_tokubetu_list.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_tokubetu_list_MouseDoubleClick);
+            // 
+            // keikakuContext
+            // 
+            this.keikakuContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusChenge});
+            this.keikakuContext.Name = "keikakuContext";
+            this.keikakuContext.ShowImageMargin = false;
+            this.keikakuContext.Size = new System.Drawing.Size(76, 26);
+            this.keikakuContext.Text = "ステータス変更";
+            this.keikakuContext.Click += new System.EventHandler(this.keikakuContext_Click);
+            this.keikakuContext.MouseUp += new System.Windows.Forms.MouseEventHandler(this.keikakuContext_MouseUp);
+            // 
+            // StatusChenge
+            // 
+            this.StatusChenge.Name = "StatusChenge";
+            this.StatusChenge.Size = new System.Drawing.Size(75, 22);
+            this.StatusChenge.Text = "変更";
+            this.StatusChenge.Click += new System.EventHandler(this.StatusChenge_Click);
+            // 
+            // m_printBtn
+            // 
+            this.m_printBtn.Location = new System.Drawing.Point(867, 4);
+            this.m_printBtn.Name = "m_printBtn";
+            this.m_printBtn.Size = new System.Drawing.Size(100, 20);
+            this.m_printBtn.TabIndex = 197;
+            this.m_printBtn.Text = "作業印刷";
+            this.m_printBtn.UseVisualStyleBackColor = true;
+            this.m_printBtn.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.ForeColor = System.Drawing.Color.Red;
+            this.label15.Location = new System.Drawing.Point(230, 10);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(241, 12);
+            this.label15.TabIndex = 196;
+            this.label15.Text = "開始日を過ぎており、未完了のものを表示します。";
             // 
             // linkLabel8
             // 
@@ -239,13 +354,33 @@
             // 
             this.m_teiki_List.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_teiki_List.ContextMenuStrip = this.teikiContext;
             this.m_teiki_List.GridLines = true;
             this.m_teiki_List.Location = new System.Drawing.Point(8, 208);
             this.m_teiki_List.Name = "m_teiki_List";
-            this.m_teiki_List.Size = new System.Drawing.Size(960, 185);
+            this.m_teiki_List.Size = new System.Drawing.Size(960, 165);
             this.m_teiki_List.TabIndex = 193;
             this.m_teiki_List.UseCompatibleStateImageBehavior = false;
             this.m_teiki_List.View = System.Windows.Forms.View.Details;
+            this.m_teiki_List.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_teiki_List_ColumnClick);
+            this.m_teiki_List.MouseClick += new System.Windows.Forms.MouseEventHandler(this.m_teiki_List_MouseClick);
+            this.m_teiki_List.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_teiki_List_MouseDoubleClick);
+            // 
+            // teikiContext
+            // 
+            this.teikiContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.teikiContext.Name = "keikakuContext";
+            this.teikiContext.ShowImageMargin = false;
+            this.teikiContext.Size = new System.Drawing.Size(76, 26);
+            this.teikiContext.Text = "ステータス変更";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(75, 22);
+            this.toolStripMenuItem1.Text = "変更";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // linkLabel7
             // 
@@ -278,11 +413,13 @@
             this.m_incident_List.TabIndex = 190;
             this.m_incident_List.UseCompatibleStateImageBehavior = false;
             this.m_incident_List.View = System.Windows.Forms.View.Details;
+            this.m_incident_List.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_incident_List_ColumnClick);
+            this.m_incident_List.DoubleClick += new System.EventHandler(this.m_incident_List_DoubleClick);
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(111, 412);
+            this.linkLabel1.Location = new System.Drawing.Point(111, 385);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(29, 12);
             this.linkLabel1.TabIndex = 189;
@@ -293,7 +430,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(6, 412);
+            this.label12.Location = new System.Drawing.Point(6, 385);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(53, 12);
             this.label12.TabIndex = 188;
@@ -303,13 +440,17 @@
             // 
             this.m_keikaku_list.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_keikaku_list.ContextMenuStrip = this.keikakuContext;
             this.m_keikaku_list.GridLines = true;
-            this.m_keikaku_list.Location = new System.Drawing.Point(10, 427);
+            this.m_keikaku_list.Location = new System.Drawing.Point(10, 400);
             this.m_keikaku_list.Name = "m_keikaku_list";
-            this.m_keikaku_list.Size = new System.Drawing.Size(957, 196);
+            this.m_keikaku_list.Size = new System.Drawing.Size(957, 170);
             this.m_keikaku_list.TabIndex = 187;
             this.m_keikaku_list.UseCompatibleStateImageBehavior = false;
             this.m_keikaku_list.View = System.Windows.Forms.View.Details;
+            this.m_keikaku_list.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_keikaku_list_ColumnClick);
+            this.m_keikaku_list.MouseClick += new System.Windows.Forms.MouseEventHandler(this.m_keikaku_list_MouseClick);
+            this.m_keikaku_list.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_keikaku_list_MouseDoubleClick);
             // 
             // tabPage2
             // 
@@ -317,7 +458,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(974, 654);
+            this.tabPage2.Size = new System.Drawing.Size(974, 731);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "構成情報";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -331,6 +472,7 @@
             // 
             // splitContainer3.Panel1
             // 
+            this.splitContainer3.Panel1.Controls.Add(this.button1);
             this.splitContainer3.Panel1.Controls.Add(this.m_incidentTouroku);
             this.splitContainer3.Panel1.Controls.Add(this.m_tourokuBtn);
             this.splitContainer3.Panel1.Controls.Add(this.m_clear_btn);
@@ -349,13 +491,23 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer3.Size = new System.Drawing.Size(968, 648);
-            this.splitContainer3.SplitterDistance = 57;
+            this.splitContainer3.Size = new System.Drawing.Size(968, 725);
+            this.splitContainer3.SplitterDistance = 63;
             this.splitContainer3.TabIndex = 1;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(887, 9);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(72, 40);
+            this.button1.TabIndex = 192;
+            this.button1.Text = "メール作成";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // m_incidentTouroku
             // 
-            this.m_incidentTouroku.Location = new System.Drawing.Point(764, 11);
+            this.m_incidentTouroku.Location = new System.Drawing.Point(720, 9);
             this.m_incidentTouroku.Name = "m_incidentTouroku";
             this.m_incidentTouroku.Size = new System.Drawing.Size(68, 40);
             this.m_incidentTouroku.TabIndex = 185;
@@ -366,7 +518,7 @@
             // m_tourokuBtn
             // 
             this.m_tourokuBtn.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.m_tourokuBtn.Location = new System.Drawing.Point(838, 11);
+            this.m_tourokuBtn.Location = new System.Drawing.Point(794, 9);
             this.m_tourokuBtn.Name = "m_tourokuBtn";
             this.m_tourokuBtn.Size = new System.Drawing.Size(87, 40);
             this.m_tourokuBtn.TabIndex = 186;
@@ -376,7 +528,7 @@
             // 
             // m_clear_btn
             // 
-            this.m_clear_btn.Location = new System.Drawing.Point(686, 11);
+            this.m_clear_btn.Location = new System.Drawing.Point(642, 9);
             this.m_clear_btn.Name = "m_clear_btn";
             this.m_clear_btn.Size = new System.Drawing.Size(72, 40);
             this.m_clear_btn.TabIndex = 184;
@@ -386,7 +538,7 @@
             // 
             // m_selectBtn
             // 
-            this.m_selectBtn.Location = new System.Drawing.Point(612, 11);
+            this.m_selectBtn.Location = new System.Drawing.Point(568, 9);
             this.m_selectBtn.Name = "m_selectBtn";
             this.m_selectBtn.Size = new System.Drawing.Size(68, 40);
             this.m_selectBtn.TabIndex = 183;
@@ -399,7 +551,7 @@
             this.m_ipaddress.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList;
             this.m_ipaddress.Location = new System.Drawing.Point(442, 34);
             this.m_ipaddress.Name = "m_ipaddress";
-            this.m_ipaddress.Size = new System.Drawing.Size(147, 19);
+            this.m_ipaddress.Size = new System.Drawing.Size(114, 19);
             this.m_ipaddress.TabIndex = 182;
             // 
             // label6
@@ -506,8 +658,8 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.splitContainer5);
-            this.splitContainer4.Size = new System.Drawing.Size(968, 587);
-            this.splitContainer4.SplitterDistance = 118;
+            this.splitContainer4.Size = new System.Drawing.Size(968, 658);
+            this.splitContainer4.SplitterDistance = 132;
             this.splitContainer4.TabIndex = 0;
             // 
             // m_system_label
@@ -550,10 +702,12 @@
             this.systemList.GridLines = true;
             this.systemList.Location = new System.Drawing.Point(464, 26);
             this.systemList.Name = "systemList";
-            this.systemList.Size = new System.Drawing.Size(494, 87);
+            this.systemList.Size = new System.Drawing.Size(494, 101);
             this.systemList.TabIndex = 191;
             this.systemList.UseCompatibleStateImageBehavior = false;
             this.systemList.View = System.Windows.Forms.View.Details;
+            this.systemList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.systemList_ColumnClick);
+            this.systemList.Click += new System.EventHandler(this.systemList_Click);
             this.systemList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.systemList_MouseDoubleClick);
             // 
             // label7
@@ -573,10 +727,12 @@
             this.userList.GridLines = true;
             this.userList.Location = new System.Drawing.Point(8, 26);
             this.userList.Name = "userList";
-            this.userList.Size = new System.Drawing.Size(450, 87);
+            this.userList.Size = new System.Drawing.Size(450, 101);
             this.userList.TabIndex = 189;
             this.userList.UseCompatibleStateImageBehavior = false;
             this.userList.View = System.Windows.Forms.View.Details;
+            this.userList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.userList_ColumnClick);
+            this.userList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.userList_MouseClick);
             this.userList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.userList_MouseDoubleClick_1);
             // 
             // splitContainer5
@@ -596,8 +752,8 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
-            this.splitContainer5.Size = new System.Drawing.Size(968, 465);
-            this.splitContainer5.SplitterDistance = 130;
+            this.splitContainer5.Size = new System.Drawing.Size(968, 522);
+            this.splitContainer5.SplitterDistance = 145;
             this.splitContainer5.TabIndex = 0;
             // 
             // linkLabel3
@@ -628,10 +784,12 @@
             this.siteList.GridLines = true;
             this.siteList.Location = new System.Drawing.Point(8, 23);
             this.siteList.Name = "siteList";
-            this.siteList.Size = new System.Drawing.Size(950, 102);
+            this.siteList.Size = new System.Drawing.Size(950, 117);
             this.siteList.TabIndex = 183;
             this.siteList.UseCompatibleStateImageBehavior = false;
             this.siteList.View = System.Windows.Forms.View.Details;
+            this.siteList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.siteList_ColumnClick);
+            this.siteList.Click += new System.EventHandler(this.siteList_Click);
             this.siteList.DoubleClick += new System.EventHandler(this.siteList_DoubleClick);
             // 
             // splitContainer6
@@ -646,7 +804,7 @@
             // 
             this.splitContainer6.Panel1.Controls.Add(this.linkLabel4);
             this.splitContainer6.Panel1.Controls.Add(this.label9);
-            this.splitContainer6.Panel1.Controls.Add(this.hostList);
+            this.splitContainer6.Panel1.Controls.Add(this.m_host_list);
             // 
             // splitContainer6.Panel2
             // 
@@ -656,8 +814,8 @@
             this.splitContainer6.Panel2.Controls.Add(this.kaisenList);
             this.splitContainer6.Panel2.Controls.Add(this.label10);
             this.splitContainer6.Panel2.Controls.Add(this.interfaceList);
-            this.splitContainer6.Size = new System.Drawing.Size(968, 331);
-            this.splitContainer6.SplitterDistance = 184;
+            this.splitContainer6.Size = new System.Drawing.Size(968, 373);
+            this.splitContainer6.SplitterDistance = 207;
             this.splitContainer6.TabIndex = 0;
             // 
             // linkLabel4
@@ -680,19 +838,21 @@
             this.label9.TabIndex = 185;
             this.label9.Text = "ホスト情報";
             // 
-            // hostList
+            // m_host_list
             // 
-            this.hostList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.m_host_list.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.hostList.GridLines = true;
-            this.hostList.Location = new System.Drawing.Point(8, 22);
-            this.hostList.Name = "hostList";
-            this.hostList.Size = new System.Drawing.Size(950, 150);
-            this.hostList.TabIndex = 184;
-            this.hostList.UseCompatibleStateImageBehavior = false;
-            this.hostList.View = System.Windows.Forms.View.Details;
-            this.hostList.DoubleClick += new System.EventHandler(this.hostList_DoubleClick);
+            this.m_host_list.GridLines = true;
+            this.m_host_list.Location = new System.Drawing.Point(8, 22);
+            this.m_host_list.Name = "m_host_list";
+            this.m_host_list.Size = new System.Drawing.Size(950, 173);
+            this.m_host_list.TabIndex = 184;
+            this.m_host_list.UseCompatibleStateImageBehavior = false;
+            this.m_host_list.View = System.Windows.Forms.View.Details;
+            this.m_host_list.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_host_list_ColumnClick);
+            this.m_host_list.Click += new System.EventHandler(this.m_host_list_Click);
+            this.m_host_list.DoubleClick += new System.EventHandler(this.hostList_DoubleClick);
             // 
             // linkLabel6
             // 
@@ -734,10 +894,11 @@
             this.kaisenList.GridLines = true;
             this.kaisenList.Location = new System.Drawing.Point(464, 23);
             this.kaisenList.Name = "kaisenList";
-            this.kaisenList.Size = new System.Drawing.Size(494, 115);
+            this.kaisenList.Size = new System.Drawing.Size(494, 134);
             this.kaisenList.TabIndex = 197;
             this.kaisenList.UseCompatibleStateImageBehavior = false;
             this.kaisenList.View = System.Windows.Forms.View.Details;
+            this.kaisenList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.kaisenList_ColumnClick);
             this.kaisenList.DoubleClick += new System.EventHandler(this.kaisenList_DoubleClick);
             // 
             // label10
@@ -757,10 +918,11 @@
             this.interfaceList.GridLines = true;
             this.interfaceList.Location = new System.Drawing.Point(8, 23);
             this.interfaceList.Name = "interfaceList";
-            this.interfaceList.Size = new System.Drawing.Size(450, 115);
+            this.interfaceList.Size = new System.Drawing.Size(450, 134);
             this.interfaceList.TabIndex = 195;
             this.interfaceList.UseCompatibleStateImageBehavior = false;
             this.interfaceList.View = System.Windows.Forms.View.Details;
+            this.interfaceList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.interfaceList_ColumnClick);
             this.interfaceList.DoubleClick += new System.EventHandler(this.interfaceList_DoubleClick);
             // 
             // splitter1
@@ -790,14 +952,79 @@
             this.timer1.Interval = 60000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 742);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1158, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
+            // 
+            // tokubetuContext
+            // 
+            this.tokubetuContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2});
+            this.tokubetuContext.Name = "keikakuContext";
+            this.tokubetuContext.ShowImageMargin = false;
+            this.tokubetuContext.Size = new System.Drawing.Size(76, 26);
+            this.tokubetuContext.Text = "ステータス変更";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(75, 22);
+            this.toolStripMenuItem2.Text = "変更";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // print_incident
+            // 
+            this.print_incident.AutoSize = true;
+            this.print_incident.Location = new System.Drawing.Point(148, 14);
+            this.print_incident.Name = "print_incident";
+            this.print_incident.Size = new System.Drawing.Size(29, 12);
+            this.print_incident.TabIndex = 201;
+            this.print_incident.TabStop = true;
+            this.print_incident.Text = "印刷";
+            this.print_incident.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.print_incident_LinkClicked);
+            // 
+            // print_keikaku
+            // 
+            this.print_keikaku.AutoSize = true;
+            this.print_keikaku.Location = new System.Drawing.Point(148, 385);
+            this.print_keikaku.Name = "print_keikaku";
+            this.print_keikaku.Size = new System.Drawing.Size(29, 12);
+            this.print_keikaku.TabIndex = 203;
+            this.print_keikaku.TabStop = true;
+            this.print_keikaku.Text = "印刷";
+            this.print_keikaku.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.print_keikaku_LinkClicked);
+            // 
+            // print_tokubetu
+            // 
+            this.print_tokubetu.AutoSize = true;
+            this.print_tokubetu.Location = new System.Drawing.Point(148, 580);
+            this.print_tokubetu.Name = "print_tokubetu";
+            this.print_tokubetu.Size = new System.Drawing.Size(29, 12);
+            this.print_tokubetu.TabIndex = 204;
+            this.print_tokubetu.TabStop = true;
+            this.print_tokubetu.Text = "印刷";
+            this.print_tokubetu.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.print_tokubetu_LinkClicked);
+            // 
             // Form_MainList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1158, 687);
+            this.ClientSize = new System.Drawing.Size(1158, 764);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form_MainList";
-            this.Text = "Form1";
+            this.Text = "SMS";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_MainList_FormClosed);
             this.Load += new System.EventHandler(this.Form_MainList_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -812,6 +1039,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.keikakuContext.ResumeLayout(false);
+            this.teikiContext.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel1.PerformLayout();
@@ -834,7 +1063,11 @@
             this.splitContainer6.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
+            this.tokubetuContext.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -878,7 +1111,7 @@
         private System.Windows.Forms.SplitContainer splitContainer6;
         private System.Windows.Forms.LinkLabel linkLabel4;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ListView hostList;
+        private System.Windows.Forms.ListView m_host_list;
         private System.Windows.Forms.LinkLabel linkLabel6;
         private System.Windows.Forms.LinkLabel linkLabel5;
         private System.Windows.Forms.Label label11;
@@ -896,6 +1129,24 @@
         private System.Windows.Forms.ListView m_incident_List;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox m_opename;
+        private System.Windows.Forms.ContextMenuStrip keikakuContext;
+        private System.Windows.Forms.ToolStripMenuItem StatusChenge;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button m_printBtn;
+        private System.Windows.Forms.ContextMenuStrip teikiContext;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.LinkLabel linkLabel9;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ListView m_tokubetu_list;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ContextMenuStrip tokubetuContext;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.LinkLabel print_incident;
+        private System.Windows.Forms.LinkLabel print_tokubetu;
+        private System.Windows.Forms.LinkLabel print_keikaku;
     }
 }
 

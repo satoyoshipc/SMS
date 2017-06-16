@@ -27,6 +27,8 @@ namespace SMSサンプル
         //システム
         public List<systemDS> systemList { get; set; }
 
+        //拠点
+        public List<siteDS> siteList { get; set; }
         public Form_TimerInsert()
         {
             InitializeComponent();
@@ -103,7 +105,7 @@ namespace SMSサンプル
             }
             if (m_message.Text == "")
             {
-                MessageBox.Show("アラームメッセージが入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("メッセージが入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             if (m_soudpath.Text == "" || System.IO.File.Exists(m_soudpath.Text) == false)
@@ -116,18 +118,20 @@ namespace SMSサンプル
 
             string userno = m_userno.Text;
             string systemno = m_systemno.Text;
+            string siteno = m_siteno.Text;
             string timername = m_timer_name.Text;
             string schedule_type = m_schedule_combo.Text;
             string type = schedule_type.Split(':')[0];
             string message = m_message.Text;
             //ステータス
+            // 0:無効 1:有効
             string status = "";
             if (m_radio_enable.Checked)
-                //完了
+                //有効
                 status = "1";
 
             else
-                //未完了
+                //無効
                 status = "0";
 
             string repeat_type = "0"; 
@@ -158,12 +162,13 @@ namespace SMSサンプル
                 if (con.FullState != ConnectionState.Open) con.Open();
                 Int32 rowsaffected;
                 //データ登録
-                cmd = new NpgsqlCommand(@"insert into schedule(userno,systemno,timer_name,schedule_type,repeat_type,start_date,end_date,alerm_message,status,sound,chk_name_id) 
-                    values ( :userno,:systemno,:timer_name,:schedule_type,:repeat_type,:start_date,:end_date,:alerm_message,:status,:sound,:chk_name_id); " +
+                cmd = new NpgsqlCommand(@"insert into schedule(userno,systemno,siteno,timer_name,schedule_type,repeat_type,start_date,end_date,alerm_message,status,sound,chk_name_id) 
+                    values ( :userno,:systemno,:siteno,:timer_name,:schedule_type,:repeat_type,:start_date,:end_date,:alerm_message,:status,:sound,:chk_name_id); " +
                     "select currval('schedule_schedule_no_seq') ;", con);
 
                 cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
                 cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
+                cmd.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = siteno });
                 cmd.Parameters.Add(new NpgsqlParameter("timer_name", DbType.String) { Value = timername });
                 cmd.Parameters.Add(new NpgsqlParameter("schedule_type", DbType.String) { Value = type });
                 cmd.Parameters.Add(new NpgsqlParameter("repeat_type", DbType.String) { Value = repeat_type });
@@ -232,7 +237,6 @@ namespace SMSサンプル
 
                 while (true)
                 {
-
                     //開始日時以前なら登録しない
                     if (startdt > alertdate)
                     {
@@ -450,49 +454,134 @@ namespace SMSサンプル
             m_startDate.Enabled = false;
             m_endDate.Enabled = false;
         }
+        //システム名のコンボボックスが変更されたときの処理
+        private void Read_siteCombo()
+        {
+            m_siteCombo.DataSource = null;
+            m_siteno.Text = "";
 
+
+            //ラベルに反映
+            if (m_systemCombo.SelectedValue != null)
+                m_systemno.Text = m_systemCombo.SelectedValue.ToString();
+
+            //コンボボックス
+            DataTable siteTable = new DataTable();
+            siteTable.Columns.Add("ID", typeof(string));
+            siteTable.Columns.Add("NAME", typeof(string));
+
+            string systemid = "";
+            if (m_systemno.Text != "")
+                systemid = m_systemno.Text;
+
+            //拠点情報の取得
+            Class_Detaget DGclass = new Class_Detaget();
+            siteList = DGclass.getSiteList(systemid, con, true);
+
+            //取れなかったらなにもしない
+            if (siteList == null || siteList.Count <= 0)
+                return;
+
+            //空行の挿入
+            DataRow row = siteTable.NewRow();
+            row["ID"] = "";
+            row["NAME"] = "";
+            siteTable.Rows.Add(row);
+
+            //拠点件数分ループを行う
+            foreach (siteDS v in siteList)
+            {
+                if (m_systemCombo.SelectedValue != null)
+                {
+                    if (v.systemno == m_systemCombo.SelectedValue.ToString())
+                    {
+                        row = siteTable.NewRow();
+                        row["ID"] = v.siteno;
+                        row["NAME"] = v.sitename;
+                        siteTable.Rows.Add(row);
+                    }
+                }
+            }
+            //データテーブルを割り当てる
+            m_siteCombo.DataSource = siteTable;
+            m_siteCombo.DisplayMember = "NAME";
+            m_siteCombo.ValueMember = "ID";
+            if (siteTable.Rows.Count > 0)
+                m_siteno.Text = m_siteCombo.SelectedValue.ToString();
+
+        }
         private void Read_systemCombo()
         {
             m_systemno.Text = "";
-
-            //1:インシデント処理 2:定期報告業務促し 3:作業情報の警告 4:資料展開 5:サブタスク
             m_systemCombo.DataSource = null;
+            m_siteno.Text = "";
+            m_siteCombo.DataSource = null;
 
+            //ラベルに反映
             if (m_usernameCombo.SelectedValue != null)
                 m_userno.Text = m_usernameCombo.SelectedValue.ToString();
 
-            Class_Detaget getuser = new Class_Detaget();
-            List<systemDS> systemList = getuser.getSystemList(m_userno.Text, true);
-
-            //リストに入れる
-            if (systemList == null)
-                return;
-
-                //コンボボックス
-                DataTable systemTable = new DataTable();
+            //システムコンボの値を取得
+            DataTable systemTable = new DataTable();
             systemTable.Columns.Add("ID", typeof(string));
             systemTable.Columns.Add("NAME", typeof(string));
 
             //システム情報を取得する
+            if (systemList.Count <= 0)
+                return;
+
+            //空行を挿入
+            DataRow row = systemTable.NewRow();
+            row["ID"] = "";
+            row["NAME"] = "";
+            systemTable.Rows.Add(row);
+
             foreach (systemDS v in systemList)
             {
-                DataRow row = systemTable.NewRow();
-                row["ID"] = v.systemno;
-                row["NAME"] = v.systemname;
-                systemTable.Rows.Add(row);
+                //カスタマNOで区別する
+                if (m_usernameCombo.SelectedValue != null)
+                {
+
+                    if (v.userno == m_usernameCombo.SelectedValue.ToString())
+                    {
+                        row = systemTable.NewRow();
+                        row["ID"] = v.systemno;
+                        row["NAME"] = v.systemname;
+                        systemTable.Rows.Add(row);
+                    }
+                }
             }
             //データテーブルを割り当てる
             m_systemCombo.DataSource = systemTable;
             m_systemCombo.DisplayMember = "NAME";
             m_systemCombo.ValueMember = "ID";
-            if (m_systemCombo.SelectedValue != null)
-                m_systemno.Text = m_systemCombo.SelectedValue.ToString();            
+            if (systemTable.Rows.Count > 0)
+                m_systemno.Text = m_systemCombo.SelectedValue.ToString();
+
         }
+
+
+
+
         //システムコンボボックスが変更されたときにデータ取得されているかの確認
         private void m_usernameCombo_SelectionChangeCommitted(object sender, EventArgs e)
         {
+            if (m_usernameCombo.Text == "")
+            {
+                m_userno.Text = "";
+                return;
+            }
             Read_systemCombo();
         }
+
+        
+        
+        
+        
+        
+        
+        
+        
         //1回が選択されたとき
         private void m_radio_one_CheckedChanged(object sender, EventArgs e)
         {
@@ -544,6 +633,29 @@ namespace SMSサンプル
             {
 
             }
+        }
+
+        private void m_siteCombo_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (m_siteCombo.Text == "")
+            {
+                m_siteno.Text = "";
+                return;
+            }
+            //ラベルに反映
+            if (m_siteCombo.SelectedValue != null)
+                m_siteno.Text = m_siteCombo.SelectedValue.ToString();
+
+        }
+        //システムコンボボックスが変更されたとき
+        private void m_systemCombo_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (m_systemCombo.Text == "")
+            {
+                m_systemno.Text = "";
+                return;
+            }
+            Read_siteCombo();
         }
     }
 }

@@ -297,7 +297,6 @@ namespace SMSサンプル
         //登録ボタン
         private void button3_Click(object sender, EventArgs e)
         {
-
             //確認
             if (MessageBox.Show("インシデントデータを登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
@@ -317,18 +316,18 @@ namespace SMSサンプル
             if (m_hostno.Text != "")
                 hostno = int.Parse(m_hostno.Text);
 
-            //ステータス 0:未完了 1:完了
+            //ステータス 1:未完了 0:完了
             string status = "";
             if (m_statuscheck.Checked)
-                //未完了
+                //完了
                 status = "0";
             else
-                //完了
+                //未完了
                 status = "1";
 
             int MPMSSno = 0;
             if (m_MSMSno.Text != "")
-                MPMSSno = int.Parse(m_MSMSno.Text);
+                int.TryParse(m_MSMSno.Text,out MPMSSno);
 
             string ScubeID = m_ScubeID.Text;
 
@@ -427,21 +426,23 @@ namespace SMSサンプル
                         {
                             if (con.FullState != ConnectionState.Open) con.Open();
                             //データ登録
-                            cmd = new NpgsqlCommand(@"insert into schedule(userno,systemno,timer_name,schedule_type,repeat_type,start_date,end_date,alerm_message,status,sound,chk_name_id) 
-                    values ( :userno,:systemno,:timer_name,:schedule_type,:repeat_type,:start_date,:end_date,:alerm_message,:status,:sound,:chk_name_id); " +
+                            cmd = new NpgsqlCommand(@"insert into schedule(userno,systemno,timer_name,schedule_type,repeat_type,start_date,end_date,alerm_message,status,sound,chk_name_id) " +
+                                "values ( :userno,:systemno,:timer_name,:schedule_type,:repeat_type,:start_date,:end_date,:alerm_message,:status,:sound,:chk_name_id); " +
                                 "select currval('schedule_schedule_no_seq') ;", con);
 
                             cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
                             cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
                             cmd.Parameters.Add(new NpgsqlParameter("timer_name", DbType.String) { Value = "インシデント管理タイマー" });
                             cmd.Parameters.Add(new NpgsqlParameter("schedule_type", DbType.String) { Value = "1" });
-                            cmd.Parameters.Add(new NpgsqlParameter("repeat_type", DbType.String) { Value = 0 });
+                            cmd.Parameters.Add(new NpgsqlParameter("repeat_type", DbType.String) { Value = "1" });
                             cmd.Parameters.Add(new NpgsqlParameter("start_date", DbType.DateTime) { Value = DateTime.Now });
                             cmd.Parameters.Add(new NpgsqlParameter("end_date", DbType.DateTime) { Value = endTime });
                             cmd.Parameters.Add(new NpgsqlParameter("alerm_message", DbType.String) { Value = kakunin });
+                            //0:無効 1:有効
                             cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = 1 });
                             cmd.Parameters.Add(new NpgsqlParameter("sound", DbType.Binary) { Value = null });
                             cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
+
                             //OUTパラメータをセットする
                             Int32 rowsaffectedsch = 0;
                             NpgsqlParameter scheduleColumn = new NpgsqlParameter("scheduleColumn", DbType.Int32);
@@ -457,7 +458,7 @@ namespace SMSサンプル
                             }
                             else
                             {
-                                if (currval > 0)
+                                if (currvalsch > 0)
                                 {
 
                                     //引き続きアラートデータを作成し登録する
@@ -472,7 +473,6 @@ namespace SMSサンプル
                             MessageBox.Show("スケジュールに登録する際にエラーが発生しました。 " + ex.Message, "インシデント登録");
                             return;
                         }
-
                     }
                     //登録成功
                     MessageBox.Show("登録完了", "インシデント登録");
@@ -513,9 +513,7 @@ namespace SMSサンプル
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {

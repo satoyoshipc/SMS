@@ -60,19 +60,20 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_host_List = new System.Windows.Forms.ListView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.m_siteno = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.m_locate = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.m_hosyu = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.m_kanrino = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.m_usefor = new System.Windows.Forms.TextBox();
+            this.m_deleteBtn = new System.Windows.Forms.Button();
             this.m_end_date = new System.Windows.Forms.DateTimePicker();
             this.label16 = new System.Windows.Forms.Label();
             this.m_start_date = new System.Windows.Forms.DateTimePicker();
             this.label17 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.m_usefor = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.m_hosyu = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.m_kanrino = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.m_locate = new System.Windows.Forms.TextBox();
+            this.m_siteno = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -88,17 +89,18 @@
             this.m_statusCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_statusCombo.FormattingEnabled = true;
             this.m_statusCombo.Items.AddRange(new object[] {
-            "有効",
-            "無効"});
+            "無効",
+            "有効"});
             this.m_statusCombo.Location = new System.Drawing.Point(110, 118);
             this.m_statusCombo.Name = "m_statusCombo";
             this.m_statusCombo.Size = new System.Drawing.Size(68, 20);
             this.m_statusCombo.TabIndex = 5;
+            this.m_statusCombo.SelectedIndexChanged += new System.EventHandler(this.m_statusCombo_SelectedIndexChanged);
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(454, 41);
+            this.label12.Location = new System.Drawing.Point(454, 56);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(43, 12);
             this.label12.TabIndex = 116;
@@ -106,7 +108,7 @@
             // 
             // m_systemno
             // 
-            this.m_systemno.Location = new System.Drawing.Point(503, 38);
+            this.m_systemno.Location = new System.Drawing.Point(503, 53);
             this.m_systemno.Name = "m_systemno";
             this.m_systemno.ReadOnly = true;
             this.m_systemno.Size = new System.Drawing.Size(45, 19);
@@ -114,7 +116,7 @@
             // 
             // m_systemname
             // 
-            this.m_systemname.Location = new System.Drawing.Point(554, 38);
+            this.m_systemname.Location = new System.Drawing.Point(554, 53);
             this.m_systemname.Name = "m_systemname";
             this.m_systemname.ReadOnly = true;
             this.m_systemname.Size = new System.Drawing.Size(216, 19);
@@ -167,7 +169,6 @@
             this.m_hostname.Name = "m_hostname";
             this.m_hostname.Size = new System.Drawing.Size(325, 19);
             this.m_hostname.TabIndex = 3;
-
             // 
             // m_userno
             // 
@@ -368,6 +369,7 @@
             this.m_host_List.TabIndex = 0;
             this.m_host_List.UseCompatibleStateImageBehavior = false;
             this.m_host_List.View = System.Windows.Forms.View.Details;
+            this.m_host_List.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_host_List_ColumnClick);
             this.m_host_List.DoubleClick += new System.EventHandler(this.m_host_List_DoubleClick);
             // 
             // splitContainer1
@@ -385,6 +387,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.m_deleteBtn);
             this.splitContainer1.Panel2.Controls.Add(this.m_end_date);
             this.splitContainer1.Panel2.Controls.Add(this.label16);
             this.splitContainer1.Panel2.Controls.Add(this.m_start_date);
@@ -429,29 +432,76 @@
             this.splitContainer1.SplitterDistance = 279;
             this.splitContainer1.TabIndex = 1;
             // 
-            // m_siteno
+            // m_deleteBtn
             // 
-            this.m_siteno.Location = new System.Drawing.Point(110, 56);
-            this.m_siteno.Name = "m_siteno";
-            this.m_siteno.ReadOnly = true;
-            this.m_siteno.Size = new System.Drawing.Size(47, 19);
-            this.m_siteno.TabIndex = 118;
+            this.m_deleteBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_deleteBtn.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.m_deleteBtn.ForeColor = System.Drawing.Color.Red;
+            this.m_deleteBtn.Location = new System.Drawing.Point(678, 7);
+            this.m_deleteBtn.Name = "m_deleteBtn";
+            this.m_deleteBtn.Size = new System.Drawing.Size(92, 33);
+            this.m_deleteBtn.TabIndex = 164;
+            this.m_deleteBtn.Text = "削除";
+            this.m_deleteBtn.UseVisualStyleBackColor = true;
+            this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
             // 
-            // label11
+            // m_end_date
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(20, 166);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(53, 12);
-            this.label11.TabIndex = 120;
-            this.label11.Text = "設置場所";
+            this.m_end_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.m_end_date.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
+            this.m_end_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.m_end_date.Location = new System.Drawing.Point(110, 229);
+            this.m_end_date.Name = "m_end_date";
+            this.m_end_date.Size = new System.Drawing.Size(198, 19);
+            this.m_end_date.TabIndex = 10;
             // 
-            // m_locate
+            // label16
             // 
-            this.m_locate.Location = new System.Drawing.Point(110, 161);
-            this.m_locate.Name = "m_locate";
-            this.m_locate.Size = new System.Drawing.Size(325, 19);
-            this.m_locate.TabIndex = 7;
+            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(20, 234);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(77, 12);
+            this.label16.TabIndex = 163;
+            this.label16.Text = "監視終了日時";
+            // 
+            // m_start_date
+            // 
+            this.m_start_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.m_start_date.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
+            this.m_start_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.m_start_date.Location = new System.Drawing.Point(110, 207);
+            this.m_start_date.Name = "m_start_date";
+            this.m_start_date.Size = new System.Drawing.Size(198, 19);
+            this.m_start_date.TabIndex = 9;
+            // 
+            // label17
+            // 
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(20, 212);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(77, 12);
+            this.label17.TabIndex = 162;
+            this.label17.Text = "監視開始日時";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(20, 189);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(29, 12);
+            this.label15.TabIndex = 126;
+            this.label15.Text = "用途";
+            // 
+            // m_usefor
+            // 
+            this.m_usefor.Location = new System.Drawing.Point(110, 184);
+            this.m_usefor.Name = "m_usefor";
+            this.m_usefor.Size = new System.Drawing.Size(325, 19);
+            this.m_usefor.TabIndex = 8;
             // 
             // label13
             // 
@@ -485,63 +535,29 @@
             this.m_kanrino.Size = new System.Drawing.Size(325, 19);
             this.m_kanrino.TabIndex = 11;
             // 
-            // label15
+            // label11
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(20, 189);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(29, 12);
-            this.label15.TabIndex = 126;
-            this.label15.Text = "用途";
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(20, 166);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(53, 12);
+            this.label11.TabIndex = 120;
+            this.label11.Text = "設置場所";
             // 
-            // m_usefor
+            // m_locate
             // 
-            this.m_usefor.Location = new System.Drawing.Point(110, 184);
-            this.m_usefor.Name = "m_usefor";
-            this.m_usefor.Size = new System.Drawing.Size(325, 19);
-            this.m_usefor.TabIndex = 8;
+            this.m_locate.Location = new System.Drawing.Point(110, 161);
+            this.m_locate.Name = "m_locate";
+            this.m_locate.Size = new System.Drawing.Size(325, 19);
+            this.m_locate.TabIndex = 7;
             // 
-            // m_end_date
+            // m_siteno
             // 
-            this.m_end_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.m_end_date.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
-            this.m_end_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_end_date.Location = new System.Drawing.Point(110, 229);
-            this.m_end_date.Name = "m_end_date";
-            this.m_end_date.Size = new System.Drawing.Size(198, 19);
-            this.m_end_date.TabIndex = 10;
-            // 
-            // label16
-            // 
-            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(20, 234);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(77, 12);
-            this.label16.TabIndex = 163;
-            this.label16.Text = "監視終了日時";
-            // 
-            // m_start_date
-            // 
-            this.m_start_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.m_start_date.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
-            this.m_start_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_start_date.Location = new System.Drawing.Point(110, 207);
-            this.m_start_date.Name = "m_start_date";
-            this.m_start_date.Size = new System.Drawing.Size(198, 19);
-            this.m_start_date.TabIndex = 9;
-            // 
-            // label17
-            // 
-            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(20, 212);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(77, 12);
-            this.label17.TabIndex = 162;
-            this.label17.Text = "監視開始日時";
+            this.m_siteno.Location = new System.Drawing.Point(110, 56);
+            this.m_siteno.Name = "m_siteno";
+            this.m_siteno.ReadOnly = true;
+            this.m_siteno.Size = new System.Drawing.Size(47, 19);
+            this.m_siteno.TabIndex = 118;
             // 
             // Form_HostDetail
             // 
@@ -613,5 +629,6 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.DateTimePicker m_start_date;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Button m_deleteBtn;
     }
 }

@@ -16,7 +16,7 @@ namespace SMSサンプル
         public NpgsqlConnection con { get; set; }
 
         //カスタマ通番からカスタマ名を取得する
-        public string getCustomername(string userno )
+        public string getCustomername(string userno)
         {
             NpgsqlCommand cmd;
             string username = "";
@@ -43,7 +43,7 @@ namespace SMSサンプル
             }
             finally
             {
-                if(dataReader != null)
+                if (dataReader != null)
                     dataReader.Close();
 
             }
@@ -86,7 +86,7 @@ namespace SMSサンプル
             return systemname;
         }
         //拠点通番から拠点名を取得する
-        public string getSitename(string siteno) 
+        public string getSitename(string siteno)
         {
             NpgsqlCommand cmd;
             string sitename = "";
@@ -137,7 +137,8 @@ namespace SMSサンプル
 
                 dataReader = cmd.ExecuteReader();
 
-                if (dataReader.HasRows) { 
+                if (dataReader.HasRows)
+                {
                     dataReader.Read();
                     hostname = dataReader["hostname"].ToString();
                 }
@@ -330,7 +331,7 @@ namespace SMSサンプル
 
             try
             {
-                if (con.FullState != ConnectionState.Open) con.Open(); 
+                if (con.FullState != ConnectionState.Open) con.Open();
 
                 //SELECT実行
                 cmd = new NpgsqlCommand(@"select * from host" + searchstring, con);
@@ -361,7 +362,7 @@ namespace SMSサンプル
                     ds.systemno = dataReader["systemno"].ToString();
                     ds.chk_name_id = dataReader["chk_name_id"].ToString();
                     ds.chk_date = dataReader["chk_date"].ToString();
-                       
+
                     retList.Add(ds);
                 }
             }
@@ -376,7 +377,7 @@ namespace SMSサンプル
         //回線情報の取得
         public void getSelectKaisenInfo(DataTable dt, DISP_dataSet retDS, NpgsqlConnection conn)
         {
-            
+
             String sql = "SELECT k.kaisenno,k.status,k.career,k.type, k.kaisenid,k.isp,k.servicetype,k.serviceid,k.userno,k.systemno,k.siteno,k.host_no,k.chk_date,k.chk_name_id,o.lastname " +
                         "FROM Kaisen k INNER JOIN ope o ON o.opeid = k.chk_name_id";
 
@@ -450,7 +451,7 @@ namespace SMSサンプル
         //インシデント一覧データを取得
         public List<incidentDS> getOpenIncident(NpgsqlConnection conn)
         {
-
+            //1未完了
             String sql = "SELECT u.username,sys.systemname,s.sitename,h.hostname," +
                 "i.incident_no,i.status,i.mpms_incident,i.s_cube_id,i.incident_type,i.content,i.matflg,i.matcommand,i.uketukedate,i.tehaidate," +
                 "i.fukyudate,i.enddate,i.timer,i.kakunin,i.hostno,i.opeid,o.lastname,i.siteno,i.userno,i.systemno,i.chk_date,i.chk_name_id FROM incident i " +
@@ -459,7 +460,7 @@ namespace SMSサンプル
                 "LEFT OUTER JOIN system sys ON sys.systemno = i.systemno " +
                 "LEFT OUTER JOIN site s ON s.siteno=i.siteno " +
                 "LEFT OUTER JOIN host h ON i.hostno = h.host_no " +
-                "WHERE i.status = '0'";
+                "WHERE i.status = '1'";
 
             NpgsqlCommand cmd;
             incidentDS inc_ds;
@@ -482,11 +483,14 @@ namespace SMSサンプル
 
                     inc_ds = new incidentDS();
 
+                    inc_ds.incident_no = dataReader["incident_no"].ToString();
+                    inc_ds.hostname = dataReader["hostname"].ToString();
+
                     inc_ds.username = dataReader["username"].ToString();
                     inc_ds.systemname = dataReader["systemname"].ToString();
                     inc_ds.sitename = dataReader["sitename"].ToString();
-                    inc_ds.hostname = dataReader["hostname"].ToString();
-                    inc_ds.incident_no = dataReader["incident_no"].ToString();
+
+
                     inc_ds.status = dataReader["status"].ToString();
                     inc_ds.mpms_incident = dataReader["mpms_incident"].ToString();
                     inc_ds.s_cube_id = dataReader["s_cube_id"].ToString();
@@ -498,10 +502,11 @@ namespace SMSサンプル
                     inc_ds.tehaidate = dataReader["tehaidate"].ToString();
                     inc_ds.fukyudate = dataReader["fukyudate"].ToString();
                     inc_ds.enddate = dataReader["enddate"].ToString();
+                    inc_ds.userno = dataReader["userno"].ToString();
+                    inc_ds.systemno = dataReader["systemno"].ToString();
+                    inc_ds.siteno = dataReader["siteno"].ToString();
                     inc_ds.hostno = dataReader["hostno"].ToString();
                     inc_ds.opeid = dataReader["opeid"].ToString();
-                    inc_ds.siteno = dataReader["siteno"].ToString();
-                    inc_ds.userno = dataReader["userno"].ToString();
                     inc_ds.chk_name_id = dataReader["chk_name_id"].ToString();
                     inc_ds.chk_date = dataReader["chk_date"].ToString();
 
@@ -518,6 +523,198 @@ namespace SMSサンプル
 
         }
 
+        //インシデントデータの取得(検索)
+        public List<incidentDS> getIncidentList(Form_MainList ownerForm, Dictionary<string, string> param_dict, NpgsqlConnection con)
+        {
+            String sql = "SELECT u.username,sys.systemname,s.sitename,h.hostname," +
+            "i.incident_no,i.status,i.mpms_incident,i.s_cube_id,i.incident_type,i.content,i.matflg,i.matcommand,i.uketukedate,i.tehaidate," +
+            "i.fukyudate,i.enddate,i.timer,i.kakunin,i.hostno,i.opeid,o.lastname,i.siteno,i.userno,i.systemno,i.chk_date,i.chk_name_id FROM incident i " +
+            "LEFT OUTER JOIN ope o ON i.opeid = o.opeid " +
+            "LEFT OUTER JOIN user_tbl u ON i.userno = u.userno " +
+            "LEFT OUTER JOIN system sys ON sys.systemno = i.systemno " +
+            "LEFT OUTER JOIN site s ON s.siteno=i.siteno " +
+            "LEFT OUTER JOIN host h ON i.hostno = h.host_no ";
+
+            NpgsqlCommand cmd;
+            incidentDS inc_ds;
+            String param = "";
+
+            List<incidentDS> incidnet_List = null;
+
+            if (param_dict.Count > 0)
+            {
+                int i = 0;
+                foreach (KeyValuePair<string, string> vdict in param_dict)
+                {
+                    //インシデント番号
+                    if (vdict.Key == "incident_no" || vdict.Key == "userno" || vdict.Key == "systemno" || vdict.Key == "siteno" || vdict.Key == "hostno")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else {
+                            param += " AND ";
+                        }
+
+                        param += "i." + vdict.Key + "=" + vdict.Value;
+                    }
+                    else
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else {
+                            param += " AND ";
+                        }
+                        param += " i." + vdict.Key + "='" + vdict.Value + "'";
+                    }
+                }
+
+                sql += param;
+            }
+
+
+            //DB接続
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                //SELECT実行
+                cmd = new NpgsqlCommand(@sql, con);
+                var dataReader = cmd.ExecuteReader();
+
+                //構成情報の取得
+                incidnet_List = new List<incidentDS>();
+                while (dataReader.Read())
+                {
+
+                    inc_ds = new incidentDS();
+
+                    inc_ds.incident_no = dataReader["incident_no"].ToString();
+                    inc_ds.hostname = dataReader["hostname"].ToString();
+
+                    inc_ds.username = dataReader["username"].ToString();
+                    inc_ds.systemname = dataReader["systemname"].ToString();
+                    inc_ds.sitename = dataReader["sitename"].ToString();
+
+
+                    inc_ds.status = dataReader["status"].ToString();
+                    inc_ds.mpms_incident = dataReader["mpms_incident"].ToString();
+                    inc_ds.s_cube_id = dataReader["s_cube_id"].ToString();
+                    inc_ds.incident_type = dataReader["incident_type"].ToString();
+                    inc_ds.content = dataReader["content"].ToString();
+                    inc_ds.matflg = dataReader["matflg"].ToString();
+                    inc_ds.matcommand = dataReader["matcommand"].ToString();
+                    inc_ds.uketukedate = dataReader["uketukedate"].ToString();
+                    inc_ds.tehaidate = dataReader["tehaidate"].ToString();
+                    inc_ds.fukyudate = dataReader["fukyudate"].ToString();
+                    inc_ds.enddate = dataReader["enddate"].ToString();
+                    inc_ds.timer = dataReader["timer"].ToString();
+                    inc_ds.kakuninmsg = dataReader["kakunin"].ToString();
+
+
+                    inc_ds.userno = dataReader["userno"].ToString();
+                    inc_ds.systemno = dataReader["systemno"].ToString();
+                    inc_ds.siteno = dataReader["siteno"].ToString();
+                    inc_ds.hostno = dataReader["hostno"].ToString();
+                    inc_ds.opeid = dataReader["opeid"].ToString();
+                    inc_ds.chk_name_id = dataReader["chk_name_id"].ToString();
+                    inc_ds.chk_date = dataReader["chk_date"].ToString();
+
+                    incidnet_List.Add(inc_ds);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("インシデント情報の取得に失敗しました。" + ex.Message, "インシデント情報検索", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            return incidnet_List;
+
+        }
+        //オペレータ情報の取得
+        public List<opeDS> getSelectOper(Dictionary<string, string> param_dict, NpgsqlConnection conn)
+        {
+
+            String sql = "select openo,opeid,lastname,fastname,password,type,biko,chk_date user_chk_date, chk_name_id user_chk_name_id " +
+                        "from ope ";
+
+            String param = "";
+
+            if (param_dict.Count > 0)
+            {
+                foreach (KeyValuePair<string, string> vdict in param_dict)
+                {
+                    if (vdict.Key == "openo")
+                    {
+                        if (param == "")
+                            param = "WHERE " + vdict.Key + "=" + vdict.Value ;
+                        else
+                            param += " and " + vdict.Key + "=" + vdict.Value ;
+                    }
+                    else 
+                    {
+                        if (param == "")
+                            param = "WHERE " + vdict.Key + "='" + vdict.Value + "'";
+                        else
+                            param += " and " + vdict.Key + "='" + vdict.Value + "'";
+                    }
+                }
+
+                sql += param;
+            }
+
+            NpgsqlCommand cmd;
+            opeDS o_ds;
+
+            List<opeDS> ope_List = null;
+
+            //DB接続
+            Class_common common = new Class_common();
+            try
+            {
+                if (conn.FullState != ConnectionState.Open) conn.Open();
+
+                //SELECT実行
+                cmd = new NpgsqlCommand(@sql, conn);
+                var dataReader = cmd.ExecuteReader();
+
+                //構成情報の取得
+                ope_List = new List<opeDS>();
+
+                while (dataReader.Read())
+                {
+
+                    //カスタマ情報の取得
+                    o_ds = new opeDS();
+                    o_ds.openo = dataReader["openo"].ToString();
+                    o_ds.opeid = dataReader["opeid"].ToString();
+                    o_ds.lastname = dataReader["lastname"].ToString();
+                    o_ds.fastname = dataReader["fastname"].ToString();
+                    o_ds.password = dataReader["password"].ToString();
+                    o_ds.type = dataReader["type"].ToString();
+                    o_ds.biko = dataReader["biko"].ToString();
+                    o_ds.chk_date = dataReader["user_chk_date"].ToString();
+                    o_ds.chk_name_id = dataReader["user_chk_name_id"].ToString();
+                    ope_List.Add(o_ds);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("オペレータ情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return ope_List;
+        }
 
         //カスタマ情報の取得
         public DISP_dataSet getSelectUser(Dictionary<string, string> param_dict, NpgsqlConnection conn, DISP_dataSet displist, Boolean detailflg = false)
@@ -532,7 +729,7 @@ namespace SMSサンプル
             {
                 foreach (KeyValuePair<string, string> vdict in param_dict)
                 {
-                    if(detailflg)
+                    if (detailflg)
                     {
                         param += " and u." + vdict.Key + "='" + vdict.Value + "'";
                     }
@@ -680,12 +877,12 @@ namespace SMSサンプル
             {
                 foreach (KeyValuePair<string, string> vdict in param_dict)
                 {
-                    if(detailflg)
+                    if (detailflg)
                         if (vdict.Key == "systemno")
                             param += " and s." + vdict.Key + "=" + vdict.Value;
                         else
                             param += " and s." + vdict.Key + "='" + vdict.Value + "'";
-                    else { 
+                    else {
                         if (vdict.Key == "sitename")
                             param += " and s." + vdict.Key + "='" + vdict.Value + "'";
                         else if (vdict.Key == "systemno")
@@ -726,6 +923,11 @@ namespace SMSサンプル
                     s_ds.telno = dataReader["telno"].ToString();
                     s_ds.status = dataReader["site_status"].ToString();
                     s_ds.biko = dataReader["biko"].ToString();
+                    s_ds.userno = dataReader["userno"].ToString();
+                    s_ds.username = dataReader["username"].ToString();
+                    s_ds.systemno = dataReader["systemno"].ToString();
+                    s_ds.systemname = dataReader["systemname"].ToString();
+
                     s_ds.chk_date = dataReader["site_chk_date"].ToString();
                     s_ds.chk_name_id = dataReader["site_chk_name_id"].ToString();
                     site_List.Add(s_ds);
@@ -743,7 +945,7 @@ namespace SMSサンプル
             return displist;
         }
         //監視ホスト
-        public DISP_dataSet getSelectHost(Dictionary<string, string> param_dict, NpgsqlConnection conn, DISP_dataSet displist,Boolean detailflg = false)
+        public DISP_dataSet getSelectHost(Dictionary<string, string> param_dict, NpgsqlConnection conn, DISP_dataSet displist, Boolean detailflg = false)
         {
 
 
@@ -835,13 +1037,13 @@ namespace SMSサンプル
                 {
                     foreach (KeyValuePair<string, string> vdict in param_dict)
                     {
-                        if(vdict.Key == "userno" || vdict.Key == "systemno" || vdict.Key == "siteno" || vdict.Key == "host_no" || vdict.Key == "kennshino")
-                            param += " and w." + vdict.Key + "=" + vdict.Value ;
-                        else 
+                        if (vdict.Key == "userno" || vdict.Key == "systemno" || vdict.Key == "siteno" || vdict.Key == "host_no" || vdict.Key == "kennshino")
+                            param += " and w." + vdict.Key + "=" + vdict.Value;
+                        else
                             param += " and w." + vdict.Key + "='" + vdict.Value + "'";
                     }
                 }
-                else { 
+                else {
                     foreach (KeyValuePair<string, string> vdict in param_dict)
                     {
                         if (vdict.Key == "IPaddress")
@@ -881,8 +1083,11 @@ namespace SMSサンプル
                     w_ds.status = dataReader["watch_status"].ToString();
                     w_ds.type = dataReader["type"].ToString();
                     w_ds.kanshi = dataReader["kanshi"].ToString();
-                    w_ds.start_date = dataReader["start_date"].ToString();
-                    w_ds.end_date = dataReader["end_date"].ToString();
+                    String ss = dataReader["start_date"].ToString();
+                    w_ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
+
+                    String ss2 = dataReader["end_date"].ToString();
+                    w_ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
                     w_ds.border = dataReader["border"].ToString();
                     w_ds.IPaddress = dataReader["IPaddress"].ToString();
                     w_ds.IPaddressNAT = dataReader["IPaddressNAT"].ToString();
@@ -917,7 +1122,18 @@ namespace SMSサンプル
                 {
                     if (i == 0)
                     {
-                        param += " where k." + vdict.Key + "=" + vdict.Value;
+
+                        if (vdict.Key == "userno" || vdict.Key == "systemno" || vdict.Key == "siteno" 
+                            || vdict.Key == "host_no" || vdict.Key == "kennshino" || vdict.Key == "kaisenno")
+                        {
+                            param += " where k." + vdict.Key + "=" + vdict.Value;
+                            i++;
+                        }
+                        else
+                        {
+                            param += " where k." + vdict.Key + "='" + vdict.Value + "'";
+                            i++;
+                        }
                         i++;
 
                     }
@@ -953,21 +1169,21 @@ namespace SMSサンプル
                 //SELECT実行
                 cmd = new NpgsqlCommand(@sql, conn);
                 var dataReader = cmd.ExecuteReader();
-                
+
                 kaisen_List = new List<kaisenDS>();
                 while (dataReader.Read())
                 {
 
                     kai_ds = new kaisenDS();
 
-                    kai_ds.kaisenno =   dataReader["kaisenno"].ToString();
-                    kai_ds.status =     dataReader["status"].ToString();
-                    kai_ds.career =     dataReader["career"].ToString();
-                    kai_ds.type =       dataReader["type"].ToString();
-                    kai_ds.kaisenid =   dataReader["kaisenid"].ToString();
-                    kai_ds.isp =        dataReader["isp"].ToString();
-                    kai_ds.servicetype=dataReader["servicetype"].ToString();
-                    kai_ds.serviceid =  dataReader["serviceid"].ToString();
+                    kai_ds.kaisenno = dataReader["kaisenno"].ToString();
+                    kai_ds.status = dataReader["status"].ToString();
+                    kai_ds.career = dataReader["career"].ToString();
+                    kai_ds.type = dataReader["type"].ToString();
+                    kai_ds.kaisenid = dataReader["kaisenid"].ToString();
+                    kai_ds.isp = dataReader["isp"].ToString();
+                    kai_ds.servicetype = dataReader["servicetype"].ToString();
+                    kai_ds.serviceid = dataReader["serviceid"].ToString();
                     kai_ds.chk_name_id = dataReader["chk_name_id"].ToString();
                     kai_ds.userno = dataReader["userno"].ToString();
                     kai_ds.systemno = dataReader["systemno"].ToString();
@@ -989,7 +1205,7 @@ namespace SMSサンプル
             return displist;
         }
         //作業情報を取得する
-        public List<scheduleDS> getSelectSagyoList( NpgsqlConnection con)
+        public List<scheduleDS> getSelectSagyoList(NpgsqlConnection con)
         {
 
             String sql = "select sc,schedule_no,sc.timer_name,sc.schedule_type,sc.repeat_type,sc.start_date,sc.end_date,sc.status,sc.alerm_message," +
@@ -1016,10 +1232,13 @@ namespace SMSサンプル
                 {
 
                     sa_ds = new scheduleDS();
-                    sa_ds.schedule_no= dataReader["schedule_no"].ToString();
+                    sa_ds.schedule_no = dataReader["schedule_no"].ToString();
                     sa_ds.timer_name = dataReader["timer_name"].ToString();
-                    sa_ds.start_date = dataReader["start_date"].ToString();
-                    sa_ds.end_date = dataReader["end_date"].ToString();
+                    String ss = dataReader["start_date"].ToString();
+                    sa_ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
+
+                    String ss2 = dataReader["end_date"].ToString();
+                    sa_ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
                     sa_ds.chk_name_id = dataReader["chk_name_id"].ToString();
                     sa_ds.chk_date = dataReader["chk_date"].ToString();
 
@@ -1118,9 +1337,9 @@ namespace SMSサンプル
                     t_ds = new tantouDS();
                     t_ds.user_tantou_no = dataReader["user_tantou_no"].ToString();
                     t_ds.userno = dataReader["userno"].ToString();
-                    t_ds.user_tantou_name= dataReader["user_tantou_name"].ToString();
+                    t_ds.user_tantou_name = dataReader["user_tantou_name"].ToString();
                     t_ds.user_tantou_name_kana = dataReader["user_tantou_name_kana"].ToString();
-                    t_ds.busho_name= dataReader["busho_name"].ToString();
+                    t_ds.busho_name = dataReader["busho_name"].ToString();
                     t_ds.telno1 = dataReader["telno1"].ToString();
                     t_ds.telno2 = dataReader["telno2"].ToString();
                     t_ds.yakusyoku = dataReader["yakusyoku"].ToString();
@@ -1140,12 +1359,110 @@ namespace SMSサンプル
 
             return tatou_list;
         }
+
+
+        //スケジュールデータを取得する
+        public List<scheduleDS> getSelectscheduleList(Form_MainList ownerForm, Dictionary<string, string> param_dict, NpgsqlConnection con)
+        {
+
+
+            String sql = "";
+            NpgsqlCommand cmd;
+            scheduleDS retDS;
+            List<scheduleDS> sche_list = new List<scheduleDS>();
+            //DB接続
+            if (param_dict.Count > 0)
+            {
+                int i = 0;
+                foreach (KeyValuePair<string, string> vdict in param_dict)
+                {
+                    if (i == 0)
+                    {
+                        sql += " WHERE sc." + vdict.Key + "='" + vdict.Value + "'";
+                        i++;
+
+                    }
+                    else
+                    {
+                        sql += " AND sc." + vdict.Key + "='" + vdict.Value + "'";
+
+                    }
+                }
+            }
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                //SELECT実行
+                cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.userno,sc.systemno,sc.timer_name,sc.schedule_type,sc.status,sc.repeat_type,sc.start_date,sc.end_date,sc.status,sc.alerm_message,sc.sound,sc.incident_no,sc.kakunin,sc.userno,u.username,sc.systemno,sys.systemname,sc.chk_date,sc.chk_name_id " +
+                    "FROM schedule sc LEFT OUTER JOIN user_tbl u ON sc.userno = u.userno " +
+                    "LEFT OUTER JOIN system sys ON sys.systemno = sc.systemno " + sql, con);
+
+                var dataReader = cmd.ExecuteReader();
+
+                //スケジュール情報の取得
+                sche_list = new List<scheduleDS>();
+
+                int idx = ownerForm.soundidx;
+                while (dataReader.Read())
+                {
+
+                    retDS = new scheduleDS();
+
+                    retDS.schedule_no = dataReader["schedule_no"].ToString();
+                    retDS.userno = dataReader["userno"].ToString();
+                    retDS.systemno = dataReader["systemno"].ToString();
+                    retDS.timer_name = dataReader["timer_name"].ToString();
+                    retDS.schedule_type = dataReader["schedule_type"].ToString();
+                    retDS.status = dataReader["status"].ToString();
+                    retDS.repeat_type = dataReader["repeat_type"].ToString();
+
+
+                    String ss = dataReader["start_date"].ToString();
+                    retDS.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
+
+                    String ss2 = dataReader["end_date"].ToString();
+                    retDS.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
+
+
+                    retDS.alerm_message = dataReader["alerm_message"].ToString();
+                    retDS.kakunin = dataReader["kakunin"].ToString();
+
+                    retDS.sound = dataReader["sound"].ToString();
+
+                    if (!dataReader.IsDBNull(dataReader.GetOrdinal("sound")))
+                    {
+                        File.WriteAllBytes("sound" + idx.ToString() + ".wav", (byte[])dataReader["sound"]);
+
+                        if (dataReader["sound"] != null)
+                            retDS.sound = "sound" + idx.ToString() + ".wav";
+                        idx++;
+                    }
+
+
+                    retDS.incident_no = dataReader["incident_no"].ToString();
+                    retDS.chk_name_id = dataReader["chk_name_id"].ToString();
+                    retDS.chk_date = dataReader["chk_date"].ToString();
+
+                    sche_list.Add(retDS);
+                }
+                ownerForm.soundidx = idx;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("定期作業情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            return sche_list;
+        }
+
         //検索データ
         public DISP_dataSet getSelectDataFor_Interface(Dictionary<string, string> param_dict, NpgsqlConnection conn, DISP_dataSet displist)
         {
-            string[] sql= new string[2];
+            string[] sql = new string[2];
 
-            string username,systemname,sitename,hostname,ipadd;
+            string username, systemname, sitename, hostname, ipadd;
 
             param_dict.TryGetValue("IPaddress", out ipadd);
             param_dict.TryGetValue("hostname", out hostname);
@@ -1191,7 +1508,7 @@ namespace SMSサンプル
                 sql[1] = "select u.userno,u.username,sys.systemno,sys.systemname,w.kennshino, w.interfacename, w.status w_status, w.type,w.kanshi,w.start_date,w.end_date,w.border,w.IPaddress,w.IPaddressNAT,w.chk_date w_chk_date, w.chk_name_id w_chk_name_id," +
                     "h.host_no, h.hostname, h.hostname_ja, h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id, " +
                     "s.siteno,s.sitename,s.address1,s.address2,s.telno, s.status s_status, s.biko sitebiko, s.chk_date s_chk_date, s.chk_name_id s_chk_name_id " +
-                    "from user_tbl u INNER JOIN system sys ON u.userno = sys.userno INNER JOIN site s ON s.systemno = sys.systemno LEFT OUTER JOIN host h ON h.systemno = s.systemno LEFT OUTER JOIN watch_interface w ON w.systemno = s.systemno ";
+                    "from user_tbl u INNER JOIN system sys ON u.userno = sys.userno INNER JOIN site s ON s.systemno = sys.systemno LEFT OUTER JOIN host h ON h.siteno = s.siteno LEFT OUTER JOIN watch_interface w ON w.host_no = h.host_no ";
             }
             else if (username != null)
 
@@ -1200,12 +1517,12 @@ namespace SMSサンプル
                     "s.siteno,s.sitename,s.address1,s.address2,s.telno, s.status s_status, s.biko sitebiko, s.chk_date s_chk_date, s.chk_name_id s_chk_name_id," +
                     "sys.systemno,sys.systemname,sys.systemkana, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id," +
                     "u.userno,u.username,u.username_kana,u.username_sum,u.status u_status, u.report_status,u.biko userbiko, u.chk_date u_chk_date, u.chk_name_id u_chk_name_id " +
-                    "from user_tbl u LEFT OUTER JOIN system sys ON u.userno = sys.userno INNER JOIN site s ON s.systemno = sys.systemno LEFT OUTER JOIN host h ON h.systemno = s.systemno LEFT OUTER JOIN watch_interface w ON w.systemno = s.systemno ";
+                    "from user_tbl u LEFT OUTER JOIN system sys ON u.userno = sys.userno LEFT OUTER JOIN site s ON s.systemno = sys.systemno LEFT OUTER JOIN host h ON h.siteno = s.siteno LEFT OUTER JOIN watch_interface w ON w.host_no = h.host_no ";
 
 
-             
 
-                String param = "";
+
+            String param = "";
 
             if (param_dict.Count > 0)
             {
@@ -1254,7 +1571,7 @@ namespace SMSサンプル
 
             sql[0] += param;
             if (sql[1] != null) sql[1] += param;
-            
+
             NpgsqlCommand cmd;
 
             userDS u_ds;
@@ -1268,16 +1585,17 @@ namespace SMSサンプル
             List<siteDS> site_List = null;
             List<hostDS> host_List = null;
             List<watch_InterfaceDS> interface_List = null;
-            
+
             try
             {
                 if (con.FullState != ConnectionState.Open) conn.Open();
 
 
 
-                for (int i= 0;i < 2; i++) {
+                for (int i = 0; i < 2; i++)
+                {
                     if (sql[i] == null)
-                        break ;
+                        break;
 
                     //SELECT実行
                     cmd = new NpgsqlCommand(sql[i], conn);
@@ -1356,8 +1674,12 @@ namespace SMSサンプル
                             w_ds.status = dataReader["w_status"].ToString();
                             w_ds.type = dataReader["type"].ToString();
                             w_ds.kanshi = dataReader["kanshi"].ToString();
-                            w_ds.start_date = dataReader["start_date"].ToString();
-                            w_ds.end_date = dataReader["end_date"].ToString();
+                            String ss = dataReader["start_date"].ToString();
+                            w_ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
+
+                            String ss2 = dataReader["end_date"].ToString();
+                            w_ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
+
                             w_ds.border = dataReader["border"].ToString();
                             w_ds.IPaddress = dataReader["IPaddress"].ToString();
                             w_ds.IPaddressNAT = dataReader["IPaddressNAT"].ToString();
@@ -1483,20 +1805,21 @@ namespace SMSサンプル
                             sys_ds.chk_name_id = dataReader["sys_chk_name_id"].ToString();
                             system_List.Add(sys_ds);
                         }
-                        else if(username != null && i == 0)
+                        else if (username != null && i == 0)
                         {
-   
-                                u_ds.userno = dataReader["userno"].ToString();
-                                u_ds.username = dataReader["username"].ToString();
-                                u_ds.username_kana = dataReader["username_kana"].ToString();
-                                u_ds.username_sum = dataReader["username_sum"].ToString();
-                                u_ds.status = dataReader["u_status"].ToString();
-                                u_ds.report_status = dataReader["report_status"].ToString();
-                                u_ds.biko = dataReader["userbiko"].ToString();
-                                u_ds.chk_date = dataReader["u_chk_date"].ToString();
-                                u_ds.chk_name_id = dataReader["u_chk_name_id"].ToString();
-                                user_List.Add(u_ds);
 
+                            u_ds.userno = dataReader["userno"].ToString();
+                            u_ds.username = dataReader["username"].ToString();
+                            u_ds.username_kana = dataReader["username_kana"].ToString();
+                            u_ds.username_sum = dataReader["username_sum"].ToString();
+                            u_ds.status = dataReader["u_status"].ToString();
+                            u_ds.report_status = dataReader["report_status"].ToString();
+                            u_ds.biko = dataReader["userbiko"].ToString();
+                            u_ds.chk_date = dataReader["u_chk_date"].ToString();
+                            u_ds.chk_name_id = dataReader["u_chk_name_id"].ToString();
+                            user_List.Add(u_ds);
+
+                            if (dataReader["systemno"] != null && dataReader["systemno"].ToString() != "" ) { 
                                 sys_ds.systemno = dataReader["systemno"].ToString();
                                 sys_ds.systemname = dataReader["systemname"].ToString();
                                 sys_ds.systemkana = dataReader["systemkana"].ToString();
@@ -1504,6 +1827,10 @@ namespace SMSサンプル
                                 sys_ds.chk_date = dataReader["sys_chk_date"].ToString();
                                 sys_ds.chk_name_id = dataReader["sys_chk_name_id"].ToString();
                                 system_List.Add(sys_ds);
+                            }
+
+                            if (dataReader["siteno"] != null && dataReader["siteno"].ToString() != "" )
+                            {
 
                                 s_ds.siteno = dataReader["siteno"].ToString();
                                 s_ds.sitename = dataReader["sitename"].ToString();
@@ -1517,6 +1844,10 @@ namespace SMSサンプル
                                 s_ds.chk_date = dataReader["s_chk_date"].ToString();
                                 s_ds.chk_name_id = dataReader["s_chk_name_id"].ToString();
                                 site_List.Add(s_ds);
+                            }
+
+                            if (dataReader["host_no"] != null && dataReader["host_no"].ToString() != "")
+                            {
 
                                 h_ds.host_no = dataReader["host_no"].ToString();
                                 h_ds.hostname = dataReader["hostname"].ToString();
@@ -1536,14 +1867,22 @@ namespace SMSサンプル
                                 h_ds.chk_date = dataReader["h_chk_date"].ToString();
                                 h_ds.chk_name_id = dataReader["h_chk_name_id"].ToString();
                                 host_List.Add(h_ds);
+                            }
+                            if (dataReader["kennshino"] != null && dataReader["kennshino"].ToString() != "")
+                            {
 
                                 w_ds.watch_Interfaceno = dataReader["kennshino"].ToString();
                                 w_ds.interfacename = dataReader["interfacename"].ToString();
                                 w_ds.status = dataReader["w_status"].ToString();
                                 w_ds.type = dataReader["type"].ToString();
                                 w_ds.kanshi = dataReader["kanshi"].ToString();
-                                w_ds.start_date = dataReader["start_date"].ToString();
-                                w_ds.end_date = dataReader["end_date"].ToString();
+
+                                String ss = dataReader["start_date"].ToString();
+                                w_ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
+
+                                String ss2 = dataReader["end_date"].ToString();
+                                w_ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
+
                                 w_ds.border = dataReader["border"].ToString();
                                 w_ds.IPaddress = dataReader["IPaddress"].ToString();
                                 w_ds.IPaddressNAT = dataReader["IPaddressNAT"].ToString();
@@ -1554,13 +1893,10 @@ namespace SMSサンプル
                                 w_ds.siteno = dataReader["siteno"].ToString();
                                 w_ds.host_no = dataReader["host_no"].ToString();
 
-                            interface_List.Add(w_ds);
-                         
+                                interface_List.Add(w_ds);
+                            }
                         }
-
-
-
-
+                        
                         if (i == 1)
                         {
                             if (hostname != null)
@@ -1598,84 +1934,114 @@ namespace SMSサンプル
                                 h_ds.hosyukanri = dataReader["hosyukanri"].ToString();
                                 h_ds.hosyuinfo = dataReader["hosyuinfo"].ToString();
                                 h_ds.biko = dataReader["hostbiko"].ToString();
+                                h_ds.userno = dataReader["userno"].ToString();
+                                h_ds.systemno = dataReader["systemno"].ToString();
+                                h_ds.siteno = dataReader["siteno"].ToString();
                                 h_ds.chk_date = dataReader["h_chk_date"].ToString();
                                 h_ds.chk_name_id = dataReader["h_chk_name_id"].ToString();
                                 host_List.Add(h_ds);
 
-                                w_ds.watch_Interfaceno = dataReader["kennshino"].ToString();
-                                w_ds.interfacename = dataReader["interfacename"].ToString();
-                                w_ds.status = dataReader["w_status"].ToString();
-                                w_ds.type = dataReader["type"].ToString();
-                                w_ds.kanshi = dataReader["kanshi"].ToString();
-                                w_ds.start_date = dataReader["start_date"].ToString();
-                                w_ds.end_date = dataReader["end_date"].ToString();
-                                w_ds.border = dataReader["border"].ToString();
-                                w_ds.IPaddress = dataReader["IPaddress"].ToString();
-                                w_ds.IPaddressNAT = dataReader["IPaddressNAT"].ToString();
-                                w_ds.chk_date = dataReader["w_chk_date"].ToString();
-                                w_ds.chk_name_id = dataReader["w_chk_name_id"].ToString();
-                                w_ds.userno = dataReader["userno"].ToString();
-                                w_ds.systemno = dataReader["systemno"].ToString();
-                                w_ds.siteno = dataReader["siteno"].ToString();
-                                w_ds.host_no = dataReader["host_no"].ToString();
+                                if (dataReader["kennshino"] != null && dataReader["kennshino"].ToString() != "")
+                                {
+                                    w_ds.watch_Interfaceno = dataReader["kennshino"].ToString();
+                                    w_ds.interfacename = dataReader["interfacename"].ToString();
+                                    w_ds.status = dataReader["w_status"].ToString();
+                                    w_ds.type = dataReader["type"].ToString();
+                                    w_ds.kanshi = dataReader["kanshi"].ToString();
 
-                                interface_List.Add(w_ds);
+                                    String ss = dataReader["start_date"].ToString();
+                                    w_ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
+
+                                    String ss2 = dataReader["end_date"].ToString();
+                                    w_ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
+
+                                    w_ds.border = dataReader["border"].ToString();
+                                    w_ds.IPaddress = dataReader["IPaddress"].ToString();
+                                    w_ds.IPaddressNAT = dataReader["IPaddressNAT"].ToString();
+                                    w_ds.chk_date = dataReader["w_chk_date"].ToString();
+                                    w_ds.chk_name_id = dataReader["w_chk_name_id"].ToString();
+                                    w_ds.userno = dataReader["userno"].ToString();
+                                    w_ds.systemno = dataReader["systemno"].ToString();
+                                    w_ds.siteno = dataReader["siteno"].ToString();
+                                    w_ds.host_no = dataReader["host_no"].ToString();
+
+                                    interface_List.Add(w_ds);
+                                }
 
                             }
                             else if (systemname != null)
                             {
-                                s_ds.siteno = dataReader["siteno"].ToString();
-                                s_ds.sitename = dataReader["sitename"].ToString();
-                                s_ds.address1 = dataReader["address1"].ToString();
-                                s_ds.address2 = dataReader["address2"].ToString();
-                                s_ds.telno = dataReader["telno"].ToString();
-                                s_ds.userno = dataReader["userno"].ToString();
-                                s_ds.systemno = dataReader["systemno"].ToString();
+                                if (dataReader["siteno"] != null && dataReader["siteno"].ToString() != "")
+                                {
+                                    s_ds.siteno = dataReader["siteno"].ToString();
+                                    s_ds.sitename = dataReader["sitename"].ToString();
+                                    s_ds.address1 = dataReader["address1"].ToString();
+                                    s_ds.address2 = dataReader["address2"].ToString();
+                                    s_ds.telno = dataReader["telno"].ToString();
+                                    s_ds.userno = dataReader["userno"].ToString();
+                                    s_ds.systemno = dataReader["systemno"].ToString();
 
-                                s_ds.status = dataReader["s_status"].ToString();
-                                s_ds.biko = dataReader["sitebiko"].ToString();
-                                s_ds.chk_date = dataReader["s_chk_date"].ToString();
-                                s_ds.chk_name_id = dataReader["s_chk_name_id"].ToString();
-                                site_List.Add(s_ds);
+                                    s_ds.status = dataReader["s_status"].ToString();
+                                    s_ds.biko = dataReader["sitebiko"].ToString();
+                                    s_ds.chk_date = dataReader["s_chk_date"].ToString();
+                                    s_ds.chk_name_id = dataReader["s_chk_name_id"].ToString();
+                                    site_List.Add(s_ds);
+                                }
 
-                                h_ds.host_no = dataReader["host_no"].ToString();
-                                h_ds.hostname = dataReader["hostname"].ToString();
-                                h_ds.hostname_ja = dataReader["hostname_ja"].ToString();
-                                h_ds.status = dataReader["h_status"].ToString();
-                                h_ds.device = dataReader["device"].ToString();
-                                h_ds.location = dataReader["location"].ToString();
-                                h_ds.usefor = dataReader["usefor"].ToString();
-                                h_ds.kansiStartdate = dataReader["kansiStartdate"].ToString();
-                                h_ds.kansiEndsdate = dataReader["kansiEndsdate"].ToString();
-                                h_ds.hosyukanri = dataReader["hosyukanri"].ToString();
-                                h_ds.hosyuinfo = dataReader["hosyuinfo"].ToString();
-                                h_ds.biko = dataReader["hostbiko"].ToString();
-                                h_ds.chk_date = dataReader["h_chk_date"].ToString();
-                                h_ds.chk_name_id = dataReader["h_chk_name_id"].ToString();
-                                host_List.Add(h_ds);
 
-                                w_ds.watch_Interfaceno = dataReader["kennshino"].ToString();
-                                w_ds.interfacename = dataReader["interfacename"].ToString();
-                                w_ds.status = dataReader["w_status"].ToString();
-                                w_ds.type = dataReader["type"].ToString();
-                                w_ds.kanshi = dataReader["kanshi"].ToString();
-                                w_ds.start_date = dataReader["start_date"].ToString();
-                                w_ds.end_date = dataReader["end_date"].ToString();
-                                w_ds.border = dataReader["border"].ToString();
-                                w_ds.IPaddress = dataReader["IPaddress"].ToString();
-                                w_ds.IPaddressNAT = dataReader["IPaddressNAT"].ToString();
-                                w_ds.chk_date = dataReader["w_chk_date"].ToString();
-                                w_ds.chk_name_id = dataReader["w_chk_name_id"].ToString();
-                                w_ds.userno = dataReader["userno"].ToString();
-                                w_ds.systemno = dataReader["systemno"].ToString();
-                                w_ds.siteno = dataReader["siteno"].ToString();
-                                w_ds.host_no = dataReader["host_no"].ToString();
+                                if (dataReader["host_no"] != null && dataReader["host_no"].ToString() != "")
+                                {
+                                    h_ds.host_no = dataReader["host_no"].ToString();
+                                    h_ds.hostname = dataReader["hostname"].ToString();
+                                    h_ds.hostname_ja = dataReader["hostname_ja"].ToString();
+                                    h_ds.status = dataReader["h_status"].ToString();
+                                    h_ds.device = dataReader["device"].ToString();
+                                    h_ds.location = dataReader["location"].ToString();
+                                    h_ds.usefor = dataReader["usefor"].ToString();
+                                    h_ds.kansiStartdate = dataReader["kansiStartdate"].ToString();
+                                    h_ds.kansiEndsdate = dataReader["kansiEndsdate"].ToString();
+                                    h_ds.hosyukanri = dataReader["hosyukanri"].ToString();
+                                    h_ds.hosyuinfo = dataReader["hosyuinfo"].ToString();
+                                    h_ds.biko = dataReader["hostbiko"].ToString();
+                                    h_ds.userno = dataReader["userno"].ToString();
+                                    h_ds.systemno = dataReader["systemno"].ToString();
+                                    h_ds.siteno = dataReader["siteno"].ToString();
+                                    h_ds.chk_date = dataReader["h_chk_date"].ToString();
+                                    h_ds.chk_name_id = dataReader["h_chk_name_id"].ToString();
+                                    host_List.Add(h_ds);
+                                }
 
-                                interface_List.Add(w_ds);
+                                if (dataReader["kennshino"] != null && dataReader["kennshino"].ToString() != "")
+                                {
+                                    w_ds.watch_Interfaceno = dataReader["kennshino"].ToString();
+                                    w_ds.interfacename = dataReader["interfacename"].ToString();
+                                    w_ds.status = dataReader["w_status"].ToString();
+                                    w_ds.type = dataReader["type"].ToString();
+                                    w_ds.kanshi = dataReader["kanshi"].ToString();
+
+                                    String ss = dataReader["start_date"].ToString();
+                                    w_ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
+
+                                    String ss2 = dataReader["end_date"].ToString();
+                                    w_ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
+
+
+                                    w_ds.border = dataReader["border"].ToString();
+                                    w_ds.IPaddress = dataReader["IPaddress"].ToString();
+                                    w_ds.IPaddressNAT = dataReader["IPaddressNAT"].ToString();
+                                    w_ds.chk_date = dataReader["w_chk_date"].ToString();
+                                    w_ds.chk_name_id = dataReader["w_chk_name_id"].ToString();
+                                    w_ds.userno = dataReader["userno"].ToString();
+                                    w_ds.systemno = dataReader["systemno"].ToString();
+                                    w_ds.siteno = dataReader["siteno"].ToString();
+                                    w_ds.host_no = dataReader["host_no"].ToString();
+
+                                    interface_List.Add(w_ds);
+                                }
                             }
                         }
                     }
-                    if (displist.user_L == null || displist.user_L.Count==0) displist.user_L = user_List;
+                    if (displist.user_L == null || displist.user_L.Count == 0) displist.user_L = user_List;
                     if (displist.system_L == null || displist.system_L.Count == 0) displist.system_L = system_List;
                     if (displist.site_L == null || displist.site_L.Count == 0) displist.site_L = site_List;
 
@@ -1693,32 +2059,48 @@ namespace SMSサンプル
         }
 
         //タイマーで有効なものをすべて表示する
-        public List<scheduleDS> getTimerList(string userno,string systemno,Boolean searchflg = false)
+        public List<scheduleDS> getTimerList(Dictionary<string, string> param_dict, NpgsqlConnection con, int detailflg = 0)
         {
-
             string searchstring = "";
             DateTime nowdt = DateTime.Now;
             string nowString = nowdt.ToString("yyyy-MM-dd HH:mm");
 
-            //未完了のものを表示
-            searchstring = "where sc.status= '0' AND sc.end_date <= '" + nowString + "'";
-            if (searchflg)
-            {
-                searchstring += " AND sc.userno=" + userno + "and sc.systemno=" + systemno;
+            if (detailflg == 0)
+                //未完了のものを表示
+                searchstring = "where sc.status= '1' AND sc.start_date <= '" + nowString + "'";
 
+            if (param_dict.Count > 0)
+            {
+                int i = 0;
+                foreach (KeyValuePair<string, string> vdict in param_dict)
+                {
+                    if (i == 0 && detailflg >= 1)
+                    {
+                        searchstring += " WHERE sc." + vdict.Key + "='" + vdict.Value + "'";
+                        i++;
+                    }
+                    else
+                    {
+                        searchstring += " AND sc." + vdict.Key + "='" + vdict.Value + "'";
+                        i++;
+
+                    }
+                }
             }
+
             NpgsqlCommand cmd;
             scheduleDS ds;
             List<scheduleDS> retList = null;
             //DB接続
             try
             {
-                if(con.FullState != ConnectionState.Open) con.Open();
+                if (con.FullState != ConnectionState.Open) con.Open();
 
                 //SELECT実行
-                cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.userno,sc.systemno,sc.timer_name,sc.schedule_type,sc.status,sc.repeat_type,sc.start_date,sc.end_date,sc.status,sc.alerm_message,sc.incident_no,sc.userno,u.username,sc.systemno,sys.systemname,sc.chk_date,sc.chk_name_id " +
-                    "FROM schedule sc LEFT OUTER JOIN user_tbl u ON sc.userno = u.userno "  +
-                    "LEFT OUTER JOIN system sys ON sys.systemno = sc.systemno " + searchstring, con);
+                cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.timer_name,sc.schedule_type,sc.status,sc.repeat_type,sc.start_date,sc.end_date,sc.status,sc.alerm_message,sc.incident_no,sc.kakunin,sc.userno,u.username,sc.systemno,sys.systemname,sc.siteno,si.sitename,sc.chk_date,sc.chk_name_id " +
+                    "FROM schedule sc LEFT OUTER JOIN user_tbl u ON sc.userno = u.userno " +
+                    "LEFT OUTER JOIN system sys ON sys.systemno = sc.systemno " +
+                    "LEFT OUTER JOIN site si ON si.siteno = sc.siteno " + searchstring, con);
 
                 var dataReader = cmd.ExecuteReader();
 
@@ -1732,18 +2114,31 @@ namespace SMSサンプル
 
                     ds.schedule_no = dataReader["schedule_no"].ToString();
                     ds.userno = dataReader["userno"].ToString();
+                    ds.username = dataReader["username"].ToString();
                     ds.systemno = dataReader["systemno"].ToString();
+                    ds.systemname = dataReader["systemname"].ToString();
+                    ds.siteno = dataReader["siteno"].ToString();
+                    ds.sitename = dataReader["sitename"].ToString();
+
+
                     ds.timer_name = dataReader["timer_name"].ToString();
                     ds.schedule_type = dataReader["schedule_type"].ToString();
                     ds.status = dataReader["status"].ToString();
                     ds.repeat_type = dataReader["repeat_type"].ToString();
-                    ds.start_date = dataReader["start_date"].ToString();
-                    ds.end_date = dataReader["end_date"].ToString();
-                    ds.kakunin = dataReader["alerm_message"].ToString();
+
+                    String ss = dataReader["start_date"].ToString();
+                    ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
+
+                    String ss2 = dataReader["end_date"].ToString();
+                    ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
+
+
+                    ds.alerm_message = dataReader["alerm_message"].ToString();
+                    ds.kakunin = dataReader["kakunin"].ToString();
+
                     ds.incident_no = dataReader["incident_no"].ToString();
                     ds.chk_name_id = dataReader["chk_name_id"].ToString();
                     ds.chk_date = dataReader["chk_date"].ToString();
-
 
                     retList.Add(ds);
                 }
@@ -1752,14 +2147,57 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("定期作業情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                con.Close();
+
+
             }
 
             return retList;
         }
+        //アラート通知が必要なものを取得する
+        public string getSound(Form_MainList owner_form, NpgsqlConnection con, string scheduleid)
+        {
+            NpgsqlCommand cmd;
+            string sound = "";
+
+            //DB接続
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                //SELECT実行
+                cmd = new NpgsqlCommand(@"select sound from schedule where schedule_no=" + scheduleid, con);
+                var dataReader = cmd.ExecuteReader();
+
+
+                int fileidx = owner_form.soundidx;
+                while (dataReader.Read())
+                {
+
+                    sound = dataReader["sound"].ToString();
+                    if (!dataReader.IsDBNull(dataReader.GetOrdinal("sound")))
+                    {
+                        File.WriteAllBytes("sound" + fileidx.ToString() + ".wav", (byte[])dataReader["sound"]);
+
+                        if (dataReader["sound"] != null)
+                            sound = "sound" + fileidx.ToString() + ".wav";
+                    }
+
+                    fileidx++;
+                }
+                owner_form.soundidx = fileidx;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("スケジュール情報(サウンド)取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                con.Close();
+            }
+
+            return sound;
+
+        }
 
         //アラート通知が必要なものを取得する
-        public List<alermDS> getAlert()
+        public List<alermDS> getAlert(Form_MainList owner_form, NpgsqlConnection con)
         {
             NpgsqlCommand cmd;
             alermDS ds;
@@ -1772,17 +2210,18 @@ namespace SMSサンプル
                 if (con.FullState != ConnectionState.Open) con.Open();
 
                 //SELECT実行
-                cmd = new NpgsqlCommand(@"select u.userno,u.username,sys.systemno,sys.systemname,s.timer_name,s.sound,s.incident_no,s.alerm_message,t.schedule_no,t.schedule_type, t.alertdatetime,t.chk_name_id,t.chk_date from " + 
+                cmd = new NpgsqlCommand(@"select u.userno,u.username,sys.systemno,sys.systemname,s.timer_name,s.sound,s.incident_no,s.alerm_message,t.schedule_no,t.schedule_type, t.alertdatetime,t.chk_name_id,t.chk_date from " +
                     "timer_taiou t INNER JOIN schedule s ON t.schedule_no = s.schedule_no " +
                     "LEFT OUTER JOIN user_tbl u ON s.userno = u.userno " +
                     "LEFT OUTER JOIN system sys ON s.systemno = sys.systemno " +
-                    "where s.status='0' and  s.start_date <= '" + nowString +   "' and end_date >= '" + nowString + "' " +
+                    "where s.status='1' and  s.start_date <= '" + nowString + "' and end_date >= '" + nowString + "' " +
                     "and t.alertdatetime <= '" + nowString + "' and t.taioudate is null", con);
                 var dataReader = cmd.ExecuteReader();
 
                 //スケジュール情報の取得
                 retList = new List<alermDS>();
-                int i = 0;
+                int fileidx = owner_form.soundidx;
+
                 while (dataReader.Read())
                 {
 
@@ -1797,26 +2236,34 @@ namespace SMSサンプル
                     ds.timer_name = dataReader["timer_name"].ToString();
 
                     ds.sound = dataReader["sound"].ToString();
-
                     if (!dataReader.IsDBNull(dataReader.GetOrdinal("sound")))
                     {
-                        File.WriteAllBytes("sound" + i.ToString() + ".wav", (byte[])dataReader["sound"]);
+                        File.WriteAllBytes("sound" + fileidx.ToString() + ".wav", (byte[])dataReader["sound"]);
 
                         if (dataReader["sound"] != null)
-                            ds.sound = "sound" + i.ToString() + ".wav";
+                            ds.sound = "sound" + fileidx.ToString() + ".wav";
                     }
-                    
+
                     ds.incident_no = dataReader["incident_no"].ToString();
                     ds.alerm_message = dataReader["alerm_message"].ToString();
                     ds.schedule_no = dataReader["schedule_no"].ToString();
                     ds.schedule_type = dataReader["schedule_type"].ToString();
-                    ds.alertdatetime = dataReader["alertdatetime"].ToString();
+
+                    if (dataReader["alertdatetime"].ToString() != "")
+                    {
+                        String formatString = Convert.ToDateTime(dataReader["alertdatetime"].ToString()).ToString("yyyy/MM/dd HH:mm:ss");
+                        ds.alertdatetime = formatString;
+                    }
+
+
+
                     ds.chk_name_id = dataReader["chk_name_id"].ToString();
                     ds.chk_date = dataReader["chk_date"].ToString();
 
                     retList.Add(ds);
+                    fileidx++;
                 }
-
+                owner_form.soundidx = fileidx;
             }
             catch (Exception ex)
             {
@@ -1827,5 +2274,359 @@ namespace SMSサンプル
             return retList;
 
         }
+
+        //直近のアラーム日時を取得
+        public String getLatestAlerm(String schedule_no, NpgsqlConnection con)
+        {
+
+            NpgsqlCommand cmd;
+            String latestdatetime = "";
+
+            //DB接続
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                //SELECT実行
+                cmd = new NpgsqlCommand(@"select min(alertdatetime) alertdatetime FROM timer_taiou WHERE alertdatetime > current_timestamp " +
+                    "AND schedule_no=:no", con);
+
+                cmd.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = schedule_no });
+
+                var dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    if (dataReader["alertdatetime"].ToString() != "")
+                    {
+                        String formatString = Convert.ToDateTime(dataReader["alertdatetime"].ToString()).ToString("yyyy/MM/dd HH:mm:ss");
+                        latestdatetime = formatString;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("直近タイマー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                con.Close();
+            }
+
+            return latestdatetime;
+
+        }
+
+
+        //メールアドレス(オペレータ)
+        public List<MailaddressDS> selectMailList_ope(Dictionary<string, string> param_dict, NpgsqlConnection con)
+        {
+            List<MailaddressDS> maillist = new List<MailaddressDS>();
+            MailaddressDS ds;
+            NpgsqlCommand cmd;
+            String sql = "select m.kubun,m.opetantouno,m.addressNo,m.mailAddress,m.addressname," +
+               "op.lastname,op.fastname,op.opeid,op.openo,m.chk_name_id,m.chk_date FROM mailAddress m " +
+               "INNER JOIN ope op ON op.openo = m.opetantouno " +
+               "WHERE kubun='1'";
+
+            //DB接続
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                string param = "";
+
+                if (param_dict.Count > 0)
+                {
+                    foreach (KeyValuePair<string, string> vdict in param_dict)
+                    {
+                        if (vdict.Key == "opetantouno" || vdict.Key == "addressNo")
+                            param += " and " + vdict.Key + "=" + vdict.Value;
+                        else if (vdict.Key == "systemno")
+                            param += " and " + vdict.Key + "='" + vdict.Value + "'";
+                    }
+                    sql += param;
+                }
+
+                //SELECT実行 1:オペレータ 2:カスタマ担当者
+                cmd = new NpgsqlCommand(@sql, con);
+                var dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    ds = new MailaddressDS();
+                    ds.kubun = dataReader["kubun"].ToString();
+                    ds.opetantouno = dataReader["opetantouno"].ToString();
+                    ds.addressNo = dataReader["addressNo"].ToString();
+                    ds.mailAddress = dataReader["mailAddress"].ToString();
+                    ds.addressname = dataReader["addressname"].ToString();
+                    string lastname = dataReader["lastname"].ToString();
+                    string fastname = dataReader["fastname"].ToString();
+                    ds.user_tantou_name = lastname + " " + fastname;
+                    ds.chk_name_id = dataReader["chk_name_id"].ToString();
+                    ds.chk_date = dataReader["chk_date"].ToString();
+                    maillist.Add(ds);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("メールアドレス取得 " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                con.Close();
+            }
+            return maillist;
+        }
+        //メールアドレス(カスタマ担当者)
+        public List<MailaddressDS> selectMailList_Tantou(Dictionary<string, string> param_dict, NpgsqlConnection con)
+        {
+            List<MailaddressDS> maillist = new List<MailaddressDS>();
+            MailaddressDS ds;
+            NpgsqlCommand cmd;
+            //String sql = "select kubun,opetantouno,addressNo,mailAddress,addressname,chk_name_id,chk_date FROM mailAddress WHERE kubun='2'";
+            String sql = "select m.kubun,m.opetantouno,m.addressNo,m.mailAddress,m.addressname," +
+               "ta.user_tantou_name,ta.userno,u.username,m.chk_name_id,m.chk_date FROM mailAddress m " +
+               "INNER JOIN user_tanntou ta ON ta.user_tantou_no = m.opetantouno " +
+               "LEFT OUTER JOIN user_tbl u ON ta.userno = u.userno " +
+               "WHERE kubun='2'";
+            //DB接続
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+
+                string param = "";
+
+                if (param_dict.Count > 0)
+                {
+                    foreach (KeyValuePair<string, string> vdict in param_dict)
+                    {
+                        if (vdict.Key == "opetantouno" || vdict.Key == "addressNo")
+                            param += " and " + vdict.Key + "=" + vdict.Value;
+                        else if (vdict.Key == "systemno")
+                            param += " and " + vdict.Key + "='" + vdict.Value + "'";
+                    }
+                    sql += param;
+                }
+
+                //SELECT実行 1:オペレータ 2:カスタマ担当者
+                cmd = new NpgsqlCommand(@sql, con);
+                var dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    ds = new MailaddressDS();
+                    ds.kubun = dataReader["kubun"].ToString();
+                    ds.opetantouno = dataReader["opetantouno"].ToString();
+                    ds.user_tantou_name = dataReader["user_tantou_name"].ToString();
+                    ds.userno = dataReader["userno"].ToString();
+                    ds.username = dataReader["username"].ToString();
+                    ds.addressNo = dataReader["addressNo"].ToString();
+                    ds.mailAddress = dataReader["mailAddress"].ToString();
+                    ds.addressname = dataReader["addressname"].ToString();
+                    ds.chk_name_id = dataReader["chk_name_id"].ToString();
+                    ds.chk_date = dataReader["chk_date"].ToString();
+
+                    maillist.Add(ds);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("メールアドレス取得" + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                con.Close();
+            }
+            return maillist;
+        }
+
+        //メールアドレス(検索)
+        public List<MailaddressDS> selectMailList(Dictionary<string, string> param_dict, NpgsqlConnection con, string tabidx)
+        {
+            List<MailaddressDS> maillist = new List<MailaddressDS>();
+            MailaddressDS ds;
+            NpgsqlCommand cmd;
+            String strsql = "";
+            int i = 0;
+            if (tabidx == "1") { 
+                strsql = "WHERE kubun='" + tabidx + "'";
+                i++;
+            }
+            else if (tabidx == "2")
+            {
+                strsql = "WHERE kubun='" + tabidx + "'";
+                i++;
+            }
+
+
+                //String sql = "select kubun,opetantouno,addressNo,mailAddress,addressname,chk_name_id,chk_date FROM mailAddress WHERE kubun='2'";
+                String sql = "select m.kubun,m.opetantouno,m.addressNo,m.mailAddress,m.addressname," +
+               "ta.user_tantou_name,ta.userno,u.username,m.chk_name_id,m.chk_date FROM mailAddress m " +
+               "INNER JOIN user_tanntou ta ON ta.user_tantou_no = m.opetantouno " +
+               "LEFT OUTER JOIN user_tbl u ON ta.userno = u.userno " + strsql;
+            //DB接続
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+
+                string param = "";
+                if (param_dict.Count > 0)
+                {
+                    foreach (KeyValuePair<string, string> vdict in param_dict)
+                    {
+                        if(i == 0)
+                        {
+                            if (vdict.Key == "opetantouno" || vdict.Key == "addressNo")
+                                param += " WHERE " + vdict.Key + "=" + vdict.Value;
+                            else if (vdict.Key == "systemno")
+                                param += " WHERE " + vdict.Key + "='" + vdict.Value + "'";
+
+                            i++;
+                        }
+                        else { 
+                            if (vdict.Key == "opetantouno" || vdict.Key == "addressNo")
+                                param += " and " + vdict.Key + "=" + vdict.Value;
+                            else if (vdict.Key == "systemno")
+                                param += " and " + vdict.Key + "='" + vdict.Value + "'";
+                        }
+                    }
+                    sql += param;
+                }
+
+                //SELECT実行 1:オペレータ 2:カスタマ担当者
+                cmd = new NpgsqlCommand(@sql, con);
+                var dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    ds = new MailaddressDS();
+                    ds.kubun = dataReader["kubun"].ToString();
+                    ds.opetantouno = dataReader["opetantouno"].ToString();
+                    ds.user_tantou_name = dataReader["user_tantou_name"].ToString();
+                    ds.userno = dataReader["userno"].ToString();
+                    ds.username = dataReader["username"].ToString();
+                    ds.addressNo = dataReader["addressNo"].ToString();
+                    ds.mailAddress = dataReader["mailAddress"].ToString();
+                    ds.addressname = dataReader["addressname"].ToString();
+                    ds.chk_name_id = dataReader["chk_name_id"].ToString();
+                    ds.chk_date = dataReader["chk_date"].ToString();
+
+                    maillist.Add(ds);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("メールアドレス取得" + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                con.Close();
+            }
+            return maillist;
+        }
+
+        //メールテンプレート取得
+        public List<mailTempleteDS> selectMailtemplete(Dictionary<string, string> param_dict, NpgsqlConnection con)
+        {
+            List<mailTempleteDS> maillist = new List<mailTempleteDS>();
+            mailTempleteDS ds;
+            NpgsqlCommand cmd;
+            String sql = "select m.templateno,m.template_name,m.subject,m.body,m.attach1,m.attach2,m.attach3,m.attach4,m.attach5," +
+                
+                "chk_name_id,chk_date FROM mail_form m ";
+
+            //DB接続
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                string param = "";
+
+                if (param_dict.Count > 0)
+                {
+                    foreach (KeyValuePair<string, string> vdict in param_dict)
+                    {
+                        if (vdict.Key == "templateno" )
+                            param += " and " + vdict.Key + "=" + vdict.Value;
+                        else 
+                            param += " and " + vdict.Key + "='" + vdict.Value + "'";
+                    }
+                    sql += param;
+                }
+
+                //SELECT実行 1:オペレータ 2:カスタマ担当者
+                cmd = new NpgsqlCommand(@sql, con);
+                var dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    ds = new mailTempleteDS();
+                    ds.templateno = dataReader["templateno"].ToString();
+                    ds.template_name = dataReader["template_name"].ToString();
+                    ds.subject = dataReader["subject"].ToString();
+                    ds.body = dataReader["body"].ToString();
+                    ds.attach1 = dataReader["attach1"].ToString();
+                    ds.attach2 = dataReader["attach2"].ToString();
+                    ds.attach3 = dataReader["attach3"].ToString();
+                    ds.attach4 = dataReader["attach4"].ToString();
+                    ds.attach5 = dataReader["attach5"].ToString();
+                    ds.chk_name_id = dataReader["chk_name_id"].ToString();
+                    ds.chk_date = dataReader["chk_date"].ToString();
+                    maillist.Add(ds);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("メールテンプレート取得 " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                
+            }
+            return maillist;
+        }
+
+        //
+        public List<mailsendaddressDS> getToCcBcc(string templateno, NpgsqlConnection con)
+        {
+            List<mailsendaddressDS> retDS = new List < mailsendaddressDS>();
+            string wherestr = "";
+            wherestr = "AND m.templateno = " +templateno;
+            mailsendaddressDS ds;
+            NpgsqlCommand cmd;
+            String sql = "select m.kubun,m.opetantouno,m.toccbcc,m.addressno,m.templateno,ad.addressname,ad.mailaddress,m.chk_date,m.chk_name_id FROM mail_send_address m,mailaddress ad " +
+                "WHERE m.kubun = ad.kubun AND m.opetantouno = ad.opetantouno AND m.addressno = ad.addressno " + wherestr;
+
+            //DB接続
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+
+                //SELECT実行 1:オペレータ 2:カスタマ担当者
+                cmd = new NpgsqlCommand(@sql, con);
+                var dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    ds = new mailsendaddressDS();
+                    ds.templateno = dataReader["templateno"].ToString();
+                    ds.toccbcc = dataReader["toccbcc"].ToString();
+                    ds.kubun = dataReader["kubun"].ToString();
+                    ds.opetantouno = dataReader["opetantouno"].ToString();
+                    ds.addressno = dataReader["addressno"].ToString();
+                    ds.addressname = dataReader["addressname"].ToString();
+                    ds.mailaddress = dataReader["mailaddress"].ToString();
+                    ds.chk_date = dataReader["chk_date"].ToString();
+                    ds.chk_name_id = dataReader["chk_name_id"].ToString();
+
+                    retDS.Add(ds);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("メールテンプレート（メールアドレス取得) " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+
+            return retDS;
+
+        }
+
+        
     }
 }

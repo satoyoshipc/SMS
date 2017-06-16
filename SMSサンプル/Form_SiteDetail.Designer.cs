@@ -34,6 +34,10 @@
             this.m_selecttext = new System.Windows.Forms.TextBox();
             this.m_selectKoumoku = new System.Windows.Forms.ComboBox();
             this.m_Site_List = new System.Windows.Forms.ListView();
+            this.m_statusCombo = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.m_systemno = new System.Windows.Forms.TextBox();
+            this.m_systemname = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -56,10 +60,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.m_systemno = new System.Windows.Forms.TextBox();
-            this.m_systemname = new System.Windows.Forms.TextBox();
-            this.m_statusCombo = new System.Windows.Forms.ComboBox();
+            this.m_deleteBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -85,6 +86,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.m_deleteBtn);
             this.splitContainer1.Panel2.Controls.Add(this.m_statusCombo);
             this.splitContainer1.Panel2.Controls.Add(this.label12);
             this.splitContainer1.Panel2.Controls.Add(this.m_systemno);
@@ -174,8 +176,45 @@
             this.m_Site_List.TabIndex = 1;
             this.m_Site_List.UseCompatibleStateImageBehavior = false;
             this.m_Site_List.View = System.Windows.Forms.View.Details;
+            this.m_Site_List.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_Site_List_ColumnClick);
             this.m_Site_List.DoubleClick += new System.EventHandler(this.m_Site_List_DoubleClick);
-
+            // 
+            // m_statusCombo
+            // 
+            this.m_statusCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_statusCombo.FormattingEnabled = true;
+            this.m_statusCombo.Items.AddRange(new object[] {
+            "有効",
+            "無効"});
+            this.m_statusCombo.Location = new System.Drawing.Point(78, 167);
+            this.m_statusCombo.Name = "m_statusCombo";
+            this.m_statusCombo.Size = new System.Drawing.Size(68, 20);
+            this.m_statusCombo.TabIndex = 117;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(363, 42);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(43, 12);
+            this.label12.TabIndex = 116;
+            this.label12.Text = "システム";
+            // 
+            // m_systemno
+            // 
+            this.m_systemno.Location = new System.Drawing.Point(414, 39);
+            this.m_systemno.Name = "m_systemno";
+            this.m_systemno.ReadOnly = true;
+            this.m_systemno.Size = new System.Drawing.Size(45, 19);
+            this.m_systemno.TabIndex = 115;
+            // 
+            // m_systemname
+            // 
+            this.m_systemname.Location = new System.Drawing.Point(465, 39);
+            this.m_systemname.Name = "m_systemname";
+            this.m_systemname.ReadOnly = true;
+            this.m_systemname.Size = new System.Drawing.Size(216, 19);
+            this.m_systemname.TabIndex = 114;
             // 
             // label10
             // 
@@ -367,42 +406,17 @@
             this.label1.TabIndex = 89;
             this.label1.Text = "拠点通番";
             // 
-            // label12
+            // m_deleteBtn
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(363, 42);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(43, 12);
-            this.label12.TabIndex = 116;
-            this.label12.Text = "システム";
-            // 
-            // m_systemno
-            // 
-            this.m_systemno.Location = new System.Drawing.Point(414, 39);
-            this.m_systemno.Name = "m_systemno";
-            this.m_systemno.ReadOnly = true;
-            this.m_systemno.Size = new System.Drawing.Size(45, 19);
-            this.m_systemno.TabIndex = 115;
-            // 
-            // m_systemname
-            // 
-            this.m_systemname.Location = new System.Drawing.Point(465, 39);
-            this.m_systemname.Name = "m_systemname";
-            this.m_systemname.ReadOnly = true;
-            this.m_systemname.Size = new System.Drawing.Size(216, 19);
-            this.m_systemname.TabIndex = 114;
-            // 
-            // m_statusCombo
-            // 
-            this.m_statusCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.m_statusCombo.FormattingEnabled = true;
-            this.m_statusCombo.Items.AddRange(new object[] {
-            "有効",
-            "無効"});
-            this.m_statusCombo.Location = new System.Drawing.Point(78, 167);
-            this.m_statusCombo.Name = "m_statusCombo";
-            this.m_statusCombo.Size = new System.Drawing.Size(68, 20);
-            this.m_statusCombo.TabIndex = 117;
+            this.m_deleteBtn.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.m_deleteBtn.ForeColor = System.Drawing.Color.Red;
+            this.m_deleteBtn.Location = new System.Drawing.Point(714, 6);
+            this.m_deleteBtn.Name = "m_deleteBtn";
+            this.m_deleteBtn.Size = new System.Drawing.Size(92, 33);
+            this.m_deleteBtn.TabIndex = 181;
+            this.m_deleteBtn.Text = "削除";
+            this.m_deleteBtn.UseVisualStyleBackColor = true;
+            this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
             // 
             // Form_SiteDetail
             // 
@@ -461,5 +475,6 @@
         private System.Windows.Forms.TextBox m_systemno;
         private System.Windows.Forms.TextBox m_systemname;
         private System.Windows.Forms.ComboBox m_statusCombo;
+        private System.Windows.Forms.Button m_deleteBtn;
     }
 }

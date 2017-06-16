@@ -16,17 +16,19 @@ namespace SMSサンプル
         //ログイン情報
         public opeDS loginDS { get; set; }
          
-
         //
         public siteDS sitedt { get; set; }
         //ユーザ情報一覧
-        public List<siteDS> userList { get; set; }
+        public List<userDS> userList { get; set; }
 
         //システム情報一覧
-        public List<siteDS> systemList{ get; set; }
+        public List<systemDS> systemList{ get; set; }
 
         //DBコネクション
         public NpgsqlConnection con { get; set; }
+        
+        //ListViewのソートの際に使用する
+        private Class_ListViewColumnSorter _columnSorter;
 
         public Form_SiteDetail()
         {
@@ -43,6 +45,8 @@ namespace SMSサンプル
         //取得したデータを読み取り表示する
         private void Form_SystemDetail_Load(object sender, EventArgs e)
         {
+            _columnSorter = new Class_ListViewColumnSorter();
+            m_Site_List.ListViewItemSorter = _columnSorter;
 
             m_selectKoumoku.Items.Add("拠点通番");
             m_selectKoumoku.Items.Add("拠点名");
@@ -128,7 +132,11 @@ namespace SMSサンプル
                             break;
                         //ステータス
                         case 5:
-                            param_dict["status"] = m_selecttext.Text;
+                            if (m_selecttext.Text == "無効")
+                                param_dict["status"] = "0";
+                            else if (m_selecttext.Text == "有効")
+                                param_dict["status"] = "1";
+
                             break;
                         //備考
                         case 6:
@@ -291,7 +299,11 @@ namespace SMSサンプル
             sitedt.address1 = this.m_Site_List.Items[item[0]].SubItems[2].Text;
             sitedt.address2 = this.m_Site_List.Items[item[0]].SubItems[3].Text;
             sitedt.telno = this.m_Site_List.Items[item[0]].SubItems[4].Text;
-            sitedt.status = this.m_Site_List.Items[item[0]].SubItems[5].Text;
+            if (this.m_Site_List.Items[item[0]].SubItems[5].Text == "無効")
+                sitedt.status = "0";
+            else if (this.m_Site_List.Items[item[0]].SubItems[5].Text == "有効")
+                sitedt.status = "1";
+
             sitedt.userno = this.m_Site_List.Items[item[0]].SubItems[6].Text;
             sitedt.username = this.m_Site_List.Items[item[0]].SubItems[7].Text;
             sitedt.systemno = this.m_Site_List.Items[item[0]].SubItems[8].Text;
@@ -300,6 +312,116 @@ namespace SMSサンプル
             sitedt.chk_name_id = this.m_Site_List.Items[item[0]].SubItems[11].Text;
 
             getsite(sitedt);
+        }
+
+        private void m_Site_List_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+
+            if (e.Column == _columnSorter.SortColumn)
+            {
+                if (_columnSorter.Order == SortOrder.Ascending)
+                {
+                    _columnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    _columnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                _columnSorter.SortColumn = e.Column;
+                _columnSorter.Order = SortOrder.Ascending;
+            }
+            m_Site_List.Sort();
+            
+        }
+        //削除ボタンがクリックされたとき
+        private void m_deleteBtn_Click(object sender, EventArgs e)
+        {
+            int count = m_Site_List.SelectedItems.Count;
+
+            //確認メッセージ
+            if (MessageBox.Show("一覧に選択された行 " + count + "件 の削除を行います。その際参照している他のテーブルデータも削除されます。" + Environment.NewLine +
+                "よろしいですか？", "拠点削除", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+
+                return;
+
+
+            int ret = deletesite();
+            if (ret == -1)
+            {
+                return;
+            }
+
+            //リストの表示上からけす
+            foreach (ListViewItem item in m_Site_List.SelectedItems)
+            {
+                m_Site_List.Items.Remove(item);
+            }
+        }
+        //削除
+        private int deletesite()
+        {
+
+            string siteno;
+
+            int ret = 0;
+            if (con.FullState != ConnectionState.Open) con.Open();
+
+            String sql = "WITH DELETED1 AS (DELETE FROM watch_interface where siteno = :no " +
+                "RETURNING siteno), "+
+                "DELETED2 AS (DELETE FROM host where siteno = :no " +
+                "RETURNING siteno) " +
+                "DELETE FROM site where siteno = :no ";
+
+
+
+            using (var transaction = con.BeginTransaction())
+            {
+                foreach (ListViewItem item in m_Site_List.SelectedItems)
+                {
+                    siteno = item.SubItems[0].Text;
+
+                    var command = new NpgsqlCommand(@sql, con);
+                    command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = int.Parse(siteno) });
+
+                    Int32 rowsaffected;
+                    try
+                    {
+                        //削除処理
+                        rowsaffected = command.ExecuteNonQuery();
+
+                        if (rowsaffected < 1)
+                        {
+         
+
+                            MessageBox.Show("削除できませんでした。拠点通番:" + siteno, "拠点情報削除");
+                            //transaction.Rollback();
+                            return -1;
+                        }
+                        else {
+                            ret = 1;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //エラー時メッセージ表示
+                        MessageBox.Show("拠点情報削除時エラーが発生しました。 " + ex.Message);
+                        if(transaction.Connection != null) transaction.Rollback();
+                        return -1;
+                    }
+                }
+                if(ret == 1)
+                {
+                    ret = -1;
+
+                    MessageBox.Show("削除完了しました。", "拠点情報削除");
+                    transaction.Commit();
+                }
+
+            }
+            return 1;
         }
     }
 }

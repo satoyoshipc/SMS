@@ -47,8 +47,24 @@ namespace SMSサンプル
         //再生
         private void Form_testSound_Load(object sender, EventArgs e)
         {
+            this.TopMost =true;
             this.MaximumSize = this.Size;
             this.MinimumSize = this.Size;
+
+            //画面右下
+            int Screenheigth = System.Windows.Forms.Screen.GetWorkingArea(this).Height;
+            int ScreenWidth = System.Windows.Forms.Screen.GetWorkingArea(this).Width;
+            int AppWidth = this.Width;
+            int AppHeight = this.Height;
+
+            int AppLeftXPos = ScreenWidth - AppWidth;
+            int AppLeftYPos = Screenheigth - AppHeight;
+
+            Rectangle tempRect = new Rectangle(AppLeftXPos, AppLeftYPos, AppWidth, AppHeight);
+            this.DesktopBounds = tempRect;
+
+
+
             PlaySound(strParam);
         }
         //WAVEファイルを再生する

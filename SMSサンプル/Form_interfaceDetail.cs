@@ -30,7 +30,8 @@ namespace SMSサンプル
         //DBコネクション
         public NpgsqlConnection con { get; set; }
 
-
+        //ListViewのソートの際に使用する
+        private Class_ListViewColumnSorter _columnSorter;
 
         public Form_interfaceDetail()
         {
@@ -40,8 +41,10 @@ namespace SMSサンプル
         //表示前処理
         private void Form_InterfaceDetail_Load(object sender, EventArgs e)
         {
+            //ソータを使用する
+            _columnSorter = new Class_ListViewColumnSorter();
+            m_InterfaceList.ListViewItemSorter = _columnSorter;
 
-            
             m_selectKoumoku.Items.Add("監視インターフェイス通番");
             m_selectKoumoku.Items.Add("インターフェイス名");
             m_selectKoumoku.Items.Add("ステータス");
@@ -122,9 +125,11 @@ namespace SMSサンプル
                         case 1:
                             param_dict["interfacename"] = m_selecttext.Text;
                             break;
-                        //ホスト名日本
                         case 2:
-                            param_dict["status"] = m_selecttext.Text;
+                            if(m_selecttext.Text == "無効")
+                                param_dict["status"] = "0";
+                            else if (  m_selecttext.Text == "有効")
+                                param_dict["status"] = "1";
                             break;
 
                         case 3:
@@ -323,6 +328,100 @@ namespace SMSサンプル
 
             getInterface(interfacedt);
         }
-        
+
+        //一覧リストのカラムをクリックしたとき ソート
+        private void m_InterfaceList_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+
+            if (e.Column == _columnSorter.SortColumn)
+            {
+                if (_columnSorter.Order == SortOrder.Ascending)
+                {
+                    _columnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    _columnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                _columnSorter.SortColumn = e.Column;
+                _columnSorter.Order = SortOrder.Ascending;
+            }
+            m_InterfaceList.Sort();
+        }
+        //削除処理
+        private void m_deleteBtn_Click(object sender, EventArgs e)
+        {
+            int count = m_InterfaceList.SelectedItems.Count;
+
+            //確認メッセージ
+            if (MessageBox.Show("一覧に選択された行 " + count + "件 の削除を行います。" + Environment.NewLine +
+                "よろしいですか？", "監視インターフェイス削除", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
+
+
+            int ret = deleteInterface();
+            if (ret == -1)
+            {
+                return;
+            }
+            //リストの表示上からけす
+            foreach (ListViewItem item in m_InterfaceList.SelectedItems)
+            {
+                m_InterfaceList.Items.Remove(item);
+            }
+        }
+        //削除
+        private int deleteInterface()
+        {
+
+            string interfaceno;
+
+            if (con.FullState != ConnectionState.Open) con.Open();
+
+            string sql = "DELETE FROM watch_interface where kennshino = :no ";
+
+            using (var transaction = con.BeginTransaction())
+            {
+
+                foreach (ListViewItem item in m_InterfaceList.SelectedItems)
+                {
+                    interfaceno = item.SubItems[0].Text;
+
+
+                    var command = new NpgsqlCommand(@sql, con);
+                    command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = int.Parse(interfaceno) });
+
+                    Int32 rowsaffected;
+                    try
+                    {
+                        //削除処理
+                        rowsaffected = command.ExecuteNonQuery();
+                        transaction.Commit();
+
+                        if (rowsaffected != 1)
+                        {
+                            MessageBox.Show("削除できませんでした。監視インターフェイスID:" + interfaceno, "監視インターフェイス削除");
+                            transaction.Rollback();
+                            return -1;
+                        }
+                        else {
+                            MessageBox.Show("削除完了しました。監視インターフェイスID:" + interfaceno, "監視インターフェイス削除");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //エラー時メッセージ表示
+                        MessageBox.Show("監視インターフェイス削除時エラーが発生しました。 " + ex.Message);
+                        transaction.Rollback();
+                        return -1;
+                    }
+                }
+
+            }
+            return 1;
+        }
     }
 }

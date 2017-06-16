@@ -60,6 +60,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "Form_testSound";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "♪サウンド♪";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_testSound_FormClosed);
             this.Load += new System.EventHandler(this.Form_testSound_Load);

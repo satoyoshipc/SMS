@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.m_customertantouList = new System.Windows.Forms.ListView();
-            this.m_selecttext = new System.Windows.Forms.TextBox();
-            this.m_selectCombo = new System.Windows.Forms.ComboBox();
             this.m_select_btn = new System.Windows.Forms.Button();
+            this.m_selectCombo = new System.Windows.Forms.ComboBox();
+            this.m_selecttext = new System.Windows.Forms.TextBox();
+            this.m_customertantouList = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -57,6 +57,9 @@
             this.label11 = new System.Windows.Forms.Label();
             this.m_update = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
+            this.m_deleteBtn = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.m_addressslist = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -82,36 +85,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.m_customertantouList);
-            this.splitContainer1.Size = new System.Drawing.Size(844, 265);
+            this.splitContainer1.Size = new System.Drawing.Size(777, 265);
             this.splitContainer1.SplitterDistance = 31;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // m_customertantouList
-            // 
-            this.m_customertantouList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_customertantouList.GridLines = true;
-            this.m_customertantouList.Location = new System.Drawing.Point(0, 0);
-            this.m_customertantouList.Name = "m_customertantouList";
-            this.m_customertantouList.Size = new System.Drawing.Size(842, 228);
-            this.m_customertantouList.TabIndex = 0;
-            this.m_customertantouList.UseCompatibleStateImageBehavior = false;
-            this.m_customertantouList.View = System.Windows.Forms.View.Details;
-            this.m_customertantouList.DoubleClick += new System.EventHandler(this.m_customertantouList_DoubleClick);
-            // 
-            // m_selecttext
-            // 
-            this.m_selecttext.Location = new System.Drawing.Point(224, 3);
-            this.m_selecttext.Name = "m_selecttext";
-            this.m_selecttext.Size = new System.Drawing.Size(200, 19);
-            this.m_selecttext.TabIndex = 1;
-            // 
-            // m_selectCombo
-            // 
-            this.m_selectCombo.FormattingEnabled = true;
-            this.m_selectCombo.Location = new System.Drawing.Point(4, 2);
-            this.m_selectCombo.Name = "m_selectCombo";
-            this.m_selectCombo.Size = new System.Drawing.Size(212, 20);
-            this.m_selectCombo.TabIndex = 0;
             // 
             // m_select_btn
             // 
@@ -122,6 +98,33 @@
             this.m_select_btn.Text = "検索";
             this.m_select_btn.UseVisualStyleBackColor = true;
             this.m_select_btn.Click += new System.EventHandler(this.m_select_btn_Click);
+            // 
+            // m_selectCombo
+            // 
+            this.m_selectCombo.FormattingEnabled = true;
+            this.m_selectCombo.Location = new System.Drawing.Point(4, 2);
+            this.m_selectCombo.Name = "m_selectCombo";
+            this.m_selectCombo.Size = new System.Drawing.Size(212, 20);
+            this.m_selectCombo.TabIndex = 0;
+            // 
+            // m_selecttext
+            // 
+            this.m_selecttext.Location = new System.Drawing.Point(224, 3);
+            this.m_selecttext.Name = "m_selecttext";
+            this.m_selecttext.Size = new System.Drawing.Size(200, 19);
+            this.m_selecttext.TabIndex = 1;
+            // 
+            // m_customertantouList
+            // 
+            this.m_customertantouList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_customertantouList.GridLines = true;
+            this.m_customertantouList.Location = new System.Drawing.Point(0, 0);
+            this.m_customertantouList.Name = "m_customertantouList";
+            this.m_customertantouList.Size = new System.Drawing.Size(775, 228);
+            this.m_customertantouList.TabIndex = 0;
+            this.m_customertantouList.UseCompatibleStateImageBehavior = false;
+            this.m_customertantouList.View = System.Windows.Forms.View.Details;
+            this.m_customertantouList.DoubleClick += new System.EventHandler(this.m_customertantouList_DoubleClick);
             // 
             // label1
             // 
@@ -275,20 +278,20 @@
             // 
             // m_kousin_btn
             // 
-            this.m_kousin_btn.Location = new System.Drawing.Point(672, 488);
+            this.m_kousin_btn.Location = new System.Drawing.Point(612, 447);
             this.m_kousin_btn.Name = "m_kousin_btn";
             this.m_kousin_btn.Size = new System.Drawing.Size(78, 28);
-            this.m_kousin_btn.TabIndex = 9;
+            this.m_kousin_btn.TabIndex = 11;
             this.m_kousin_btn.Text = "更新";
             this.m_kousin_btn.UseVisualStyleBackColor = true;
             this.m_kousin_btn.Click += new System.EventHandler(this.m_kousin_btn_Click);
             // 
             // m_cancelbtn
             // 
-            this.m_cancelbtn.Location = new System.Drawing.Point(756, 488);
+            this.m_cancelbtn.Location = new System.Drawing.Point(696, 447);
             this.m_cancelbtn.Name = "m_cancelbtn";
             this.m_cancelbtn.Size = new System.Drawing.Size(78, 28);
-            this.m_cancelbtn.TabIndex = 10;
+            this.m_cancelbtn.TabIndex = 12;
             this.m_cancelbtn.Text = "キャンセル";
             this.m_cancelbtn.UseVisualStyleBackColor = true;
             this.m_cancelbtn.Click += new System.EventHandler(this.m_cancelbtn_Click);
@@ -299,7 +302,7 @@
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
             this.m_updateOpe.Size = new System.Drawing.Size(166, 19);
-            this.m_updateOpe.TabIndex = 78;
+            this.m_updateOpe.TabIndex = 10;
             this.m_updateOpe.TabStop = false;
             // 
             // label11
@@ -317,7 +320,7 @@
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
             this.m_update.Size = new System.Drawing.Size(166, 19);
-            this.m_update.TabIndex = 76;
+            this.m_update.TabIndex = 9;
             this.m_update.TabStop = false;
             // 
             // label12
@@ -329,11 +332,50 @@
             this.label12.TabIndex = 75;
             this.label12.Text = "更新日時";
             // 
+            // m_deleteBtn
+            // 
+            this.m_deleteBtn.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.m_deleteBtn.ForeColor = System.Drawing.Color.Red;
+            this.m_deleteBtn.Location = new System.Drawing.Point(698, 273);
+            this.m_deleteBtn.Name = "m_deleteBtn";
+            this.m_deleteBtn.Size = new System.Drawing.Size(76, 27);
+            this.m_deleteBtn.TabIndex = 15;
+            this.m_deleteBtn.Text = "削除";
+            this.m_deleteBtn.UseVisualStyleBackColor = true;
+            this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1, 477);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(115, 28);
+            this.button1.TabIndex = 13;
+            this.button1.Text = "メールアドレス追加";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // m_addressslist
+            // 
+            this.m_addressslist.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_addressslist.GridLines = true;
+            this.m_addressslist.Location = new System.Drawing.Point(2, 510);
+            this.m_addressslist.Name = "m_addressslist";
+            this.m_addressslist.Size = new System.Drawing.Size(775, 105);
+            this.m_addressslist.TabIndex = 14;
+            this.m_addressslist.UseCompatibleStateImageBehavior = false;
+            this.m_addressslist.View = System.Windows.Forms.View.Details;
+            this.m_addressslist.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_addressslist_MouseDoubleClick);
+            // 
             // Form_user_tantou
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(846, 528);
+            this.ClientSize = new System.Drawing.Size(779, 617);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.m_addressslist);
+            this.Controls.Add(this.m_deleteBtn);
             this.Controls.Add(this.m_updateOpe);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.m_update);
@@ -403,5 +445,8 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox m_update;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button m_deleteBtn;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ListView m_addressslist;
     }
 }

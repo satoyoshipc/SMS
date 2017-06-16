@@ -145,15 +145,16 @@
             this.m_opeID.Name = "m_opeID";
             this.m_opeID.Size = new System.Drawing.Size(274, 19);
             this.m_opeID.TabIndex = 1;
+            this.m_opeID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.m_opeID_KeyPress);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(15, 76);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 12);
+            this.label1.Size = new System.Drawing.Size(88, 12);
             this.label1.TabIndex = 38;
-            this.label1.Text = "ユーザーID";
+            this.label1.Text = "ユーザーID(通番)";
             // 
             // m_addressname
             // 
