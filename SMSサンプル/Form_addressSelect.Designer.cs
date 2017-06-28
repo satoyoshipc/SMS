@@ -109,7 +109,8 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(621, 371);
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.Location = new System.Drawing.Point(621, 374);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(78, 27);
             this.button2.TabIndex = 3;
@@ -119,7 +120,8 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(537, 371);
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(537, 374);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(78, 27);
             this.button1.TabIndex = 2;
@@ -129,6 +131,9 @@
             // 
             // tabcontrol1
             // 
+            this.tabcontrol1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabcontrol1.Controls.Add(this.tabPage1);
             this.tabcontrol1.Controls.Add(this.tabPage2);
             this.tabcontrol1.Location = new System.Drawing.Point(4, 8);

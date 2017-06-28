@@ -65,9 +65,7 @@ namespace SMSサンプル
             string attach3 = m_attach3.Text;
             string attach4 = m_attach4.Text;
             string attach5 = m_attach5.Text;
-
-
-
+            
             //DB接続
             NpgsqlCommand cmd;
             using (var transaction = con.BeginTransaction()) { 
@@ -76,12 +74,13 @@ namespace SMSサンプル
                     if (con.FullState != ConnectionState.Open) con.Open();
                     Int32 rowsaffected;
                     //データ登録
-                    cmd = new NpgsqlCommand(@"insert into mail_form (template_name,subject,body,attach1,attach2,attach3,attach4,attach5,chk_name_id) 
-                        values ( :template_name,:subject,:body,:attach1,:attach2,:attach3,:attach4,:attach5,:chk_name_id); " +
+                    cmd = new NpgsqlCommand(@"insert into mail_form (template_name,subject,body,mail_account,attach1,attach2,attach3,attach4,attach5,chk_name_id) 
+                        values ( :template_name,:subject,:body,:mail_account,:attach1,:attach2,:attach3,:attach4,:attach5,:chk_name_id); " +
                         "select currval('mail_form_templateno_seq') ;", con);
                     cmd.Parameters.Add(new NpgsqlParameter("template_name", DbType.String) { Value = m_templete.Text });
                     cmd.Parameters.Add(new NpgsqlParameter("subject", DbType.String) { Value = m_subject.Text });
                     cmd.Parameters.Add(new NpgsqlParameter("body", DbType.String) { Value = m_context.Text });
+                    cmd.Parameters.Add(new NpgsqlParameter("mail_account", DbType.String) { Value = m_account.Text });
                     cmd.Parameters.Add(new NpgsqlParameter("attach1", DbType.String) { Value = attach1 });
                     cmd.Parameters.Add(new NpgsqlParameter("attach2", DbType.String) { Value = attach2 });
                     cmd.Parameters.Add(new NpgsqlParameter("attach3", DbType.String) { Value = attach3 });

@@ -62,6 +62,8 @@
             this.To_add_Link = new System.Windows.Forms.LinkLabel();
             this.Cc_add_Link = new System.Windows.Forms.LinkLabel();
             this.Bcc_add_Link = new System.Windows.Forms.LinkLabel();
+            this.m_account = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -117,7 +119,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(549, 13);
+            this.label5.Location = new System.Drawing.Point(550, 56);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(20, 12);
             this.label5.TabIndex = 8;
@@ -126,7 +128,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(549, 125);
+            this.label6.Location = new System.Drawing.Point(550, 168);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(21, 12);
             this.label6.TabIndex = 10;
@@ -135,7 +137,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(549, 229);
+            this.label7.Location = new System.Drawing.Point(550, 272);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(27, 12);
             this.label7.TabIndex = 12;
@@ -147,7 +149,7 @@
             this.m_idlabel.Name = "m_idlabel";
             this.m_idlabel.ReadOnly = true;
             this.m_idlabel.Size = new System.Drawing.Size(44, 19);
-            this.m_idlabel.TabIndex = 39;
+            this.m_idlabel.TabIndex = 15;
             this.m_idlabel.TabStop = false;
             // 
             // m_labelinputOpe
@@ -156,7 +158,7 @@
             this.m_labelinputOpe.Name = "m_labelinputOpe";
             this.m_labelinputOpe.ReadOnly = true;
             this.m_labelinputOpe.Size = new System.Drawing.Size(224, 19);
-            this.m_labelinputOpe.TabIndex = 38;
+            this.m_labelinputOpe.TabIndex = 14;
             this.m_labelinputOpe.TabStop = false;
             // 
             // label8
@@ -173,7 +175,7 @@
             this.button3.Location = new System.Drawing.Point(691, 554);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
-            this.button3.TabIndex = 19;
+            this.button3.TabIndex = 12;
             this.button3.Text = "登録";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -183,7 +185,7 @@
             this.button2.Location = new System.Drawing.Point(792, 554);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 23);
-            this.button2.TabIndex = 20;
+            this.button2.TabIndex = 13;
             this.button2.Text = "キャンセル";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -192,15 +194,15 @@
             // 
             this.m_attach1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_attach1.Location = new System.Drawing.Point(584, 322);
+            this.m_attach1.Location = new System.Drawing.Point(585, 365);
             this.m_attach1.Name = "m_attach1";
             this.m_attach1.Size = new System.Drawing.Size(303, 19);
-            this.m_attach1.TabIndex = 10;
+            this.m_attach1.TabIndex = 7;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(544, 325);
+            this.label9.Location = new System.Drawing.Point(545, 368);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(35, 12);
             this.label9.TabIndex = 41;
@@ -210,15 +212,15 @@
             // 
             this.m_attach2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_attach2.Location = new System.Drawing.Point(584, 347);
+            this.m_attach2.Location = new System.Drawing.Point(585, 390);
             this.m_attach2.Name = "m_attach2";
             this.m_attach2.Size = new System.Drawing.Size(302, 19);
-            this.m_attach2.TabIndex = 12;
+            this.m_attach2.TabIndex = 8;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(543, 350);
+            this.label10.Location = new System.Drawing.Point(544, 393);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(35, 12);
             this.label10.TabIndex = 43;
@@ -228,15 +230,15 @@
             // 
             this.m_attach3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_attach3.Location = new System.Drawing.Point(584, 372);
+            this.m_attach3.Location = new System.Drawing.Point(585, 415);
             this.m_attach3.Name = "m_attach3";
             this.m_attach3.Size = new System.Drawing.Size(302, 19);
-            this.m_attach3.TabIndex = 14;
+            this.m_attach3.TabIndex = 9;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(543, 375);
+            this.label11.Location = new System.Drawing.Point(544, 418);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(35, 12);
             this.label11.TabIndex = 45;
@@ -246,15 +248,15 @@
             // 
             this.m_attach5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_attach5.Location = new System.Drawing.Point(585, 422);
+            this.m_attach5.Location = new System.Drawing.Point(586, 465);
             this.m_attach5.Name = "m_attach5";
             this.m_attach5.Size = new System.Drawing.Size(302, 19);
-            this.m_attach5.TabIndex = 18;
+            this.m_attach5.TabIndex = 11;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(544, 427);
+            this.label12.Location = new System.Drawing.Point(545, 470);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(35, 12);
             this.label12.TabIndex = 49;
@@ -264,15 +266,15 @@
             // 
             this.m_attach4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_attach4.Location = new System.Drawing.Point(585, 397);
+            this.m_attach4.Location = new System.Drawing.Point(586, 440);
             this.m_attach4.Name = "m_attach4";
             this.m_attach4.Size = new System.Drawing.Size(302, 19);
-            this.m_attach4.TabIndex = 16;
+            this.m_attach4.TabIndex = 10;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(544, 400);
+            this.label13.Location = new System.Drawing.Point(545, 443);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(35, 12);
             this.label13.TabIndex = 47;
@@ -281,7 +283,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(546, 306);
+            this.label4.Location = new System.Drawing.Point(547, 349);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(198, 12);
             this.label4.TabIndex = 55;
@@ -297,7 +299,7 @@
             this.columnHeader3});
             this.m_To_list.FullRowSelect = true;
             this.m_To_list.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.m_To_list.Location = new System.Drawing.Point(585, 13);
+            this.m_To_list.Location = new System.Drawing.Point(586, 56);
             this.m_To_list.Name = "m_To_list";
             this.m_To_list.Size = new System.Drawing.Size(301, 106);
             this.m_To_list.TabIndex = 4;
@@ -311,10 +313,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_Cc_list.FullRowSelect = true;
             this.m_Cc_list.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.m_Cc_list.Location = new System.Drawing.Point(585, 125);
+            this.m_Cc_list.Location = new System.Drawing.Point(586, 168);
             this.m_Cc_list.Name = "m_Cc_list";
             this.m_Cc_list.Size = new System.Drawing.Size(301, 89);
-            this.m_Cc_list.TabIndex = 6;
+            this.m_Cc_list.TabIndex = 5;
             this.m_Cc_list.UseCompatibleStateImageBehavior = false;
             this.m_Cc_list.View = System.Windows.Forms.View.Details;
             this.m_Cc_list.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_Cc_list_KeyDown);
@@ -325,10 +327,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_Bcc_list.FullRowSelect = true;
             this.m_Bcc_list.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.m_Bcc_list.Location = new System.Drawing.Point(585, 227);
+            this.m_Bcc_list.Location = new System.Drawing.Point(586, 270);
             this.m_Bcc_list.Name = "m_Bcc_list";
             this.m_Bcc_list.Size = new System.Drawing.Size(301, 61);
-            this.m_Bcc_list.TabIndex = 8;
+            this.m_Bcc_list.TabIndex = 6;
             this.m_Bcc_list.UseCompatibleStateImageBehavior = false;
             this.m_Bcc_list.View = System.Windows.Forms.View.Details;
             this.m_Bcc_list.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_Bcc_list_KeyDown);
@@ -336,7 +338,7 @@
             // To_add_Link
             // 
             this.To_add_Link.AutoSize = true;
-            this.To_add_Link.Location = new System.Drawing.Point(551, 30);
+            this.To_add_Link.Location = new System.Drawing.Point(552, 73);
             this.To_add_Link.Name = "To_add_Link";
             this.To_add_Link.Size = new System.Drawing.Size(29, 12);
             this.To_add_Link.TabIndex = 3;
@@ -347,7 +349,7 @@
             // Cc_add_Link
             // 
             this.Cc_add_Link.AutoSize = true;
-            this.Cc_add_Link.Location = new System.Drawing.Point(551, 141);
+            this.Cc_add_Link.Location = new System.Drawing.Point(552, 184);
             this.Cc_add_Link.Name = "Cc_add_Link";
             this.Cc_add_Link.Size = new System.Drawing.Size(29, 12);
             this.Cc_add_Link.TabIndex = 5;
@@ -358,7 +360,7 @@
             // Bcc_add_Link
             // 
             this.Bcc_add_Link.AutoSize = true;
-            this.Bcc_add_Link.Location = new System.Drawing.Point(551, 246);
+            this.Bcc_add_Link.Location = new System.Drawing.Point(552, 289);
             this.Bcc_add_Link.Name = "Bcc_add_Link";
             this.Bcc_add_Link.Size = new System.Drawing.Size(29, 12);
             this.Bcc_add_Link.TabIndex = 7;
@@ -366,11 +368,31 @@
             this.Bcc_add_Link.Text = "追加";
             this.Bcc_add_Link.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Bcc_add_Link_LinkClicked);
             // 
+            // m_account
+            // 
+            this.m_account.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_account.Location = new System.Drawing.Point(584, 31);
+            this.m_account.Name = "m_account";
+            this.m_account.Size = new System.Drawing.Size(303, 19);
+            this.m_account.TabIndex = 3;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(550, 14);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(49, 12);
+            this.label14.TabIndex = 57;
+            this.label14.Text = "アカウント";
+            // 
             // Form_MailTempleteInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 589);
+            this.Controls.Add(this.m_account);
+            this.Controls.Add(this.label14);
             this.Controls.Add(this.Bcc_add_Link);
             this.Controls.Add(this.Cc_add_Link);
             this.Controls.Add(this.To_add_Link);
@@ -446,5 +468,7 @@
         private System.Windows.Forms.LinkLabel To_add_Link;
         private System.Windows.Forms.LinkLabel Cc_add_Link;
         private System.Windows.Forms.LinkLabel Bcc_add_Link;
+        private System.Windows.Forms.TextBox m_account;
+        private System.Windows.Forms.Label label14;
     }
 }

@@ -54,6 +54,7 @@ namespace SMSサンプル
             m_selectKoumoku.Items.Add("要確認");
             m_selectKoumoku.Items.Add("カスタマ通番");
             m_selectKoumoku.Items.Add("システム通番");
+            m_selectKoumoku.Items.Add("拠点通番");
             m_selectKoumoku.Items.Add("更新日時");
             m_selectKoumoku.Items.Add("更新者");
 
@@ -75,6 +76,7 @@ namespace SMSサンプル
             this.m_scheduleno.Text = keikakudt.schedule_no;
             this.m_userno.Text = keikakudt.userno;
             this.m_systemno.Text = keikakudt.systemno;
+            this.m_siteno.Text = keikakudt.siteno;
             this.m_timername.Text = keikakudt.timer_name;
             if (keikakudt.schedule_type == null || keikakudt.schedule_type == "")
                 keikakudt.schedule_type = "1";
@@ -104,12 +106,17 @@ namespace SMSサンプル
 
             Class_Detaget dg = new Class_Detaget();
             dg.con = con;
-            if (this.keikakudt.userno != null && this.keikakudt.userno != "")
-                this.m_cutomername.Text = dg.getCustomername(this.keikakudt.userno);
+            m_cutomername.Text = "";
+            if (keikakudt.userno != null && keikakudt.userno != "")
+                m_cutomername.Text = dg.getCustomername(keikakudt.userno);
             //システム情報
-            if (this.keikakudt.systemno != null && this.keikakudt.systemno != "")
-                this.m_systemname.Text = dg.getSystemname(this.keikakudt.systemno);
-
+            m_systemname.Text = "";
+            if (keikakudt.systemno != null && keikakudt.systemno != "")
+                m_systemname.Text = dg.getSystemname(keikakudt.systemno);
+            //拠点
+            m_sitename.Text = "";
+            if (keikakudt.siteno != null && keikakudt.siteno != "")
+                m_sitename.Text = dg.getSitename(keikakudt.siteno);
         }
 
         //検索ボタン
@@ -192,13 +199,16 @@ namespace SMSサンプル
                         case 11:
                             param_dict["systemno"] = m_selecttext.Text;
                             break;
+                        case 12:
+                            param_dict["siteno"] = m_selecttext.Text;
+                            break;
 
                         //更新日時
-                        case 12:
+                        case 13:
                             param_dict["chk_date"] = m_selecttext.Text;
                             break;
                         //更新者
-                        case 13:
+                        case 14:
                             param_dict["chk_name_id"] = m_selecttext.Text;
                             break;
                         default:
@@ -228,8 +238,9 @@ namespace SMSサンプル
             this.m_scheduleList.Columns.Insert(10, "要確認", 50, HorizontalAlignment.Left);
             this.m_scheduleList.Columns.Insert(11, "カスタマ通番", 50, HorizontalAlignment.Left);
             this.m_scheduleList.Columns.Insert(12, "システム通番", 50, HorizontalAlignment.Left);
-            this.m_scheduleList.Columns.Insert(13, "更新日時", 50, HorizontalAlignment.Left);
-            this.m_scheduleList.Columns.Insert(14, "更新者", 50, HorizontalAlignment.Left);
+            this.m_scheduleList.Columns.Insert(13, "拠点通番", 50, HorizontalAlignment.Left);
+            this.m_scheduleList.Columns.Insert(14, "更新日時", 50, HorizontalAlignment.Left);
+            this.m_scheduleList.Columns.Insert(15, "更新者", 50, HorizontalAlignment.Left);
 
             //リストに表示
             if (scheduleset != null)
@@ -277,6 +288,7 @@ namespace SMSサンプル
                     itemx1.SubItems.Add(s_ds.kakunin);
                     itemx1.SubItems.Add(s_ds.userno);
                     itemx1.SubItems.Add(s_ds.systemno);
+                    itemx1.SubItems.Add(s_ds.siteno);
                     itemx1.SubItems.Add(s_ds.chk_date);
                     itemx1.SubItems.Add(s_ds.chk_name_id);
 
@@ -698,14 +710,15 @@ namespace SMSサンプル
 
             scheduledt.status = status;
 
-            scheduledt.alerm_message = this.m_scheduleList.Items[item[0]].SubItems[7].Text;
-            scheduledt.sound = m_scheduleList.Items[item[0]].SubItems[8].Text;
-            scheduledt.incident_no = this.m_scheduleList.Items[item[0]].SubItems[9].Text;
-            scheduledt.kakunin = this.m_scheduleList.Items[item[0]].SubItems[10].Text;
+            scheduledt.alerm_message    = this.m_scheduleList.Items[item[0]].SubItems[7].Text;
+            scheduledt.sound            = m_scheduleList.Items[item[0]].SubItems[8].Text;
+            scheduledt.incident_no      = this.m_scheduleList.Items[item[0]].SubItems[9].Text;
+            scheduledt.kakunin          = this.m_scheduleList.Items[item[0]].SubItems[10].Text;
             scheduledt.userno = this.m_scheduleList.Items[item[0]].SubItems[11].Text;
             scheduledt.systemno = this.m_scheduleList.Items[item[0]].SubItems[12].Text;
-            scheduledt.chk_date = this.m_scheduleList.Items[item[0]].SubItems[13].Text;
-            scheduledt.chk_name_id = this.m_scheduleList.Items[item[0]].SubItems[14].Text;
+            scheduledt.siteno = this.m_scheduleList.Items[item[0]].SubItems[13].Text;
+            scheduledt.chk_date = this.m_scheduleList.Items[item[0]].SubItems[14].Text;
+            scheduledt.chk_name_id = this.m_scheduleList.Items[item[0]].SubItems[15].Text;
 
 
             //直近アラーム日時の取得を行う
@@ -713,7 +726,7 @@ namespace SMSサンプル
             String alertdt = dg.getLatestAlerm(scheduledt.schedule_no,con);
             scheduledt.alertdate = alertdt;
 
-
+            
             getKeikaku(scheduledt);
 
             koumokuDisable();

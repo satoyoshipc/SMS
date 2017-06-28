@@ -39,8 +39,12 @@ namespace SMSサンプル
         public String hosyuinfo { get; set; }
         public String biko { get; set; }
         public String siteno { get; set; }
+        public String sitename { get; set; }
         public String userno { get; set; }
+        public String username { get; set; }
+
         public String systemno { get; set; }
+        public String systemname { get; set; }
         public String chk_date { get; set; }
         public String chk_name_id { get; set; }
 

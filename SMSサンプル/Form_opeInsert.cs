@@ -69,9 +69,8 @@ namespace SMSサンプル
 
             //確認
             if (MessageBox.Show("オペレータ情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-            {
                 return;
-            }
+            
 
             string opeid = m_opeID.Text;
             string lastname = m_lastname.Text;

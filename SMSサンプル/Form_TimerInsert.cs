@@ -116,6 +116,9 @@ namespace SMSサンプル
                 return;
             }
 
+            if (MessageBox.Show("アラーム情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
+
             string userno = m_userno.Text;
             string systemno = m_systemno.Text;
             string siteno = m_siteno.Text;
@@ -221,7 +224,7 @@ namespace SMSサンプル
             if (m_radio_one.Checked)
             {
                 //入力された日時を登録する
-                DateTime dd = m_alermDate.Value.Date;
+                DateTime dd = m_alermDate.Value;
                 alerm_insert(scheNO, type, dd);
             }
             //毎時の時

@@ -227,7 +227,8 @@ namespace SMSサンプル
 
 
             //確認
-            MessageBox.Show("ホスト情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (MessageBox.Show("ホスト情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
 
             string userno = m_userno.Text;
             string systemno = m_systemno.Text;

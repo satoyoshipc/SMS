@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using log4net;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,6 +15,8 @@ namespace SMSサンプル
     {
         //DBコネクション
         public NpgsqlConnection con { get; set; }
+
+        private static readonly ILog LOG = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         //カスタマ通番からカスタマ名を取得する
         public string getCustomername(string userno)
@@ -40,6 +43,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("カスタマ名の取得に失敗しました。 " + ex.Message, "カスタマ名取得", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LOG.ErrorFormat("カスタマ名の取得に失敗しました。MSG：{0} userno = {1}", ex.Message, userno);
             }
             finally
             {
@@ -76,6 +80,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("システム名の取得に失敗しました。 " + ex.Message, "システム名取得", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LOG.ErrorFormat("システム名の取得に失敗しました。MSG：{0} systemno = {1}", ex.Message, systemno);
             }
             finally
             {
@@ -110,6 +115,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("拠点名の取得に失敗しました。 " + ex.Message, "拠点名取得", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LOG.ErrorFormat("拠点名の取得に失敗しました。MSG：{0} siteno = {1}", ex.Message, siteno);
+
             }
             finally
             {
@@ -146,6 +153,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("ホスト名の取得に失敗しました。 " + ex.Message, "ホスト名取得", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LOG.ErrorFormat("ホスト名の取得に失敗しました。MSG：{0} hostno = {1}", ex.Message, hostno);
             }
             finally
             {
@@ -1394,7 +1402,7 @@ namespace SMSサンプル
                 if (con.FullState != ConnectionState.Open) con.Open();
 
                 //SELECT実行
-                cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.userno,sc.systemno,sc.timer_name,sc.schedule_type,sc.status,sc.repeat_type,sc.start_date,sc.end_date,sc.status,sc.alerm_message,sc.sound,sc.incident_no,sc.kakunin,sc.userno,u.username,sc.systemno,sys.systemname,sc.chk_date,sc.chk_name_id " +
+                cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.userno,sc.systemno,sc.siteno,sc.timer_name,sc.schedule_type,sc.status,sc.repeat_type,sc.start_date,sc.end_date,sc.status,sc.alerm_message,sc.sound,sc.incident_no,sc.kakunin,sc.userno,u.username,sc.systemno,sys.systemname,sc.chk_date,sc.chk_name_id " +
                     "FROM schedule sc LEFT OUTER JOIN user_tbl u ON sc.userno = u.userno " +
                     "LEFT OUTER JOIN system sys ON sys.systemno = sc.systemno " + sql, con);
 
@@ -1412,6 +1420,7 @@ namespace SMSサンプル
                     retDS.schedule_no = dataReader["schedule_no"].ToString();
                     retDS.userno = dataReader["userno"].ToString();
                     retDS.systemno = dataReader["systemno"].ToString();
+                    retDS.siteno = dataReader["siteno"].ToString();
                     retDS.timer_name = dataReader["timer_name"].ToString();
                     retDS.schedule_type = dataReader["schedule_type"].ToString();
                     retDS.status = dataReader["status"].ToString();
@@ -2526,7 +2535,7 @@ namespace SMSサンプル
             List<mailTempleteDS> maillist = new List<mailTempleteDS>();
             mailTempleteDS ds;
             NpgsqlCommand cmd;
-            String sql = "select m.templateno,m.template_name,m.subject,m.body,m.attach1,m.attach2,m.attach3,m.attach4,m.attach5," +
+            String sql = "select m.templateno,m.template_name,m.subject,m.body,m.mail_account,m.attach1,m.attach2,m.attach3,m.attach4,m.attach5," +
                 
                 "chk_name_id,chk_date FROM mail_form m ";
 
@@ -2560,6 +2569,8 @@ namespace SMSサンプル
                     ds.template_name = dataReader["template_name"].ToString();
                     ds.subject = dataReader["subject"].ToString();
                     ds.body = dataReader["body"].ToString();
+                    ds.account = dataReader["mail_account"].ToString();
+                    
                     ds.attach1 = dataReader["attach1"].ToString();
                     ds.attach2 = dataReader["attach2"].ToString();
                     ds.attach3 = dataReader["attach3"].ToString();
@@ -2627,6 +2638,123 @@ namespace SMSサンプル
 
         }
 
-        
+        //アラームデータが必要なとき
+        public List<alermDS> gettaiouRireki(Dictionary<string, string> param_dict, NpgsqlConnection con)
+        {
+            NpgsqlCommand cmd;
+            alermDS ds;
+            String param = "";
+            String sql = "";
+            List<alermDS> retList = null;
+            DateTime nowdt = DateTime.Now;
+            string nowString = nowdt.ToString("yyyy-MM-dd HH:mm");
+            //DB接続
+            try
+            {
+                //検索条件
+                if (param_dict.Count > 0)
+                {
+                    int i = 1;
+                    foreach (KeyValuePair<string, string> vdict in param_dict)
+                    {
+                        param = "";
+                        if (vdict.Key == "opeid")
+                        {
+                            if (i == 1)
+                                param = " WHERE ta." + vdict.Key + "='" + vdict.Value + "'";
+                            else 
+                                param = " and ta." + vdict.Key + "='" + vdict.Value + "'";
+                            i++;
+                        }
+                        else if (vdict.Key == "alertdatetime_Before")
+                        {
+                            if (i == 1)
+                                param = " WHERE ta.alertdatetime >='" + vdict.Value + "'";
+                            else
+                                param = " AND ta.alertdatetime >='" + vdict.Value + "'";
+
+                            i++;
+                        }
+                        else if (vdict.Key == "alertdatetime_After")
+                        {
+                            if (i == 1)
+                                param = " WHERE ta.alertdatetime <='" + vdict.Value + "'";
+                            else
+                                param = " AND ta.alertdatetime <='" + vdict.Value + "'";
+
+                            i++;
+                        }
+                        else if (vdict.Key == "taiou")
+                        {
+                            if (i == 1)
+                            { 
+                                if (vdict.Value == "True")
+                                    param = " WHERE ta.opeid IS NULL ";
+                            }
+                            else
+                            {
+                                if (vdict.Value == "True")
+                                    param = " AND ta.opeid IS NOT NULL";
+                            }
+
+                            i++;
+                        }
+                        sql += param;
+                    }
+                }
+
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                //SELECT実行
+                cmd = new NpgsqlCommand(@"SELECT ta.schedule_no,ta.alertdatetime,ta.opeid,ta.taioudate,ss.timer_name,ss.schedule_type,ss.repeat_type,u.userno,u.username,sys.systemno,sys.systemname,s.siteno,s.sitename " + 
+                                        "FROM timer_taiou ta LEFT OUTER JOIN schedule ss ON ta.schedule_no = ss.schedule_no " + 
+	                                    "LEFT OUTER JOIN user_tbl u ON ss.userno = u.userno " + 
+	                                    "LEFT OUTER JOIN system sys ON ss.systemno = sys.systemno " +
+                                        "LEFT OUTER JOIN site s ON ss.siteno = s.siteno" + sql, con);
+                var dataReader = cmd.ExecuteReader();
+
+                //スケジュール情報の取得
+                retList = new List<alermDS>();
+
+                while (dataReader.Read())
+                {
+                    ds = new alermDS();
+                    ds.userno       = dataReader["userno"].ToString();
+                    ds.username     = dataReader["username"].ToString();
+                    ds.systemno     = dataReader["systemno"].ToString();
+                    ds.systemname   = dataReader["systemname"].ToString();
+                    ds.siteno       = dataReader["siteno"].ToString();
+                    ds.sitename     = dataReader["sitename"].ToString();
+
+                    ds.schedule_no  = dataReader["schedule_no"].ToString();
+                    ds.repeat_type = dataReader["repeat_type"].ToString();
+                    ds.taiou_date   = dataReader["taioudate"].ToString();
+                    ds.timer_name   = dataReader["timer_name"].ToString();
+                    ds.opeid        = dataReader["opeid"].ToString();
+                    ds.taiou_date   = dataReader["taioudate"].ToString();
+
+
+                    ds.schedule_type = dataReader["schedule_type"].ToString();
+
+                    if (dataReader["alertdatetime"].ToString() != "")
+                    {
+                        String formatString = Convert.ToDateTime(dataReader["alertdatetime"].ToString()).ToString("yyyy/MM/dd HH:mm:ss");
+                        ds.alertdatetime = formatString;
+                    }
+                    
+
+                    retList.Add(ds);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("対応状況一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //if (con.FullState == ConnectionState.Open) con.Close();
+            }
+
+            return retList;
+
+        }
     }
 }

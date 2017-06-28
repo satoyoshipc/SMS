@@ -12,6 +12,7 @@ namespace SMSサンプル
         public String template_name { get; set; }
         public String subject { get; set; }
         public String body { get; set; }
+        public String account { get; set; }
         public String Toaddress { get; set; }
         public String CcAddress { get; set; }
         public String BccAddress { get; set; }

@@ -72,7 +72,8 @@ namespace SMSサンプル
             }
 
             //確認
-            MessageBox.Show("作業情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if(MessageBox.Show("作業情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
 
             Int32 userno = (m_userno.Text == "") ? 0 : int.Parse(m_userno.Text);
             string naiyou = m_naiyou.Text;

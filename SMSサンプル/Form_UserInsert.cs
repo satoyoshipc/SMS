@@ -55,7 +55,8 @@ namespace SMSサンプル
             }
 
             //確認
-            MessageBox.Show("カスタマ情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (MessageBox.Show("カスタマ情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return; ;
 
 
             //カスタマ名
@@ -64,7 +65,7 @@ namespace SMSサンプル
             string userkana = m_userkana.Text;
             //カスタマ名略
             string userryaku = m_userryaku.Text;
-            //レポート出力有無
+            //SLO対象
             string reportchk = "0";
             if (m_reportchk.Checked)
                 //1有効

@@ -45,9 +45,10 @@ namespace SMSサンプル
                 MessageBox.Show("キャリアが入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            
+
             //確認
-            MessageBox.Show("回線情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (MessageBox.Show("回線情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
 
             Int32 userno = (m_userno.Text == "") ? 0 : int.Parse(m_userno.Text);
             Int32 systemno = (m_systemno.Text == "") ? 0 : int.Parse(m_systemno.Text);

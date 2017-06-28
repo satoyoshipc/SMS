@@ -92,7 +92,8 @@ namespace SMSサンプル
             }
 
             //確認
-            MessageBox.Show("システム情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (MessageBox.Show("システム情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
 
             string systemname = m_systemname.Text;
             string systemkana = m_systemnamekana.Text;

@@ -23,6 +23,9 @@ namespace SMSサンプル
         //DBコネクション
         public NpgsqlConnection con { get; set; }
 
+        //ListViewのソートの際に使用する
+        private Class_ListViewColumnSorter _columnSorter;
+
 
         public Form_user_tantou()
         {
@@ -106,6 +109,9 @@ namespace SMSサンプル
         //表示前処理
         private void Form_user_tantou_Load(object sender, EventArgs e)
         {
+            _columnSorter = new Class_ListViewColumnSorter();
+            m_customertantouList.ListViewItemSorter = _columnSorter;
+
             m_selectCombo.Items.Add("担当者通番");
             m_selectCombo.Items.Add("担当者名");
             m_selectCombo.Items.Add("担当者名カナ");
@@ -128,6 +134,11 @@ namespace SMSサンプル
         //カスタマ担当者の表示
         private void user_tanntou_Disp(tantouDS tantoudt)
         {
+            m_userno.Text = tantoudt.userno;
+            Class_Detaget dg = new Class_Detaget();
+            dg.con = con;
+            string cusname = dg.getCustomername(tantoudt.userno);
+            m_username.Text = cusname;
             m_tantouno.Text = tantoudt.user_tantou_no;
             m_tantouname.Text = tantoudt.user_tantou_name;
             m_tantoukana.Text = tantoudt.user_tantou_name_kana;
@@ -159,8 +170,9 @@ namespace SMSサンプル
             tantoudt.telno2                 = this.m_customertantouList.Items[item[0]].SubItems[5].Text;
             tantoudt.yakusyoku              = this.m_customertantouList.Items[item[0]].SubItems[6].Text;
             tantoudt.biko                   = this.m_customertantouList.Items[item[0]].SubItems[8].Text;
-            tantoudt.chk_date               = this.m_customertantouList.Items[item[0]].SubItems[9].Text;
-            tantoudt.chk_name_id            = this.m_customertantouList.Items[item[0]].SubItems[10].Text;
+            tantoudt.userno                = this.m_customertantouList.Items[item[0]].SubItems[9].Text;
+            tantoudt.chk_date               = this.m_customertantouList.Items[item[0]].SubItems[11].Text;
+            tantoudt.chk_name_id            = this.m_customertantouList.Items[item[0]].SubItems[12].Text;
 
 
             string statustxt = this.m_customertantouList.Items[item[0]].SubItems[7].Text;
@@ -307,8 +319,11 @@ namespace SMSサンプル
             this.m_customertantouList.Columns.Insert(6, "役職", 50, HorizontalAlignment.Left);
             this.m_customertantouList.Columns.Insert(7, "ステータス", 50, HorizontalAlignment.Left);
             this.m_customertantouList.Columns.Insert(8, "備考", 50, HorizontalAlignment.Left);
-            this.m_customertantouList.Columns.Insert(9, "更新日時", 50, HorizontalAlignment.Left);
-            this.m_customertantouList.Columns.Insert(10, "更新者", 50, HorizontalAlignment.Left);
+            this.m_customertantouList.Columns.Insert(9, "カスタマID", 50, HorizontalAlignment.Left);
+            this.m_customertantouList.Columns.Insert(10, "カスタマ名", 50, HorizontalAlignment.Left);
+
+            this.m_customertantouList.Columns.Insert(11, "更新日時", 50, HorizontalAlignment.Left);
+            this.m_customertantouList.Columns.Insert(12, "更新者", 50, HorizontalAlignment.Left);
 
             //リストに表示
             if (tantouList != null)
@@ -326,6 +341,9 @@ namespace SMSサンプル
                     itemx1.SubItems.Add(t_ds.yakusyoku);
                     itemx1.SubItems.Add(t_ds.status);
                     itemx1.SubItems.Add(t_ds.biko);
+                    itemx1.SubItems.Add(t_ds.userno);
+                    itemx1.SubItems.Add(t_ds.username);
+
                     itemx1.SubItems.Add(t_ds.chk_date);
                     itemx1.SubItems.Add(t_ds.chk_name_id);
 
@@ -447,6 +465,28 @@ namespace SMSサンプル
             addressDetail.addresssDS = mailDt;
             addressDetail.loginDS = loginDS;
             addressDetail.Show();
+        }
+
+        private void m_customertantouList_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (e.Column == _columnSorter.SortColumn)
+            {
+                if (_columnSorter.Order == SortOrder.Ascending)
+                {
+                    _columnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    _columnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                _columnSorter.SortColumn = e.Column;
+                _columnSorter.Order = SortOrder.Ascending;
+            }
+            m_customertantouList.Sort();
+
         }
     }
 }

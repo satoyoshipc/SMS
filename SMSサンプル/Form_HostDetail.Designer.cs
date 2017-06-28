@@ -447,7 +447,6 @@
             // 
             // m_end_date
             // 
-            this.m_end_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_end_date.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
             this.m_end_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.m_end_date.Location = new System.Drawing.Point(110, 229);
@@ -468,7 +467,6 @@
             // 
             // m_start_date
             // 
-            this.m_start_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_start_date.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
             this.m_start_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.m_start_date.Location = new System.Drawing.Point(110, 207);

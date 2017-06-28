@@ -359,11 +359,11 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(252, 107);
+            this.label8.Location = new System.Drawing.Point(299, 107);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(90, 12);
+            this.label8.Size = new System.Drawing.Size(50, 12);
             this.label8.TabIndex = 5;
-            this.label8.Text = "レポート出力有無";
+            this.label8.Text = "SLO対象";
             // 
             // label4
             // 

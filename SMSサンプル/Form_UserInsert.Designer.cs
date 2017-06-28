@@ -106,9 +106,9 @@
             this.m_reportchk.AutoSize = true;
             this.m_reportchk.Location = new System.Drawing.Point(99, 124);
             this.m_reportchk.Name = "m_reportchk";
-            this.m_reportchk.Size = new System.Drawing.Size(85, 16);
+            this.m_reportchk.Size = new System.Drawing.Size(69, 16);
             this.m_reportchk.TabIndex = 4;
-            this.m_reportchk.Text = "レポート出力";
+            this.m_reportchk.Text = "SLO対象";
             this.m_reportchk.UseVisualStyleBackColor = true;
             // 
             // m_status

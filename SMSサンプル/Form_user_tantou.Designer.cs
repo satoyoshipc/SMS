@@ -60,6 +60,9 @@
             this.m_deleteBtn = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.m_addressslist = new System.Windows.Forms.ListView();
+            this.m_username = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.m_userno = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -85,8 +88,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.m_customertantouList);
-            this.splitContainer1.Size = new System.Drawing.Size(777, 265);
-            this.splitContainer1.SplitterDistance = 31;
+            this.splitContainer1.Size = new System.Drawing.Size(777, 248);
+            this.splitContainer1.SplitterDistance = 29;
             this.splitContainer1.TabIndex = 0;
             // 
             // m_select_btn
@@ -120,10 +123,11 @@
             this.m_customertantouList.GridLines = true;
             this.m_customertantouList.Location = new System.Drawing.Point(0, 0);
             this.m_customertantouList.Name = "m_customertantouList";
-            this.m_customertantouList.Size = new System.Drawing.Size(775, 228);
+            this.m_customertantouList.Size = new System.Drawing.Size(775, 213);
             this.m_customertantouList.TabIndex = 0;
             this.m_customertantouList.UseCompatibleStateImageBehavior = false;
             this.m_customertantouList.View = System.Windows.Forms.View.Details;
+            this.m_customertantouList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_customertantouList_ColumnClick);
             this.m_customertantouList.DoubleClick += new System.EventHandler(this.m_customertantouList_DoubleClick);
             // 
             // label1
@@ -167,18 +171,18 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(12, 383);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 12);
+            this.label5.Size = new System.Drawing.Size(93, 12);
             this.label5.TabIndex = 5;
-            this.label5.Text = "電話番号1";
+            this.label5.Text = "電話番号(TEL等)";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(12, 407);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(59, 12);
+            this.label6.Size = new System.Drawing.Size(97, 12);
             this.label6.TabIndex = 6;
-            this.label6.Text = "電話番号2";
+            this.label6.Text = "電話番号(携帯等)";
             // 
             // label7
             // 
@@ -201,7 +205,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(367, 291);
+            this.label9.Location = new System.Drawing.Point(367, 269);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(29, 12);
             this.label9.TabIndex = 9;
@@ -209,7 +213,7 @@
             // 
             // m_tantouno
             // 
-            this.m_tantouno.Location = new System.Drawing.Point(95, 285);
+            this.m_tantouno.Location = new System.Drawing.Point(110, 285);
             this.m_tantouno.Name = "m_tantouno";
             this.m_tantouno.ReadOnly = true;
             this.m_tantouno.Size = new System.Drawing.Size(222, 19);
@@ -217,42 +221,42 @@
             // 
             // m_tantouname
             // 
-            this.m_tantouname.Location = new System.Drawing.Point(95, 309);
+            this.m_tantouname.Location = new System.Drawing.Point(110, 309);
             this.m_tantouname.Name = "m_tantouname";
             this.m_tantouname.Size = new System.Drawing.Size(222, 19);
             this.m_tantouname.TabIndex = 1;
             // 
             // m_tantoukana
             // 
-            this.m_tantoukana.Location = new System.Drawing.Point(95, 333);
+            this.m_tantoukana.Location = new System.Drawing.Point(110, 333);
             this.m_tantoukana.Name = "m_tantoukana";
             this.m_tantoukana.Size = new System.Drawing.Size(222, 19);
             this.m_tantoukana.TabIndex = 2;
             // 
             // m_busyoname
             // 
-            this.m_busyoname.Location = new System.Drawing.Point(95, 356);
+            this.m_busyoname.Location = new System.Drawing.Point(110, 356);
             this.m_busyoname.Name = "m_busyoname";
             this.m_busyoname.Size = new System.Drawing.Size(222, 19);
             this.m_busyoname.TabIndex = 3;
             // 
             // m_tel1
             // 
-            this.m_tel1.Location = new System.Drawing.Point(95, 380);
+            this.m_tel1.Location = new System.Drawing.Point(110, 380);
             this.m_tel1.Name = "m_tel1";
             this.m_tel1.Size = new System.Drawing.Size(222, 19);
             this.m_tel1.TabIndex = 4;
             // 
             // m_tel2
             // 
-            this.m_tel2.Location = new System.Drawing.Point(95, 403);
+            this.m_tel2.Location = new System.Drawing.Point(110, 403);
             this.m_tel2.Name = "m_tel2";
             this.m_tel2.Size = new System.Drawing.Size(222, 19);
             this.m_tel2.TabIndex = 5;
             // 
             // m_yakusyoku
             // 
-            this.m_yakusyoku.Location = new System.Drawing.Point(95, 427);
+            this.m_yakusyoku.Location = new System.Drawing.Point(110, 427);
             this.m_yakusyoku.Name = "m_yakusyoku";
             this.m_yakusyoku.Size = new System.Drawing.Size(222, 19);
             this.m_yakusyoku.TabIndex = 6;
@@ -263,22 +267,22 @@
             this.m_statusCombo.Items.AddRange(new object[] {
             "無効",
             "有効"});
-            this.m_statusCombo.Location = new System.Drawing.Point(95, 453);
+            this.m_statusCombo.Location = new System.Drawing.Point(110, 453);
             this.m_statusCombo.Name = "m_statusCombo";
             this.m_statusCombo.Size = new System.Drawing.Size(75, 20);
             this.m_statusCombo.TabIndex = 7;
             // 
             // m_biko
             // 
-            this.m_biko.Location = new System.Drawing.Point(426, 288);
+            this.m_biko.Location = new System.Drawing.Point(426, 266);
             this.m_biko.Multiline = true;
             this.m_biko.Name = "m_biko";
-            this.m_biko.Size = new System.Drawing.Size(254, 38);
+            this.m_biko.Size = new System.Drawing.Size(264, 128);
             this.m_biko.TabIndex = 8;
             // 
             // m_kousin_btn
             // 
-            this.m_kousin_btn.Location = new System.Drawing.Point(612, 447);
+            this.m_kousin_btn.Location = new System.Drawing.Point(612, 476);
             this.m_kousin_btn.Name = "m_kousin_btn";
             this.m_kousin_btn.Size = new System.Drawing.Size(78, 28);
             this.m_kousin_btn.TabIndex = 11;
@@ -288,7 +292,7 @@
             // 
             // m_cancelbtn
             // 
-            this.m_cancelbtn.Location = new System.Drawing.Point(696, 447);
+            this.m_cancelbtn.Location = new System.Drawing.Point(696, 476);
             this.m_cancelbtn.Name = "m_cancelbtn";
             this.m_cancelbtn.Size = new System.Drawing.Size(78, 28);
             this.m_cancelbtn.TabIndex = 12;
@@ -298,7 +302,7 @@
             // 
             // m_updateOpe
             // 
-            this.m_updateOpe.Location = new System.Drawing.Point(426, 367);
+            this.m_updateOpe.Location = new System.Drawing.Point(426, 428);
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
             this.m_updateOpe.Size = new System.Drawing.Size(166, 19);
@@ -308,7 +312,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(367, 370);
+            this.label11.Location = new System.Drawing.Point(367, 431);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(41, 12);
             this.label11.TabIndex = 77;
@@ -316,7 +320,7 @@
             // 
             // m_update
             // 
-            this.m_update.Location = new System.Drawing.Point(426, 339);
+            this.m_update.Location = new System.Drawing.Point(426, 400);
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
             this.m_update.Size = new System.Drawing.Size(166, 19);
@@ -326,7 +330,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(367, 343);
+            this.label12.Location = new System.Drawing.Point(367, 404);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(53, 12);
             this.label12.TabIndex = 75;
@@ -336,7 +340,7 @@
             // 
             this.m_deleteBtn.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.m_deleteBtn.ForeColor = System.Drawing.Color.Red;
-            this.m_deleteBtn.Location = new System.Drawing.Point(698, 273);
+            this.m_deleteBtn.Location = new System.Drawing.Point(698, 255);
             this.m_deleteBtn.Name = "m_deleteBtn";
             this.m_deleteBtn.Size = new System.Drawing.Size(76, 27);
             this.m_deleteBtn.TabIndex = 15;
@@ -368,11 +372,39 @@
             this.m_addressslist.View = System.Windows.Forms.View.Details;
             this.m_addressslist.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_addressslist_MouseDoubleClick);
             // 
+            // m_username
+            // 
+            this.m_username.Location = new System.Drawing.Point(149, 259);
+            this.m_username.Name = "m_username";
+            this.m_username.ReadOnly = true;
+            this.m_username.Size = new System.Drawing.Size(183, 19);
+            this.m_username.TabIndex = 78;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 262);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(40, 12);
+            this.label10.TabIndex = 79;
+            this.label10.Text = "カスタマ";
+            // 
+            // m_userno
+            // 
+            this.m_userno.Location = new System.Drawing.Point(110, 259);
+            this.m_userno.Name = "m_userno";
+            this.m_userno.ReadOnly = true;
+            this.m_userno.Size = new System.Drawing.Size(33, 19);
+            this.m_userno.TabIndex = 80;
+            // 
             // Form_user_tantou
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(779, 617);
+            this.Controls.Add(this.m_userno);
+            this.Controls.Add(this.m_username);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.m_addressslist);
             this.Controls.Add(this.m_deleteBtn);
@@ -448,5 +480,8 @@
         private System.Windows.Forms.Button m_deleteBtn;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListView m_addressslist;
+        private System.Windows.Forms.TextBox m_username;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox m_userno;
     }
 }

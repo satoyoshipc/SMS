@@ -51,6 +51,9 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_scheduleList = new System.Windows.Forms.ListView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label15 = new System.Windows.Forms.Label();
+            this.m_siteno = new System.Windows.Forms.TextBox();
+            this.m_sitename = new System.Windows.Forms.TextBox();
             this.m_deleteBtn = new System.Windows.Forms.Button();
             this.m_alermDate = new System.Windows.Forms.DateTimePicker();
             this.label13 = new System.Windows.Forms.Label();
@@ -73,9 +76,6 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.m_incidentno = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.no_siteno = new System.Windows.Forms.TextBox();
-            this.m_sitename = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -314,7 +314,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.label15);
-            this.splitContainer1.Panel2.Controls.Add(this.no_siteno);
+            this.splitContainer1.Panel2.Controls.Add(this.m_siteno);
             this.splitContainer1.Panel2.Controls.Add(this.m_sitename);
             this.splitContainer1.Panel2.Controls.Add(this.m_deleteBtn);
             this.splitContainer1.Panel2.Controls.Add(this.m_alermDate);
@@ -358,6 +358,31 @@
             this.splitContainer1.Size = new System.Drawing.Size(799, 682);
             this.splitContainer1.SplitterDistance = 302;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(16, 55);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(29, 12);
+            this.label15.TabIndex = 183;
+            this.label15.Text = "拠点";
+            // 
+            // m_siteno
+            // 
+            this.m_siteno.Location = new System.Drawing.Point(119, 51);
+            this.m_siteno.Name = "m_siteno";
+            this.m_siteno.ReadOnly = true;
+            this.m_siteno.Size = new System.Drawing.Size(47, 19);
+            this.m_siteno.TabIndex = 182;
+            // 
+            // m_sitename
+            // 
+            this.m_sitename.Location = new System.Drawing.Point(170, 52);
+            this.m_sitename.Name = "m_sitename";
+            this.m_sitename.ReadOnly = true;
+            this.m_sitename.Size = new System.Drawing.Size(274, 19);
+            this.m_sitename.TabIndex = 181;
             // 
             // m_deleteBtn
             // 
@@ -571,31 +596,6 @@
             this.m_incidentno.Size = new System.Drawing.Size(325, 19);
             this.m_incidentno.TabIndex = 9;
             // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(16, 55);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(29, 12);
-            this.label15.TabIndex = 183;
-            this.label15.Text = "拠点";
-            // 
-            // no_siteno
-            // 
-            this.no_siteno.Location = new System.Drawing.Point(119, 51);
-            this.no_siteno.Name = "no_siteno";
-            this.no_siteno.ReadOnly = true;
-            this.no_siteno.Size = new System.Drawing.Size(47, 19);
-            this.no_siteno.TabIndex = 182;
-            // 
-            // m_sitename
-            // 
-            this.m_sitename.Location = new System.Drawing.Point(170, 52);
-            this.m_sitename.Name = "m_sitename";
-            this.m_sitename.ReadOnly = true;
-            this.m_sitename.Size = new System.Drawing.Size(274, 19);
-            this.m_sitename.TabIndex = 181;
-            // 
             // Form_KeikakuDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -668,7 +668,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button m_deleteBtn;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox no_siteno;
+        private System.Windows.Forms.TextBox m_siteno;
         private System.Windows.Forms.TextBox m_sitename;
     }
 }

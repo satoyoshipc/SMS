@@ -36,8 +36,13 @@
             this.m_opename = new System.Windows.Forms.TextBox();
             this.m_refresh_btn = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.treeContext1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.print_tokubetu = new System.Windows.Forms.LinkLabel();
+            this.print_keikaku = new System.Windows.Forms.LinkLabel();
+            this.print_incident = new System.Windows.Forms.LinkLabel();
             this.linkLabel9 = new System.Windows.Forms.LinkLabel();
             this.label16 = new System.Windows.Forms.Label();
             this.m_tokubetu_list = new System.Windows.Forms.ListView();
@@ -101,9 +106,6 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tokubetuContext = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.print_incident = new System.Windows.Forms.LinkLabel();
-            this.print_keikaku = new System.Windows.Forms.LinkLabel();
-            this.print_tokubetu = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -112,6 +114,7 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            this.treeContext1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.keikakuContext.SuspendLayout();
@@ -153,7 +156,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Panel2.Controls.Add(this.splitter1);
             this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(1158, 764);
+            this.splitContainer1.Size = new System.Drawing.Size(1158, 789);
             this.splitContainer1.SplitterDistance = 168;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -173,8 +176,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.treeView1);
-            this.splitContainer2.Size = new System.Drawing.Size(164, 760);
-            this.splitContainer2.SplitterDistance = 53;
+            this.splitContainer2.Size = new System.Drawing.Size(164, 785);
+            this.splitContainer2.SplitterDistance = 54;
             this.splitContainer2.TabIndex = 1;
             // 
             // button3
@@ -210,13 +213,32 @@
             // 
             // treeView1
             // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView1.ContextMenuStrip = this.treeContext1;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
             this.treeView1.Size = new System.Drawing.Size(164, 703);
             this.treeView1.TabIndex = 1;
             this.treeView1.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeExpand);
             this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
+            // 
+            // treeContext1
+            // 
+            this.treeContext1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem3});
+            this.treeContext1.Name = "keikakuContext";
+            this.treeContext1.ShowImageMargin = false;
+            this.treeContext1.Size = new System.Drawing.Size(76, 26);
+            this.treeContext1.Text = "ステータス変更";
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(75, 22);
+            this.toolStripMenuItem3.Text = "詳細";
+            this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
             // tabControl1
             // 
@@ -226,7 +248,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(982, 757);
+            this.tabControl1.Size = new System.Drawing.Size(982, 782);
             this.tabControl1.TabIndex = 186;
             // 
             // tabPage1
@@ -251,10 +273,43 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(974, 731);
+            this.tabPage1.Size = new System.Drawing.Size(974, 756);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "タイマー情報";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // print_tokubetu
+            // 
+            this.print_tokubetu.AutoSize = true;
+            this.print_tokubetu.Location = new System.Drawing.Point(148, 580);
+            this.print_tokubetu.Name = "print_tokubetu";
+            this.print_tokubetu.Size = new System.Drawing.Size(29, 12);
+            this.print_tokubetu.TabIndex = 204;
+            this.print_tokubetu.TabStop = true;
+            this.print_tokubetu.Text = "印刷";
+            this.print_tokubetu.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.print_tokubetu_LinkClicked);
+            // 
+            // print_keikaku
+            // 
+            this.print_keikaku.AutoSize = true;
+            this.print_keikaku.Location = new System.Drawing.Point(148, 385);
+            this.print_keikaku.Name = "print_keikaku";
+            this.print_keikaku.Size = new System.Drawing.Size(29, 12);
+            this.print_keikaku.TabIndex = 203;
+            this.print_keikaku.TabStop = true;
+            this.print_keikaku.Text = "印刷";
+            this.print_keikaku.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.print_keikaku_LinkClicked);
+            // 
+            // print_incident
+            // 
+            this.print_incident.AutoSize = true;
+            this.print_incident.Location = new System.Drawing.Point(148, 14);
+            this.print_incident.Name = "print_incident";
+            this.print_incident.Size = new System.Drawing.Size(29, 12);
+            this.print_incident.TabIndex = 201;
+            this.print_incident.TabStop = true;
+            this.print_incident.Text = "印刷";
+            this.print_incident.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.print_incident_LinkClicked);
             // 
             // linkLabel9
             // 
@@ -316,7 +371,7 @@
             this.m_printBtn.Name = "m_printBtn";
             this.m_printBtn.Size = new System.Drawing.Size(100, 20);
             this.m_printBtn.TabIndex = 197;
-            this.m_printBtn.Text = "作業印刷";
+            this.m_printBtn.Text = "対応履歴";
             this.m_printBtn.UseVisualStyleBackColor = true;
             this.m_printBtn.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -458,7 +513,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(974, 731);
+            this.tabPage2.Size = new System.Drawing.Size(974, 756);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "構成情報";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -487,19 +542,20 @@
             this.splitContainer3.Panel1.Controls.Add(this.m_systemCombo);
             this.splitContainer3.Panel1.Controls.Add(this.label1);
             this.splitContainer3.Panel1.Controls.Add(this.m_usernameCombo);
+            this.splitContainer3.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer3_Panel1_Paint);
             // 
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer3.Size = new System.Drawing.Size(968, 725);
-            this.splitContainer3.SplitterDistance = 63;
+            this.splitContainer3.Size = new System.Drawing.Size(968, 750);
+            this.splitContainer3.SplitterDistance = 65;
             this.splitContainer3.TabIndex = 1;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(887, 9);
+            this.button1.Location = new System.Drawing.Point(900, 9);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(72, 40);
+            this.button1.Size = new System.Drawing.Size(60, 40);
             this.button1.TabIndex = 192;
             this.button1.Text = "メール作成";
             this.button1.UseVisualStyleBackColor = true;
@@ -507,9 +563,9 @@
             // 
             // m_incidentTouroku
             // 
-            this.m_incidentTouroku.Location = new System.Drawing.Point(720, 9);
+            this.m_incidentTouroku.Location = new System.Drawing.Point(766, 9);
             this.m_incidentTouroku.Name = "m_incidentTouroku";
-            this.m_incidentTouroku.Size = new System.Drawing.Size(68, 40);
+            this.m_incidentTouroku.Size = new System.Drawing.Size(56, 40);
             this.m_incidentTouroku.TabIndex = 185;
             this.m_incidentTouroku.Text = "インシデント登録";
             this.m_incidentTouroku.UseVisualStyleBackColor = true;
@@ -518,9 +574,9 @@
             // m_tourokuBtn
             // 
             this.m_tourokuBtn.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.m_tourokuBtn.Location = new System.Drawing.Point(794, 9);
+            this.m_tourokuBtn.Location = new System.Drawing.Point(824, 9);
             this.m_tourokuBtn.Name = "m_tourokuBtn";
-            this.m_tourokuBtn.Size = new System.Drawing.Size(87, 40);
+            this.m_tourokuBtn.Size = new System.Drawing.Size(75, 40);
             this.m_tourokuBtn.TabIndex = 186;
             this.m_tourokuBtn.Text = "管理情報登録";
             this.m_tourokuBtn.UseVisualStyleBackColor = true;
@@ -528,9 +584,9 @@
             // 
             // m_clear_btn
             // 
-            this.m_clear_btn.Location = new System.Drawing.Point(642, 9);
+            this.m_clear_btn.Location = new System.Drawing.Point(705, 9);
             this.m_clear_btn.Name = "m_clear_btn";
-            this.m_clear_btn.Size = new System.Drawing.Size(72, 40);
+            this.m_clear_btn.Size = new System.Drawing.Size(60, 40);
             this.m_clear_btn.TabIndex = 184;
             this.m_clear_btn.Text = "条件クリア";
             this.m_clear_btn.UseVisualStyleBackColor = true;
@@ -538,9 +594,9 @@
             // 
             // m_selectBtn
             // 
-            this.m_selectBtn.Location = new System.Drawing.Point(568, 9);
+            this.m_selectBtn.Location = new System.Drawing.Point(649, 9);
             this.m_selectBtn.Name = "m_selectBtn";
-            this.m_selectBtn.Size = new System.Drawing.Size(68, 40);
+            this.m_selectBtn.Size = new System.Drawing.Size(56, 40);
             this.m_selectBtn.TabIndex = 183;
             this.m_selectBtn.Text = "検索";
             this.m_selectBtn.UseVisualStyleBackColor = true;
@@ -549,7 +605,7 @@
             // m_ipaddress
             // 
             this.m_ipaddress.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList;
-            this.m_ipaddress.Location = new System.Drawing.Point(442, 34);
+            this.m_ipaddress.Location = new System.Drawing.Point(529, 34);
             this.m_ipaddress.Name = "m_ipaddress";
             this.m_ipaddress.Size = new System.Drawing.Size(114, 19);
             this.m_ipaddress.TabIndex = 182;
@@ -557,7 +613,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(440, 19);
+            this.label6.Location = new System.Drawing.Point(527, 19);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(92, 12);
             this.label6.TabIndex = 191;
@@ -566,7 +622,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(226, 37);
+            this.label4.Location = new System.Drawing.Point(289, 37);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(44, 12);
             this.label4.TabIndex = 190;
@@ -575,15 +631,15 @@
             // m_hostCombo
             // 
             this.m_hostCombo.FormattingEnabled = true;
-            this.m_hostCombo.Location = new System.Drawing.Point(276, 34);
+            this.m_hostCombo.Location = new System.Drawing.Point(339, 34);
             this.m_hostCombo.Name = "m_hostCombo";
-            this.m_hostCombo.Size = new System.Drawing.Size(153, 20);
+            this.m_hostCombo.Size = new System.Drawing.Size(182, 20);
             this.m_hostCombo.TabIndex = 181;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(226, 14);
+            this.label3.Location = new System.Drawing.Point(289, 14);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 12);
             this.label3.TabIndex = 189;
@@ -592,9 +648,9 @@
             // m_siteCombo
             // 
             this.m_siteCombo.FormattingEnabled = true;
-            this.m_siteCombo.Location = new System.Drawing.Point(276, 11);
+            this.m_siteCombo.Location = new System.Drawing.Point(339, 11);
             this.m_siteCombo.Name = "m_siteCombo";
-            this.m_siteCombo.Size = new System.Drawing.Size(153, 20);
+            this.m_siteCombo.Size = new System.Drawing.Size(182, 20);
             this.m_siteCombo.TabIndex = 180;
             this.m_siteCombo.SelectionChangeCommitted += new System.EventHandler(this.m_siteCombo_SelectionChangeCommitted);
             // 
@@ -612,9 +668,9 @@
             this.m_systemCombo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.m_systemCombo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.m_systemCombo.FormattingEnabled = true;
-            this.m_systemCombo.Location = new System.Drawing.Point(60, 34);
+            this.m_systemCombo.Location = new System.Drawing.Point(65, 34);
             this.m_systemCombo.Name = "m_systemCombo";
-            this.m_systemCombo.Size = new System.Drawing.Size(153, 20);
+            this.m_systemCombo.Size = new System.Drawing.Size(218, 20);
             this.m_systemCombo.TabIndex = 179;
             this.m_systemCombo.SelectionChangeCommitted += new System.EventHandler(this.m_systemCombo_SelectionChangeCommitted_1);
             // 
@@ -632,9 +688,9 @@
             this.m_usernameCombo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.m_usernameCombo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.m_usernameCombo.FormattingEnabled = true;
-            this.m_usernameCombo.Location = new System.Drawing.Point(60, 11);
+            this.m_usernameCombo.Location = new System.Drawing.Point(65, 11);
             this.m_usernameCombo.Name = "m_usernameCombo";
-            this.m_usernameCombo.Size = new System.Drawing.Size(153, 20);
+            this.m_usernameCombo.Size = new System.Drawing.Size(218, 20);
             this.m_usernameCombo.TabIndex = 178;
             this.m_usernameCombo.SelectionChangeCommitted += new System.EventHandler(this.m_usernameCombo_SelectionChangeCommitted_1);
             // 
@@ -658,8 +714,8 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.splitContainer5);
-            this.splitContainer4.Size = new System.Drawing.Size(968, 658);
-            this.splitContainer4.SplitterDistance = 132;
+            this.splitContainer4.Size = new System.Drawing.Size(968, 681);
+            this.splitContainer4.SplitterDistance = 136;
             this.splitContainer4.TabIndex = 0;
             // 
             // m_system_label
@@ -702,7 +758,7 @@
             this.systemList.GridLines = true;
             this.systemList.Location = new System.Drawing.Point(464, 26);
             this.systemList.Name = "systemList";
-            this.systemList.Size = new System.Drawing.Size(494, 101);
+            this.systemList.Size = new System.Drawing.Size(494, 105);
             this.systemList.TabIndex = 191;
             this.systemList.UseCompatibleStateImageBehavior = false;
             this.systemList.View = System.Windows.Forms.View.Details;
@@ -727,7 +783,7 @@
             this.userList.GridLines = true;
             this.userList.Location = new System.Drawing.Point(8, 26);
             this.userList.Name = "userList";
-            this.userList.Size = new System.Drawing.Size(450, 101);
+            this.userList.Size = new System.Drawing.Size(450, 105);
             this.userList.TabIndex = 189;
             this.userList.UseCompatibleStateImageBehavior = false;
             this.userList.View = System.Windows.Forms.View.Details;
@@ -752,8 +808,8 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
-            this.splitContainer5.Size = new System.Drawing.Size(968, 522);
-            this.splitContainer5.SplitterDistance = 145;
+            this.splitContainer5.Size = new System.Drawing.Size(968, 541);
+            this.splitContainer5.SplitterDistance = 150;
             this.splitContainer5.TabIndex = 0;
             // 
             // linkLabel3
@@ -784,7 +840,7 @@
             this.siteList.GridLines = true;
             this.siteList.Location = new System.Drawing.Point(8, 23);
             this.siteList.Name = "siteList";
-            this.siteList.Size = new System.Drawing.Size(950, 117);
+            this.siteList.Size = new System.Drawing.Size(950, 122);
             this.siteList.TabIndex = 183;
             this.siteList.UseCompatibleStateImageBehavior = false;
             this.siteList.View = System.Windows.Forms.View.Details;
@@ -814,8 +870,8 @@
             this.splitContainer6.Panel2.Controls.Add(this.kaisenList);
             this.splitContainer6.Panel2.Controls.Add(this.label10);
             this.splitContainer6.Panel2.Controls.Add(this.interfaceList);
-            this.splitContainer6.Size = new System.Drawing.Size(968, 373);
-            this.splitContainer6.SplitterDistance = 207;
+            this.splitContainer6.Size = new System.Drawing.Size(968, 387);
+            this.splitContainer6.SplitterDistance = 214;
             this.splitContainer6.TabIndex = 0;
             // 
             // linkLabel4
@@ -846,7 +902,7 @@
             this.m_host_list.GridLines = true;
             this.m_host_list.Location = new System.Drawing.Point(8, 22);
             this.m_host_list.Name = "m_host_list";
-            this.m_host_list.Size = new System.Drawing.Size(950, 173);
+            this.m_host_list.Size = new System.Drawing.Size(950, 180);
             this.m_host_list.TabIndex = 184;
             this.m_host_list.UseCompatibleStateImageBehavior = false;
             this.m_host_list.View = System.Windows.Forms.View.Details;
@@ -894,7 +950,7 @@
             this.kaisenList.GridLines = true;
             this.kaisenList.Location = new System.Drawing.Point(464, 23);
             this.kaisenList.Name = "kaisenList";
-            this.kaisenList.Size = new System.Drawing.Size(494, 134);
+            this.kaisenList.Size = new System.Drawing.Size(494, 141);
             this.kaisenList.TabIndex = 197;
             this.kaisenList.UseCompatibleStateImageBehavior = false;
             this.kaisenList.View = System.Windows.Forms.View.Details;
@@ -918,7 +974,7 @@
             this.interfaceList.GridLines = true;
             this.interfaceList.Location = new System.Drawing.Point(8, 23);
             this.interfaceList.Name = "interfaceList";
-            this.interfaceList.Size = new System.Drawing.Size(450, 134);
+            this.interfaceList.Size = new System.Drawing.Size(450, 141);
             this.interfaceList.TabIndex = 195;
             this.interfaceList.UseCompatibleStateImageBehavior = false;
             this.interfaceList.View = System.Windows.Forms.View.Details;
@@ -956,7 +1012,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 742);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 767);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1158, 22);
             this.statusStrip1.TabIndex = 2;
@@ -983,48 +1039,15 @@
             this.toolStripMenuItem2.Text = "変更";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
-            // print_incident
-            // 
-            this.print_incident.AutoSize = true;
-            this.print_incident.Location = new System.Drawing.Point(148, 14);
-            this.print_incident.Name = "print_incident";
-            this.print_incident.Size = new System.Drawing.Size(29, 12);
-            this.print_incident.TabIndex = 201;
-            this.print_incident.TabStop = true;
-            this.print_incident.Text = "印刷";
-            this.print_incident.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.print_incident_LinkClicked);
-            // 
-            // print_keikaku
-            // 
-            this.print_keikaku.AutoSize = true;
-            this.print_keikaku.Location = new System.Drawing.Point(148, 385);
-            this.print_keikaku.Name = "print_keikaku";
-            this.print_keikaku.Size = new System.Drawing.Size(29, 12);
-            this.print_keikaku.TabIndex = 203;
-            this.print_keikaku.TabStop = true;
-            this.print_keikaku.Text = "印刷";
-            this.print_keikaku.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.print_keikaku_LinkClicked);
-            // 
-            // print_tokubetu
-            // 
-            this.print_tokubetu.AutoSize = true;
-            this.print_tokubetu.Location = new System.Drawing.Point(148, 580);
-            this.print_tokubetu.Name = "print_tokubetu";
-            this.print_tokubetu.Size = new System.Drawing.Size(29, 12);
-            this.print_tokubetu.TabIndex = 204;
-            this.print_tokubetu.TabStop = true;
-            this.print_tokubetu.Text = "印刷";
-            this.print_tokubetu.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.print_tokubetu_LinkClicked);
-            // 
             // Form_MainList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1158, 764);
+            this.ClientSize = new System.Drawing.Size(1158, 789);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form_MainList";
-            this.Text = "SMS";
+            this.Text = "M.O.S.S (MONITORING OPERATION SERVICE SYSTEM)";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_MainList_FormClosed);
             this.Load += new System.EventHandler(this.Form_MainList_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -1036,6 +1059,7 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.treeContext1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -1147,6 +1171,8 @@
         private System.Windows.Forms.LinkLabel print_incident;
         private System.Windows.Forms.LinkLabel print_tokubetu;
         private System.Windows.Forms.LinkLabel print_keikaku;
+        private System.Windows.Forms.ContextMenuStrip treeContext1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
     }
 }
 

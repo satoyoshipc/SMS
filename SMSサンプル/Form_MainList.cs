@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using log4net;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,10 @@ namespace SMSサンプル
 {
     public partial class Form_MainList : Form
     {
+        private static readonly ILog LOG = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
+
         NpgsqlConnection con;
 
         //ログイン情報
@@ -93,7 +98,6 @@ namespace SMSサンプル
                 typeof(System.Reflection.AssemblyCopyrightAttribute));
             toolStripStatusLabel1.Text = asmcpy.Copyright;
 
-
             Form_login login = new Form_login();
 
             login.ShowDialog();
@@ -108,6 +112,7 @@ namespace SMSサンプル
             {
                 //ログイン
                 m_opename.Text = loginDS.lastname + loginDS.fastname;
+                LOG.InfoFormat("ログイン オペレータ名：{0} ", loginDS.lastname + loginDS.fastname);
 
                 Class_common common = new Class_common();
                 con = common.DB_connection();
@@ -124,7 +129,6 @@ namespace SMSサンプル
                 disp_sagyoList(schDSList);
                 timer1.Start();
 
-
                 //カスタマ名コンボボックスの設定
                 combo_set();
 
@@ -135,6 +139,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("表示エラー" + ex.Message, "表示エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                LOG.ErrorFormat("表示エラー：{0}", ex.Message);
             }
         }
 
@@ -1173,7 +1178,7 @@ namespace SMSサンプル
             this.userList.Columns.Insert(2, "カスタマ名", 180, HorizontalAlignment.Left);
             this.userList.Columns.Insert(3, "カスタマ名カナ", 30, HorizontalAlignment.Left);
             this.userList.Columns.Insert(4, "カスタマ名略称", 30, HorizontalAlignment.Left);
-            this.userList.Columns.Insert(5, "レポート出力有無", 80, HorizontalAlignment.Left);
+            this.userList.Columns.Insert(5, "SLO対象", 80, HorizontalAlignment.Left);
             this.userList.Columns.Insert(6, "備考", 180, HorizontalAlignment.Left);
             this.userList.Columns.Insert(7, "更新日時", 80, HorizontalAlignment.Left);
             this.userList.Columns.Insert(8, "更新者", 80, HorizontalAlignment.Left);
@@ -1185,7 +1190,7 @@ namespace SMSサンプル
             user_list.Columns.Add("カスタマ名", Type.GetType("System.String"));
             user_list.Columns.Add("カスタマ名カナ", Type.GetType("System.String"));
             user_list.Columns.Add("カスタマ名略称", Type.GetType("System.String"));
-            user_list.Columns.Add("レポート出力有無", Type.GetType("System.String"));
+            user_list.Columns.Add("SLO対象", Type.GetType("System.String"));
             user_list.Columns.Add("備考", Type.GetType("System.String"));
             user_list.Columns.Add("更新日時", Type.GetType("System.String"));
             user_list.Columns.Add("更新者", Type.GetType("System.String"));
@@ -1208,7 +1213,7 @@ namespace SMSサンプル
                     urow["カスタマ名"] = v.username;
                     urow["カスタマ名カナ"] = v.username_kana;
                     urow["カスタマ名略称"] = v.username_sum;
-                    urow["レポート出力有無"] = v.report_status;
+                    urow["SLO対象"] = v.report_status;
                     urow["備考"] = v.biko;
                     urow["更新日時"] = v.chk_date;
                     urow["更新者"] = v.chk_name_id;
@@ -1332,7 +1337,7 @@ namespace SMSサンプル
                         if (systemno == s.systemno)
                         {
                             //重複チェック
-                            if (ary1.Add(s.systemno))
+                            if (ary1.Add(s.siteno))
                             {
                                 DataRow row = site_list.NewRow();
                                 row["No"] = s.siteno;
@@ -1351,7 +1356,7 @@ namespace SMSサンプル
                     else
                     {
                         //重複チェック
-                        if (ary1.Add(s.systemno))
+                        if (ary1.Add(s.siteno))
                         {
                             DataRow row = site_list.NewRow();
                             row["No"] = s.siteno;
@@ -1999,9 +2004,11 @@ namespace SMSサンプル
                 }
             }
             // If the file is not found, handle the exception and inform the user.
-            catch (System.ComponentModel.Win32Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("File not found.");
+                MessageBox.Show("値の表示時にエラーが発生しました。MSG:" + ex.Message);
+                LOG.ErrorFormat("表示エラー：{0}", ex.Message);
+
             }
         }
 
@@ -2084,6 +2091,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "システム情報読込", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                LOG.ErrorFormat("システム情報コンボボックス読込エラー：{0}", ex.Message);
             }
         }
         //システム名コンボが変更されたとき (システムIDでDBより拠点名を持ってくる
@@ -2155,7 +2163,8 @@ namespace SMSサンプル
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "ホスト情報の読み込みに失敗", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(ex.Message, "ホスト情報コンボボックスの読み込みに失敗", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                LOG.ErrorFormat("ホスト情報の読み込みに失敗：{0}", ex.Message);
             }
         }
 
@@ -2192,6 +2201,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "拠点情報コンボボックスデータ読み込み時エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                LOG.ErrorFormat("拠点情報コンボボックスデータ読み込み時エラー：{0}", ex.Message);
             }
         }
 
@@ -2483,8 +2493,12 @@ namespace SMSサンプル
         private void Form_MainList_FormClosed(object sender, FormClosedEventArgs e)
         {
             //DBコネクションのクローズ
-            if (con != null)
+            if (con != null) {
+                LOG.Info("コネクションクローズ");
                 con.Close();
+                LOG.InfoFormat("ログアウト：{0} ", loginDS.lastname + loginDS.fastname);
+            }
+
         }
         //インシデント登録
         private void linkLabel7_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -2679,6 +2693,7 @@ namespace SMSサンプル
                         {
                             //エラー時メッセージ表示
                             MessageBox.Show(ex.Message);
+                            LOG.ErrorFormat("定期作業ステータス更新エラー：{0}", ex.Message);
                             transaction.Rollback();
                             return;
                         }
@@ -2725,6 +2740,7 @@ namespace SMSサンプル
                         {
                             //エラー時メッセージ表示
                             MessageBox.Show(ex.Message);
+                            LOG.ErrorFormat("計画作業ステータス更新エラー：{0}", ex.Message);
                             transaction.Rollback();
                             return;
                         }
@@ -3378,14 +3394,13 @@ namespace SMSサンプル
                 m_keikaku_list.RedrawItems(start, m_keikaku_list.Items.Count - 1, true);
             }
         }
-        //印刷
+        //対応履歴を表示する
         private void button2_Click(object sender, EventArgs e)
         {
-            Form_DispMail mailform = new Form_DispMail();
-            mailTempleteDS mailds = new mailTempleteDS();
-            mailds.body = "あああいいいうう";
-            mailform.mailtempDS = mailds;
-            mailform.Show();
+            Form_taiou_list taioufm = new Form_taiou_list();
+            taioufm.con = con;
+            taioufm.Show();
+
         }
         //特別対応をダブルクリック
         private void m_tokubetu_list_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -3581,6 +3596,52 @@ namespace SMSサンプル
             form.scheduleList = scheduleList_tokubetu;
             form.kubunstr = "特別対応";
             form.Show();
+
+        }
+        //詳細画面
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            string strSelectedname;
+            //カスタマ名のみ取得
+            if (treeView1.SelectedNode.Level == 0)
+            {
+                //選択されたノード
+                strSelectedname = treeView1.SelectedNode.Text;
+
+                Dictionary<string, string> param_dict = new Dictionary<string, string>() ;
+                DISP_dataSet displist = new DISP_dataSet() ;
+                Class_Detaget dg = new Class_Detaget();
+
+                param_dict["username"] = strSelectedname;
+                displist = dg.getSelectUser(param_dict, con, displist);
+
+                ListView.SelectedIndexCollection item = userList.SelectedIndices;
+                Form_UserDetail formdetail = new Form_UserDetail();
+
+                formdetail.con = con;
+
+                formdetail.loginDS = loginDS;
+
+                //ユーザ情報を取得する
+                if(displist.user_L == null )
+                {
+                    MessageBox.Show("カスタマ情報を取得できませんでした。","");
+                    formdetail.Show();
+                    formdetail.Owner = this;
+                    return;
+                }
+                formdetail.userdt = displist.user_L[0];
+                formdetail.Show();
+                formdetail.Owner = this;
+
+            }
+
+
+
+        }
+
+        private void splitContainer3_Panel1_Paint(object sender, PaintEventArgs e)
+        {
 
         }
     }
