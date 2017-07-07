@@ -399,7 +399,6 @@ namespace SMSサンプル
                     {
                         //削除処理
                         rowsaffected = command.ExecuteNonQuery();
-                        transaction.Commit();
 
                         if (rowsaffected != 1)
                         {
@@ -408,6 +407,7 @@ namespace SMSサンプル
                             return -1;
                         }
                         else {
+                            transaction.Commit();
                             MessageBox.Show("削除完了しました。監視インターフェイスID:" + interfaceno, "監視インターフェイス削除");
                         }
                     }

@@ -32,6 +32,7 @@
             this.m_select_btn = new System.Windows.Forms.Button();
             this.m_selectCombo = new System.Windows.Forms.ComboBox();
             this.m_selecttext = new System.Windows.Forms.TextBox();
+            this.m_addressslist = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -49,7 +50,6 @@
             this.m_update = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.m_deleteBtn = new System.Windows.Forms.Button();
-            this.m_addressslist = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -102,6 +102,21 @@
             this.m_selecttext.Name = "m_selecttext";
             this.m_selecttext.Size = new System.Drawing.Size(200, 19);
             this.m_selecttext.TabIndex = 1;
+            // 
+            // m_addressslist
+            // 
+            this.m_addressslist.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_addressslist.GridLines = true;
+            this.m_addressslist.Location = new System.Drawing.Point(2, 3);
+            this.m_addressslist.Name = "m_addressslist";
+            this.m_addressslist.Size = new System.Drawing.Size(568, 222);
+            this.m_addressslist.TabIndex = 0;
+            this.m_addressslist.UseCompatibleStateImageBehavior = false;
+            this.m_addressslist.View = System.Windows.Forms.View.Details;
+            this.m_addressslist.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_addressslist_ColumnClick);
+            this.m_addressslist.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_addressslist_MouseDoubleClick);
             // 
             // label1
             // 
@@ -190,7 +205,7 @@
             this.m_kousin_btn.Location = new System.Drawing.Point(404, 399);
             this.m_kousin_btn.Name = "m_kousin_btn";
             this.m_kousin_btn.Size = new System.Drawing.Size(78, 28);
-            this.m_kousin_btn.TabIndex = 10;
+            this.m_kousin_btn.TabIndex = 7;
             this.m_kousin_btn.Text = "更新";
             this.m_kousin_btn.UseVisualStyleBackColor = true;
             this.m_kousin_btn.Click += new System.EventHandler(this.m_kousin_btn_Click);
@@ -200,7 +215,7 @@
             this.m_cancelbtn.Location = new System.Drawing.Point(488, 399);
             this.m_cancelbtn.Name = "m_cancelbtn";
             this.m_cancelbtn.Size = new System.Drawing.Size(78, 28);
-            this.m_cancelbtn.TabIndex = 11;
+            this.m_cancelbtn.TabIndex = 8;
             this.m_cancelbtn.Text = "キャンセル";
             this.m_cancelbtn.UseVisualStyleBackColor = true;
             this.m_cancelbtn.Click += new System.EventHandler(this.m_cancelbtn_Click);
@@ -211,7 +226,7 @@
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
             this.m_updateOpe.Size = new System.Drawing.Size(166, 19);
-            this.m_updateOpe.TabIndex = 9;
+            this.m_updateOpe.TabIndex = 6;
             this.m_updateOpe.TabStop = false;
             // 
             // label11
@@ -229,7 +244,7 @@
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
             this.m_update.Size = new System.Drawing.Size(166, 19);
-            this.m_update.TabIndex = 8;
+            this.m_update.TabIndex = 5;
             this.m_update.TabStop = false;
             // 
             // label12
@@ -248,25 +263,10 @@
             this.m_deleteBtn.Location = new System.Drawing.Point(490, 277);
             this.m_deleteBtn.Name = "m_deleteBtn";
             this.m_deleteBtn.Size = new System.Drawing.Size(76, 27);
-            this.m_deleteBtn.TabIndex = 13;
+            this.m_deleteBtn.TabIndex = 9;
             this.m_deleteBtn.Text = "削除";
             this.m_deleteBtn.UseVisualStyleBackColor = true;
             this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
-            // 
-            // m_addressslist
-            // 
-            this.m_addressslist.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_addressslist.GridLines = true;
-            this.m_addressslist.Location = new System.Drawing.Point(2, 3);
-            this.m_addressslist.Name = "m_addressslist";
-            this.m_addressslist.Size = new System.Drawing.Size(568, 222);
-            this.m_addressslist.TabIndex = 185;
-            this.m_addressslist.UseCompatibleStateImageBehavior = false;
-            this.m_addressslist.View = System.Windows.Forms.View.Details;
-            this.m_addressslist.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_addressslist_ColumnClick);
-            this.m_addressslist.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_addressslist_MouseDoubleClick);
             // 
             // Form_mailDetail
             // 

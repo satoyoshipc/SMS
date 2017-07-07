@@ -41,7 +41,7 @@ namespace SMSサンプル
         //タイマー登録
         private void button2_Click_1(object sender, EventArgs e)
         {
-            Form_TimerInsert timerfm = new Form_TimerInsert();
+            Form_scheduleInsert timerfm = new Form_scheduleInsert();
             timerfm.con = con;
             timerfm.loginDS = loginDS;
             timerfm.ShowDialog(this);

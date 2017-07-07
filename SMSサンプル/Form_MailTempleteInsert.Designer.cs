@@ -158,7 +158,7 @@
             this.m_labelinputOpe.Name = "m_labelinputOpe";
             this.m_labelinputOpe.ReadOnly = true;
             this.m_labelinputOpe.Size = new System.Drawing.Size(224, 19);
-            this.m_labelinputOpe.TabIndex = 14;
+            this.m_labelinputOpe.TabIndex = 16;
             this.m_labelinputOpe.TabStop = false;
             // 
             // label8
@@ -175,7 +175,7 @@
             this.button3.Location = new System.Drawing.Point(691, 554);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
-            this.button3.TabIndex = 12;
+            this.button3.TabIndex = 17;
             this.button3.Text = "登録";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -185,7 +185,7 @@
             this.button2.Location = new System.Drawing.Point(792, 554);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 23);
-            this.button2.TabIndex = 13;
+            this.button2.TabIndex = 18;
             this.button2.Text = "キャンセル";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -197,7 +197,7 @@
             this.m_attach1.Location = new System.Drawing.Point(585, 365);
             this.m_attach1.Name = "m_attach1";
             this.m_attach1.Size = new System.Drawing.Size(303, 19);
-            this.m_attach1.TabIndex = 7;
+            this.m_attach1.TabIndex = 10;
             // 
             // label9
             // 
@@ -215,7 +215,7 @@
             this.m_attach2.Location = new System.Drawing.Point(585, 390);
             this.m_attach2.Name = "m_attach2";
             this.m_attach2.Size = new System.Drawing.Size(302, 19);
-            this.m_attach2.TabIndex = 8;
+            this.m_attach2.TabIndex = 11;
             // 
             // label10
             // 
@@ -233,7 +233,7 @@
             this.m_attach3.Location = new System.Drawing.Point(585, 415);
             this.m_attach3.Name = "m_attach3";
             this.m_attach3.Size = new System.Drawing.Size(302, 19);
-            this.m_attach3.TabIndex = 9;
+            this.m_attach3.TabIndex = 12;
             // 
             // label11
             // 
@@ -251,7 +251,7 @@
             this.m_attach5.Location = new System.Drawing.Point(586, 465);
             this.m_attach5.Name = "m_attach5";
             this.m_attach5.Size = new System.Drawing.Size(302, 19);
-            this.m_attach5.TabIndex = 11;
+            this.m_attach5.TabIndex = 14;
             // 
             // label12
             // 
@@ -269,7 +269,7 @@
             this.m_attach4.Location = new System.Drawing.Point(586, 440);
             this.m_attach4.Name = "m_attach4";
             this.m_attach4.Size = new System.Drawing.Size(302, 19);
-            this.m_attach4.TabIndex = 10;
+            this.m_attach4.TabIndex = 13;
             // 
             // label13
             // 
@@ -302,7 +302,7 @@
             this.m_To_list.Location = new System.Drawing.Point(586, 56);
             this.m_To_list.Name = "m_To_list";
             this.m_To_list.Size = new System.Drawing.Size(301, 106);
-            this.m_To_list.TabIndex = 4;
+            this.m_To_list.TabIndex = 5;
             this.m_To_list.UseCompatibleStateImageBehavior = false;
             this.m_To_list.View = System.Windows.Forms.View.Details;
             this.m_To_list.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_To_list_KeyDown);
@@ -316,7 +316,7 @@
             this.m_Cc_list.Location = new System.Drawing.Point(586, 168);
             this.m_Cc_list.Name = "m_Cc_list";
             this.m_Cc_list.Size = new System.Drawing.Size(301, 89);
-            this.m_Cc_list.TabIndex = 5;
+            this.m_Cc_list.TabIndex = 7;
             this.m_Cc_list.UseCompatibleStateImageBehavior = false;
             this.m_Cc_list.View = System.Windows.Forms.View.Details;
             this.m_Cc_list.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_Cc_list_KeyDown);
@@ -330,7 +330,7 @@
             this.m_Bcc_list.Location = new System.Drawing.Point(586, 270);
             this.m_Bcc_list.Name = "m_Bcc_list";
             this.m_Bcc_list.Size = new System.Drawing.Size(301, 61);
-            this.m_Bcc_list.TabIndex = 6;
+            this.m_Bcc_list.TabIndex = 9;
             this.m_Bcc_list.UseCompatibleStateImageBehavior = false;
             this.m_Bcc_list.View = System.Windows.Forms.View.Details;
             this.m_Bcc_list.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_Bcc_list_KeyDown);
@@ -341,7 +341,7 @@
             this.To_add_Link.Location = new System.Drawing.Point(552, 73);
             this.To_add_Link.Name = "To_add_Link";
             this.To_add_Link.Size = new System.Drawing.Size(29, 12);
-            this.To_add_Link.TabIndex = 3;
+            this.To_add_Link.TabIndex = 4;
             this.To_add_Link.TabStop = true;
             this.To_add_Link.Text = "追加";
             this.To_add_Link.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.To_add_Link_LinkClicked);
@@ -352,7 +352,7 @@
             this.Cc_add_Link.Location = new System.Drawing.Point(552, 184);
             this.Cc_add_Link.Name = "Cc_add_Link";
             this.Cc_add_Link.Size = new System.Drawing.Size(29, 12);
-            this.Cc_add_Link.TabIndex = 5;
+            this.Cc_add_Link.TabIndex = 6;
             this.Cc_add_Link.TabStop = true;
             this.Cc_add_Link.Text = "追加";
             this.Cc_add_Link.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Cc_add_Link_LinkClicked);
@@ -363,7 +363,7 @@
             this.Bcc_add_Link.Location = new System.Drawing.Point(552, 289);
             this.Bcc_add_Link.Name = "Bcc_add_Link";
             this.Bcc_add_Link.Size = new System.Drawing.Size(29, 12);
-            this.Bcc_add_Link.TabIndex = 7;
+            this.Bcc_add_Link.TabIndex = 8;
             this.Bcc_add_Link.TabStop = true;
             this.Bcc_add_Link.Text = "追加";
             this.Bcc_add_Link.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Bcc_add_Link_LinkClicked);

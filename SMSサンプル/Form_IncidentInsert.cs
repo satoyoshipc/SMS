@@ -611,5 +611,13 @@ namespace SMSサンプル
                 setDateTimePicker(dateTime_Timer, m_timerpicker);
             }
         }
+        //メール出力ボタン
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Form_mailTempleteList mailselectform = new Form_mailTempleteList();
+            mailselectform.con = con;
+            mailselectform.loginDS = loginDS;
+            mailselectform.Show();
+        }
     }
 }

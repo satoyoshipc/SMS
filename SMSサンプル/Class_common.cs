@@ -20,7 +20,10 @@ namespace SMSサンプル
             sb.Append("Port=" + System.Configuration.ConfigurationManager.AppSettings["port"] + ";");
             sb.Append("User Id=" + System.Configuration.ConfigurationManager.AppSettings["userid"] + ";");
             sb.Append("Password=" + System.Configuration.ConfigurationManager.AppSettings["password"] + ";");
-            sb.Append("Database=" + System.Configuration.ConfigurationManager.AppSettings["dbname"]);
+            sb.Append("Database=" + System.Configuration.ConfigurationManager.AppSettings["dbname"] );
+
+            //sb.Append("Database=" + System.Configuration.ConfigurationManager.AppSettings["dbname"] + ";");
+            //sb.Append("Preload Reader=true;");
 
             NpgsqlConnection con = null;
 

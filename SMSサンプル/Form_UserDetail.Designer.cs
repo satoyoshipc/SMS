@@ -164,7 +164,7 @@
             this.m_Customer_List.Location = new System.Drawing.Point(0, 0);
             this.m_Customer_List.Name = "m_Customer_List";
             this.m_Customer_List.Size = new System.Drawing.Size(844, 222);
-            this.m_Customer_List.TabIndex = 1;
+            this.m_Customer_List.TabIndex = 0;
             this.m_Customer_List.UseCompatibleStateImageBehavior = false;
             this.m_Customer_List.View = System.Windows.Forms.View.Details;
             this.m_Customer_List.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_Customer_List_ColumnClick);
@@ -178,7 +178,7 @@
             this.m_deleteBtn.Location = new System.Drawing.Point(741, 6);
             this.m_deleteBtn.Name = "m_deleteBtn";
             this.m_deleteBtn.Size = new System.Drawing.Size(92, 33);
-            this.m_deleteBtn.TabIndex = 181;
+            this.m_deleteBtn.TabIndex = 8;
             this.m_deleteBtn.Text = "削除";
             this.m_deleteBtn.UseVisualStyleBackColor = true;
             this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
@@ -201,7 +201,7 @@
             this.m_tantouList.Location = new System.Drawing.Point(11, 185);
             this.m_tantouList.Name = "m_tantouList";
             this.m_tantouList.Size = new System.Drawing.Size(822, 108);
-            this.m_tantouList.TabIndex = 75;
+            this.m_tantouList.TabIndex = 7;
             this.m_tantouList.UseCompatibleStateImageBehavior = false;
             this.m_tantouList.View = System.Windows.Forms.View.Details;
             this.m_tantouList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_tantouList_MouseDoubleClick);
@@ -213,7 +213,7 @@
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
             this.m_updateOpe.Size = new System.Drawing.Size(166, 19);
-            this.m_updateOpe.TabIndex = 74;
+            this.m_updateOpe.TabIndex = 10;
             this.m_updateOpe.TabStop = false;
             // 
             // label6
@@ -233,7 +233,7 @@
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
             this.m_update.Size = new System.Drawing.Size(166, 19);
-            this.m_update.TabIndex = 72;
+            this.m_update.TabIndex = 9;
             this.m_update.TabStop = false;
             // 
             // label5
@@ -256,7 +256,7 @@
             this.m_reportCombo.Location = new System.Drawing.Point(355, 104);
             this.m_reportCombo.Name = "m_reportCombo";
             this.m_reportCombo.Size = new System.Drawing.Size(79, 20);
-            this.m_reportCombo.TabIndex = 70;
+            this.m_reportCombo.TabIndex = 5;
             // 
             // m_statusCombo
             // 
@@ -268,7 +268,7 @@
             this.m_statusCombo.Location = new System.Drawing.Point(114, 104);
             this.m_statusCombo.Name = "m_statusCombo";
             this.m_statusCombo.Size = new System.Drawing.Size(79, 20);
-            this.m_statusCombo.TabIndex = 69;
+            this.m_statusCombo.TabIndex = 4;
             // 
             // button2
             // 
@@ -276,7 +276,7 @@
             this.button2.Location = new System.Drawing.Point(757, 299);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(76, 33);
-            this.button2.TabIndex = 68;
+            this.button2.TabIndex = 12;
             this.button2.Text = "戻る";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -287,7 +287,7 @@
             this.button1.Location = new System.Drawing.Point(675, 299);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(76, 33);
-            this.button1.TabIndex = 67;
+            this.button1.TabIndex = 11;
             this.button1.Text = "更新";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -300,7 +300,7 @@
             this.m_biko.Multiline = true;
             this.m_biko.Name = "m_biko";
             this.m_biko.Size = new System.Drawing.Size(436, 39);
-            this.m_biko.TabIndex = 66;
+            this.m_biko.TabIndex = 6;
             // 
             // label9
             // 
@@ -318,7 +318,7 @@
             this.m_username_Ryaku.Location = new System.Drawing.Point(114, 79);
             this.m_username_Ryaku.Name = "m_username_Ryaku";
             this.m_username_Ryaku.Size = new System.Drawing.Size(436, 19);
-            this.m_username_Ryaku.TabIndex = 10;
+            this.m_username_Ryaku.TabIndex = 3;
             // 
             // m_username_kana
             // 
@@ -327,7 +327,7 @@
             this.m_username_kana.Location = new System.Drawing.Point(114, 55);
             this.m_username_kana.Name = "m_username_kana";
             this.m_username_kana.Size = new System.Drawing.Size(436, 19);
-            this.m_username_kana.TabIndex = 9;
+            this.m_username_kana.TabIndex = 2;
             // 
             // m_username
             // 
@@ -336,7 +336,7 @@
             this.m_username.Location = new System.Drawing.Point(114, 30);
             this.m_username.Name = "m_username";
             this.m_username.Size = new System.Drawing.Size(436, 19);
-            this.m_username.TabIndex = 8;
+            this.m_username.TabIndex = 1;
             // 
             // m_userno
             // 
@@ -344,7 +344,7 @@
             this.m_userno.Name = "m_userno";
             this.m_userno.ReadOnly = true;
             this.m_userno.Size = new System.Drawing.Size(122, 19);
-            this.m_userno.TabIndex = 7;
+            this.m_userno.TabIndex = 0;
             this.m_userno.TabStop = false;
             // 
             // label7

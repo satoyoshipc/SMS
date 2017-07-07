@@ -30,6 +30,13 @@ namespace SMSサンプル
 
 
         public String career { get; set; }
+
+
+        public String telno1 { get; set; }
+        public String telno2 { get; set; }
+        public String telno3 { get; set; }
+
+
         public String type { get; set; }
         public String kaisenid { get; set; }
         public String isp { get; set; }

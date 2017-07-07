@@ -16,14 +16,15 @@ namespace SMSサンプル
         //DBコネクション
         public NpgsqlConnection con { get; set; }
 
-        private static readonly ILog LOG = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 
         //カスタマ通番からカスタマ名を取得する
         public string getCustomername(string userno)
         {
             NpgsqlCommand cmd;
             string username = "";
-            NpgsqlDataReader dataReader = null;
+            NpgsqlDataReader dataReader1 = null;
             try
             {
 
@@ -32,23 +33,23 @@ namespace SMSサンプル
                 cmd = new NpgsqlCommand(@"select userno,username FROM user_tbl WHERE userno=:no", con);
                 cmd.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = userno });
 
-                dataReader = cmd.ExecuteReader();
-                if (dataReader.HasRows)
+                dataReader1 = cmd.ExecuteReader();
+                if (dataReader1.HasRows)
                 {
 
-                    dataReader.Read();
-                    username = dataReader["username"].ToString();
+                    dataReader1.Read();
+                    username = dataReader1["username"].ToString();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("カスタマ名の取得に失敗しました。 " + ex.Message, "カスタマ名取得", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LOG.ErrorFormat("カスタマ名の取得に失敗しました。MSG：{0} userno = {1}", ex.Message, userno);
+                logger.ErrorFormat("カスタマ名の取得に失敗しました。MSG：{0} userno = {1}", ex.Message, userno);
             }
             finally
             {
-                if (dataReader != null)
-                    dataReader.Close();
+                if (dataReader1 != null)
+                    dataReader1.Close();
 
             }
             return username;
@@ -80,7 +81,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("システム名の取得に失敗しました。 " + ex.Message, "システム名取得", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LOG.ErrorFormat("システム名の取得に失敗しました。MSG：{0} systemno = {1}", ex.Message, systemno);
+
+                logger.ErrorFormat("システム名の取得に失敗しました。MSG：{0} systemno = {1}", ex.Message, systemno);
             }
             finally
             {
@@ -115,7 +117,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("拠点名の取得に失敗しました。 " + ex.Message, "拠点名取得", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LOG.ErrorFormat("拠点名の取得に失敗しました。MSG：{0} siteno = {1}", ex.Message, siteno);
+
+                logger.ErrorFormat("拠点名の取得に失敗しました。MSG：{0} siteno = {1}", ex.Message, siteno);
 
             }
             finally
@@ -153,7 +156,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("ホスト名の取得に失敗しました。 " + ex.Message, "ホスト名取得", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LOG.ErrorFormat("ホスト名の取得に失敗しました。MSG：{0} hostno = {1}", ex.Message, hostno);
+                logger.ErrorFormat("ホスト名の取得に失敗しました。MSG：{0} hostno = {1}", ex.Message, hostno);
+ 
             }
             finally
             {
@@ -170,7 +174,7 @@ namespace SMSサンプル
         public List<userDS> getUserList()
         {
 
-            NpgsqlCommand cmd;
+            NpgsqlCommand cmd = null ;
             userDS ds;
             List<userDS> retList = null;
             //DB接続
@@ -210,6 +214,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("カスタマ情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("カスタマ情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return retList;
@@ -267,6 +273,7 @@ namespace SMSサンプル
                 catch (Exception ex)
                 {
                     MessageBox.Show("システム情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    logger.ErrorFormat("システム情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
                 }
 
                 return retList;
@@ -318,6 +325,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("拠点情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("拠点情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return retList;
@@ -377,6 +386,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("機器情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("機器情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return retList;
@@ -386,7 +397,7 @@ namespace SMSサンプル
         public void getSelectKaisenInfo(DataTable dt, DISP_dataSet retDS, NpgsqlConnection conn)
         {
 
-            String sql = "SELECT k.kaisenno,k.status,k.career,k.type, k.kaisenid,k.isp,k.servicetype,k.serviceid,k.userno,k.systemno,k.siteno,k.host_no,k.chk_date,k.chk_name_id,o.lastname " +
+            String sql = "SELECT k.kaisenno,k.status,k.career,k.type, k.kaisenid,k.isp,k.servicetype,k.serviceid,k.userno,k.systemno,k.siteno,k.host_no,k.telno1,k.telno2,k.telno3,k.chk_date,k.chk_name_id,o.lastname " +
                         "FROM Kaisen k INNER JOIN ope o ON o.opeid = k.chk_name_id";
 
             String param = "";
@@ -432,6 +443,9 @@ namespace SMSサンプル
                     k_ds.kaisenno = dataReader["kaisenno"].ToString();
                     k_ds.status = dataReader["status"].ToString();
                     k_ds.career = dataReader["career"].ToString();
+                    k_ds.telno1 = dataReader["telno1"].ToString();
+                    k_ds.telno2 = dataReader["telno2"].ToString();
+                    k_ds.telno3 = dataReader["telno3"].ToString();
                     k_ds.type = dataReader["type"].ToString();
                     k_ds.kaisenid = dataReader["kaisenid"].ToString();
                     k_ds.isp = dataReader["isp"].ToString();
@@ -450,6 +464,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("回線情報の取得に失敗しました。" + ex.Message, "回線情報検索", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("回線情報の取得に失敗しました メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
 
             }
             retDS.kaisen_L = kaisen_List;
@@ -525,6 +540,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("インシデント情報の取得に失敗しました。" + ex.Message, "インシデント情報検索", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("インシデント情報の取得に失敗しました メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
 
             }
             return incidnet_List;
@@ -642,6 +658,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("インシデント情報の取得に失敗しました。" + ex.Message, "インシデント情報検索", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("インシデント情報の取得に失敗しました メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
 
             }
             return incidnet_List;
@@ -719,6 +736,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("オペレータ情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("オペレータ情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return ope_List;
@@ -791,6 +810,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("カスタマ情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("カスタマ情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
             }
 
             return displist;
@@ -868,6 +888,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("システム情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("システム情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return displist;
@@ -948,6 +970,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("拠点情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("拠点情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
             }
 
             return displist;
@@ -1021,6 +1044,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("機器情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("機器情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return displist;
@@ -1109,6 +1134,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("構成情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("構成情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return displist;
@@ -1117,9 +1144,7 @@ namespace SMSサンプル
         //回線
         public DISP_dataSet getSelectKaisenList(Dictionary<string, string> param_dict, NpgsqlConnection conn, DISP_dataSet displist, Boolean detailflg = false)
         {
-
-
-            String sql = "SELECT k.userno,k,systemno,k.siteno,k.host_no,k.kaisenno,k.status,k.career,k.type, k.kaisenid,k.isp,k.servicetype,k.serviceid,k.chk_date,k.chk_name_id,o.lastname " +
+            String sql = "SELECT k.userno,k,systemno,k.siteno,k.host_no,k.kaisenno,k.status,k.career,k.type, k.kaisenid,k.isp,k.servicetype,k.serviceid,k.telno1,k.telno2,k.telno3,k.chk_date,k.chk_name_id,o.lastname " +
                         "FROM Kaisen k INNER JOIN ope o ON o.opeid = k.chk_name_id ";
             String param = "";
 
@@ -1137,19 +1162,28 @@ namespace SMSサンプル
                             param += " where k." + vdict.Key + "=" + vdict.Value;
                             i++;
                         }
+                        else if(vdict.Key == "telno")
+                        {
+                            param += " where k.telno1 = '" + vdict.Value + "' OR k.telno2 = '" + vdict.Value + "' OR k.telno3 = '" + vdict.Value + "'";
+                            i++;
+                        }
                         else
                         {
                             param += " where k." + vdict.Key + "='" + vdict.Value + "'";
                             i++;
                         }
                         i++;
-
                     }
                     else {
                         if (vdict.Key == "userno" || vdict.Key == "systemno" || vdict.Key == "siteno" || vdict.Key == "host_no" || vdict.Key == "kennshino" ||
                         vdict.Key == "kaisenno")
                         {
                             param += " and k." + vdict.Key + "=" + vdict.Value;
+                            i++;
+                        }
+                        else if (vdict.Key == "telno")
+                        {
+                            param += " and k.telno1 = '" + vdict.Value + "' OR k.telno2 = '" + vdict.Value + "' OR k.telno3 = '" + vdict.Value + "'";
                             i++;
                         }
                         else
@@ -1196,6 +1230,9 @@ namespace SMSサンプル
                     kai_ds.userno = dataReader["userno"].ToString();
                     kai_ds.systemno = dataReader["systemno"].ToString();
                     kai_ds.siteno = dataReader["siteno"].ToString();
+                    kai_ds.telno1 = dataReader["telno1"].ToString();
+                    kai_ds.telno2 = dataReader["telno2"].ToString();
+                    kai_ds.telno3 = dataReader["telno3"].ToString();
                     kai_ds.host_no = dataReader["host_no"].ToString();
                     kai_ds.chk_date = dataReader["chk_date"].ToString();
                     kai_ds.chk_name_id = dataReader["chk_name_id"].ToString();
@@ -1208,6 +1245,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("回線情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("回線情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return displist;
@@ -1257,7 +1296,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("作業情報の取得に失敗しました。" + ex.Message, "作業情報検索", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                logger.ErrorFormat("作業情報の取得に失敗しました メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
             }
 
             return sagyo_List;
@@ -1309,6 +1348,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("オペレータ情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("オペレータ情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return o_ds;
@@ -1362,7 +1403,9 @@ namespace SMSサンプル
             }
             catch (Exception ex)
             {
-                MessageBox.Show("オペレータ情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("カスタマ担当者一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("カスタマ担当者一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return tatou_list;
@@ -1402,7 +1445,7 @@ namespace SMSサンプル
                 if (con.FullState != ConnectionState.Open) con.Open();
 
                 //SELECT実行
-                cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.userno,sc.systemno,sc.siteno,sc.timer_name,sc.schedule_type,sc.status,sc.repeat_type,sc.start_date,sc.end_date,sc.status,sc.alerm_message,sc.sound,sc.incident_no,sc.kakunin,sc.userno,u.username,sc.systemno,sys.systemname,sc.chk_date,sc.chk_name_id " +
+                cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.userno,sc.systemno,sc.siteno,sc.timer_name,sc.schedule_type,sc.status,sc.repeat_type,sc.start_date,sc.end_date,sc.status,sc.alerm_message,sc.incident_no,sc.kakunin,sc.userno,u.username,sc.systemno,sys.systemname,sc.chk_date,sc.chk_name_id " +
                     "FROM schedule sc LEFT OUTER JOIN user_tbl u ON sc.userno = u.userno " +
                     "LEFT OUTER JOIN system sys ON sys.systemno = sc.systemno " + sql, con);
 
@@ -1411,7 +1454,7 @@ namespace SMSサンプル
                 //スケジュール情報の取得
                 sche_list = new List<scheduleDS>();
 
-                int idx = ownerForm.soundidx;
+                //int idx = ownerForm.soundidx;
                 while (dataReader.Read())
                 {
 
@@ -1426,27 +1469,31 @@ namespace SMSサンプル
                     retDS.status = dataReader["status"].ToString();
                     retDS.repeat_type = dataReader["repeat_type"].ToString();
 
-
                     String ss = dataReader["start_date"].ToString();
-                    retDS.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
+                    if(ss != null && ss !="")
+                        retDS.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
 
                     String ss2 = dataReader["end_date"].ToString();
-                    retDS.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
+                    if (ss2 != null && ss2 != "")
+                        retDS.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
 
 
                     retDS.alerm_message = dataReader["alerm_message"].ToString();
                     retDS.kakunin = dataReader["kakunin"].ToString();
 
-                    retDS.sound = dataReader["sound"].ToString();
+//                    retDS.sound = dataReader["sound"].ToString();
 
-                    if (!dataReader.IsDBNull(dataReader.GetOrdinal("sound")))
-                    {
-                        File.WriteAllBytes("sound" + idx.ToString() + ".wav", (byte[])dataReader["sound"]);
+//                    if (!dataReader.IsDBNull(dataReader.GetOrdinal("sound")))
+//                    {
+//                        File.WriteAllBytes("sound" + idx.ToString() + ".wav", (byte[])dataReader["sound"]);
 
-                        if (dataReader["sound"] != null)
-                            retDS.sound = "sound" + idx.ToString() + ".wav";
-                        idx++;
-                    }
+//                        if (dataReader["sound"] != null)
+                            if(retDS.schedule_type == "1" || retDS.schedule_type == "4")
+                                retDS.sound = "";
+                            else
+                                retDS.sound = "SOUND";
+//                        idx++;
+//                    }
 
 
                     retDS.incident_no = dataReader["incident_no"].ToString();
@@ -1455,12 +1502,13 @@ namespace SMSサンプル
 
                     sche_list.Add(retDS);
                 }
-                ownerForm.soundidx = idx;
-
+                //ownerForm.soundidx = idx;
+                dataReader.Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("定期作業情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("定期作業情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
 
             }
             return sche_list;
@@ -2062,6 +2110,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return displist;
@@ -2076,7 +2126,7 @@ namespace SMSサンプル
 
             if (detailflg == 0)
                 //未完了のものを表示
-                searchstring = "where sc.status= '1' AND sc.start_date <= '" + nowString + "'";
+                searchstring = "where sc.status= '1' AND sc.schedule_type <> '4' AND sc.start_date <= '" + nowString + "'";
 
             if (param_dict.Count > 0)
             {
@@ -2156,12 +2206,109 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("定期作業情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("定期作業情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
 
 
             }
 
             return retList;
         }
+
+        //特別対応のみ取得
+        public List<scheduleDS> gettokubetulist(Dictionary<string, string> param_dict, NpgsqlConnection con, int detailflg = 0)
+        {
+            string searchstring = "";
+            DateTime nowdt = DateTime.Now;
+            string nowString = nowdt.ToString("yyyy-MM-dd HH:mm");
+
+            if (detailflg == 0)
+                //未完了のものを表示
+                searchstring = "where sc.status= '1' AND sc.schedule_type = '4' ";
+
+            if (param_dict.Count > 0)
+            {
+                int i = 0;
+                foreach (KeyValuePair<string, string> vdict in param_dict)
+                {
+                    if (i == 0 && detailflg >= 1)
+                    {
+                        searchstring += " WHERE sc." + vdict.Key + "='" + vdict.Value + "'";
+                        i++;
+                    }
+                    else
+                    {
+                        searchstring += " AND sc." + vdict.Key + "='" + vdict.Value + "'";
+                        i++;
+
+                    }
+                }
+            }
+
+            NpgsqlCommand cmd;
+            scheduleDS ds;
+            List<scheduleDS> retList = null;
+            //DB接続
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                //SELECT実行
+                cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.timer_name,sc.schedule_type,sc.status,sc.repeat_type,sc.start_date,sc.end_date,sc.status,sc.alerm_message,sc.incident_no,sc.kakunin,sc.userno,u.username,sc.systemno,sys.systemname,sc.siteno,si.sitename,sc.chk_date,sc.chk_name_id " +
+                    "FROM schedule sc LEFT OUTER JOIN user_tbl u ON sc.userno = u.userno " +
+                    "LEFT OUTER JOIN system sys ON sys.systemno = sc.systemno " +
+                    "LEFT OUTER JOIN site si ON si.siteno = sc.siteno " + searchstring, con);
+
+                var dataReader = cmd.ExecuteReader();
+
+                //スケジュール情報の取得
+                retList = new List<scheduleDS>();
+
+                while (dataReader.Read())
+                {
+
+                    ds = new scheduleDS();
+
+                    ds.schedule_no = dataReader["schedule_no"].ToString();
+                    ds.userno = dataReader["userno"].ToString();
+                    ds.username = dataReader["username"].ToString();
+                    ds.systemno = dataReader["systemno"].ToString();
+                    ds.systemname = dataReader["systemname"].ToString();
+                    ds.siteno = dataReader["siteno"].ToString();
+                    ds.sitename = dataReader["sitename"].ToString();
+
+
+                    ds.timer_name = dataReader["timer_name"].ToString();
+                    ds.schedule_type = dataReader["schedule_type"].ToString();
+                    ds.status = dataReader["status"].ToString();
+                    ds.repeat_type = dataReader["repeat_type"].ToString();
+
+                    //String ss = dataReader["start_date"].ToString();
+                    //ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
+
+                    //String ss2 = dataReader["end_date"].ToString();
+                    //ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
+
+
+                    //ds.alerm_message = dataReader["alerm_message"].ToString();
+                    //ds.kakunin = dataReader["kakunin"].ToString();
+
+                    ds.incident_no = dataReader["incident_no"].ToString();
+                    ds.chk_name_id = dataReader["chk_name_id"].ToString();
+                    ds.chk_date = dataReader["chk_date"].ToString();
+
+                    retList.Add(ds);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("定期作業(特別対応)情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("定期作業(特別対応)情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+
+            return retList;
+        }
+
         //アラート通知が必要なものを取得する
         public string getSound(Form_MainList owner_form, NpgsqlConnection con, string scheduleid)
         {
@@ -2197,8 +2344,10 @@ namespace SMSサンプル
             }
             catch (Exception ex)
             {
-                MessageBox.Show("スケジュール情報(サウンド)取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 con.Close();
+                MessageBox.Show("スケジュール情報(サウンド)取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("スケジュール情報(サウンド)取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return sound;
@@ -2244,20 +2393,26 @@ namespace SMSサンプル
 
                     ds.timer_name = dataReader["timer_name"].ToString();
 
-                    ds.sound = dataReader["sound"].ToString();
-                    if (!dataReader.IsDBNull(dataReader.GetOrdinal("sound")))
-                    {
-                        File.WriteAllBytes("sound" + fileidx.ToString() + ".wav", (byte[])dataReader["sound"]);
 
-                        if (dataReader["sound"] != null)
-                            ds.sound = "sound" + fileidx.ToString() + ".wav";
-                    }
+
 
                     ds.incident_no = dataReader["incident_no"].ToString();
                     ds.alerm_message = dataReader["alerm_message"].ToString();
                     ds.schedule_no = dataReader["schedule_no"].ToString();
                     ds.schedule_type = dataReader["schedule_type"].ToString();
 
+                    //インシデントのときは固定の音
+                    if (ds.schedule_type != "1")
+                    {
+                        ds.sound = dataReader["sound"].ToString();
+                        if (!dataReader.IsDBNull(dataReader.GetOrdinal("sound")))
+                        {
+                            File.WriteAllBytes("sound" + fileidx.ToString() + ".wav", (byte[])dataReader["sound"]);
+
+                            if (dataReader["sound"] != null)
+                                ds.sound = "sound" + fileidx.ToString() + ".wav";
+                        }
+                    }
                     if (dataReader["alertdatetime"].ToString() != "")
                     {
                         String formatString = Convert.ToDateTime(dataReader["alertdatetime"].ToString()).ToString("yyyy/MM/dd HH:mm:ss");
@@ -2276,8 +2431,10 @@ namespace SMSサンプル
             }
             catch (Exception ex)
             {
-                MessageBox.Show("タイマーアラート情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 con.Close();
+                MessageBox.Show("タイマーアラート情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("タイマーアラート情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return retList;
@@ -2294,7 +2451,7 @@ namespace SMSサンプル
             //DB接続
             try
             {
-                if (con.FullState != ConnectionState.Open) con.Open();
+                if (con.State != ConnectionState.Open) con.Open();
 
                 //SELECT実行
                 cmd = new NpgsqlCommand(@"select min(alertdatetime) alertdatetime FROM timer_taiou WHERE alertdatetime > current_timestamp " +
@@ -2312,12 +2469,15 @@ namespace SMSサンプル
                         latestdatetime = formatString;
                     }
                 }
-
+                dataReader.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("直近タイマー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 con.Close();
+                MessageBox.Show("直近タイマー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("直近タイマー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
+
             }
 
             return latestdatetime;
@@ -2378,8 +2538,11 @@ namespace SMSサンプル
             }
             catch (Exception ex)
             {
-                MessageBox.Show("メールアドレス取得 " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 con.Close();
+                MessageBox.Show("メールアドレス取得エラー  " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("メールアドレス取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
+
             }
             return maillist;
         }
@@ -2439,8 +2602,11 @@ namespace SMSサンプル
             }
             catch (Exception ex)
             {
-                MessageBox.Show("メールアドレス取得" + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 con.Close();
+                MessageBox.Show("メールアドレス取得エラー" + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("メールアドレス取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
+
             }
             return maillist;
         }
@@ -2524,6 +2690,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("メールアドレス取得" + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("メールアドレス取得(検索)エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
                 con.Close();
             }
             return maillist;
@@ -2585,7 +2753,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("メールテンプレート取得 " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
+                logger.ErrorFormat("メールテンプレート取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
             return maillist;
         }
@@ -2631,6 +2800,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("メールテンプレート（メールアドレス取得) " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("メールテンプレート（メールアドレス取得) メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
 
             }
 
@@ -2750,7 +2920,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("対応状況一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //if (con.FullState == ConnectionState.Open) con.Close();
+                logger.ErrorFormat("対応状況一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
             }
 
             return retList;

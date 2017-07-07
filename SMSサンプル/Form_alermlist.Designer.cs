@@ -53,7 +53,7 @@
             this.m_alerm_list.Location = new System.Drawing.Point(12, 160);
             this.m_alerm_list.Name = "m_alerm_list";
             this.m_alerm_list.Size = new System.Drawing.Size(516, 127);
-            this.m_alerm_list.TabIndex = 0;
+            this.m_alerm_list.TabIndex = 5;
             this.m_alerm_list.UseCompatibleStateImageBehavior = false;
             this.m_alerm_list.View = System.Windows.Forms.View.Details;
             this.m_alerm_list.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_alerm_list_ColumnClick);
@@ -76,7 +76,7 @@
             this.button1.Location = new System.Drawing.Point(379, 359);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(69, 31);
-            this.button1.TabIndex = 2;
+            this.button1.TabIndex = 8;
             this.button1.Text = "登録";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -87,7 +87,7 @@
             this.button2.Location = new System.Drawing.Point(459, 359);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(69, 31);
-            this.button2.TabIndex = 3;
+            this.button2.TabIndex = 9;
             this.button2.Text = "終了";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -115,7 +115,7 @@
             this.m_taiouOpe.Location = new System.Drawing.Point(80, 308);
             this.m_taiouOpe.Name = "m_taiouOpe";
             this.m_taiouOpe.Size = new System.Drawing.Size(200, 19);
-            this.m_taiouOpe.TabIndex = 8;
+            this.m_taiouOpe.TabIndex = 6;
             this.m_taiouOpe.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // m_alermtitle
@@ -126,7 +126,7 @@
             this.m_alermtitle.Name = "m_alermtitle";
             this.m_alermtitle.ReadOnly = true;
             this.m_alermtitle.Size = new System.Drawing.Size(463, 19);
-            this.m_alermtitle.TabIndex = 11;
+            this.m_alermtitle.TabIndex = 1;
             // 
             // m_alerm_message
             // 
@@ -137,7 +137,7 @@
             this.m_alerm_message.Name = "m_alerm_message";
             this.m_alerm_message.ReadOnly = true;
             this.m_alerm_message.Size = new System.Drawing.Size(516, 39);
-            this.m_alerm_message.TabIndex = 12;
+            this.m_alerm_message.TabIndex = 4;
             // 
             // label5
             // 
@@ -157,7 +157,7 @@
             this.m_syoriDate.Location = new System.Drawing.Point(80, 333);
             this.m_syoriDate.Name = "m_syoriDate";
             this.m_syoriDate.Size = new System.Drawing.Size(200, 19);
-            this.m_syoriDate.TabIndex = 1;
+            this.m_syoriDate.TabIndex = 7;
             // 
             // m_alermno
             // 
@@ -165,7 +165,7 @@
             this.m_alermno.Name = "m_alermno";
             this.m_alermno.ReadOnly = true;
             this.m_alermno.Size = new System.Drawing.Size(47, 19);
-            this.m_alermno.TabIndex = 15;
+            this.m_alermno.TabIndex = 0;
             // 
             // m_customer_name
             // 
@@ -175,7 +175,7 @@
             this.m_customer_name.Name = "m_customer_name";
             this.m_customer_name.ReadOnly = true;
             this.m_customer_name.Size = new System.Drawing.Size(463, 19);
-            this.m_customer_name.TabIndex = 16;
+            this.m_customer_name.TabIndex = 2;
             // 
             // m_system_name
             // 
@@ -185,7 +185,7 @@
             this.m_system_name.Name = "m_system_name";
             this.m_system_name.ReadOnly = true;
             this.m_system_name.Size = new System.Drawing.Size(463, 19);
-            this.m_system_name.TabIndex = 17;
+            this.m_system_name.TabIndex = 3;
             // 
             // label2
             // 

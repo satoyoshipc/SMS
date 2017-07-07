@@ -1,6 +1,6 @@
 ﻿namespace SMSサンプル
 {
-    partial class Form_TimerInsert
+    partial class Form_scheduleInsert
     {
         /// <summary>
         /// Required designer variable.
@@ -41,7 +41,6 @@
             this.m_timer_name = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.m_cencelBtn = new System.Windows.Forms.Button();
-            this.m_snoozeChk = new System.Windows.Forms.CheckBox();
             this.m_alerm_group = new System.Windows.Forms.GroupBox();
             this.button4 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -94,7 +93,7 @@
             this.m_schedule_combo.Location = new System.Drawing.Point(88, 115);
             this.m_schedule_combo.Name = "m_schedule_combo";
             this.m_schedule_combo.Size = new System.Drawing.Size(447, 21);
-            this.m_schedule_combo.TabIndex = 3;
+            this.m_schedule_combo.TabIndex = 7;
             this.m_schedule_combo.SelectionChangeCommitted += new System.EventHandler(this.m_schedule_combo_SelectionChangeCommitted);
             // 
             // label2
@@ -103,7 +102,7 @@
             this.label2.Location = new System.Drawing.Point(12, 437);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 12);
-            this.label2.TabIndex = 2;
+            this.label2.TabIndex = 10;
             this.label2.Text = "開始日時";
             // 
             // m_startDate
@@ -113,7 +112,7 @@
             this.m_startDate.Location = new System.Drawing.Point(102, 433);
             this.m_startDate.Name = "m_startDate";
             this.m_startDate.Size = new System.Drawing.Size(206, 19);
-            this.m_startDate.TabIndex = 6;
+            this.m_startDate.TabIndex = 11;
             // 
             // m_endDate
             // 
@@ -122,7 +121,7 @@
             this.m_endDate.Location = new System.Drawing.Point(102, 458);
             this.m_endDate.Name = "m_endDate";
             this.m_endDate.Size = new System.Drawing.Size(206, 19);
-            this.m_endDate.TabIndex = 7;
+            this.m_endDate.TabIndex = 13;
             // 
             // label3
             // 
@@ -130,7 +129,7 @@
             this.label3.Location = new System.Drawing.Point(12, 461);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
-            this.label3.TabIndex = 5;
+            this.label3.TabIndex = 12;
             this.label3.Text = "終了日時";
             // 
             // groupBox1
@@ -140,7 +139,7 @@
             this.groupBox1.Location = new System.Drawing.Point(14, 143);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(212, 50);
-            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "有効/無効";
             // 
@@ -150,7 +149,7 @@
             this.m_radio_mukou.Location = new System.Drawing.Point(114, 22);
             this.m_radio_mukou.Name = "m_radio_mukou";
             this.m_radio_mukou.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_mukou.TabIndex = 36;
+            this.m_radio_mukou.TabIndex = 1;
             this.m_radio_mukou.Text = "無効";
             this.m_radio_mukou.UseVisualStyleBackColor = true;
             // 
@@ -161,7 +160,7 @@
             this.m_radio_enable.Location = new System.Drawing.Point(40, 22);
             this.m_radio_enable.Name = "m_radio_enable";
             this.m_radio_enable.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_enable.TabIndex = 35;
+            this.m_radio_enable.TabIndex = 0;
             this.m_radio_enable.TabStop = true;
             this.m_radio_enable.Text = "有効";
             this.m_radio_enable.UseVisualStyleBackColor = true;
@@ -180,14 +179,14 @@
             this.m_timer_name.Location = new System.Drawing.Point(88, 90);
             this.m_timer_name.Name = "m_timer_name";
             this.m_timer_name.Size = new System.Drawing.Size(447, 19);
-            this.m_timer_name.TabIndex = 2;
+            this.m_timer_name.TabIndex = 6;
             // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(370, 517);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
-            this.button3.TabIndex = 8;
+            this.button3.TabIndex = 17;
             this.button3.Text = "登録";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -197,26 +196,15 @@
             this.m_cencelBtn.Location = new System.Drawing.Point(473, 517);
             this.m_cencelBtn.Name = "m_cencelBtn";
             this.m_cencelBtn.Size = new System.Drawing.Size(95, 23);
-            this.m_cencelBtn.TabIndex = 9;
+            this.m_cencelBtn.TabIndex = 18;
             this.m_cencelBtn.Text = "キャンセル";
             this.m_cencelBtn.UseVisualStyleBackColor = true;
             this.m_cencelBtn.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // m_snoozeChk
-            // 
-            this.m_snoozeChk.AutoSize = true;
-            this.m_snoozeChk.Location = new System.Drawing.Point(312, 50);
-            this.m_snoozeChk.Name = "m_snoozeChk";
-            this.m_snoozeChk.Size = new System.Drawing.Size(100, 16);
-            this.m_snoozeChk.TabIndex = 6;
-            this.m_snoozeChk.Text = "スヌーズ(5分毎)";
-            this.m_snoozeChk.UseVisualStyleBackColor = true;
             // 
             // m_alerm_group
             // 
             this.m_alerm_group.Controls.Add(this.button4);
             this.m_alerm_group.Controls.Add(this.button1);
-            this.m_alerm_group.Controls.Add(this.m_snoozeChk);
             this.m_alerm_group.Controls.Add(this.label4);
             this.m_alerm_group.Controls.Add(this.m_soudpath);
             this.m_alerm_group.Controls.Add(this.m_message);
@@ -231,7 +219,7 @@
             this.m_alerm_group.Location = new System.Drawing.Point(14, 207);
             this.m_alerm_group.Name = "m_alerm_group";
             this.m_alerm_group.Size = new System.Drawing.Size(554, 220);
-            this.m_alerm_group.TabIndex = 5;
+            this.m_alerm_group.TabIndex = 9;
             this.m_alerm_group.TabStop = false;
             this.m_alerm_group.Text = "タイマー";
             // 
@@ -241,7 +229,7 @@
             this.button4.Location = new System.Drawing.Point(460, 188);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(69, 23);
-            this.button4.TabIndex = 10;
+            this.button4.TabIndex = 12;
             this.button4.Text = "♪テスト";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
@@ -252,7 +240,7 @@
             this.button1.Location = new System.Drawing.Point(408, 188);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(47, 23);
-            this.button1.TabIndex = 9;
+            this.button1.TabIndex = 11;
             this.button1.Text = "参照";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -263,7 +251,7 @@
             this.label4.Location = new System.Drawing.Point(9, 193);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(70, 12);
-            this.label4.TabIndex = 151;
+            this.label4.TabIndex = 9;
             this.label4.Text = "サウンド(wav)";
             // 
             // m_soudpath
@@ -271,7 +259,7 @@
             this.m_soudpath.Location = new System.Drawing.Point(96, 190);
             this.m_soudpath.Name = "m_soudpath";
             this.m_soudpath.Size = new System.Drawing.Size(306, 19);
-            this.m_soudpath.TabIndex = 8;
+            this.m_soudpath.TabIndex = 10;
             // 
             // m_message
             // 
@@ -279,7 +267,7 @@
             this.m_message.Multiline = true;
             this.m_message.Name = "m_message";
             this.m_message.Size = new System.Drawing.Size(433, 106);
-            this.m_message.TabIndex = 7;
+            this.m_message.TabIndex = 8;
             // 
             // label6
             // 
@@ -287,7 +275,7 @@
             this.label6.Location = new System.Drawing.Point(15, 81);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 12);
-            this.label6.TabIndex = 148;
+            this.label6.TabIndex = 7;
             this.label6.Text = "作業内容";
             // 
             // m_alermDate
@@ -297,7 +285,7 @@
             this.m_alermDate.Location = new System.Drawing.Point(96, 49);
             this.m_alermDate.Name = "m_alermDate";
             this.m_alermDate.Size = new System.Drawing.Size(206, 19);
-            this.m_alermDate.TabIndex = 5;
+            this.m_alermDate.TabIndex = 6;
             // 
             // label7
             // 
@@ -305,7 +293,7 @@
             this.label7.Location = new System.Drawing.Point(12, 53);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(76, 12);
-            this.label7.TabIndex = 40;
+            this.label7.TabIndex = 5;
             this.label7.Text = "アラート日時♪";
             // 
             // m_radio_month
@@ -380,7 +368,7 @@
             this.m_systemno.Name = "m_systemno";
             this.m_systemno.ReadOnly = true;
             this.m_systemno.Size = new System.Drawing.Size(44, 19);
-            this.m_systemno.TabIndex = 183;
+            this.m_systemno.TabIndex = 2;
             this.m_systemno.TabStop = false;
             // 
             // m_systemCombo
@@ -392,7 +380,7 @@
             this.m_systemCombo.Location = new System.Drawing.Point(138, 36);
             this.m_systemCombo.Name = "m_systemCombo";
             this.m_systemCombo.Size = new System.Drawing.Size(397, 20);
-            this.m_systemCombo.TabIndex = 1;
+            this.m_systemCombo.TabIndex = 3;
             this.m_systemCombo.SelectionChangeCommitted += new System.EventHandler(this.m_systemCombo_SelectionChangeCommitted);
             // 
             // label8
@@ -410,7 +398,7 @@
             this.m_userno.Name = "m_userno";
             this.m_userno.ReadOnly = true;
             this.m_userno.Size = new System.Drawing.Size(44, 19);
-            this.m_userno.TabIndex = 180;
+            this.m_userno.TabIndex = 0;
             this.m_userno.TabStop = false;
             // 
             // m_usernameCombo
@@ -422,7 +410,7 @@
             this.m_usernameCombo.Location = new System.Drawing.Point(138, 12);
             this.m_usernameCombo.Name = "m_usernameCombo";
             this.m_usernameCombo.Size = new System.Drawing.Size(397, 20);
-            this.m_usernameCombo.TabIndex = 0;
+            this.m_usernameCombo.TabIndex = 1;
             this.m_usernameCombo.SelectionChangeCommitted += new System.EventHandler(this.m_usernameCombo_SelectionChangeCommitted);
             // 
             // m_idlabel
@@ -431,7 +419,7 @@
             this.m_idlabel.Name = "m_idlabel";
             this.m_idlabel.ReadOnly = true;
             this.m_idlabel.Size = new System.Drawing.Size(44, 19);
-            this.m_idlabel.TabIndex = 185;
+            this.m_idlabel.TabIndex = 15;
             this.m_idlabel.TabStop = false;
             // 
             // m_labelinputOpe
@@ -440,7 +428,7 @@
             this.m_labelinputOpe.Name = "m_labelinputOpe";
             this.m_labelinputOpe.ReadOnly = true;
             this.m_labelinputOpe.Size = new System.Drawing.Size(264, 19);
-            this.m_labelinputOpe.TabIndex = 186;
+            this.m_labelinputOpe.TabIndex = 16;
             this.m_labelinputOpe.TabStop = false;
             // 
             // label9
@@ -449,7 +437,7 @@
             this.label9.Location = new System.Drawing.Point(11, 494);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(51, 12);
-            this.label9.TabIndex = 187;
+            this.label9.TabIndex = 14;
             this.label9.Text = "オペレータ";
             // 
             // label11
@@ -467,7 +455,7 @@
             this.m_siteno.Name = "m_siteno";
             this.m_siteno.ReadOnly = true;
             this.m_siteno.Size = new System.Drawing.Size(44, 19);
-            this.m_siteno.TabIndex = 192;
+            this.m_siteno.TabIndex = 4;
             this.m_siteno.TabStop = false;
             // 
             // m_siteCombo
@@ -479,10 +467,10 @@
             this.m_siteCombo.Location = new System.Drawing.Point(138, 62);
             this.m_siteCombo.Name = "m_siteCombo";
             this.m_siteCombo.Size = new System.Drawing.Size(397, 20);
-            this.m_siteCombo.TabIndex = 191;
+            this.m_siteCombo.TabIndex = 5;
             this.m_siteCombo.SelectionChangeCommitted += new System.EventHandler(this.m_siteCombo_SelectionChangeCommitted);
             // 
-            // Form_TimerInsert
+            // Form_scheduleInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -511,7 +499,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.m_schedule_combo);
             this.Controls.Add(this.label1);
-            this.Name = "Form_TimerInsert";
+            this.Name = "Form_scheduleInsert";
             this.Text = "タイマー登録";
             this.Load += new System.EventHandler(this.Form_TimerInsert_Load);
             this.groupBox1.ResumeLayout(false);
@@ -538,7 +526,6 @@
         private System.Windows.Forms.TextBox m_timer_name;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button m_cencelBtn;
-        private System.Windows.Forms.CheckBox m_snoozeChk;
         private System.Windows.Forms.GroupBox m_alerm_group;
         private System.Windows.Forms.RadioButton m_radio_month;
         private System.Windows.Forms.RadioButton m_radio_week;

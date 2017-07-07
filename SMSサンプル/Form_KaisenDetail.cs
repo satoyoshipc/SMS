@@ -53,6 +53,8 @@ namespace SMSサンプル
             m_selectKoumoku.Items.Add("システム通番");
             m_selectKoumoku.Items.Add("拠点通番");
             m_selectKoumoku.Items.Add("ホスト番号");
+            m_selectKoumoku.Items.Add("電話番号");
+
             m_selectKoumoku.Items.Add("更新日時");
             m_selectKoumoku.Items.Add("更新者");
 
@@ -71,11 +73,14 @@ namespace SMSサンプル
             this.m_statusCombo.Text = kaisendt.status;
             this.m_kaisentype.Text = kaisendt.type;
 
+            this.m_tel1.Text = kaisendt.telno1;
+            this.m_tel2.Text = kaisendt.telno2;
+            this.m_tel3.Text = kaisendt.telno3;
+
             this.m_kaisenID.Text = kaisendt.kaisenid;
             this.m_isp.Text = kaisendt.isp;
             this.m_serviceType.Text = kaisendt.servicetype;
             this.m_serviceID.Text = kaisendt.serviceid;
-
             this.m_updateOpe.Text = kaisendt.chk_name_id;
             this.m_update.Text = kaisendt.chk_date;
 
@@ -155,13 +160,16 @@ namespace SMSサンプル
                         case 11:
                             param_dict["host_no"] = m_selecttext.Text;
                             break;
+                        case 12:
+                            param_dict["telno"] = m_selecttext.Text;
+                            break;
 
                         //更新日時
-                        case 12:
+                        case 13:
                             param_dict["chk_date"] = m_selecttext.Text;
                             break;
                         //更新者
-                        case 13:
+                        case 14:
                             param_dict["chk_name_id"] = m_selecttext.Text;
                             break;
                         default:
@@ -187,12 +195,15 @@ namespace SMSサンプル
             this.m_kaisenList.Columns.Insert(5, "ISP", 120, HorizontalAlignment.Left);
             this.m_kaisenList.Columns.Insert(6, "サービス種別", 120, HorizontalAlignment.Left);
             this.m_kaisenList.Columns.Insert(7, "サービスID", 50, HorizontalAlignment.Left);
-            this.m_kaisenList.Columns.Insert(8, "カスタマ通番", 50, HorizontalAlignment.Left);
-            this.m_kaisenList.Columns.Insert(9, "システム通番", 50, HorizontalAlignment.Left);
-            this.m_kaisenList.Columns.Insert(10, "拠点通番", 50, HorizontalAlignment.Left);
-            this.m_kaisenList.Columns.Insert(11, "ホスト通番", 50, HorizontalAlignment.Left);
-            this.m_kaisenList.Columns.Insert(12, "更新日時", 50, HorizontalAlignment.Left);
-            this.m_kaisenList.Columns.Insert(13, "更新者", 50, HorizontalAlignment.Left);
+            this.m_kaisenList.Columns.Insert(8, "電話番号1", 50, HorizontalAlignment.Left);
+            this.m_kaisenList.Columns.Insert(9, "電話番号2", 50, HorizontalAlignment.Left);
+            this.m_kaisenList.Columns.Insert(10, "電話番号3", 50, HorizontalAlignment.Left);
+            this.m_kaisenList.Columns.Insert(11, "カスタマ通番", 50, HorizontalAlignment.Left);
+            this.m_kaisenList.Columns.Insert(12, "システム通番", 50, HorizontalAlignment.Left);
+            this.m_kaisenList.Columns.Insert(13, "拠点通番", 50, HorizontalAlignment.Left);
+            this.m_kaisenList.Columns.Insert(14, "ホスト通番", 50, HorizontalAlignment.Left);
+            this.m_kaisenList.Columns.Insert(15, "更新日時", 50, HorizontalAlignment.Left);
+            this.m_kaisenList.Columns.Insert(16, "更新者", 50, HorizontalAlignment.Left);
 
             //リストに表示
             if (dset.kaisen_L != null)
@@ -210,6 +221,9 @@ namespace SMSサンプル
                     itemx1.SubItems.Add(s_ds.isp);
                     itemx1.SubItems.Add(s_ds.servicetype);
                     itemx1.SubItems.Add(s_ds.serviceid);
+                    itemx1.SubItems.Add(s_ds.telno1);
+                    itemx1.SubItems.Add(s_ds.telno2);
+                    itemx1.SubItems.Add(s_ds.telno3);
                     itemx1.SubItems.Add(s_ds.userno);
                     itemx1.SubItems.Add(s_ds.systemno);
                     itemx1.SubItems.Add(s_ds.siteno);
@@ -232,11 +246,11 @@ namespace SMSサンプル
         {
             if (m_career.Text == "")
             {
-                MessageBox.Show("キャリアを入力して下さい。", "インターフェース名修正", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("キャリアを入力して下さい。", "回線情報修正", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
             //確認ダイアログ
-            if (MessageBox.Show("回線情報データの更新を行います。よろしいですか？", "回線情報更新", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            if (MessageBox.Show("回線情報の更新を行います。よろしいですか？", "回線情報更新", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
             string status = "";
             if (m_statusCombo.Text == "有効")
@@ -246,7 +260,7 @@ namespace SMSサンプル
             if (con.FullState != ConnectionState.Open) con.Open();
 
             string sql = "update kaisen set status=:status,career=:career,type=:type,kaisenid=:kaisenid,isp=:isp," +
-                "servicetype=:servicetype,serviceid=:serviceid,chk_name_id =:ope,chk_date=:chdate where kaisenno = :no";
+                "servicetype=:servicetype,serviceid=:serviceid,telno1=:telno1,telno2=:telno2,telno3=:telno3,chk_name_id =:ope,chk_date=:chdate where kaisenno = :no";
             using (var transaction = con.BeginTransaction())
             {
                 var command = new NpgsqlCommand(@sql, con);
@@ -258,6 +272,9 @@ namespace SMSサンプル
                 command.Parameters.Add(new NpgsqlParameter("isp", DbType.String) { Value = m_isp.Text });
                 command.Parameters.Add(new NpgsqlParameter("servicetype", DbType.String) { Value = m_serviceType.Text});
                 command.Parameters.Add(new NpgsqlParameter("serviceid", DbType.String) { Value = m_serviceID.Text });
+                command.Parameters.Add(new NpgsqlParameter("telno1", DbType.String) { Value = m_tel1.Text });
+                command.Parameters.Add(new NpgsqlParameter("telno2", DbType.String) { Value = m_tel2.Text });
+                command.Parameters.Add(new NpgsqlParameter("telno3", DbType.String) { Value = m_tel3.Text });
                 command.Parameters.Add(new NpgsqlParameter("ope", DbType.String) { Value = loginDS.opeid });
                 command.Parameters.Add(new NpgsqlParameter("chdate", DbType.DateTime) { Value = DateTime.Now });
                 Int32 rowsaffected;
@@ -291,8 +308,6 @@ namespace SMSサンプル
 
             kaisenDS kaisendt = new kaisenDS();
 
-
-
             kaisendt.kaisenno = this.m_kaisenList.Items[item[0]].SubItems[0].Text;
             if (this.m_kaisenList.Items[item[0]].SubItems[1].Text == "有効")
                 status = "1";
@@ -300,19 +315,21 @@ namespace SMSサンプル
                 status = "0";
             kaisendt.status = status;
 
-
             kaisendt.career = this.m_kaisenList.Items[item[0]].SubItems[2].Text;
             kaisendt.type = this.m_kaisenList.Items[item[0]].SubItems[3].Text;
             kaisendt.kaisenid = this.m_kaisenList.Items[item[0]].SubItems[4].Text;
             kaisendt.isp = this.m_kaisenList.Items[item[0]].SubItems[5].Text;
             kaisendt.servicetype = this.m_kaisenList.Items[item[0]].SubItems[6].Text;
             kaisendt.serviceid = this.m_kaisenList.Items[item[0]].SubItems[7].Text;
-            kaisendt.userno = this.m_kaisenList.Items[item[0]].SubItems[8].Text;
-            kaisendt.systemno = this.m_kaisenList.Items[item[0]].SubItems[9].Text;
-            kaisendt.siteno = this.m_kaisenList.Items[item[0]].SubItems[10].Text;
-            kaisendt.host_no = this.m_kaisenList.Items[item[0]].SubItems[11].Text;
-            kaisendt.chk_date= this.m_kaisenList.Items[item[0]].SubItems[12].Text;
-            kaisendt.chk_name_id = this.m_kaisenList.Items[item[0]].SubItems[13].Text;
+            kaisendt.telno1 = this.m_kaisenList.Items[item[0]].SubItems[8].Text;
+            kaisendt.telno2 = this.m_kaisenList.Items[item[0]].SubItems[9].Text;
+            kaisendt.telno3 = this.m_kaisenList.Items[item[0]].SubItems[10].Text;
+            kaisendt.userno = this.m_kaisenList.Items[item[0]].SubItems[11].Text;
+            kaisendt.systemno = this.m_kaisenList.Items[item[0]].SubItems[12].Text;
+            kaisendt.siteno = this.m_kaisenList.Items[item[0]].SubItems[13].Text;
+            kaisendt.host_no = this.m_kaisenList.Items[item[0]].SubItems[14].Text;
+            kaisendt.chk_date= this.m_kaisenList.Items[item[0]].SubItems[15].Text;
+            kaisendt.chk_name_id = this.m_kaisenList.Items[item[0]].SubItems[16].Text;
             getkaisen(kaisendt);
         }
         //一覧のカラムをクリックした時

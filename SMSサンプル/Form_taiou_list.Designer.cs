@@ -77,7 +77,7 @@
             this.m_taioulist.Location = new System.Drawing.Point(2, 83);
             this.m_taioulist.Name = "m_taioulist";
             this.m_taioulist.Size = new System.Drawing.Size(607, 287);
-            this.m_taioulist.TabIndex = 5;
+            this.m_taioulist.TabIndex = 6;
             this.m_taioulist.UseCompatibleStateImageBehavior = false;
             this.m_taioulist.View = System.Windows.Forms.View.Details;
             this.m_taioulist.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_taioulist_ColumnClick);
@@ -134,7 +134,7 @@
             this.m_deleteBtn.Location = new System.Drawing.Point(539, 36);
             this.m_deleteBtn.Name = "m_deleteBtn";
             this.m_deleteBtn.Size = new System.Drawing.Size(61, 41);
-            this.m_deleteBtn.TabIndex = 8;
+            this.m_deleteBtn.TabIndex = 5;
             this.m_deleteBtn.Text = "削除";
             this.m_deleteBtn.UseVisualStyleBackColor = true;
             this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);

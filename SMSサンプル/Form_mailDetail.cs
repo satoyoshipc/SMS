@@ -16,12 +16,15 @@ namespace SMSサンプル
         //ログイン情報
         public opeDS loginDS { get; set; }
 
+        //ログ
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public MailaddressDS addresssDS { get; set; }
         //DBコネクション
         public NpgsqlConnection con { get; set; }
 
         //ListViewのソートの際に使用する
-        private Class_ListViewColumnSorter _columnSorter, _columnSorteraddress;
+        private Class_ListViewColumnSorter _columnSorteraddress;
 
         public Form_mailDetail()
         {
@@ -79,9 +82,16 @@ namespace SMSサンプル
                     transaction.Commit();
 
                     if (rowsaffected != 1)
-                        MessageBox.Show("更新できませんでした。", "メールアドレス");
+                    {
+                        MessageBox.Show("メールアドレスを更新できませんでした。SQL:" + sql + "ユーザID:"+ m_userid.Text, "メールアドレス");
+                        logger.ErrorFormat("メールアドレスを更新できませんでした。 SQL:{0} ユーザID:{1}",sql, m_userid.Text);
+                    }
                     else
+                    {
                         MessageBox.Show("更新されました。", "メールアドレス");
+
+
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -303,6 +313,8 @@ namespace SMSサンプル
                         if (rowsaffected < 1)
                         {
                             MessageBox.Show("削除できませんでした。メールアドレス通番:" + operno, "メールアドレス削除");
+                            logger.ErrorFormat("メールアドレス削除エラー。 SQL:{0} ユーザID:{1}", sql, m_userid.Text);
+
                             transaction.Rollback();
                             return -1;
                         }
@@ -314,6 +326,7 @@ namespace SMSサンプル
                     {
                         //エラー時メッセージ表示
                         MessageBox.Show("メールアドレス削除時エラーが発生しました。 " + ex.Message);
+                        logger.ErrorFormat("メールアドレス削除エラー。 SQL:{0} ユーザID:{1}", sql, m_userid.Text);
                         if (transaction.Connection != null) transaction.Rollback();
                         return -1;
                     }

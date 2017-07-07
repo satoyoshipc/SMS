@@ -13,6 +13,7 @@ namespace SMSサンプル
 {
     public partial class Form_HostDetail : Form
     {
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         //ログイン情報
         public opeDS loginDS { get; set; }
@@ -89,8 +90,17 @@ namespace SMSサンプル
 
             this.m_locate.Text = hostdt.location;
             this.m_usefor.Text = hostdt.usefor;
-            this.m_start_date.Text = hostdt.kansiStartdate;
-            this.m_end_date.Text = hostdt.kansiEndsdate;
+
+            if (hostdt.kansiStartdate == "")
+                m_start_date.Checked =false;
+            else
+                this.m_start_date.Text = hostdt.kansiStartdate;
+
+            if (hostdt.kansiEndsdate == "")
+                m_end_date.Checked = false;
+            else
+                this.m_end_date.Text = hostdt.kansiEndsdate;
+
             this.m_kanrino.Text = hostdt.hosyukanri;
             this.m_hosyu.Text = hostdt.hosyuinfo;
             this.m_biko.Text = hostdt.biko;
@@ -276,6 +286,15 @@ namespace SMSサンプル
                 status = "1";
             else if (m_statusCombo.Text == "無効")
                 status = "0";
+
+            DateTime? startdate = null;
+            DateTime? enddate = null;
+            if (m_start_date.Checked)
+                startdate = m_start_date.Value;
+
+            if (m_end_date.Checked)
+                enddate = m_end_date.Value;
+
             if (con.FullState != ConnectionState.Open) con.Open();
 
             string sql = "update host set hostname=:hostname,hostname_ja=:hostname_ja,status=:status,device=:device,location=:location,usefor=:usefor," +
@@ -291,8 +310,8 @@ namespace SMSサンプル
                 command.Parameters.Add(new NpgsqlParameter("device", DbType.String) { Value = m_kisyu.Text });
                 command.Parameters.Add(new NpgsqlParameter("location", DbType.String) { Value = m_locate.Text });
                 command.Parameters.Add(new NpgsqlParameter("usefor", DbType.String) { Value = m_usefor.Text });
-                command.Parameters.Add(new NpgsqlParameter("kansiStartdate", DbType.DateTime) { Value = m_start_date.Value });
-                command.Parameters.Add(new NpgsqlParameter("kansiEndsdate", DbType.DateTime) { Value = m_end_date.Value });
+                command.Parameters.Add(new NpgsqlParameter("kansiStartdate", DbType.DateTime) { Value = startdate });
+                command.Parameters.Add(new NpgsqlParameter("kansiEndsdate", DbType.DateTime) { Value = enddate });
                 command.Parameters.Add(new NpgsqlParameter("hosyukanri", DbType.String) { Value = m_kanrino.Text });
                 command.Parameters.Add(new NpgsqlParameter("hosyuinfo", DbType.String) { Value = m_hosyu.Text });
                 command.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = m_biko.Text });
@@ -398,6 +417,7 @@ namespace SMSサンプル
         {
 
             string hostno;
+            int ret = 0;
 
             if (con.FullState != ConnectionState.Open) con.Open();
 
@@ -412,7 +432,6 @@ namespace SMSサンプル
                 {
                     hostno = item.SubItems[0].Text;
 
-
                     var command = new NpgsqlCommand(@sql, con);
                     command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = int.Parse(hostno)});
 
@@ -421,12 +440,19 @@ namespace SMSサンプル
                     {
                         //削除処理
                         rowsaffected = command.ExecuteNonQuery();
-                        transaction.Commit();
+                        //transaction.Commit();
 
-                        if (rowsaffected != 1)
-                            MessageBox.Show("削除できませんでした。ホストID:" + hostno, "ホスト削除");
+                        if (rowsaffected < 1) { 
+                            //MessageBox.Show("削除できませんでした。ホストID:" + hostno, "ホスト削除");
+                            logger.WarnFormat("ホスト情報削除エラー　(監視インターフェイスが登録されていないホストに出る場合があります)。 ホスト番号:{0}", sql, hostno);
+                            //                            transaction.Rollback();
+                            //return -1;
+                            ret = 1;
+                        }
                         else
-                            MessageBox.Show("削除完了しました。ホストID:" + hostno, "ホスト削除");
+                        {
+                            ret = 1;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -436,12 +462,24 @@ namespace SMSサンプル
                         return -1;
                     }
                 }
+                if(ret == 1)
+                {
+                    MessageBox.Show("削除完了しました。", "ホスト情報削除");
+                    logger.ErrorFormat("ホスト情報削完了。 ホスト番号");
+
+                    transaction.Commit();
+                }
 
             }
             return 1;
         }
 
         private void m_statusCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void m_end_date_ValueChanged(object sender, EventArgs e)
         {
 
         }

@@ -39,15 +39,12 @@
             this.カスタマCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.カスタマ情報ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.カスタマ担当者TToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.カスタマ担当者電話番号DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.メールアドレスMToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.システムSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.拠点KToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ホストHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.インターフェイスkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.オペレータOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.オペレータ情報DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.メールアドレスMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.カスタマ担当者電話番号DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.回線情報LToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -142,7 +139,6 @@
             this.拠点KToolStripMenuItem,
             this.ホストHToolStripMenuItem,
             this.インターフェイスkToolStripMenuItem,
-            this.オペレータOToolStripMenuItem,
             this.回線情報LToolStripMenuItem});
             this.インポートIToolStripMenuItem.Name = "インポートIToolStripMenuItem";
             this.インポートIToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
@@ -162,16 +158,23 @@
             // カスタマ情報ToolStripMenuItem
             // 
             this.カスタマ情報ToolStripMenuItem.Name = "カスタマ情報ToolStripMenuItem";
-            this.カスタマ情報ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.カスタマ情報ToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.カスタマ情報ToolStripMenuItem.Text = "カスタマ情報(&U)";
             this.カスタマ情報ToolStripMenuItem.Click += new System.EventHandler(this.カスタマ情報ToolStripMenuItem_Click);
             // 
             // カスタマ担当者TToolStripMenuItem
             // 
             this.カスタマ担当者TToolStripMenuItem.Name = "カスタマ担当者TToolStripMenuItem";
-            this.カスタマ担当者TToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.カスタマ担当者TToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.カスタマ担当者TToolStripMenuItem.Text = "カスタマ担当者(&T)";
             this.カスタマ担当者TToolStripMenuItem.Click += new System.EventHandler(this.カスタマ担当者TToolStripMenuItem_Click);
+            // 
+            // カスタマ担当者電話番号DToolStripMenuItem
+            // 
+            this.カスタマ担当者電話番号DToolStripMenuItem.Name = "カスタマ担当者電話番号DToolStripMenuItem";
+            this.カスタマ担当者電話番号DToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.カスタマ担当者電話番号DToolStripMenuItem.Text = "カスタマ担当者電話番号(&D)";
+            this.カスタマ担当者電話番号DToolStripMenuItem.Click += new System.EventHandler(this.カスタマ担当者電話番号DToolStripMenuItem_Click);
             // 
             // メールアドレスMToolStripMenuItem1
             // 
@@ -206,34 +209,7 @@
             this.インターフェイスkToolStripMenuItem.Name = "インターフェイスkToolStripMenuItem";
             this.インターフェイスkToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.インターフェイスkToolStripMenuItem.Text = "インターフェイス(&k)";
-            // 
-            // オペレータOToolStripMenuItem
-            // 
-            this.オペレータOToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.オペレータ情報DToolStripMenuItem,
-            this.メールアドレスMToolStripMenuItem});
-            this.オペレータOToolStripMenuItem.Name = "オペレータOToolStripMenuItem";
-            this.オペレータOToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.オペレータOToolStripMenuItem.Text = "オペレータ(&O)";
-            // 
-            // オペレータ情報DToolStripMenuItem
-            // 
-            this.オペレータ情報DToolStripMenuItem.Name = "オペレータ情報DToolStripMenuItem";
-            this.オペレータ情報DToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.オペレータ情報DToolStripMenuItem.Text = "オペレータ情報(&D)";
-            // 
-            // メールアドレスMToolStripMenuItem
-            // 
-            this.メールアドレスMToolStripMenuItem.Name = "メールアドレスMToolStripMenuItem";
-            this.メールアドレスMToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.メールアドレスMToolStripMenuItem.Text = "メールアドレス(&M)";
-            // 
-            // カスタマ担当者電話番号DToolStripMenuItem
-            // 
-            this.カスタマ担当者電話番号DToolStripMenuItem.Name = "カスタマ担当者電話番号DToolStripMenuItem";
-            this.カスタマ担当者電話番号DToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
-            this.カスタマ担当者電話番号DToolStripMenuItem.Text = "カスタマ担当者電話番号(&D)";
-            this.カスタマ担当者電話番号DToolStripMenuItem.Click += new System.EventHandler(this.カスタマ担当者電話番号DToolStripMenuItem_Click);
+            this.インターフェイスkToolStripMenuItem.Click += new System.EventHandler(this.インターフェイスkToolStripMenuItem_Click);
             // 
             // 回線情報LToolStripMenuItem
             // 
@@ -282,9 +258,6 @@
         private System.Windows.Forms.ToolStripMenuItem インターフェイスkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem カスタマ情報ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem メールアドレスMToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem オペレータOToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem オペレータ情報DToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem メールアドレスMToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem カスタマ担当者TToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem カスタマ担当者電話番号DToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 回線情報LToolStripMenuItem;

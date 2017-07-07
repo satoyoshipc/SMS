@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace SMSサンプル
 {
-    public partial class Form_KeikakuDetail : Form
+    public partial class Form_scheduleDetail : Form
     {
 
         //ログイン情報
@@ -28,10 +28,12 @@ namespace SMSサンプル
         //DBコネクション
         public NpgsqlConnection con { get; set; }
 
+        //初期表示のときのﾌﾗｸﾞ
+        private Boolean firstflg=false;
         //ListViewのソートの際に使用する
         private Class_ListViewColumnSorter _columnSorter;
 
-        public Form_KeikakuDetail()
+        public Form_scheduleDetail()
         {
             InitializeComponent();
         }
@@ -41,6 +43,7 @@ namespace SMSサンプル
         {
             _columnSorter = new Class_ListViewColumnSorter();
             m_scheduleList.ListViewItemSorter = _columnSorter;
+
 
             m_selectKoumoku.Items.Add("予定通番");
             m_selectKoumoku.Items.Add("タイマー名称");
@@ -58,8 +61,12 @@ namespace SMSサンプル
             m_selectKoumoku.Items.Add("更新日時");
             m_selectKoumoku.Items.Add("更新者");
 
+            m_end_date.MaxDate = DateTime.Now.AddYears(3);
+
             //サウンドだけはDBから取得する
-            if(keikakudt.schedule_no != null) { 
+            if (keikakudt.schedule_no != null) {
+                firstflg = true;
+
                 Class_Detaget dg = new Class_Detaget();
                 keikakudt.sound = dg.getSound((Form_MainList)this.Owner, con, keikakudt.schedule_no);
                 String alertdt = dg.getLatestAlerm(keikakudt.schedule_no, con);
@@ -86,20 +93,41 @@ namespace SMSサンプル
                 keikakudt.repeat_type = "1";
             this.m_repeatkbn.SelectedIndex = int.Parse(keikakudt.repeat_type) - 1;
 
-            System.DateTime dd1 = DateTime.ParseExact(keikakudt.start_date, "yyyy/MM/dd HH:mm:ss", null);
-            this.m_start_date.Value = dd1;
+            //開始日時の取得
+            System.DateTime dd1;
+            if (keikakudt.start_date != null && keikakudt.start_date != "")
+            {     
+                dd1 = DateTime.ParseExact(keikakudt.start_date, "yyyy/MM/dd HH:mm:ss", null);
+                this.m_start_date.Value = dd1;
+            }
 
-            System.DateTime dd2 = DateTime.ParseExact(keikakudt.end_date, "yyyy/MM/dd HH:mm:ss", null);
-            this.m_end_date.Value = dd2;
+            //終了日時
+            System.DateTime dd2;
+            if (keikakudt.end_date != null && keikakudt.end_date != "")
+            {
+            
+                dd2 = DateTime.ParseExact(keikakudt.end_date, "yyyy/MM/dd HH:mm:ss", null);
+                if (dd2 > m_end_date.MaxDate)
+                    dd2 = m_end_date.MaxDate;
+                this.m_end_date.Value = dd2;
+            }
+
+            System.DateTime alertdt;
             if (keikakudt.alertdate != null && keikakudt.alertdate != "")
-            { 
-                System.DateTime alertdt = DateTime.ParseExact(keikakudt.alertdate, "yyyy/MM/dd HH:mm:ss", null);
+            {
+                this.m_alermDate.Enabled = true;
+                alertdt = DateTime.ParseExact(keikakudt.alertdate, "yyyy/MM/dd HH:mm:ss", null);
                 this.m_alermDate.Value = alertdt;
             }
-            this.m_alermMessage.Text = keikakudt.alerm_message;
-            this.m_sound.Text = keikakudt.sound;
+
+
+
+                this.m_alermMessage.Text = keikakudt.alerm_message;
+                this.m_sound.Text = keikakudt.sound;
+                this.m_kakunin.Text = keikakudt.kakunin;
+
+
             this.m_incidentno.Text = keikakudt.incident_no;
-            this.m_kakunin.Text = keikakudt.kakunin;
 
             this.m_updateOpe.Text = keikakudt.chk_name_id;
             this.m_update.Text = keikakudt.chk_date;
@@ -264,26 +292,35 @@ namespace SMSサンプル
 
                     itemx1.SubItems.Add(schetype);
 
-                    //1:1回、2:1時間毎、3:日毎、4:週毎、5:月毎
-                    string repType = "";
-                    if (s_ds.repeat_type == "1")
-                        repType = "1回";
-                    else if (s_ds.repeat_type == "2")
-                        repType = "1時間毎";
-                    else if (s_ds.repeat_type == "3")
-                        repType = "日毎";
-                    else if (s_ds.repeat_type == "4")
-                        repType = "週毎";
-                    else if (s_ds.repeat_type == "5")
-                        repType = "月毎";
+
+
+                        //1:1回、2:1時間毎、3:日毎、4:週毎、5:月毎
+                        string repType = "";
+                        if (s_ds.repeat_type == "1")
+                            repType = "1回";
+                        else if (s_ds.repeat_type == "2")
+                            repType = "1時間毎";
+                        else if (s_ds.repeat_type == "3")
+                            repType = "日毎";
+                        else if (s_ds.repeat_type == "4")
+                            repType = "週毎";
+                        else if (s_ds.repeat_type == "5")
+                            repType = "月毎";
 
 
                     itemx1.SubItems.Add(repType);
                     itemx1.SubItems.Add(s_ds.start_date);
                     itemx1.SubItems.Add(s_ds.end_date);
+ 
+
                     itemx1.SubItems.Add(s_ds.status);
+
+
                     itemx1.SubItems.Add(s_ds.alerm_message);
                     itemx1.SubItems.Add(s_ds.sound);
+
+
+
                     itemx1.SubItems.Add(s_ds.incident_no);
                     itemx1.SubItems.Add(s_ds.kakunin);
                     itemx1.SubItems.Add(s_ds.userno);
@@ -310,7 +347,7 @@ namespace SMSサンプル
                 MessageBox.Show("タイマー名称を入力して下さい。", "スケジュール修正", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            if (m_sound.Text == "" && m_yoteikbn.SelectedIndex != 0)
+            if (m_sound.Text == "" && m_yoteikbn.SelectedIndex != 0 && m_yoteikbn.SelectedIndex != 3)
             {
                 MessageBox.Show("音を入力して下さい。", "スケジュール修正", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
@@ -326,13 +363,13 @@ namespace SMSサンプル
                 status = "0";
 
             string yoteikbn = "";
-            if (m_yoteikbn.Text == "インシデント処理")
+            if (m_yoteikbn.SelectedIndex == 0)
                 yoteikbn = "1";
-            else if (m_yoteikbn.Text == "定期作業")
+            else if (m_yoteikbn.SelectedIndex == 1)
                 yoteikbn = "2";
-            else if (m_yoteikbn.Text == "計画作業")
+            else if (m_yoteikbn.SelectedIndex == 2)
                 yoteikbn = "3";
-            else if (m_yoteikbn.Text == "特別対応")
+            else if (m_yoteikbn.SelectedIndex == 3)
                 yoteikbn = "4";
 
             //1:1回、2:1時間毎、3:日毎、4:週毎、5:月毎
@@ -350,7 +387,7 @@ namespace SMSサンプル
 
 
             byte[] bytes = null;
-            if (m_sound.Text != "" && m_yoteikbn.SelectedIndex != 0)
+            if (m_sound.Text != "" && m_yoteikbn.SelectedIndex != 0 && m_yoteikbn.SelectedIndex != 3)
             {
                 if (m_sound.Text != null)
                     bytes = File.ReadAllBytes(m_sound.Text);
@@ -366,12 +403,20 @@ namespace SMSサンプル
                 var command = new NpgsqlCommand(@sql, this.con);
                 int incino = 0;
                 int.TryParse(m_incidentno.Text, out incino);
+
+                DateTime? startdate = null;
+                DateTime? enddate = null;
+                if (m_start_date.Enabled)
+                    startdate = m_start_date.Value;
+                if (m_end_date.Enabled)
+                    enddate = m_end_date.Value;
+
                 command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = m_scheduleno.Text });
                 command.Parameters.Add(new NpgsqlParameter("timer_name", DbType.String) { Value = m_timername.Text });
                 command.Parameters.Add(new NpgsqlParameter("schedule_type", DbType.String) { Value = yoteikbn });
                 command.Parameters.Add(new NpgsqlParameter("repeat_type", DbType.String) { Value = repType });
-                command.Parameters.Add(new NpgsqlParameter("start_date", DbType.DateTime) { Value = m_start_date.Value });
-                command.Parameters.Add(new NpgsqlParameter("end_date", DbType.DateTime) { Value = m_end_date.Value });
+                command.Parameters.Add(new NpgsqlParameter("start_date", DbType.DateTime) { Value = startdate });
+                command.Parameters.Add(new NpgsqlParameter("end_date", DbType.DateTime) { Value = enddate });
                 command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
                 command.Parameters.Add(new NpgsqlParameter("alerm_message", DbType.String) { Value = m_alermMessage.Text });
                 command.Parameters.Add(new NpgsqlParameter("sound", DbType.Binary) { Value = bytes });
@@ -659,9 +704,11 @@ namespace SMSサンプル
             return 1;
         }
 
-        //ダブルリック
+        //ダブルクリック
         private void m_host_List_DoubleClick(object sender, EventArgs e)
         {
+            //サウンドファイルを削除する
+            deleteSoundFile();
 
             ListView.SelectedIndexCollection item = m_scheduleList.SelectedIndices;
             string schedule_type = "";
@@ -682,9 +729,7 @@ namespace SMSサンプル
                 schedule_type = "4";
 
             scheduledt.schedule_type = schedule_type;
-
-
-
+            
             //1:1回、2:1時間毎、3:日毎、4:週毎、5:月毎
             string repeat_type = "";
             if (this.m_scheduleList.Items[item[0]].SubItems[3].Text == "1回")
@@ -699,9 +744,15 @@ namespace SMSサンプル
                 repeat_type = "5";
             scheduledt.repeat_type = repeat_type;
 
-
-            scheduledt.start_date = this.m_scheduleList.Items[item[0]].SubItems[4].Text;
-            scheduledt.end_date = this.m_scheduleList.Items[item[0]].SubItems[5].Text;
+            if(schedule_type != "4") { 
+                scheduledt.start_date = this.m_scheduleList.Items[item[0]].SubItems[4].Text;
+                scheduledt.end_date = this.m_scheduleList.Items[item[0]].SubItems[5].Text;
+            }
+            else
+            {
+                scheduledt.start_date = "";
+                scheduledt.end_date = "";
+            }
 
             if (this.m_scheduleList.Items[item[0]].SubItems[6].Text == "未完了")
                 status = "1";
@@ -710,32 +761,48 @@ namespace SMSサンプル
 
             scheduledt.status = status;
 
-            scheduledt.alerm_message    = this.m_scheduleList.Items[item[0]].SubItems[7].Text;
-            scheduledt.sound            = m_scheduleList.Items[item[0]].SubItems[8].Text;
-            scheduledt.incident_no      = this.m_scheduleList.Items[item[0]].SubItems[9].Text;
-            scheduledt.kakunin          = this.m_scheduleList.Items[item[0]].SubItems[10].Text;
-            scheduledt.userno = this.m_scheduleList.Items[item[0]].SubItems[11].Text;
-            scheduledt.systemno = this.m_scheduleList.Items[item[0]].SubItems[12].Text;
-            scheduledt.siteno = this.m_scheduleList.Items[item[0]].SubItems[13].Text;
-            scheduledt.chk_date = this.m_scheduleList.Items[item[0]].SubItems[14].Text;
-            scheduledt.chk_name_id = this.m_scheduleList.Items[item[0]].SubItems[15].Text;
+            if (schedule_type != "4")
+            {
+                scheduledt.alerm_message = this.m_scheduleList.Items[item[0]].SubItems[7].Text;
+                scheduledt.sound = m_scheduleList.Items[item[0]].SubItems[8].Text;
+                //音は改めて取得する
+                Class_Detaget dg = new Class_Detaget();
+                scheduledt.sound = dg.getSound((Form_MainList)this.Owner, con, scheduledt.schedule_no);
+            }
+            else
+            {
+                scheduledt.alerm_message = "";
+                scheduledt.sound = "";
+            }
 
+            scheduledt.incident_no      = this.m_scheduleList.Items[item[0]].SubItems[9].Text;
+            if (schedule_type != "4")
+                scheduledt.kakunin          = this.m_scheduleList.Items[item[0]].SubItems[10].Text;
+            else
+            {
+                scheduledt.kakunin = "";
+            }
+
+            scheduledt.userno           = this.m_scheduleList.Items[item[0]].SubItems[11].Text;
+            scheduledt.systemno         = this.m_scheduleList.Items[item[0]].SubItems[12].Text;
+            scheduledt.siteno           = this.m_scheduleList.Items[item[0]].SubItems[13].Text;
+            scheduledt.chk_date         = this.m_scheduleList.Items[item[0]].SubItems[14].Text;
+            scheduledt.chk_name_id      = this.m_scheduleList.Items[item[0]].SubItems[15].Text;
 
             //直近アラーム日時の取得を行う
-            Class_Detaget dg = new Class_Detaget();
-            String alertdt = dg.getLatestAlerm(scheduledt.schedule_no,con);
-            scheduledt.alertdate = alertdt;
+            if (schedule_type != "4") { 
+                Class_Detaget dg = new Class_Detaget();
+                String alertdt = dg.getLatestAlerm(scheduledt.schedule_no,con);
+                scheduledt.alertdate = alertdt;
+            }
 
-            
+
             getKeikaku(scheduledt);
 
             koumokuDisable();
+            firstflg = false;
         }
-
-        private void m_scheduleList_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-
-        }
+        
         //参照ボタン
         private void m_soundBtn_Click(object sender, EventArgs e)
         {
@@ -781,6 +848,9 @@ namespace SMSサンプル
             if (m_yoteikbn.SelectedIndex == 0)
             {
                 //インシデント処理
+                m_start_date.Enabled = true;
+                m_alermMessage.Enabled = true;
+                m_end_date.Enabled = true;
                 m_alermDate.Enabled = true;
                 m_sound.Enabled = false;
                 m_testbtn.Enabled = false;
@@ -789,6 +859,9 @@ namespace SMSサンプル
             else if (m_yoteikbn.SelectedIndex == 1)
             {
                 //定期作業
+                m_start_date.Enabled = true;
+                m_end_date.Enabled = true;
+                m_alermMessage.Enabled = true;
                 m_alermDate.Enabled = false;
                 m_sound.Enabled = true;
                 m_testbtn.Enabled = true;
@@ -797,7 +870,10 @@ namespace SMSサンプル
             else if (m_yoteikbn.SelectedIndex == 2)
             {
                 //計画作業
+                m_start_date.Enabled = true;
+                m_end_date.Enabled = true;
                 m_alermDate.Enabled = false;
+                m_alermMessage.Enabled = true;
                 m_sound.Enabled = true;
                 m_testbtn.Enabled = true;
                 m_sansyoBtn.Enabled = true;
@@ -805,10 +881,14 @@ namespace SMSサンプル
             else if (m_yoteikbn.SelectedIndex == 3)
             {
                 //特別対応
+                m_start_date.Enabled = false;
+                m_end_date.Enabled = false;
+                m_alermMessage.Enabled = false;
+
                 m_alermDate.Enabled = false;
-                m_sound.Enabled = true;
-                m_testbtn.Enabled = true;
-                m_sansyoBtn.Enabled = true;
+                m_sound.Enabled = false;
+                m_testbtn.Enabled = false;
+                m_sansyoBtn.Enabled = false;
             }
         }
         //カラムクリックでソートを行う
@@ -875,7 +955,6 @@ namespace SMSサンプル
                 {
                     scheduleno = item.SubItems[0].Text;
 
-
                     var command = new NpgsqlCommand(@sql, con);
                     command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = int.Parse(scheduleno) });
 
@@ -911,18 +990,34 @@ namespace SMSサンプル
             }
             return ret;
         }
+
         //フォームが閉じる際
         private void Form_KeikakuDetail_FormClosed(object sender, FormClosedEventArgs e)
         {
-            string strpath = "";
-            foreach (ListViewItem item in m_scheduleList.Items)
-            {
+            //サウンドファイルを削除する
+            deleteSoundFile();
+            /*          
+                        string strpath = "";  
+                        foreach (ListViewItem item in m_scheduleList.Items)
+                        {
 
-                strpath = item.SubItems[8].Text;
-                if(strpath != null && strpath != "" && strpath != "標準サウンド.wav")
-                {
-                    System.IO.File.Delete(@strpath);
-                }
+                            strpath = item.SubItems[8].Text;
+                            if(strpath != null && strpath != "" && strpath != "標準サウンド.wav")
+                            {
+                                System.IO.File.Delete(@strpath);
+                            }
+                        }
+            */
+        }
+
+        //サウンドファイルを削除する
+        private void deleteSoundFile()
+        {
+
+            if (m_sound.Text != "")
+            {
+                if (System.IO.File.Exists(@m_sound.Text))
+                    System.IO.File.Delete(@m_sound.Text);
             }
         }
     }

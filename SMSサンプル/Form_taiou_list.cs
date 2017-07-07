@@ -13,9 +13,12 @@ namespace SMSサンプル
 {
     public partial class Form_taiou_list : Form
     {
+
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
         //ListViewのソートの際に使用する
         private Class_ListViewColumnSorter _columnSorter;
-        private int sort_kind = 0;
 
         //DBコネクション
         public NpgsqlConnection con { get; set; }
@@ -211,6 +214,8 @@ namespace SMSサンプル
                         if (rowsaffected < 1)
                         {
                             MessageBox.Show("削除できませんでした。:" + scheduleno, "アラーム情報削除");
+                            logger.ErrorFormat("アラーム情報削除エラー。 スケジュール番号:{0}", sql, scheduleno);
+
                             transaction.Rollback();
                             return -1;
                         }
@@ -224,6 +229,8 @@ namespace SMSサンプル
                     {
                         //エラー時メッセージ表示
                         MessageBox.Show("アラーム削除時エラーが発生しました。 " + ex.Message);
+                        logger.ErrorFormat("アラーム情報削除エラー。 スケジュール番号:{0}", sql, scheduleno);
+
                         if (transaction.Connection != null) transaction.Rollback();
                         return -1;
                     }
@@ -231,6 +238,8 @@ namespace SMSサンプル
                 if (ret == 1)
                 {
                     MessageBox.Show("削除完了しました。", "アラーム情報削除");
+                    logger.ErrorFormat("アラーム情報削除完了。 スケジュール番号:{0}", sql, scheduleno);
+
                     transaction.Commit();
                 }
             }

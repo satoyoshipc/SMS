@@ -1,6 +1,6 @@
 ﻿namespace SMSサンプル
 {
-    partial class Form_KeikakuDetail
+    partial class Form_scheduleDetail
     {
         /// <summary>
         /// Required designer variable.
@@ -96,7 +96,7 @@
             this.m_statusCombo.Location = new System.Drawing.Point(119, 97);
             this.m_statusCombo.Name = "m_statusCombo";
             this.m_statusCombo.Size = new System.Drawing.Size(68, 20);
-            this.m_statusCombo.TabIndex = 1;
+            this.m_statusCombo.TabIndex = 4;
             // 
             // label12
             // 
@@ -113,7 +113,7 @@
             this.m_systemno.Name = "m_systemno";
             this.m_systemno.ReadOnly = true;
             this.m_systemno.Size = new System.Drawing.Size(45, 19);
-            this.m_systemno.TabIndex = 115;
+            this.m_systemno.TabIndex = 16;
             // 
             // m_systemname
             // 
@@ -121,7 +121,7 @@
             this.m_systemname.Name = "m_systemname";
             this.m_systemname.ReadOnly = true;
             this.m_systemname.Size = new System.Drawing.Size(182, 19);
-            this.m_systemname.TabIndex = 114;
+            this.m_systemname.TabIndex = 17;
             // 
             // label10
             // 
@@ -155,7 +155,7 @@
             this.m_timername.Location = new System.Drawing.Point(119, 74);
             this.m_timername.Name = "m_timername";
             this.m_timername.Size = new System.Drawing.Size(325, 19);
-            this.m_timername.TabIndex = 0;
+            this.m_timername.TabIndex = 3;
             // 
             // m_userno
             // 
@@ -179,7 +179,7 @@
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
             this.m_updateOpe.Size = new System.Drawing.Size(233, 19);
-            this.m_updateOpe.TabIndex = 102;
+            this.m_updateOpe.TabIndex = 19;
             this.m_updateOpe.TabStop = false;
             // 
             // label6
@@ -197,7 +197,7 @@
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
             this.m_update.Size = new System.Drawing.Size(233, 19);
-            this.m_update.TabIndex = 100;
+            this.m_update.TabIndex = 18;
             this.m_update.TabStop = false;
             // 
             // label5
@@ -214,7 +214,7 @@
             this.button2.Location = new System.Drawing.Point(693, 331);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(76, 33);
-            this.button2.TabIndex = 12;
+            this.button2.TabIndex = 21;
             this.button2.Text = "戻る";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -224,7 +224,7 @@
             this.button1.Location = new System.Drawing.Point(611, 331);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(76, 33);
-            this.button1.TabIndex = 11;
+            this.button1.TabIndex = 20;
             this.button1.Text = "更新";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -297,7 +297,6 @@
             this.m_scheduleList.View = System.Windows.Forms.View.Details;
             this.m_scheduleList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_scheduleList_ColumnClick);
             this.m_scheduleList.DoubleClick += new System.EventHandler(this.m_host_List_DoubleClick);
-            this.m_scheduleList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_scheduleList_MouseDoubleClick);
             // 
             // splitContainer1
             // 
@@ -382,7 +381,7 @@
             this.m_sitename.Name = "m_sitename";
             this.m_sitename.ReadOnly = true;
             this.m_sitename.Size = new System.Drawing.Size(274, 19);
-            this.m_sitename.TabIndex = 181;
+            this.m_sitename.TabIndex = 2;
             // 
             // m_deleteBtn
             // 
@@ -392,7 +391,7 @@
             this.m_deleteBtn.Location = new System.Drawing.Point(694, 3);
             this.m_deleteBtn.Name = "m_deleteBtn";
             this.m_deleteBtn.Size = new System.Drawing.Size(92, 24);
-            this.m_deleteBtn.TabIndex = 180;
+            this.m_deleteBtn.TabIndex = 22;
             this.m_deleteBtn.Text = "削除";
             this.m_deleteBtn.UseVisualStyleBackColor = true;
             this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
@@ -405,7 +404,7 @@
             this.m_alermDate.Name = "m_alermDate";
             this.m_alermDate.ShowCheckBox = true;
             this.m_alermDate.Size = new System.Drawing.Size(206, 19);
-            this.m_alermDate.TabIndex = 175;
+            this.m_alermDate.TabIndex = 9;
             // 
             // label13
             // 
@@ -422,7 +421,7 @@
             this.m_testbtn.Location = new System.Drawing.Point(358, 282);
             this.m_testbtn.Name = "m_testbtn";
             this.m_testbtn.Size = new System.Drawing.Size(35, 19);
-            this.m_testbtn.TabIndex = 174;
+            this.m_testbtn.TabIndex = 12;
             this.m_testbtn.Text = "♪";
             this.m_testbtn.UseVisualStyleBackColor = true;
             this.m_testbtn.Click += new System.EventHandler(this.button3_Click);
@@ -434,7 +433,7 @@
             this.m_end_date.Location = new System.Drawing.Point(121, 189);
             this.m_end_date.Name = "m_end_date";
             this.m_end_date.Size = new System.Drawing.Size(198, 19);
-            this.m_end_date.TabIndex = 5;
+            this.m_end_date.TabIndex = 8;
             // 
             // label7
             // 
@@ -452,7 +451,7 @@
             this.m_start_date.Location = new System.Drawing.Point(121, 166);
             this.m_start_date.Name = "m_start_date";
             this.m_start_date.Size = new System.Drawing.Size(198, 19);
-            this.m_start_date.TabIndex = 4;
+            this.m_start_date.TabIndex = 7;
             // 
             // label11
             // 
@@ -469,7 +468,7 @@
             this.m_sansyoBtn.Location = new System.Drawing.Point(397, 282);
             this.m_sansyoBtn.Name = "m_sansyoBtn";
             this.m_sansyoBtn.Size = new System.Drawing.Size(47, 19);
-            this.m_sansyoBtn.TabIndex = 8;
+            this.m_sansyoBtn.TabIndex = 13;
             this.m_sansyoBtn.Text = "参照";
             this.m_sansyoBtn.UseVisualStyleBackColor = true;
             this.m_sansyoBtn.Click += new System.EventHandler(this.m_soundBtn_Click);
@@ -487,7 +486,7 @@
             this.m_repeatkbn.Location = new System.Drawing.Point(120, 143);
             this.m_repeatkbn.Name = "m_repeatkbn";
             this.m_repeatkbn.Size = new System.Drawing.Size(68, 20);
-            this.m_repeatkbn.TabIndex = 3;
+            this.m_repeatkbn.TabIndex = 6;
             // 
             // label4
             // 
@@ -510,7 +509,7 @@
             this.m_yoteikbn.Location = new System.Drawing.Point(119, 121);
             this.m_yoteikbn.Name = "m_yoteikbn";
             this.m_yoteikbn.Size = new System.Drawing.Size(200, 20);
-            this.m_yoteikbn.TabIndex = 2;
+            this.m_yoteikbn.TabIndex = 5;
             this.m_yoteikbn.SelectionChangeCommitted += new System.EventHandler(this.m_yoteikbn_SelectionChangeCommitted);
             // 
             // label2
@@ -528,14 +527,14 @@
             this.m_kakunin.Multiline = true;
             this.m_kakunin.Name = "m_kakunin";
             this.m_kakunin.Size = new System.Drawing.Size(325, 33);
-            this.m_kakunin.TabIndex = 10;
+            this.m_kakunin.TabIndex = 15;
             // 
             // m_sound
             // 
             this.m_sound.Location = new System.Drawing.Point(119, 282);
             this.m_sound.Name = "m_sound";
             this.m_sound.Size = new System.Drawing.Size(239, 19);
-            this.m_sound.TabIndex = 7;
+            this.m_sound.TabIndex = 11;
             // 
             // m_alermMessage
             // 
@@ -543,7 +542,7 @@
             this.m_alermMessage.Multiline = true;
             this.m_alermMessage.Name = "m_alermMessage";
             this.m_alermMessage.Size = new System.Drawing.Size(325, 40);
-            this.m_alermMessage.TabIndex = 6;
+            this.m_alermMessage.TabIndex = 10;
             // 
             // label1
             // 
@@ -560,7 +559,7 @@
             this.m_scheduleno.Name = "m_scheduleno";
             this.m_scheduleno.ReadOnly = true;
             this.m_scheduleno.Size = new System.Drawing.Size(99, 19);
-            this.m_scheduleno.TabIndex = 164;
+            this.m_scheduleno.TabIndex = 0;
             // 
             // label16
             // 
@@ -594,15 +593,15 @@
             this.m_incidentno.Location = new System.Drawing.Point(119, 307);
             this.m_incidentno.Name = "m_incidentno";
             this.m_incidentno.Size = new System.Drawing.Size(325, 19);
-            this.m_incidentno.TabIndex = 9;
+            this.m_incidentno.TabIndex = 14;
             // 
-            // Form_KeikakuDetail
+            // Form_scheduleDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(799, 682);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "Form_KeikakuDetail";
+            this.Name = "Form_scheduleDetail";
             this.Text = "タイマー情報";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_KeikakuDetail_FormClosed);
             this.Load += new System.EventHandler(this.Form_KeikakuDetail_Load);

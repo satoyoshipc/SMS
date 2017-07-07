@@ -45,7 +45,7 @@
             this.m_start_date.Location = new System.Drawing.Point(12, 53);
             this.m_start_date.Name = "m_start_date";
             this.m_start_date.Size = new System.Drawing.Size(194, 19);
-            this.m_start_date.TabIndex = 0;
+            this.m_start_date.TabIndex = 1;
             // 
             // m_end_date
             // 
@@ -54,7 +54,7 @@
             this.m_end_date.Location = new System.Drawing.Point(224, 53);
             this.m_end_date.Name = "m_end_date";
             this.m_end_date.Size = new System.Drawing.Size(192, 19);
-            this.m_end_date.TabIndex = 1;
+            this.m_end_date.TabIndex = 2;
             // 
             // label1
             // 
@@ -80,7 +80,7 @@
             this.button3.Location = new System.Drawing.Point(218, 123);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(96, 23);
-            this.button3.TabIndex = 147;
+            this.button3.TabIndex = 4;
             this.button3.Text = "印刷";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -91,7 +91,7 @@
             this.button2.Location = new System.Drawing.Point(320, 123);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(96, 23);
-            this.button2.TabIndex = 148;
+            this.button2.TabIndex = 5;
             this.button2.Text = "キャンセル";
             this.button2.UseVisualStyleBackColor = true;
             // 
@@ -101,7 +101,7 @@
             this.m_schedule_Type.Name = "m_schedule_Type";
             this.m_schedule_Type.ReadOnly = true;
             this.m_schedule_Type.Size = new System.Drawing.Size(404, 19);
-            this.m_schedule_Type.TabIndex = 149;
+            this.m_schedule_Type.TabIndex = 3;
             // 
             // m_todaychk
             // 
@@ -109,7 +109,7 @@
             this.m_todaychk.Location = new System.Drawing.Point(12, 31);
             this.m_todaychk.Name = "m_todaychk";
             this.m_todaychk.Size = new System.Drawing.Size(48, 16);
-            this.m_todaychk.TabIndex = 150;
+            this.m_todaychk.TabIndex = 0;
             this.m_todaychk.Text = "本日";
             this.m_todaychk.UseVisualStyleBackColor = true;
             this.m_todaychk.CheckedChanged += new System.EventHandler(this.m_todaychk_CheckedChanged);

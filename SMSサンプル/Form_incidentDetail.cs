@@ -46,7 +46,7 @@ namespace SMSサンプル
             _columnSorter = new Class_ListViewColumnSorter();
             m_incidentList.ListViewItemSorter = _columnSorter;
 
-            m_selectKoumoku.Items.Add("インシデント番号");
+            m_selectKoumoku.Items.Add("通番");
             m_selectKoumoku.Items.Add("ステータス");
             m_selectKoumoku.Items.Add("MPMSインシデント番号");
             m_selectKoumoku.Items.Add("S-cude事例ID");
@@ -66,8 +66,9 @@ namespace SMSサンプル
             m_selectKoumoku.Items.Add("ホスト番号");
             m_selectKoumoku.Items.Add("更新日時");
             m_selectKoumoku.Items.Add("更新者");
-            if(incidentdt != null)
+            if(incidentdt != null) 
                 getIncident(incidentdt);
+            
 
         }
 
@@ -150,15 +151,19 @@ namespace SMSサンプル
 
             Class_Detaget dg = new Class_Detaget();
             dg.con = con;
+            this.m_cutomername.Text = "";
             if (incidentdt.userno != null && incidentdt.userno != "")
                 this.m_cutomername.Text = dg.getCustomername(incidentdt.userno);
             //システム情報
+            this.m_systemname.Text = "";
             if (incidentdt.systemno != null && incidentdt.systemno != "")
                 this.m_systemname.Text = dg.getSystemname(incidentdt.systemno);
             //拠点名取得
+            this.m_sitename.Text = "";
             if (incidentdt.siteno != null && incidentdt.siteno != "")
                 this.m_sitename.Text = dg.getSitename(incidentdt.siteno);
             //ホスト名取得
+            this.m_hostname.Text = "";
             if (incidentdt.hostno != null && incidentdt.hostno != "")
                 this.m_hostname.Text = dg.getHostname(incidentdt.hostno);
 
@@ -560,7 +565,7 @@ namespace SMSサンプル
                             "select currval('schedule_schedule_no_seq') ;", con);
 
                 cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = m_userno.Text });
-                cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = m_systemno.Text });
+                cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = m_systemno.Text=="" ? null : m_systemno.Text });
                 cmd.Parameters.Add(new NpgsqlParameter("timer_name", DbType.String) { Value =  "インシデント管理タイマー" });
                 cmd.Parameters.Add(new NpgsqlParameter("schedule_type", DbType.String) { Value = "1" });
                 cmd.Parameters.Add(new NpgsqlParameter("repeat_type", DbType.String) { Value = "1" });
@@ -651,6 +656,7 @@ namespace SMSサンプル
         //一覧をダブルクリック
         private void m_host_List_DoubleClick(object sender, EventArgs e)
         {
+
             ListView.SelectedIndexCollection item = m_incidentList.SelectedIndices;
             incidentDS incidentdt = new incidentDS();
             incidentdt.incident_no = this.m_incidentList.Items[item[0]].SubItems[0].Text;
@@ -701,6 +707,7 @@ namespace SMSサンプル
             incidentdt.chk_name_id = this.m_incidentList.Items[item[0]].SubItems[19].Text;
 
             getIncident(incidentdt);
+
         }
         //メール出力画面
         private void m_mailout_Click(object sender, EventArgs e)

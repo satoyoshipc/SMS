@@ -101,7 +101,7 @@
             this.m_statusCombo.Location = new System.Drawing.Point(140, 94);
             this.m_statusCombo.Name = "m_statusCombo";
             this.m_statusCombo.Size = new System.Drawing.Size(68, 20);
-            this.m_statusCombo.TabIndex = 0;
+            this.m_statusCombo.TabIndex = 7;
             // 
             // label12
             // 
@@ -118,7 +118,7 @@
             this.m_systemno.Name = "m_systemno";
             this.m_systemno.ReadOnly = true;
             this.m_systemno.Size = new System.Drawing.Size(45, 19);
-            this.m_systemno.TabIndex = 115;
+            this.m_systemno.TabIndex = 17;
             // 
             // m_systemname
             // 
@@ -126,7 +126,7 @@
             this.m_systemname.Name = "m_systemname";
             this.m_systemname.ReadOnly = true;
             this.m_systemname.Size = new System.Drawing.Size(182, 19);
-            this.m_systemname.TabIndex = 114;
+            this.m_systemname.TabIndex = 18;
             // 
             // label10
             // 
@@ -160,14 +160,14 @@
             this.m_scubeno.Location = new System.Drawing.Point(140, 138);
             this.m_scubeno.Name = "m_scubeno";
             this.m_scubeno.Size = new System.Drawing.Size(325, 19);
-            this.m_scubeno.TabIndex = 2;
+            this.m_scubeno.TabIndex = 9;
             // 
             // m_mpmsno
             // 
             this.m_mpmsno.Location = new System.Drawing.Point(140, 116);
             this.m_mpmsno.Name = "m_mpmsno";
             this.m_mpmsno.Size = new System.Drawing.Size(325, 19);
-            this.m_mpmsno.TabIndex = 1;
+            this.m_mpmsno.TabIndex = 8;
             // 
             // m_hostname
             // 
@@ -175,7 +175,7 @@
             this.m_hostname.Name = "m_hostname";
             this.m_hostname.ReadOnly = true;
             this.m_hostname.Size = new System.Drawing.Size(274, 19);
-            this.m_hostname.TabIndex = 3;
+            this.m_hostname.TabIndex = 6;
             // 
             // m_userno
             // 
@@ -183,7 +183,7 @@
             this.m_userno.Name = "m_userno";
             this.m_userno.ReadOnly = true;
             this.m_userno.Size = new System.Drawing.Size(47, 19);
-            this.m_userno.TabIndex = 105;
+            this.m_userno.TabIndex = 1;
             // 
             // m_cutomername
             // 
@@ -191,7 +191,7 @@
             this.m_cutomername.Name = "m_cutomername";
             this.m_cutomername.ReadOnly = true;
             this.m_cutomername.Size = new System.Drawing.Size(274, 19);
-            this.m_cutomername.TabIndex = 1;
+            this.m_cutomername.TabIndex = 2;
             // 
             // label4
             // 
@@ -204,17 +204,19 @@
             // 
             // m_updateOpe
             // 
-            this.m_updateOpe.Location = new System.Drawing.Point(537, 270);
+            this.m_updateOpe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.m_updateOpe.Location = new System.Drawing.Point(537, 323);
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
             this.m_updateOpe.Size = new System.Drawing.Size(233, 19);
-            this.m_updateOpe.TabIndex = 102;
+            this.m_updateOpe.TabIndex = 22;
             this.m_updateOpe.TabStop = false;
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(479, 272);
+            this.label6.Location = new System.Drawing.Point(479, 325);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 12);
             this.label6.TabIndex = 101;
@@ -222,17 +224,19 @@
             // 
             // m_update
             // 
-            this.m_update.Location = new System.Drawing.Point(537, 247);
+            this.m_update.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.m_update.Location = new System.Drawing.Point(537, 300);
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
             this.m_update.Size = new System.Drawing.Size(233, 19);
-            this.m_update.TabIndex = 100;
+            this.m_update.TabIndex = 21;
             this.m_update.TabStop = false;
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(479, 250);
+            this.label5.Location = new System.Drawing.Point(479, 303);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 99;
@@ -240,20 +244,22 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(694, 309);
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button2.Location = new System.Drawing.Point(694, 362);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(76, 33);
-            this.button2.TabIndex = 13;
+            this.button2.TabIndex = 25;
             this.button2.Text = "戻る";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(612, 309);
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button1.Location = new System.Drawing.Point(612, 362);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(76, 33);
-            this.button1.TabIndex = 12;
+            this.button1.TabIndex = 24;
             this.button1.Text = "更新";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -264,7 +270,7 @@
             this.m_sitename.Name = "m_sitename";
             this.m_sitename.ReadOnly = true;
             this.m_sitename.Size = new System.Drawing.Size(274, 19);
-            this.m_sitename.TabIndex = 2;
+            this.m_sitename.TabIndex = 4;
             // 
             // m_hostno
             // 
@@ -272,7 +278,7 @@
             this.m_hostno.Name = "m_hostno";
             this.m_hostno.ReadOnly = true;
             this.m_hostno.Size = new System.Drawing.Size(47, 19);
-            this.m_hostno.TabIndex = 0;
+            this.m_hostno.TabIndex = 5;
             this.m_hostno.TabStop = false;
             // 
             // label3
@@ -335,7 +341,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.m_incidentList);
-            this.splitContainer2.Size = new System.Drawing.Size(787, 284);
+            this.splitContainer2.Size = new System.Drawing.Size(787, 237);
             this.splitContainer2.SplitterDistance = 33;
             this.splitContainer2.TabIndex = 1;
             // 
@@ -346,7 +352,7 @@
             this.m_incidentList.GridLines = true;
             this.m_incidentList.Location = new System.Drawing.Point(0, 0);
             this.m_incidentList.Name = "m_incidentList";
-            this.m_incidentList.Size = new System.Drawing.Size(787, 247);
+            this.m_incidentList.Size = new System.Drawing.Size(787, 200);
             this.m_incidentList.TabIndex = 0;
             this.m_incidentList.UseCompatibleStateImageBehavior = false;
             this.m_incidentList.View = System.Windows.Forms.View.Details;
@@ -415,29 +421,29 @@
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
             this.splitContainer1.Size = new System.Drawing.Size(789, 645);
-            this.splitContainer1.SplitterDistance = 286;
+            this.splitContainer1.SplitterDistance = 239;
             this.splitContainer1.TabIndex = 1;
             // 
             // m_deleteBtn
             // 
-            this.m_deleteBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_deleteBtn.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.m_deleteBtn.ForeColor = System.Drawing.Color.Red;
             this.m_deleteBtn.Location = new System.Drawing.Point(678, 8);
             this.m_deleteBtn.Name = "m_deleteBtn";
             this.m_deleteBtn.Size = new System.Drawing.Size(92, 33);
-            this.m_deleteBtn.TabIndex = 178;
+            this.m_deleteBtn.TabIndex = 26;
             this.m_deleteBtn.Text = "削除";
             this.m_deleteBtn.UseVisualStyleBackColor = true;
             this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
             // 
             // m_mailout
             // 
+            this.m_mailout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_mailout.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.m_mailout.Location = new System.Drawing.Point(433, 309);
+            this.m_mailout.Location = new System.Drawing.Point(433, 362);
             this.m_mailout.Name = "m_mailout";
             this.m_mailout.Size = new System.Drawing.Size(99, 33);
-            this.m_mailout.TabIndex = 177;
+            this.m_mailout.TabIndex = 23;
             this.m_mailout.Text = "メール出力";
             this.m_mailout.UseVisualStyleBackColor = true;
             this.m_mailout.Click += new System.EventHandler(this.m_mailout_Click);
@@ -453,22 +459,22 @@
             this.m_incidentKBN.Location = new System.Drawing.Point(140, 161);
             this.m_incidentKBN.Name = "m_incidentKBN";
             this.m_incidentKBN.Size = new System.Drawing.Size(325, 20);
-            this.m_incidentKBN.TabIndex = 3;
+            this.m_incidentKBN.TabIndex = 10;
             // 
             // m_timer
             // 
             this.m_timer.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
             this.m_timer.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_timer.Location = new System.Drawing.Point(537, 96);
+            this.m_timer.Location = new System.Drawing.Point(537, 132);
             this.m_timer.Name = "m_timer";
             this.m_timer.ShowCheckBox = true;
             this.m_timer.Size = new System.Drawing.Size(212, 19);
-            this.m_timer.TabIndex = 10;
+            this.m_timer.TabIndex = 19;
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(479, 123);
+            this.label18.Location = new System.Drawing.Point(481, 160);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(86, 12);
             this.label18.TabIndex = 176;
@@ -476,16 +482,18 @@
             // 
             // m_youkakunin
             // 
-            this.m_youkakunin.Location = new System.Drawing.Point(483, 138);
+            this.m_youkakunin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.m_youkakunin.Location = new System.Drawing.Point(483, 182);
             this.m_youkakunin.Multiline = true;
             this.m_youkakunin.Name = "m_youkakunin";
             this.m_youkakunin.Size = new System.Drawing.Size(287, 82);
-            this.m_youkakunin.TabIndex = 11;
+            this.m_youkakunin.TabIndex = 20;
             // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(479, 101);
+            this.label19.Location = new System.Drawing.Point(479, 137);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(41, 12);
             this.label19.TabIndex = 175;
@@ -493,18 +501,20 @@
             // 
             // m_enddate
             // 
+            this.m_enddate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_enddate.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
             this.m_enddate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_enddate.Location = new System.Drawing.Point(140, 323);
+            this.m_enddate.Location = new System.Drawing.Point(140, 376);
             this.m_enddate.Name = "m_enddate";
             this.m_enddate.ShowCheckBox = true;
             this.m_enddate.Size = new System.Drawing.Size(212, 19);
-            this.m_enddate.TabIndex = 9;
+            this.m_enddate.TabIndex = 16;
             // 
             // label13
             // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(17, 328);
+            this.label13.Location = new System.Drawing.Point(17, 381);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(53, 12);
             this.label13.TabIndex = 172;
@@ -512,18 +522,20 @@
             // 
             // m_fukkyudate
             // 
+            this.m_fukkyudate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_fukkyudate.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
             this.m_fukkyudate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_fukkyudate.Location = new System.Drawing.Point(140, 300);
+            this.m_fukkyudate.Location = new System.Drawing.Point(140, 353);
             this.m_fukkyudate.Name = "m_fukkyudate";
             this.m_fukkyudate.ShowCheckBox = true;
             this.m_fukkyudate.Size = new System.Drawing.Size(212, 19);
-            this.m_fukkyudate.TabIndex = 8;
+            this.m_fukkyudate.TabIndex = 15;
             // 
             // label15
             // 
+            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(17, 305);
+            this.label15.Location = new System.Drawing.Point(17, 358);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(53, 12);
             this.label15.TabIndex = 171;
@@ -531,8 +543,9 @@
             // 
             // m_MATchkbox
             // 
+            this.m_MATchkbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_MATchkbox.AutoSize = true;
-            this.m_MATchkbox.Location = new System.Drawing.Point(19, 208);
+            this.m_MATchkbox.Location = new System.Drawing.Point(19, 261);
             this.m_MATchkbox.Name = "m_MATchkbox";
             this.m_MATchkbox.Size = new System.Drawing.Size(91, 16);
             this.m_MATchkbox.TabIndex = 168;
@@ -541,8 +554,9 @@
             // 
             // label7
             // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(16, 232);
+            this.label7.Location = new System.Drawing.Point(16, 285);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(88, 12);
             this.label7.TabIndex = 167;
@@ -553,9 +567,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(16, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 12);
+            this.label1.Size = new System.Drawing.Size(19, 12);
             this.label1.TabIndex = 165;
-            this.label1.Text = "インシデント番号";
+            this.label1.Text = "No";
             // 
             // m_incidentno
             // 
@@ -563,22 +577,24 @@
             this.m_incidentno.Name = "m_incidentno";
             this.m_incidentno.ReadOnly = true;
             this.m_incidentno.Size = new System.Drawing.Size(99, 19);
-            this.m_incidentno.TabIndex = 164;
+            this.m_incidentno.TabIndex = 0;
             // 
             // m_tehaidate
             // 
+            this.m_tehaidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_tehaidate.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
             this.m_tehaidate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_tehaidate.Location = new System.Drawing.Point(140, 277);
+            this.m_tehaidate.Location = new System.Drawing.Point(140, 330);
             this.m_tehaidate.Name = "m_tehaidate";
             this.m_tehaidate.ShowCheckBox = true;
             this.m_tehaidate.Size = new System.Drawing.Size(212, 19);
-            this.m_tehaidate.TabIndex = 7;
+            this.m_tehaidate.TabIndex = 14;
             // 
             // label16
             // 
+            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(17, 282);
+            this.label16.Location = new System.Drawing.Point(17, 335);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(53, 12);
             this.label16.TabIndex = 163;
@@ -586,18 +602,20 @@
             // 
             // m_uketukedate
             // 
+            this.m_uketukedate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_uketukedate.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
             this.m_uketukedate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_uketukedate.Location = new System.Drawing.Point(140, 254);
+            this.m_uketukedate.Location = new System.Drawing.Point(140, 307);
             this.m_uketukedate.Name = "m_uketukedate";
             this.m_uketukedate.ShowCheckBox = true;
             this.m_uketukedate.Size = new System.Drawing.Size(212, 19);
-            this.m_uketukedate.TabIndex = 6;
+            this.m_uketukedate.TabIndex = 13;
             // 
             // label17
             // 
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(17, 259);
+            this.label17.Location = new System.Drawing.Point(17, 312);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(53, 12);
             this.label17.TabIndex = 162;
@@ -605,10 +623,11 @@
             // 
             // m_MATCommannd
             // 
-            this.m_MATCommannd.Location = new System.Drawing.Point(140, 227);
+            this.m_MATCommannd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.m_MATCommannd.Location = new System.Drawing.Point(140, 280);
             this.m_MATCommannd.Name = "m_MATCommannd";
             this.m_MATCommannd.Size = new System.Drawing.Size(325, 19);
-            this.m_MATCommannd.TabIndex = 5;
+            this.m_MATCommannd.TabIndex = 12;
             // 
             // label14
             // 
@@ -621,10 +640,13 @@
             // 
             // m_incidentnaiyou
             // 
+            this.m_incidentnaiyou.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.m_incidentnaiyou.Location = new System.Drawing.Point(140, 182);
+            this.m_incidentnaiyou.Multiline = true;
             this.m_incidentnaiyou.Name = "m_incidentnaiyou";
-            this.m_incidentnaiyou.Size = new System.Drawing.Size(325, 19);
-            this.m_incidentnaiyou.TabIndex = 4;
+            this.m_incidentnaiyou.Size = new System.Drawing.Size(325, 81);
+            this.m_incidentnaiyou.TabIndex = 11;
             // 
             // label11
             // 
@@ -641,7 +663,7 @@
             this.m_siteno.Name = "m_siteno";
             this.m_siteno.ReadOnly = true;
             this.m_siteno.Size = new System.Drawing.Size(47, 19);
-            this.m_siteno.TabIndex = 118;
+            this.m_siteno.TabIndex = 3;
             // 
             // Form_incidentDetail
             // 

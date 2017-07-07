@@ -293,7 +293,7 @@
             this.m_deleteBtn.Location = new System.Drawing.Point(644, 273);
             this.m_deleteBtn.Name = "m_deleteBtn";
             this.m_deleteBtn.Size = new System.Drawing.Size(76, 27);
-            this.m_deleteBtn.TabIndex = 13;
+            this.m_deleteBtn.TabIndex = 14;
             this.m_deleteBtn.Text = "削除";
             this.m_deleteBtn.UseVisualStyleBackColor = true;
             this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
@@ -319,7 +319,7 @@
             this.m_addressslist.Location = new System.Drawing.Point(2, 469);
             this.m_addressslist.Name = "m_addressslist";
             this.m_addressslist.Size = new System.Drawing.Size(718, 105);
-            this.m_addressslist.TabIndex = 185;
+            this.m_addressslist.TabIndex = 13;
             this.m_addressslist.UseCompatibleStateImageBehavior = false;
             this.m_addressslist.View = System.Windows.Forms.View.Details;
             this.m_addressslist.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_addressslist_ColumnClick);

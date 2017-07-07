@@ -15,7 +15,8 @@ namespace SMSサンプル
     public partial class Form_login : Form
     {
         // log 
-        private static readonly ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 
         //リターンコード
         public int ret_value { get; set; }
@@ -114,6 +115,7 @@ namespace SMSサンプル
                 {
                     MessageBox.Show("ログインに失敗しました。", "ログイン", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     logger.InfoFormat("ログインに失敗しました: User -> {0}", m_opeid.Text);
+
                     ret = -1;
                 }
                 else if (i > 0)

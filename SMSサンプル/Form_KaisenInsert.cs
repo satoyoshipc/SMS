@@ -39,6 +39,7 @@ namespace SMSサンプル
                 MessageBox.Show("カスタマ名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             //キャリア
             if (m_career.Text == "")
             {
@@ -54,6 +55,7 @@ namespace SMSサンプル
             Int32 systemno = (m_systemno.Text == "") ? 0 : int.Parse(m_systemno.Text);
             Int32 siteno = (m_siteno.Text == "") ? 0 : int.Parse(m_siteno.Text);
             Int32 hostno = (m_hostno.Text == "") ? 0 : int.Parse(m_hostno.Text);
+
             //ステータス
             string status = "";
             if (m_statusCombo.SelectedIndex == 0)
@@ -67,11 +69,12 @@ namespace SMSサンプル
             string career = m_career.Text;
             string kaisensyubetu = m_kaisensyubetu.Text;
             string kaisenid = m_kaisenid.Text;
+            string tel1 = m_tel1.Text;
+            string tel2 = m_tel2.Text;
+            string tel3 = m_tel3.Text;
             string isp = m_isp.Text;
             string servicetype = m_servicetype.Text;
             string serviceid = m_serviceid.Text;
-
-
 
             //DB接続
             NpgsqlCommand cmd;
@@ -80,8 +83,8 @@ namespace SMSサンプル
                 if (con.FullState != ConnectionState.Open) con.Open();
                 Int32 rowsaffected;
                 //データ登録
-                cmd = new NpgsqlCommand(@"insert into Kaisen(status,career,type,kaisenid,isp,servicetype,serviceid,siteno,userno,host_no,chk_name_id) 
-                    values ( :status,:career,:type,:kaisenid,:isp,:servicetype,:serviceid,:siteno,:userno,:host_no,:chk_name_id)", con);
+                cmd = new NpgsqlCommand(@"insert into Kaisen(status,career,type,kaisenid,isp,servicetype,serviceid,systemno,siteno,userno,host_no,telno1,telno2,telno3,chk_name_id) 
+                    values ( :status,:career,:type,:kaisenid,:isp,:servicetype,:serviceid,:systemno,:siteno,:userno,:host_no,:telno1,:telno2,:telno3,:chk_name_id)", con);
                 cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
                 cmd.Parameters.Add(new NpgsqlParameter("career", DbType.String) { Value = career });
                 cmd.Parameters.Add(new NpgsqlParameter("type", DbType.String) { Value = kaisensyubetu });
@@ -89,9 +92,15 @@ namespace SMSサンプル
                 cmd.Parameters.Add(new NpgsqlParameter("isp", DbType.String) { Value = isp });
                 cmd.Parameters.Add(new NpgsqlParameter("servicetype", DbType.String) { Value = servicetype });
                 cmd.Parameters.Add(new NpgsqlParameter("serviceid", DbType.String) { Value = serviceid });
+                cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
                 cmd.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = siteno });
                 cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
                 cmd.Parameters.Add(new NpgsqlParameter("host_no", DbType.Int32) { Value = hostno });
+                cmd.Parameters.Add(new NpgsqlParameter("telno1", DbType.String) { Value = tel1 });
+                cmd.Parameters.Add(new NpgsqlParameter("telno2", DbType.String) { Value = tel2 });
+                cmd.Parameters.Add(new NpgsqlParameter("telno3", DbType.String) { Value = tel3 });
+
+
                 cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
                 rowsaffected = cmd.ExecuteNonQuery();
 

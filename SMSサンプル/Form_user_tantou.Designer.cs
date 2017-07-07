@@ -217,49 +217,49 @@
             this.m_tantouno.Name = "m_tantouno";
             this.m_tantouno.ReadOnly = true;
             this.m_tantouno.Size = new System.Drawing.Size(222, 19);
-            this.m_tantouno.TabIndex = 0;
+            this.m_tantouno.TabIndex = 2;
             // 
             // m_tantouname
             // 
             this.m_tantouname.Location = new System.Drawing.Point(110, 309);
             this.m_tantouname.Name = "m_tantouname";
             this.m_tantouname.Size = new System.Drawing.Size(222, 19);
-            this.m_tantouname.TabIndex = 1;
+            this.m_tantouname.TabIndex = 3;
             // 
             // m_tantoukana
             // 
             this.m_tantoukana.Location = new System.Drawing.Point(110, 333);
             this.m_tantoukana.Name = "m_tantoukana";
             this.m_tantoukana.Size = new System.Drawing.Size(222, 19);
-            this.m_tantoukana.TabIndex = 2;
+            this.m_tantoukana.TabIndex = 4;
             // 
             // m_busyoname
             // 
             this.m_busyoname.Location = new System.Drawing.Point(110, 356);
             this.m_busyoname.Name = "m_busyoname";
             this.m_busyoname.Size = new System.Drawing.Size(222, 19);
-            this.m_busyoname.TabIndex = 3;
+            this.m_busyoname.TabIndex = 5;
             // 
             // m_tel1
             // 
             this.m_tel1.Location = new System.Drawing.Point(110, 380);
             this.m_tel1.Name = "m_tel1";
             this.m_tel1.Size = new System.Drawing.Size(222, 19);
-            this.m_tel1.TabIndex = 4;
+            this.m_tel1.TabIndex = 6;
             // 
             // m_tel2
             // 
             this.m_tel2.Location = new System.Drawing.Point(110, 403);
             this.m_tel2.Name = "m_tel2";
             this.m_tel2.Size = new System.Drawing.Size(222, 19);
-            this.m_tel2.TabIndex = 5;
+            this.m_tel2.TabIndex = 7;
             // 
             // m_yakusyoku
             // 
             this.m_yakusyoku.Location = new System.Drawing.Point(110, 427);
             this.m_yakusyoku.Name = "m_yakusyoku";
             this.m_yakusyoku.Size = new System.Drawing.Size(222, 19);
-            this.m_yakusyoku.TabIndex = 6;
+            this.m_yakusyoku.TabIndex = 8;
             // 
             // m_statusCombo
             // 
@@ -270,7 +270,7 @@
             this.m_statusCombo.Location = new System.Drawing.Point(110, 453);
             this.m_statusCombo.Name = "m_statusCombo";
             this.m_statusCombo.Size = new System.Drawing.Size(75, 20);
-            this.m_statusCombo.TabIndex = 7;
+            this.m_statusCombo.TabIndex = 9;
             // 
             // m_biko
             // 
@@ -278,14 +278,14 @@
             this.m_biko.Multiline = true;
             this.m_biko.Name = "m_biko";
             this.m_biko.Size = new System.Drawing.Size(264, 128);
-            this.m_biko.TabIndex = 8;
+            this.m_biko.TabIndex = 10;
             // 
             // m_kousin_btn
             // 
             this.m_kousin_btn.Location = new System.Drawing.Point(612, 476);
             this.m_kousin_btn.Name = "m_kousin_btn";
             this.m_kousin_btn.Size = new System.Drawing.Size(78, 28);
-            this.m_kousin_btn.TabIndex = 11;
+            this.m_kousin_btn.TabIndex = 14;
             this.m_kousin_btn.Text = "更新";
             this.m_kousin_btn.UseVisualStyleBackColor = true;
             this.m_kousin_btn.Click += new System.EventHandler(this.m_kousin_btn_Click);
@@ -295,7 +295,7 @@
             this.m_cancelbtn.Location = new System.Drawing.Point(696, 476);
             this.m_cancelbtn.Name = "m_cancelbtn";
             this.m_cancelbtn.Size = new System.Drawing.Size(78, 28);
-            this.m_cancelbtn.TabIndex = 12;
+            this.m_cancelbtn.TabIndex = 15;
             this.m_cancelbtn.Text = "キャンセル";
             this.m_cancelbtn.UseVisualStyleBackColor = true;
             this.m_cancelbtn.Click += new System.EventHandler(this.m_cancelbtn_Click);
@@ -306,7 +306,7 @@
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
             this.m_updateOpe.Size = new System.Drawing.Size(166, 19);
-            this.m_updateOpe.TabIndex = 10;
+            this.m_updateOpe.TabIndex = 12;
             this.m_updateOpe.TabStop = false;
             // 
             // label11
@@ -324,7 +324,7 @@
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
             this.m_update.Size = new System.Drawing.Size(166, 19);
-            this.m_update.TabIndex = 9;
+            this.m_update.TabIndex = 11;
             this.m_update.TabStop = false;
             // 
             // label12
@@ -343,7 +343,7 @@
             this.m_deleteBtn.Location = new System.Drawing.Point(698, 255);
             this.m_deleteBtn.Name = "m_deleteBtn";
             this.m_deleteBtn.Size = new System.Drawing.Size(76, 27);
-            this.m_deleteBtn.TabIndex = 15;
+            this.m_deleteBtn.TabIndex = 16;
             this.m_deleteBtn.Text = "削除";
             this.m_deleteBtn.UseVisualStyleBackColor = true;
             this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
@@ -367,7 +367,7 @@
             this.m_addressslist.Location = new System.Drawing.Point(2, 510);
             this.m_addressslist.Name = "m_addressslist";
             this.m_addressslist.Size = new System.Drawing.Size(775, 105);
-            this.m_addressslist.TabIndex = 14;
+            this.m_addressslist.TabIndex = 17;
             this.m_addressslist.UseCompatibleStateImageBehavior = false;
             this.m_addressslist.View = System.Windows.Forms.View.Details;
             this.m_addressslist.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_addressslist_MouseDoubleClick);
@@ -378,7 +378,7 @@
             this.m_username.Name = "m_username";
             this.m_username.ReadOnly = true;
             this.m_username.Size = new System.Drawing.Size(183, 19);
-            this.m_username.TabIndex = 78;
+            this.m_username.TabIndex = 1;
             // 
             // label10
             // 
@@ -395,7 +395,7 @@
             this.m_userno.Name = "m_userno";
             this.m_userno.ReadOnly = true;
             this.m_userno.Size = new System.Drawing.Size(33, 19);
-            this.m_userno.TabIndex = 80;
+            this.m_userno.TabIndex = 0;
             // 
             // Form_user_tantou
             // 

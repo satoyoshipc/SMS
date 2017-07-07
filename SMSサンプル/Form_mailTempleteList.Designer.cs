@@ -30,6 +30,9 @@
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.m_mailTempleteList = new System.Windows.Forms.ListView();
+            this.label4 = new System.Windows.Forms.Label();
+            this.m_account = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.m_deleteBtn = new System.Windows.Forms.Button();
             this.m_updateOpe = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -61,9 +64,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.m_subject = new System.Windows.Forms.TextBox();
             this.m_body = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.m_account = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -136,6 +136,31 @@
             this.m_mailTempleteList.SelectedIndexChanged += new System.EventHandler(this.m_mailTempleteList_SelectedIndexChanged);
             this.m_mailTempleteList.DoubleClick += new System.EventHandler(this.m_mailTempleteList_DoubleClick);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(11, 60);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(145, 12);
+            this.label4.TabIndex = 184;
+            this.label4.Text = "送信アカウント(メールアドレス)";
+            // 
+            // m_account
+            // 
+            this.m_account.Location = new System.Drawing.Point(162, 57);
+            this.m_account.Name = "m_account";
+            this.m_account.Size = new System.Drawing.Size(261, 19);
+            this.m_account.TabIndex = 3;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(-3, -79);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(29, 12);
+            this.label12.TabIndex = 183;
+            this.label12.Text = "表題";
+            // 
             // m_deleteBtn
             // 
             this.m_deleteBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -144,7 +169,7 @@
             this.m_deleteBtn.Location = new System.Drawing.Point(856, 6);
             this.m_deleteBtn.Name = "m_deleteBtn";
             this.m_deleteBtn.Size = new System.Drawing.Size(92, 24);
-            this.m_deleteBtn.TabIndex = 181;
+            this.m_deleteBtn.TabIndex = 21;
             this.m_deleteBtn.Text = "削除";
             this.m_deleteBtn.UseVisualStyleBackColor = true;
             this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
@@ -155,7 +180,7 @@
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
             this.m_updateOpe.Size = new System.Drawing.Size(166, 19);
-            this.m_updateOpe.TabIndex = 106;
+            this.m_updateOpe.TabIndex = 17;
             this.m_updateOpe.TabStop = false;
             // 
             // label2
@@ -173,7 +198,7 @@
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
             this.m_update.Size = new System.Drawing.Size(166, 19);
-            this.m_update.TabIndex = 104;
+            this.m_update.TabIndex = 16;
             this.m_update.TabStop = false;
             // 
             // label3
@@ -191,7 +216,7 @@
             this.Bcc.Location = new System.Drawing.Point(636, 85);
             this.Bcc.Name = "Bcc";
             this.Bcc.Size = new System.Drawing.Size(27, 12);
-            this.Bcc.TabIndex = 7;
+            this.Bcc.TabIndex = 8;
             this.Bcc.TabStop = true;
             this.Bcc.Text = "Bcc:";
             this.Bcc.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Bcc_LinkClicked);
@@ -202,7 +227,7 @@
             this.Cc.Location = new System.Drawing.Point(334, 85);
             this.Cc.Name = "Cc";
             this.Cc.Size = new System.Drawing.Size(21, 12);
-            this.Cc.TabIndex = 5;
+            this.Cc.TabIndex = 6;
             this.Cc.TabStop = true;
             this.Cc.Text = "Cc:";
             this.Cc.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Cc_LinkClicked);
@@ -213,7 +238,7 @@
             this.To.Location = new System.Drawing.Point(13, 85);
             this.To.Name = "To";
             this.To.Size = new System.Drawing.Size(20, 12);
-            this.To.TabIndex = 3;
+            this.To.TabIndex = 4;
             this.To.TabStop = true;
             this.To.Text = "To:";
             this.To.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.To_LinkClicked);
@@ -224,7 +249,7 @@
             this.m_Bcc_list.Location = new System.Drawing.Point(666, 80);
             this.m_Bcc_list.Name = "m_Bcc_list";
             this.m_Bcc_list.Size = new System.Drawing.Size(282, 84);
-            this.m_Bcc_list.TabIndex = 8;
+            this.m_Bcc_list.TabIndex = 9;
             this.m_Bcc_list.UseCompatibleStateImageBehavior = false;
             this.m_Bcc_list.View = System.Windows.Forms.View.Details;
             this.m_Bcc_list.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_Bcc_list_KeyDown);
@@ -235,7 +260,7 @@
             this.m_Cc_list.Location = new System.Drawing.Point(360, 80);
             this.m_Cc_list.Name = "m_Cc_list";
             this.m_Cc_list.Size = new System.Drawing.Size(267, 84);
-            this.m_Cc_list.TabIndex = 6;
+            this.m_Cc_list.TabIndex = 7;
             this.m_Cc_list.UseCompatibleStateImageBehavior = false;
             this.m_Cc_list.View = System.Windows.Forms.View.Details;
             this.m_Cc_list.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_Cc_list_KeyDown);
@@ -246,7 +271,7 @@
             this.m_To_list.Location = new System.Drawing.Point(39, 80);
             this.m_To_list.Name = "m_To_list";
             this.m_To_list.Size = new System.Drawing.Size(280, 84);
-            this.m_To_list.TabIndex = 4;
+            this.m_To_list.TabIndex = 5;
             this.m_To_list.UseCompatibleStateImageBehavior = false;
             this.m_To_list.View = System.Windows.Forms.View.Details;
             this.m_To_list.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_To_list_KeyDown);
@@ -274,14 +299,14 @@
             this.m_temp5.Location = new System.Drawing.Point(374, 192);
             this.m_temp5.Name = "m_temp5";
             this.m_temp5.Size = new System.Drawing.Size(261, 19);
-            this.m_temp5.TabIndex = 13;
+            this.m_temp5.TabIndex = 14;
             // 
             // m_temp4
             // 
             this.m_temp4.Location = new System.Drawing.Point(374, 170);
             this.m_temp4.Name = "m_temp4";
             this.m_temp4.Size = new System.Drawing.Size(261, 19);
-            this.m_temp4.TabIndex = 12;
+            this.m_temp4.TabIndex = 13;
             // 
             // label6
             // 
@@ -315,21 +340,21 @@
             this.m_temp3.Location = new System.Drawing.Point(58, 213);
             this.m_temp3.Name = "m_temp3";
             this.m_temp3.Size = new System.Drawing.Size(261, 19);
-            this.m_temp3.TabIndex = 11;
+            this.m_temp3.TabIndex = 12;
             // 
             // m_temp2
             // 
             this.m_temp2.Location = new System.Drawing.Point(58, 192);
             this.m_temp2.Name = "m_temp2";
             this.m_temp2.Size = new System.Drawing.Size(261, 19);
-            this.m_temp2.TabIndex = 10;
+            this.m_temp2.TabIndex = 11;
             // 
             // m_temp1
             // 
             this.m_temp1.Location = new System.Drawing.Point(58, 170);
             this.m_temp1.Name = "m_temp1";
             this.m_temp1.Size = new System.Drawing.Size(261, 19);
-            this.m_temp1.TabIndex = 9;
+            this.m_temp1.TabIndex = 10;
             // 
             // label9
             // 
@@ -347,7 +372,7 @@
             this.m_templetename.Location = new System.Drawing.Point(150, 8);
             this.m_templetename.Name = "m_templetename";
             this.m_templetename.Size = new System.Drawing.Size(627, 19);
-            this.m_templetename.TabIndex = 0;
+            this.m_templetename.TabIndex = 1;
             // 
             // label5
             // 
@@ -366,7 +391,7 @@
             this.m_tempno.Name = "m_tempno";
             this.m_tempno.ReadOnly = true;
             this.m_tempno.Size = new System.Drawing.Size(57, 19);
-            this.m_tempno.TabIndex = 38;
+            this.m_tempno.TabIndex = 0;
             // 
             // m_mailDispBtn
             // 
@@ -375,7 +400,7 @@
             this.m_mailDispBtn.Location = new System.Drawing.Point(12, 419);
             this.m_mailDispBtn.Name = "m_mailDispBtn";
             this.m_mailDispBtn.Size = new System.Drawing.Size(101, 23);
-            this.m_mailDispBtn.TabIndex = 15;
+            this.m_mailDispBtn.TabIndex = 20;
             this.m_mailDispBtn.Text = "メール出力";
             this.m_mailDispBtn.UseVisualStyleBackColor = true;
             this.m_mailDispBtn.Click += new System.EventHandler(this.m_mailDispBtn_Click);
@@ -386,7 +411,7 @@
             this.m_cancel.Location = new System.Drawing.Point(873, 419);
             this.m_cancel.Name = "m_cancel";
             this.m_cancel.Size = new System.Drawing.Size(75, 23);
-            this.m_cancel.TabIndex = 17;
+            this.m_cancel.TabIndex = 19;
             this.m_cancel.Text = "キャンセル";
             this.m_cancel.UseVisualStyleBackColor = true;
             this.m_cancel.Click += new System.EventHandler(this.m_cancel_Click);
@@ -397,7 +422,7 @@
             this.m_OK.Location = new System.Drawing.Point(792, 419);
             this.m_OK.Name = "m_OK";
             this.m_OK.Size = new System.Drawing.Size(75, 23);
-            this.m_OK.TabIndex = 16;
+            this.m_OK.TabIndex = 18;
             this.m_OK.Text = "変更";
             this.m_OK.UseVisualStyleBackColor = true;
             this.m_OK.Click += new System.EventHandler(this.m_OK_Click);
@@ -418,7 +443,7 @@
             this.m_subject.Location = new System.Drawing.Point(45, 33);
             this.m_subject.Name = "m_subject";
             this.m_subject.Size = new System.Drawing.Size(903, 19);
-            this.m_subject.TabIndex = 1;
+            this.m_subject.TabIndex = 2;
             // 
             // m_body
             // 
@@ -430,32 +455,7 @@
             this.m_body.Name = "m_body";
             this.m_body.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.m_body.Size = new System.Drawing.Size(909, 172);
-            this.m_body.TabIndex = 14;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(11, 60);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(145, 12);
-            this.label4.TabIndex = 184;
-            this.label4.Text = "送信アカウント(メールアドレス)";
-            // 
-            // m_account
-            // 
-            this.m_account.Location = new System.Drawing.Point(162, 57);
-            this.m_account.Name = "m_account";
-            this.m_account.Size = new System.Drawing.Size(261, 19);
-            this.m_account.TabIndex = 2;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(-3, -79);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(29, 12);
-            this.label12.TabIndex = 183;
-            this.label12.Text = "表題";
+            this.m_body.TabIndex = 15;
             // 
             // Form_mailTempleteList
             // 

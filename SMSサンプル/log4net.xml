@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <log4net>
+    <!-- コンソール出力用 (VS 上 [出力] ウインドウへの出力) -->
+    <appender name="ConsoleAppender" type="log4net.Appender.ConsoleAppender">
+      <!-- 出力文字列のフォーマット -->
+      <layout type="log4net.Layout.PatternLayout">
+        <param name="ConversionPattern" value="@%-5level&gt;&gt; %message%newline" />
+      </layout>
+    </appender>
+
+    <!-- 通常ログ：単一ファイル出力 -->
+    <appender name="InfoLogDailyAppender" type="log4net.Appender.RollingFileAppender">
+      <!-- ファイル名は日付ごと グローバル変数名で設定したフォルダのLogs￥Info_yyyyMMdd.logで出力-->
+      <param name="File" value="c:\tmp\moss.log" />
+      <param name="DatePattern" value='yyyyMMdd' />
+      <param name="RollingStyle" value="size" />
+      <param name="MaximumFileSize" value="20MB" />
+      <param name="StaticLogFileName" value="false" />
+      <param name="MaxSizeRollBackups" value="10" />
+      <AppendToFile value="true" />
+
+      <filter type="log4net.Filter.LevelRangeFilter">
+        <param name="LevelMax" value="Error" />
+        <param name="LevelMin" value="Trace" />
+      </filter>
+
+      <layout type="log4net.Layout.PatternLayout">
+        <ConversionPattern value="%date [%-5level] - %message%n" />
+      </layout>
+    </appender>
+
+    <!-- エラーログ：分割ファイル出力 -->
+    <appender name="ErrorLogDailyAppender" type="log4net.Appender.RollingFileAppender">
+      <!-- ファイル名は日付ごと -->
+      <param name="File" value="moss_Error.log" />
+      <param name="DatePattern" value='yyyyMMdd' />
+      <param name="RollingStyle" value="size" />
+      <param name="StaticLogFileName" value="false" />
+
+      <param name="AppendToFile" value="true" />
+
+      <filter type="log4net.Filter.LevelRangeFilter">
+        <param name="LevelMax" value="FATAL" />
+        <param name="LevelMin" value="Warn" />
+      </filter>
+
+      <param name="MaximumFileSize" value="20MB" />
+      <param name="MaxSizeRollBackups" value="10" />
+
+      <layout type="log4net.Layout.PatternLayout">
+        <ConversionPattern value="%date [%-5level] %class %method - %message%n" />
+      </layout>
+    </appender>
+
+    <root>
+      <!-- 使用する Appender -->
+      <appender-ref ref="ConsoleAppender" />
+      <appender-ref ref="InfoLogDailyAppender" />
+      <appender-ref ref="ErrorLogDailyAppender" />
+    </root>
+
+  </log4net>
+</configuration>

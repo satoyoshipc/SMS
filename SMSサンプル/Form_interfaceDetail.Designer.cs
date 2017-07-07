@@ -93,7 +93,7 @@
             this.m_statusCombo.Location = new System.Drawing.Point(140, 116);
             this.m_statusCombo.Name = "m_statusCombo";
             this.m_statusCombo.Size = new System.Drawing.Size(68, 20);
-            this.m_statusCombo.TabIndex = 5;
+            this.m_statusCombo.TabIndex = 8;
             // 
             // label12
             // 
@@ -110,7 +110,7 @@
             this.m_systemno.Name = "m_systemno";
             this.m_systemno.ReadOnly = true;
             this.m_systemno.Size = new System.Drawing.Size(45, 19);
-            this.m_systemno.TabIndex = 115;
+            this.m_systemno.TabIndex = 16;
             // 
             // m_systemname
             // 
@@ -118,7 +118,7 @@
             this.m_systemname.Name = "m_systemname";
             this.m_systemname.ReadOnly = true;
             this.m_systemname.Size = new System.Drawing.Size(182, 19);
-            this.m_systemname.TabIndex = 114;
+            this.m_systemname.TabIndex = 17;
             // 
             // label10
             // 
@@ -152,14 +152,14 @@
             this.m_watchtype.Location = new System.Drawing.Point(140, 138);
             this.m_watchtype.Name = "m_watchtype";
             this.m_watchtype.Size = new System.Drawing.Size(325, 19);
-            this.m_watchtype.TabIndex = 6;
+            this.m_watchtype.TabIndex = 9;
             // 
             // m_interfaceName
             // 
             this.m_interfaceName.Location = new System.Drawing.Point(140, 95);
             this.m_interfaceName.Name = "m_interfaceName";
             this.m_interfaceName.Size = new System.Drawing.Size(325, 19);
-            this.m_interfaceName.TabIndex = 4;
+            this.m_interfaceName.TabIndex = 7;
             // 
             // m_hostname
             // 
@@ -167,7 +167,7 @@
             this.m_hostname.Name = "m_hostname";
             this.m_hostname.ReadOnly = true;
             this.m_hostname.Size = new System.Drawing.Size(274, 19);
-            this.m_hostname.TabIndex = 3;
+            this.m_hostname.TabIndex = 6;
             // 
             // m_userno
             // 
@@ -175,7 +175,7 @@
             this.m_userno.Name = "m_userno";
             this.m_userno.ReadOnly = true;
             this.m_userno.Size = new System.Drawing.Size(47, 19);
-            this.m_userno.TabIndex = 105;
+            this.m_userno.TabIndex = 1;
             // 
             // m_cutomername
             // 
@@ -183,7 +183,7 @@
             this.m_cutomername.Name = "m_cutomername";
             this.m_cutomername.ReadOnly = true;
             this.m_cutomername.Size = new System.Drawing.Size(274, 19);
-            this.m_cutomername.TabIndex = 1;
+            this.m_cutomername.TabIndex = 2;
             // 
             // label4
             // 
@@ -200,7 +200,7 @@
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
             this.m_updateOpe.Size = new System.Drawing.Size(233, 19);
-            this.m_updateOpe.TabIndex = 102;
+            this.m_updateOpe.TabIndex = 19;
             this.m_updateOpe.TabStop = false;
             // 
             // label6
@@ -218,7 +218,7 @@
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
             this.m_update.Size = new System.Drawing.Size(233, 19);
-            this.m_update.TabIndex = 100;
+            this.m_update.TabIndex = 18;
             this.m_update.TabStop = false;
             // 
             // label5
@@ -235,7 +235,7 @@
             this.button2.Location = new System.Drawing.Point(694, 295);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(76, 33);
-            this.button2.TabIndex = 15;
+            this.button2.TabIndex = 21;
             this.button2.Text = "戻る";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -245,7 +245,7 @@
             this.button1.Location = new System.Drawing.Point(612, 295);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(76, 33);
-            this.button1.TabIndex = 14;
+            this.button1.TabIndex = 20;
             this.button1.Text = "更新";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -256,7 +256,7 @@
             this.m_sitename.Name = "m_sitename";
             this.m_sitename.ReadOnly = true;
             this.m_sitename.Size = new System.Drawing.Size(274, 19);
-            this.m_sitename.TabIndex = 2;
+            this.m_sitename.TabIndex = 4;
             // 
             // m_hostno
             // 
@@ -264,7 +264,7 @@
             this.m_hostno.Name = "m_hostno";
             this.m_hostno.ReadOnly = true;
             this.m_hostno.Size = new System.Drawing.Size(47, 19);
-            this.m_hostno.TabIndex = 0;
+            this.m_hostno.TabIndex = 5;
             this.m_hostno.TabStop = false;
             // 
             // label3
@@ -400,7 +400,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.label2);
             this.splitContainer1.Size = new System.Drawing.Size(789, 628);
             this.splitContainer1.SplitterDistance = 279;
-            this.splitContainer1.TabIndex = 1;
+            this.splitContainer1.TabIndex = 0;
             // 
             // m_deleteBtn
             // 
@@ -410,7 +410,7 @@
             this.m_deleteBtn.Location = new System.Drawing.Point(684, 8);
             this.m_deleteBtn.Name = "m_deleteBtn";
             this.m_deleteBtn.Size = new System.Drawing.Size(92, 33);
-            this.m_deleteBtn.TabIndex = 179;
+            this.m_deleteBtn.TabIndex = 22;
             this.m_deleteBtn.Text = "削除";
             this.m_deleteBtn.UseVisualStyleBackColor = true;
             this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
@@ -429,7 +429,7 @@
             this.m_addressNAT.Location = new System.Drawing.Point(140, 273);
             this.m_addressNAT.Name = "m_addressNAT";
             this.m_addressNAT.Size = new System.Drawing.Size(325, 19);
-            this.m_addressNAT.TabIndex = 166;
+            this.m_addressNAT.TabIndex = 15;
             // 
             // label1
             // 
@@ -446,7 +446,7 @@
             this.m_interfaceno.Name = "m_interfaceno";
             this.m_interfaceno.ReadOnly = true;
             this.m_interfaceno.Size = new System.Drawing.Size(99, 19);
-            this.m_interfaceno.TabIndex = 164;
+            this.m_interfaceno.TabIndex = 0;
             // 
             // m_end_date
             // 
@@ -456,7 +456,7 @@
             this.m_end_date.Location = new System.Drawing.Point(140, 205);
             this.m_end_date.Name = "m_end_date";
             this.m_end_date.Size = new System.Drawing.Size(198, 19);
-            this.m_end_date.TabIndex = 10;
+            this.m_end_date.TabIndex = 12;
             // 
             // label16
             // 
@@ -477,7 +477,7 @@
             this.m_start_date.Location = new System.Drawing.Point(140, 182);
             this.m_start_date.Name = "m_start_date";
             this.m_start_date.Size = new System.Drawing.Size(198, 19);
-            this.m_start_date.TabIndex = 9;
+            this.m_start_date.TabIndex = 11;
             // 
             // label17
             // 
@@ -504,7 +504,7 @@
             this.m_addressIP.Location = new System.Drawing.Point(140, 251);
             this.m_addressIP.Name = "m_addressIP";
             this.m_addressIP.Size = new System.Drawing.Size(325, 19);
-            this.m_addressIP.TabIndex = 12;
+            this.m_addressIP.TabIndex = 14;
             // 
             // label14
             // 
@@ -520,7 +520,7 @@
             this.m_sikiiti.Location = new System.Drawing.Point(140, 229);
             this.m_sikiiti.Name = "m_sikiiti";
             this.m_sikiiti.Size = new System.Drawing.Size(325, 19);
-            this.m_sikiiti.TabIndex = 11;
+            this.m_sikiiti.TabIndex = 13;
             // 
             // label11
             // 
@@ -536,7 +536,7 @@
             this.m_koumoku.Location = new System.Drawing.Point(140, 160);
             this.m_koumoku.Name = "m_koumoku";
             this.m_koumoku.Size = new System.Drawing.Size(325, 19);
-            this.m_koumoku.TabIndex = 7;
+            this.m_koumoku.TabIndex = 10;
             // 
             // m_siteno
             // 
@@ -544,7 +544,7 @@
             this.m_siteno.Name = "m_siteno";
             this.m_siteno.ReadOnly = true;
             this.m_siteno.Size = new System.Drawing.Size(47, 19);
-            this.m_siteno.TabIndex = 118;
+            this.m_siteno.TabIndex = 3;
             // 
             // Form_interfaceDetail
             // 

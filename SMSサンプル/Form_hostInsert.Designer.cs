@@ -42,7 +42,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.m_hostname_ja = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.m_biko = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -69,20 +68,20 @@
             // 
             // m_systemno
             // 
-            this.m_systemno.Location = new System.Drawing.Point(111, 69);
+            this.m_systemno.Location = new System.Drawing.Point(118, 37);
             this.m_systemno.Name = "m_systemno";
             this.m_systemno.ReadOnly = true;
             this.m_systemno.Size = new System.Drawing.Size(44, 19);
-            this.m_systemno.TabIndex = 83;
+            this.m_systemno.TabIndex = 3;
             this.m_systemno.TabStop = false;
             // 
             // m_userno
             // 
-            this.m_userno.Location = new System.Drawing.Point(111, 45);
+            this.m_userno.Location = new System.Drawing.Point(118, 13);
             this.m_userno.Name = "m_userno";
             this.m_userno.ReadOnly = true;
             this.m_userno.Size = new System.Drawing.Size(44, 19);
-            this.m_userno.TabIndex = 82;
+            this.m_userno.TabIndex = 1;
             this.m_userno.TabStop = false;
             // 
             // m_systemCombo
@@ -91,10 +90,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_systemCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_systemCombo.FormattingEnabled = true;
-            this.m_systemCombo.Location = new System.Drawing.Point(161, 69);
+            this.m_systemCombo.Location = new System.Drawing.Point(168, 37);
             this.m_systemCombo.Name = "m_systemCombo";
             this.m_systemCombo.Size = new System.Drawing.Size(249, 20);
-            this.m_systemCombo.TabIndex = 1;
+            this.m_systemCombo.TabIndex = 4;
             this.m_systemCombo.SelectionChangeCommitted += new System.EventHandler(this.m_systemCombo_SelectionChangeCommitted);
             // 
             // m_usernameCombo
@@ -103,16 +102,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_usernameCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_usernameCombo.FormattingEnabled = true;
-            this.m_usernameCombo.Location = new System.Drawing.Point(161, 44);
+            this.m_usernameCombo.Location = new System.Drawing.Point(168, 12);
             this.m_usernameCombo.Name = "m_usernameCombo";
             this.m_usernameCombo.Size = new System.Drawing.Size(249, 20);
-            this.m_usernameCombo.TabIndex = 0;
+            this.m_usernameCombo.TabIndex = 2;
             this.m_usernameCombo.SelectionChangeCommitted += new System.EventHandler(this.m_usernameCombo_SelectionChangeCommitted);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 72);
+            this.label8.Location = new System.Drawing.Point(19, 40);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(55, 12);
             this.label8.TabIndex = 79;
@@ -121,7 +120,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 47);
+            this.label7.Location = new System.Drawing.Point(19, 15);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(52, 12);
             this.label7.TabIndex = 78;
@@ -129,26 +128,26 @@
             // 
             // m_idlabel
             // 
-            this.m_idlabel.Location = new System.Drawing.Point(111, 448);
+            this.m_idlabel.Location = new System.Drawing.Point(118, 416);
             this.m_idlabel.Name = "m_idlabel";
             this.m_idlabel.ReadOnly = true;
             this.m_idlabel.Size = new System.Drawing.Size(44, 19);
-            this.m_idlabel.TabIndex = 77;
+            this.m_idlabel.TabIndex = 18;
             this.m_idlabel.TabStop = false;
             // 
             // m_location
             // 
             this.m_location.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_location.Location = new System.Drawing.Point(111, 217);
+            this.m_location.Location = new System.Drawing.Point(118, 185);
             this.m_location.Name = "m_location";
             this.m_location.Size = new System.Drawing.Size(297, 19);
-            this.m_location.TabIndex = 7;
+            this.m_location.TabIndex = 11;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(17, 221);
+            this.label6.Location = new System.Drawing.Point(24, 189);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 12);
             this.label6.TabIndex = 74;
@@ -158,17 +157,17 @@
             // 
             this.m_labelinputOpe.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_labelinputOpe.Location = new System.Drawing.Point(161, 448);
+            this.m_labelinputOpe.Location = new System.Drawing.Point(168, 416);
             this.m_labelinputOpe.Name = "m_labelinputOpe";
             this.m_labelinputOpe.ReadOnly = true;
             this.m_labelinputOpe.Size = new System.Drawing.Size(249, 19);
-            this.m_labelinputOpe.TabIndex = 73;
+            this.m_labelinputOpe.TabIndex = 19;
             this.m_labelinputOpe.TabStop = false;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(17, 451);
+            this.label5.Location = new System.Drawing.Point(24, 419);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(51, 12);
             this.label5.TabIndex = 72;
@@ -177,10 +176,10 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(214, 474);
+            this.button3.Location = new System.Drawing.Point(221, 442);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
-            this.button3.TabIndex = 14;
+            this.button3.TabIndex = 20;
             this.button3.Text = "登録";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -188,10 +187,10 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(315, 473);
+            this.button2.Location = new System.Drawing.Point(322, 441);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 23);
-            this.button2.TabIndex = 15;
+            this.button2.TabIndex = 21;
             this.button2.Text = "キャンセル";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -200,34 +199,25 @@
             // 
             this.m_hostname_ja.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_hostname_ja.Location = new System.Drawing.Point(111, 170);
+            this.m_hostname_ja.Location = new System.Drawing.Point(118, 138);
             this.m_hostname_ja.Name = "m_hostname_ja";
             this.m_hostname_ja.Size = new System.Drawing.Size(297, 19);
-            this.m_hostname_ja.TabIndex = 5;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(15, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(95, 23);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "CSV登録";
-            this.button1.UseVisualStyleBackColor = true;
+            this.m_hostname_ja.TabIndex = 9;
             // 
             // m_biko
             // 
             this.m_biko.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_biko.Location = new System.Drawing.Point(111, 385);
+            this.m_biko.Location = new System.Drawing.Point(118, 353);
             this.m_biko.Multiline = true;
             this.m_biko.Name = "m_biko";
             this.m_biko.Size = new System.Drawing.Size(297, 59);
-            this.m_biko.TabIndex = 13;
+            this.m_biko.TabIndex = 17;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(16, 388);
+            this.label4.Location = new System.Drawing.Point(23, 356);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 12);
             this.label4.TabIndex = 66;
@@ -236,7 +226,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 173);
+            this.label3.Location = new System.Drawing.Point(19, 141);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(88, 12);
             this.label3.TabIndex = 65;
@@ -246,15 +236,15 @@
             // 
             this.m_hostname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_hostname.Location = new System.Drawing.Point(111, 147);
+            this.m_hostname.Location = new System.Drawing.Point(118, 115);
             this.m_hostname.Name = "m_hostname";
             this.m_hostname.Size = new System.Drawing.Size(297, 19);
-            this.m_hostname.TabIndex = 4;
+            this.m_hostname.TabIndex = 8;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 150);
+            this.label2.Location = new System.Drawing.Point(19, 118);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(76, 12);
             this.label2.TabIndex = 63;
@@ -263,7 +253,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 98);
+            this.label1.Location = new System.Drawing.Point(20, 66);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 61;
@@ -271,11 +261,11 @@
             // 
             // m_siteno
             // 
-            this.m_siteno.Location = new System.Drawing.Point(111, 95);
+            this.m_siteno.Location = new System.Drawing.Point(118, 63);
             this.m_siteno.Name = "m_siteno";
             this.m_siteno.ReadOnly = true;
             this.m_siteno.Size = new System.Drawing.Size(44, 19);
-            this.m_siteno.TabIndex = 85;
+            this.m_siteno.TabIndex = 5;
             this.m_siteno.TabStop = false;
             // 
             // m_siteCombo
@@ -284,25 +274,25 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_siteCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_siteCombo.FormattingEnabled = true;
-            this.m_siteCombo.Location = new System.Drawing.Point(161, 95);
+            this.m_siteCombo.Location = new System.Drawing.Point(168, 63);
             this.m_siteCombo.Name = "m_siteCombo";
             this.m_siteCombo.Size = new System.Drawing.Size(249, 20);
-            this.m_siteCombo.TabIndex = 2;
+            this.m_siteCombo.TabIndex = 6;
             this.m_siteCombo.SelectionChangeCommitted += new System.EventHandler(this.m_siteCombo_SelectionChangeCommitted);
             // 
             // m_usefor
             // 
             this.m_usefor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_usefor.Location = new System.Drawing.Point(111, 241);
+            this.m_usefor.Location = new System.Drawing.Point(118, 209);
             this.m_usefor.Name = "m_usefor";
             this.m_usefor.Size = new System.Drawing.Size(297, 19);
-            this.m_usefor.TabIndex = 8;
+            this.m_usefor.TabIndex = 12;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(17, 245);
+            this.label9.Location = new System.Drawing.Point(24, 213);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(29, 12);
             this.label9.TabIndex = 86;
@@ -311,7 +301,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(16, 272);
+            this.label10.Location = new System.Drawing.Point(23, 240);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(77, 12);
             this.label10.TabIndex = 88;
@@ -321,25 +311,25 @@
             // 
             this.m_startdate.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
             this.m_startdate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_startdate.Location = new System.Drawing.Point(111, 267);
+            this.m_startdate.Location = new System.Drawing.Point(118, 235);
             this.m_startdate.Name = "m_startdate";
             this.m_startdate.Size = new System.Drawing.Size(191, 19);
-            this.m_startdate.TabIndex = 9;
+            this.m_startdate.TabIndex = 13;
             this.m_startdate.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // m_enddate
             // 
             this.m_enddate.CustomFormat = "yyyy年 M月 d日(ddd) HH:mm";
             this.m_enddate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_enddate.Location = new System.Drawing.Point(111, 291);
+            this.m_enddate.Location = new System.Drawing.Point(118, 259);
             this.m_enddate.Name = "m_enddate";
             this.m_enddate.Size = new System.Drawing.Size(191, 19);
-            this.m_enddate.TabIndex = 10;
+            this.m_enddate.TabIndex = 14;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(16, 295);
+            this.label11.Location = new System.Drawing.Point(23, 263);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(77, 12);
             this.label11.TabIndex = 90;
@@ -350,15 +340,15 @@
             this.m_hosyuno.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_hosyuno.ImeMode = System.Windows.Forms.ImeMode.Alpha;
-            this.m_hosyuno.Location = new System.Drawing.Point(111, 321);
+            this.m_hosyuno.Location = new System.Drawing.Point(118, 289);
             this.m_hosyuno.Name = "m_hosyuno";
             this.m_hosyuno.Size = new System.Drawing.Size(297, 19);
-            this.m_hosyuno.TabIndex = 11;
+            this.m_hosyuno.TabIndex = 15;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(16, 324);
+            this.label12.Location = new System.Drawing.Point(23, 292);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(77, 12);
             this.label12.TabIndex = 92;
@@ -368,15 +358,15 @@
             // 
             this.m_hosyuinfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_hosyuinfo.Location = new System.Drawing.Point(111, 348);
+            this.m_hosyuinfo.Location = new System.Drawing.Point(118, 316);
             this.m_hosyuinfo.Name = "m_hosyuinfo";
             this.m_hosyuinfo.Size = new System.Drawing.Size(297, 19);
-            this.m_hosyuinfo.TabIndex = 12;
+            this.m_hosyuinfo.TabIndex = 16;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(16, 351);
+            this.label13.Location = new System.Drawing.Point(23, 319);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(53, 12);
             this.label13.TabIndex = 94;
@@ -391,15 +381,15 @@
             this.m_statusCombo.Items.AddRange(new object[] {
             "有効",
             "無効"});
-            this.m_statusCombo.Location = new System.Drawing.Point(111, 121);
+            this.m_statusCombo.Location = new System.Drawing.Point(118, 89);
             this.m_statusCombo.Name = "m_statusCombo";
             this.m_statusCombo.Size = new System.Drawing.Size(57, 20);
-            this.m_statusCombo.TabIndex = 3;
+            this.m_statusCombo.TabIndex = 7;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(12, 124);
+            this.label14.Location = new System.Drawing.Point(19, 92);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(59, 12);
             this.label14.TabIndex = 97;
@@ -409,15 +399,15 @@
             // 
             this.m_device.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_device.Location = new System.Drawing.Point(111, 193);
+            this.m_device.Location = new System.Drawing.Point(118, 161);
             this.m_device.Name = "m_device";
             this.m_device.Size = new System.Drawing.Size(297, 19);
-            this.m_device.TabIndex = 6;
+            this.m_device.TabIndex = 10;
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(17, 197);
+            this.label15.Location = new System.Drawing.Point(24, 165);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(29, 12);
             this.label15.TabIndex = 99;
@@ -427,7 +417,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(429, 505);
+            this.ClientSize = new System.Drawing.Size(429, 476);
             this.Controls.Add(this.m_device);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label14);
@@ -458,7 +448,6 @@
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.m_hostname_ja);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.m_biko);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -489,7 +478,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox m_hostname_ja;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox m_biko;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;

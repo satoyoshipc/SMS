@@ -78,7 +78,7 @@
             this.m_selecttext.Location = new System.Drawing.Point(212, 7);
             this.m_selecttext.Name = "m_selecttext";
             this.m_selecttext.Size = new System.Drawing.Size(244, 19);
-            this.m_selecttext.TabIndex = 4;
+            this.m_selecttext.TabIndex = 1;
             // 
             // m_selectKoumoku
             // 
@@ -86,7 +86,7 @@
             this.m_selectKoumoku.Location = new System.Drawing.Point(66, 7);
             this.m_selectKoumoku.Name = "m_selectKoumoku";
             this.m_selectKoumoku.Size = new System.Drawing.Size(140, 20);
-            this.m_selectKoumoku.TabIndex = 3;
+            this.m_selectKoumoku.TabIndex = 0;
             // 
             // m_selectBtn
             // 
@@ -113,7 +113,7 @@
             this.button2.Location = new System.Drawing.Point(621, 374);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(78, 27);
-            this.button2.TabIndex = 3;
+            this.button2.TabIndex = 2;
             this.button2.Text = "キャンセル";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -124,7 +124,7 @@
             this.button1.Location = new System.Drawing.Point(537, 374);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(78, 27);
-            this.button1.TabIndex = 2;
+            this.button1.TabIndex = 1;
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -140,7 +140,7 @@
             this.tabcontrol1.Name = "tabcontrol1";
             this.tabcontrol1.SelectedIndex = 0;
             this.tabcontrol1.Size = new System.Drawing.Size(695, 364);
-            this.tabcontrol1.TabIndex = 1;
+            this.tabcontrol1.TabIndex = 0;
             this.tabcontrol1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1

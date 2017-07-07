@@ -14,8 +14,7 @@ namespace SMSサンプル
 {
     public partial class Form_MainList : Form
     {
-        private static readonly ILog LOG = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 
         NpgsqlConnection con;
@@ -112,7 +111,7 @@ namespace SMSサンプル
             {
                 //ログイン
                 m_opename.Text = loginDS.lastname + loginDS.fastname;
-                LOG.InfoFormat("ログイン オペレータ名：{0} ", loginDS.lastname + loginDS.fastname);
+                logger.InfoFormat("ログイン オペレータ名：{0} ", loginDS.lastname + loginDS.fastname);
 
                 Class_common common = new Class_common();
                 con = common.DB_connection();
@@ -139,7 +138,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("表示エラー" + ex.Message, "表示エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                LOG.ErrorFormat("表示エラー：{0}", ex.Message);
+                logger.ErrorFormat("表示エラー：{0}", ex.Message);
             }
         }
 
@@ -216,8 +215,14 @@ namespace SMSサンプル
                     param_dict["userno"] = s.userno;
                     param_dict["systemno"] = s.systemno;
 
-                    //タイマー名
+                    //スケジュール情報を取得する
                     List<scheduleDS> timerDSListsub = getuser.getTimerList(param_dict, con);
+
+                    //特別対応のみ別に取得する
+                    List<scheduleDS> tokubetu_list = getuser.gettokubetulist(param_dict, con);
+
+                    //後ろに特別対応を結合する
+                    timerDSListsub.AddRange(tokubetu_list);
 
                     //リストに入れる
                     if (schDSList != null)
@@ -231,7 +236,9 @@ namespace SMSサンプル
                     foreach (scheduleDS si in timerDSListsub)
                     {
                         TreeNode NodeTimerDetail;
-                        DateTime dt1 = DateTime.Parse(si.end_date);
+                        DateTime dt1= new DateTime();
+                        if (si.schedule_type != "4")
+                            dt1 = DateTime.Parse(si.end_date);
 
                         //有効でかつ期間内
                         if (si.status == "未完了" && si.start_date != "" && dt1 > nowdate)
@@ -245,7 +252,7 @@ namespace SMSサンプル
                             //インシデントの時
                             if (si.schedule_type == "1")
                             {
-                                NodeTimerDetail.Text += "  " + si.incident_no;
+                                NodeTimerDetail.Text = si.incident_no + "  " + NodeTimerDetail.Text;
                                 NodeTimer1.Parent.ForeColor = Color.Red;
                                 NodeTimer1.ForeColor = Color.Red;
                                 NodeTimer1.Nodes.Add(NodeTimerDetail);
@@ -284,6 +291,7 @@ namespace SMSサンプル
                             //インシデントの時
                             if (si.schedule_type == "1")
                             {
+                                NodeTimerDetail.Text = si.incident_no + "  " + NodeTimerDetail.Text;
                                 NodeTimer1.Nodes.Add(NodeTimerDetail);
                             }
                             //計画作業
@@ -400,7 +408,6 @@ namespace SMSサンプル
 
                 });
             }
-
         }
         //機器情報一覧更新
         void hostList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
@@ -485,7 +492,10 @@ namespace SMSサンプル
                             Convert.ToString(row[10]),
                             Convert.ToString(row[11]),
                             Convert.ToString(row[12]),
-                            Convert.ToString(row[13])
+                            Convert.ToString(row[13]),
+                            Convert.ToString(row[14]),
+                            Convert.ToString(row[15]),
+                            Convert.ToString(row[16])
 
                 });
 
@@ -607,25 +617,7 @@ namespace SMSサンプル
             }
 
         }
-        private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
-        {
 
-        }
-
-        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void userList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         //カスタマ登録画面
         private void linkLabel2_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
@@ -744,7 +736,7 @@ namespace SMSサンプル
         //作業情報登録
         private void linkLabel7_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Form_sagyoInsert sagyofm = new Form_sagyoInsert();
+            Form_scheduleInsert sagyofm = new Form_scheduleInsert();
             sagyofm.loginDS = loginDS;
             if (userDSList != null)
                 sagyofm.userList = userDSList;
@@ -768,7 +760,6 @@ namespace SMSサンプル
                     scheduleList_keikaku.Add(schedata);
                 else if (schedata.schedule_type == "4")
                     scheduleList_tokubetu.Add(schedata);
-
             }
             disp_teiki_list();
             disp_scheduleList_keikaku();
@@ -1126,7 +1117,6 @@ namespace SMSサンプル
                     //if (fastline == v.incident_no)
                     DataRow urow = tokubetu_sagyo_list.NewRow();
                     //    continue;
-
 
                     urow["No"] = v.schedule_no;
                     urow["完了"] = v.status;
@@ -1620,23 +1610,29 @@ namespace SMSサンプル
             this.kaisenList.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
             this.kaisenList.Columns.Insert(1, "有効", 30, HorizontalAlignment.Left);
             this.kaisenList.Columns.Insert(2, "キャリア", 180, HorizontalAlignment.Left);
-            this.kaisenList.Columns.Insert(3, "回線種別", 30, HorizontalAlignment.Left);
-            this.kaisenList.Columns.Insert(4, "回線ID", 180, HorizontalAlignment.Left);
-            this.kaisenList.Columns.Insert(5, "ISP", 100, HorizontalAlignment.Left);
-            this.kaisenList.Columns.Insert(6, "サービス種別", 100, HorizontalAlignment.Left);
-            this.kaisenList.Columns.Insert(7, "サービスID", 30, HorizontalAlignment.Left);
-            this.kaisenList.Columns.Insert(8, "カスタマ通番", 30, HorizontalAlignment.Left);
-            this.kaisenList.Columns.Insert(9, "システム通番", 30, HorizontalAlignment.Left);
-            this.kaisenList.Columns.Insert(10, "拠点通番", 30, HorizontalAlignment.Left);
-            this.kaisenList.Columns.Insert(11, "ホスト通番", 30, HorizontalAlignment.Left);
-            this.kaisenList.Columns.Insert(12, "更新日時", 80, HorizontalAlignment.Left);
-            this.kaisenList.Columns.Insert(13, "更新者", 80, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(3, "電話番号1", 180, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(4, "電話番号2", 180, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(5, "電話番号3", 180, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(6, "回線種別", 30, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(7, "回線ID", 180, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(8, "ISP", 100, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(9, "サービス種別", 100, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(10, "サービスID", 30, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(11, "カスタマ通番", 30, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(12, "システム通番", 30, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(13, "拠点通番", 30, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(14, "ホスト通番", 30, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(15, "更新日時", 80, HorizontalAlignment.Left);
+            this.kaisenList.Columns.Insert(16, "更新者", 80, HorizontalAlignment.Left);
 
             //リストビューを初期化する
             kasen_list = new DataTable("table7");
             kasen_list.Columns.Add("No", Type.GetType("System.Int32"));
             kasen_list.Columns.Add("有効", Type.GetType("System.String"));
             kasen_list.Columns.Add("キャリア", Type.GetType("System.String"));
+            kasen_list.Columns.Add("電話番号1", Type.GetType("System.String"));
+            kasen_list.Columns.Add("電話番号2", Type.GetType("System.String"));
+            kasen_list.Columns.Add("電話番号3", Type.GetType("System.String"));
             kasen_list.Columns.Add("回線種別", Type.GetType("System.String"));
             kasen_list.Columns.Add("回線ID", Type.GetType("System.String"));
             kasen_list.Columns.Add("ISP", Type.GetType("System.String"));
@@ -1662,6 +1658,9 @@ namespace SMSサンプル
                         row["No"] = ka.kaisenno;
                         row["有効"] = ka.status;
                         row["キャリア"] = ka.career;
+                        row["電話番号1"] = ka.telno1;
+                        row["電話番号2"] = ka.telno2;
+                        row["電話番号3"] = ka.telno3;
                         row["回線種別"] = ka.type;
                         row["回線ID"] = ka.kaisenid;
                         row["ISP"] = ka.isp;
@@ -1780,6 +1779,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("構成情報の表示時にエラーが発生しました。" + ex.Message, "構成情報表示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                logger.ErrorFormat("構成情報の表示時にエラーが発生しました。" + ex.Message );
             }
             finally
             {
@@ -1788,10 +1788,7 @@ namespace SMSサンプル
 
         }
 
-        private void treeView1_BeforeExpand(object sender, TreeViewCancelEventArgs e)
-        {
 
-        }
 
         //ダブルクリックしたとき
         private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -1813,7 +1810,7 @@ namespace SMSサンプル
                             Dictionary<string, string> param_dict = new Dictionary<string, string>();
                             Class_Detaget dg = new Class_Detaget();
 
-                            Form_KeikakuDetail formdetail = new Form_KeikakuDetail();
+                            Form_scheduleDetail formdetail = new Form_scheduleDetail();
 
                             string scheduleno = e.Node.ToolTipText;
 
@@ -1859,7 +1856,7 @@ namespace SMSサンプル
                         //定期作業のとき
                         else if (e.Node.Parent.ToolTipText == "2")
                         {
-                            Form_KeikakuDetail formdetail = new Form_KeikakuDetail();
+                            Form_scheduleDetail formdetail = new Form_scheduleDetail();
                             formdetail.con = con;
 
                             string scheduleno = e.Node.ToolTipText;
@@ -1907,7 +1904,7 @@ namespace SMSサンプル
                         //計画作業のとき
                         else if (e.Node.Parent.ToolTipText == "3")
                         {
-                            Form_KeikakuDetail formdetail = new Form_KeikakuDetail();
+                            Form_scheduleDetail formdetail = new Form_scheduleDetail();
                             formdetail.con = con;
 
                             string scheduleno = e.Node.ToolTipText;
@@ -1954,7 +1951,7 @@ namespace SMSサンプル
                         //特別対応のとき
                         else if (e.Node.Parent.ToolTipText == "4")
                         {
-                            Form_KeikakuDetail formdetail = new Form_KeikakuDetail();
+                            Form_scheduleDetail formdetail = new Form_scheduleDetail();
                             formdetail.con = con;
 
                             string scheduleno = e.Node.ToolTipText;
@@ -2006,8 +2003,8 @@ namespace SMSサンプル
             // If the file is not found, handle the exception and inform the user.
             catch (Exception ex)
             {
-                MessageBox.Show("値の表示時にエラーが発生しました。MSG:" + ex.Message);
-                LOG.ErrorFormat("表示エラー：{0}", ex.Message);
+                MessageBox.Show("タイマーの値の表示時にエラーが発生しました。MSG:" + ex.Message);
+                logger.ErrorFormat("タイマー値表示エラー：{0}", ex.Message);
 
             }
         }
@@ -2091,7 +2088,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "システム情報読込", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                LOG.ErrorFormat("システム情報コンボボックス読込エラー：{0}", ex.Message);
+                logger.ErrorFormat("システム情報コンボボックス読込エラー：{0}", ex.Message);
             }
         }
         //システム名コンボが変更されたとき (システムIDでDBより拠点名を持ってくる
@@ -2164,7 +2161,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "ホスト情報コンボボックスの読み込みに失敗", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                LOG.ErrorFormat("ホスト情報の読み込みに失敗：{0}", ex.Message);
+                logger.ErrorFormat("ホスト情報の読み込みに失敗：{0}", ex.Message);
             }
         }
 
@@ -2201,7 +2198,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "拠点情報コンボボックスデータ読み込み時エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                LOG.ErrorFormat("拠点情報コンボボックスデータ読み込み時エラー：{0}", ex.Message);
+                logger.ErrorFormat("拠点情報コンボボックスデータ読み込み時エラー：{0}", ex.Message);
             }
         }
 
@@ -2438,17 +2435,20 @@ namespace SMSサンプル
             formdetail.kaisendt.kaisenno = this.kaisenList.Items[item[0]].SubItems[0].Text;
             formdetail.kaisendt.status = status;
             formdetail.kaisendt.career = this.kaisenList.Items[item[0]].SubItems[2].Text;
-            formdetail.kaisendt.type = this.kaisenList.Items[item[0]].SubItems[3].Text;
-            formdetail.kaisendt.kaisenid = this.kaisenList.Items[item[0]].SubItems[4].Text;
-            formdetail.kaisendt.isp = this.kaisenList.Items[item[0]].SubItems[5].Text;
-            formdetail.kaisendt.servicetype = this.kaisenList.Items[item[0]].SubItems[6].Text;
-            formdetail.kaisendt.serviceid = this.kaisenList.Items[item[0]].SubItems[7].Text;
-            formdetail.kaisendt.userno = this.kaisenList.Items[item[0]].SubItems[8].Text;
-            formdetail.kaisendt.systemno = this.kaisenList.Items[item[0]].SubItems[9].Text;
-            formdetail.kaisendt.siteno = this.kaisenList.Items[item[0]].SubItems[10].Text;
-            formdetail.kaisendt.host_no = this.kaisenList.Items[item[0]].SubItems[11].Text;
-            formdetail.kaisendt.chk_date = this.kaisenList.Items[item[0]].SubItems[12].Text;
-            formdetail.kaisendt.chk_name_id = this.kaisenList.Items[item[0]].SubItems[13].Text;
+            formdetail.kaisendt.telno1 = this.kaisenList.Items[item[0]].SubItems[3].Text;
+            formdetail.kaisendt.telno2 = this.kaisenList.Items[item[0]].SubItems[4].Text;
+            formdetail.kaisendt.telno3 = this.kaisenList.Items[item[0]].SubItems[5].Text;
+            formdetail.kaisendt.type = this.kaisenList.Items[item[0]].SubItems[6].Text;
+            formdetail.kaisendt.kaisenid = this.kaisenList.Items[item[0]].SubItems[7].Text;
+            formdetail.kaisendt.isp = this.kaisenList.Items[item[0]].SubItems[8].Text;
+            formdetail.kaisendt.servicetype = this.kaisenList.Items[item[0]].SubItems[9].Text;
+            formdetail.kaisendt.serviceid = this.kaisenList.Items[item[0]].SubItems[10].Text;
+            formdetail.kaisendt.userno = this.kaisenList.Items[item[0]].SubItems[11].Text;
+            formdetail.kaisendt.systemno = this.kaisenList.Items[item[0]].SubItems[12].Text;
+            formdetail.kaisendt.siteno = this.kaisenList.Items[item[0]].SubItems[13].Text;
+            formdetail.kaisendt.host_no = this.kaisenList.Items[item[0]].SubItems[14].Text;
+            formdetail.kaisendt.chk_date = this.kaisenList.Items[item[0]].SubItems[15].Text;
+            formdetail.kaisendt.chk_name_id = this.kaisenList.Items[item[0]].SubItems[16].Text;
 
             formdetail.loginDS = loginDS;
 
@@ -2482,6 +2482,13 @@ namespace SMSサンプル
                 }
                 else
                 {
+                    alermdlg.Close();
+                    alermdlg = new Form_alermlist();
+                    alermdlg.almList = alermlist;
+                    alermdlg.con = con;
+                    alermdlg.Show();
+
+
                     alermdlg.almList = alermlist;
                     alermdlg.Refresh();
                 }
@@ -2494,9 +2501,9 @@ namespace SMSサンプル
         {
             //DBコネクションのクローズ
             if (con != null) {
-                LOG.Info("コネクションクローズ");
+                logger.Info("コネクションクローズ");
                 con.Close();
-                LOG.InfoFormat("ログアウト：{0} ", loginDS.lastname + loginDS.fastname);
+                logger.InfoFormat("ログアウト：{0} ", loginDS.lastname + loginDS.fastname);
             }
 
         }
@@ -2520,7 +2527,7 @@ namespace SMSサンプル
         private void linkLabel8_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
 
-            Form_TimerInsert timerfm = new Form_TimerInsert();
+            Form_scheduleInsert timerfm = new Form_scheduleInsert();
             if (userDSList != null)
                 timerfm.userList = userDSList;
             if (systemDSList != null)
@@ -2534,7 +2541,7 @@ namespace SMSサンプル
         //計画作業登録
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Form_TimerInsert timerfm = new Form_TimerInsert();
+            Form_scheduleInsert timerfm = new Form_scheduleInsert();
             if (userDSList != null)
                 timerfm.userList = userDSList;
             if (systemDSList != null)
@@ -2551,7 +2558,7 @@ namespace SMSサンプル
         private void m_keikaku_list_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ListView.SelectedIndexCollection item = m_keikaku_list.SelectedIndices;
-            Form_KeikakuDetail formdetail = new Form_KeikakuDetail();
+            Form_scheduleDetail formdetail = new Form_scheduleDetail();
             formdetail.con = con;
 
             string scheduleno = this.m_keikaku_list.Items[item[0]].SubItems[0].Text;
@@ -2686,14 +2693,17 @@ namespace SMSサンプル
                             rowsaffected = command.ExecuteNonQuery();
                             transaction.Commit();
 
-                            if (rowsaffected != 1)
-                                MessageBox.Show("更新できませんでした。", "定期作業ステータス更新");
+                            if (rowsaffected != 1) {
+                                MessageBox.Show("定期作業ステータス更新時エラーが発生しました。","");
+                                logger.ErrorFormat("定期作業ステータス読込エラー：{0}", sql);
+                            }
+
                         }
                         catch (Exception ex)
                         {
                             //エラー時メッセージ表示
                             MessageBox.Show(ex.Message);
-                            LOG.ErrorFormat("定期作業ステータス更新エラー：{0}", ex.Message);
+                            logger.ErrorFormat("定期作業ステータス更新エラー：{0} sql:{1}", ex.Message,sql);
                             transaction.Rollback();
                             return;
                         }
@@ -2734,13 +2744,16 @@ namespace SMSサンプル
                             transaction.Commit();
 
                             if (rowsaffected != 1)
+                            {
                                 MessageBox.Show("更新できませんでした。", "計画作業ステータス更新");
+                                logger.ErrorFormat("計画作業ステータス更新エラー：sql:{0}", sql);
+                            }
                         }
                         catch (Exception ex)
                         {
                             //エラー時メッセージ表示
                             MessageBox.Show(ex.Message);
-                            LOG.ErrorFormat("計画作業ステータス更新エラー：{0}", ex.Message);
+                            logger.ErrorFormat("計画作業ステータス更新エラー：{0}", ex.Message);
                             transaction.Rollback();
                             return;
                         }
@@ -2753,7 +2766,7 @@ namespace SMSサンプル
         {
 
             ListView.SelectedIndexCollection item = m_teiki_List.SelectedIndices;
-            Form_KeikakuDetail formdetail = new Form_KeikakuDetail();
+            Form_scheduleDetail formdetail = new Form_scheduleDetail();
             formdetail.con = con;
 
             string scheduleno = this.m_teiki_List.Items[item[0]].SubItems[0].Text;
@@ -3406,7 +3419,7 @@ namespace SMSサンプル
         private void m_tokubetu_list_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ListView.SelectedIndexCollection item = m_tokubetu_list.SelectedIndices;
-            Form_KeikakuDetail formdetail = new Form_KeikakuDetail();
+            Form_scheduleDetail formdetail = new Form_scheduleDetail();
             formdetail.con = con;
 
             string scheduleno = this.m_tokubetu_list.Items[item[0]].SubItems[0].Text;
@@ -3532,7 +3545,7 @@ namespace SMSサンプル
         //特別対応登録ボタン
         private void linkLabel9_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Form_TimerInsert timerfm = new Form_TimerInsert();
+            Form_scheduleInsert timerfm = new Form_scheduleInsert();
             if (userDSList != null)
                 timerfm.userList = userDSList;
             if (systemDSList != null)
@@ -3626,6 +3639,7 @@ namespace SMSサンプル
                 if(displist.user_L == null )
                 {
                     MessageBox.Show("カスタマ情報を取得できませんでした。","");
+                    logger.ErrorFormat("カスタマ詳細画面の表示時、カスタマ情報を取得できませんでした");
                     formdetail.Show();
                     formdetail.Owner = this;
                     return;
@@ -3635,15 +3649,7 @@ namespace SMSサンプル
                 formdetail.Owner = this;
 
             }
-
-
-
-        }
-
-        private void splitContainer3_Panel1_Paint(object sender, PaintEventArgs e)
-        {
-
+          
         }
     }
-
 }

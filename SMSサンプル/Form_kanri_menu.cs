@@ -12,6 +12,7 @@ namespace SMSサンプル
     {
         public NpgsqlConnection con { get; set; }
         public opeDS loginDS { get; set; }
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 
         public List<userDS> userList;
@@ -43,7 +44,7 @@ namespace SMSサンプル
         //タイマー登録
         private void button2_Click_1(object sender, EventArgs e)
         {
-            Form_TimerInsert timerfm = new Form_TimerInsert();
+            Form_scheduleInsert timerfm = new Form_scheduleInsert();
             timerfm.con = con;
             if (userList != null)
                 timerfm.userList = userList;
@@ -95,7 +96,7 @@ namespace SMSサンプル
                 // ◆操作対象のExcelブックを開く◆
                 // Openメソッド
                 xlBooks = xlApp.Workbooks;
-                xlBook = xlBooks.Open(System.IO.Path.GetFullPath(@"C:\Users\PC-USER\Desktop\月間運用予定表_完全自動版3.xls"));
+                xlBook = xlBooks.Open(System.IO.Path.GetFullPath(@str));
 
 
                 // Book解放
@@ -110,6 +111,8 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("Excelファイルの表示時に障害が発生しました。" + ex.Message);
+                logger.ErrorFormat("Excelファイルの表示時に障害が発生しました" + ex.Message);
+
 
             }
         }
@@ -210,7 +213,8 @@ namespace SMSサンプル
                         {
 
                             if (MessageBox.Show("登録できませんでした。カスタマ名:" + us.username + Environment.NewLine + " 継続しますか？", "カスタマ登録", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                            { 
+                            {
+                                logger.ErrorFormat("カスタマ登録に失敗しました。カスタマ名:{0}", us.username);
                                 transaction.Rollback();
                                 return;
                             }
@@ -225,6 +229,8 @@ namespace SMSサンプル
                     catch (Exception ex)
                     {
                         MessageBox.Show("カスタマ登録時エラー " + ex.Message);
+                        logger.ErrorFormat("カスタマ登録に失敗しました。カスタマ名:{0}", us.username);
+
                         transaction.Rollback();
                         return;
                     }
@@ -310,7 +316,9 @@ namespace SMSサンプル
             }
             catch(Exception ex)
             {
-                MessageBox.Show("エラー : " + ex.Message);
+                MessageBox.Show("カスタマNOが取得できませんでした エラー : " + ex.Message);
+                logger.ErrorFormat("カスタマNOが取得できませんでした。カスタマ名:{0}", Customername);
+
                 return "";
 
             }
@@ -341,13 +349,37 @@ namespace SMSサンプル
                 //
                 if (systemno == null || systemno == "")
                 {
-                   // MessageBox.Show("システムNOが取得できませんでした。システム名：" + Systemname, "拠点インポート", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return "";
+                    // MessageBox.Show("システムNOが取得できませんでした。システム名：" + Systemname, "拠点インポート", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                    cmd = new NpgsqlCommand(@"SELECT systemno,systemname FROM system WHERE userno = :userno ", con);
+
+                    cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = int.Parse(userno) });
+
+                    dataReader = cmd.ExecuteReader();
+
+                    //データを読み取る
+                    while (dataReader.Read())
+                    {
+                        systemno = dataReader["systemno"].ToString();
+                        if (systemno == null || systemno == "")
+                        {
+                            logger.Warn("システムNOが取得できませんでした。システム名:" + Systemname);
+                            return "";
+
+                        }
+                        else
+                        {
+                            logger.Warn("システムNOが取得できませんでした。システム名:" + Systemname + " 存在するシステムIDを返します。");
+
+                        }
+
+                    }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("エラー : " + ex.Message);
+                logger.ErrorFormat("システムNOが取得できませんでした。システム名:{0}", Systemname);
                 return "";
 
             }
@@ -386,13 +418,57 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("エラー : " + ex.Message);
+                logger.ErrorFormat("拠点NOが取得できませんでした。拠点名:{0}", sitename);
                 return "";
 
             }
             return siteno;
 
         }
-        
+
+        //ホスト名
+        private String getHostNo(String userno, String systemno, String siteno,String hostname, NpgsqlConnection con)
+        {
+            String hostno = "";
+            NpgsqlCommand cmd;
+            try
+            {
+                cmd = new NpgsqlCommand(@"SELECT host_no,hostname FROM host WHERE userno = :userno AND systemno = :systemno AND siteno = :siteno AND hostname =:hostname", con);
+
+                cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = int.Parse(userno) });
+                cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = int.Parse(systemno) });
+                cmd.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = int.Parse(siteno) });
+                cmd.Parameters.Add(new NpgsqlParameter("hostname", DbType.String) { Value = hostname });
+
+                var dataReader = cmd.ExecuteReader();
+
+                //データを読み取る
+                while (dataReader.Read())
+                {
+                    hostno = dataReader["host_no"].ToString();
+
+                }
+                //
+                if (hostno == null || hostno == "")
+                {
+                    // MessageBox.Show("ホストNOが取得できませんでした。拠点名：" + hostname, "ホストインポート", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return "";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("エラー : " + ex.Message);
+                logger.ErrorFormat("ホストNOが取得できませんでした。ホスト名:{0}", hostname);
+
+                return "";
+
+            }
+            return hostno;
+
+        }
+
+
+
         //ユーザ担当者番号の取得
         private String getuserTantouNo(String userno, String UsertanntouName, NpgsqlConnection con)
         {
@@ -422,6 +498,7 @@ namespace SMSサンプル
             catch (Exception ex)
             {
                 MessageBox.Show("エラー : " + ex.Message);
+                logger.ErrorFormat("ユーザ担当者NOが取得できませんでした。ユーザ担当者:{0}", UsertanntouName);
                 return "";
             }
             return tantouno;
@@ -523,6 +600,8 @@ namespace SMSサンプル
                     catch (Exception ex)
                     {
                         MessageBox.Show("システム情報のインポート" + ex.Message);
+                        logger.ErrorFormat("システム情報のインポートエラー。{0} システム:{1}", ex.Message, us.systemname);
+                    
                         //transaction.Rollback();
                         return;
                     }
@@ -614,7 +693,7 @@ namespace SMSサンプル
 
                     //システム番号の取得
                     si.systemno = getSystemNo(si.userno,si.systemname, con);
-                    //if (si.systemno == "")
+//                    if (si.systemno == "")
                         //継続
                      //   continue;
                     //ステータス
@@ -656,6 +735,8 @@ namespace SMSサンプル
 
                             if (MessageBox.Show("登録できませんでした。拠点名:" + si.sitename + Environment.NewLine + " 継続しますか？", "拠点情報のインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                             {
+                                logger.ErrorFormat("拠点名を登録できませんでした。{0} ", si.sitename);
+
                                 transaction.Rollback();
                                 return;
                             }
@@ -669,6 +750,7 @@ namespace SMSサンプル
                     }
                     catch (Exception ex)
                     {
+                        logger.ErrorFormat("拠点情報のインポート時" + cnt + "件目でエラーが発生しました。{0}", ex.Message);
                         MessageBox.Show("拠点情報のインポート時" + cnt + "件目でエラーが発生しました。" +  ex.Message);
                         //transaction.Rollback();
                         return;
@@ -734,10 +816,10 @@ namespace SMSサンプル
                 //機種管理番号を入れる
                 hds.hosyukanri = cols[13];
 
-                hds.biko = cols[14] + " :" + cols[15] + " :" + cols[16] + " :" + cols[17] + cols[18] + " :" + cols[19] + " :" + cols[21];
+                hds.biko = cols[14] + " :" + cols[15] + " :" + cols[16]  ;
 
                 //更新日時
-                hds.chk_date = cols[22];
+                hds.chk_date = cols[23];
 
 
                 list_hostDS.Add(hds);
@@ -841,8 +923,9 @@ namespace SMSサンプル
                         if (rowsaffected != 1)
                         {
 
-                            if (MessageBox.Show("登録できませんでした。ホスト名:" + si.sitename + Environment.NewLine + " 継続しますか？", "ホスト情報のインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            if (MessageBox.Show("ホスト情報を登録できませんでした。ホスト名:" + si.hostname + Environment.NewLine + " 継続しますか？", "ホスト情報のインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                             {
+                                logger.ErrorFormat("ホスト情報を登録できませんでした。{0} ", si.hostname);
                                 transaction.Rollback();
                                 cnt++;
                                 return;
@@ -858,6 +941,8 @@ namespace SMSサンプル
                     catch (Exception ex)
                     {
                         MessageBox.Show("ホスト情報のインポート時" + cnt + "行目にエラーが発生しました。  ホスト名：" + si.hostname + "  " + ex.Message);
+                        logger.ErrorFormat("ホスト情報を登録できませんでした。{0} ", si.hostname);
+
                         //transaction.Rollback();
                         cnt++;
                         return;
@@ -1244,6 +1329,8 @@ namespace SMSサンプル
                     catch (Exception ex)
                     {
                         MessageBox.Show("メールアドレスのインポート時" + cnt + "件目でエラーが発生しました。" + ex.Message);
+                        logger.ErrorFormat("メールアドレスのインポート時" + cnt + "件目でエラーが発生しました。MSG:{0}", ex.Message);
+
                         //transaction.Rollback();
                         return;
                     }
@@ -1263,63 +1350,69 @@ namespace SMSサンプル
             if (filePath == "")
                 return;
 
-            MailaddressDS sds;
-            List<MailaddressDS> list_mailaddressDS = new List<MailaddressDS>();
+            kaisenDS kds;
+            List<kaisenDS> list_kaisen = new List<kaisenDS>();
 
             TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
             parser.TextFieldType = FieldType.Delimited;
             parser.SetDelimiters(","); // 区切り文字はコンマ
-            String u_tantou = "";
-            int idx = 1;
+
+            String username = "";
+            String systemname = "";
+            String sitename = "";
+            String hostname = "";
+
+
             while (!parser.EndOfData)
             {
-                sds = new MailaddressDS();
-                string[] cols = parser.ReadFields(); // 1行読み込み
+                kds = new kaisenDS();
+                string[] cols = parser.ReadFields(); // 1行読み込み                         //ステータス
 
-                //回線情報
-                if (u_tantou != cols[4])
-                {
-                    u_tantou = cols[4];
-                    idx = 1;
-                }
+                kds.career = cols[2] + " " + cols[3];
+                kds.type = cols[4];
+                kds.kaisenid = cols[5];
+                kds.telno1 = cols[6];
+                kds.telno2 = cols[7];
+                kds.telno3 = cols[8];
 
-                sds.addressNo = idx.ToString();
-                idx++;
+                //isp
+                kds.isp = cols[9] + " " + cols[10];
+                kds.servicetype = cols[11];
+                kds.serviceid = cols[12];
 
-                //会社名
-                sds.username = cols[8];
+                hostname = cols[15];
+                systemname = cols[17];
+                sitename = cols[20];
+                username = cols[22];
+                kds.status = "1";
 
                 //カスタマNOの取得
-                sds.userno = getCustomerNo(sds.username, con);
-                if (sds.userno == "")
+                kds.userno = getCustomerNo(username, con);
+                if (kds.userno == "")
                     //継続
                     continue;
+                
+                //システムNOの取得
+                kds.systemno = getSystemNo(kds.userno, systemname, con);
+                if (kds.systemno != "") { 
 
-                //社員名
-                sds.user_tantou_name = cols[4];
-                //社員NOの取得
-                sds.opetantouno = getuserTantouNo(sds.userno, sds.user_tantou_name, con);
-                if (sds.opetantouno == "")
-                    //継続
-                    continue;
-
-
-                //メールアドレス
-                sds.mailAddress = cols[2];
-                //メール名
-                sds.addressname = cols[17];
+                    //拠点NOの取得
+                    kds.siteno = getSiteNo(kds.userno, kds.systemno, sitename, con);
+                    if (kds.siteno != "") { 
+                        //ホストNOの取得
+                        kds.host_no = getHostNo(kds.userno, kds.systemno, kds.siteno, hostname, con);
+                    }
+                }
 
 
                 //更新日時
-                sds.chk_date = cols[13];
+                kds.chk_date = cols[24];
 
-
-                list_mailaddressDS.Add(sds);
-
+                list_kaisen.Add(kds);
             }
             parser.Close();
 
-            if (MessageBox.Show(list_mailaddressDS.Count + "件のメールアドレスを登録します。よろしいですか？", "メールアドレスインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            if (MessageBox.Show(list_kaisen.Count + "件の回線情報を登録します。よろしいですか？", "回線情報インポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
 
             //DB接続
@@ -1333,24 +1426,53 @@ namespace SMSサンプル
                 //インサート文
                 int i = 0;
                 int cnt = 0;
-                foreach (MailaddressDS si in list_mailaddressDS)
+                string status = "";
+                foreach (kaisenDS sikds in list_kaisen)
                 {
+                    if (sikds.status == "有効")
+                    {
+                        status = "1";
+                    }
+                    if (sikds.status == "無効")
+                    {
+                        status = "0";
 
-                    cmd = new NpgsqlCommand(@"insert into mailaddress(kubun,opetantouno,addressno,mailaddress,addressname,chk_date,chk_name_id) 
-                    values (:kubun,:opetantouno,:addressno,:mailaddress,:addressname,:chk_date,:chk_name_id)", con);
+                    }
+
+
+                    cmd = new NpgsqlCommand(@"insert into kaisen(status,userno,systemno,siteno,host_no,career,type,kaisenid,telno1,telno2,telno3,isp,servicetype,serviceid,chk_date,chk_name_id) 
+                    values (:status,:userno,:systemno,:siteno,:host_no,:career,:type,:kaisenid,:telno1,:telno2,:telno3,:isp,:servicetype,:serviceid,:chk_date,:chk_name_id)", con);
                     try
                     {
                         DateTime datet;
-                        DateTime.TryParse(si.chk_date, out datet);
+                        DateTime.TryParse(sikds.chk_date, out datet);
 
                         Int32 rowsaffected;
+
                         //データ登録
-                        //カスタマ担当者
-                        cmd.Parameters.Add(new NpgsqlParameter("kubun", DbType.String) { Value = "2" });
-                        cmd.Parameters.Add(new NpgsqlParameter("opetantouno", DbType.Int32) { Value = int.Parse(si.opetantouno) });
-                        cmd.Parameters.Add(new NpgsqlParameter("addressno", DbType.Int32) { Value = int.Parse(si.addressNo) });
-                        cmd.Parameters.Add(new NpgsqlParameter("mailaddress", DbType.String) { Value = si.mailAddress });
-                        cmd.Parameters.Add(new NpgsqlParameter("addressname", DbType.String) { Value = si.addressname });
+                        int ret_userno;
+                        int ret_systemno;
+                        int ret_siteno;
+                        int ret_host_no;
+
+                        int.TryParse(sikds.userno, out ret_userno);
+                        int.TryParse(sikds.systemno, out ret_systemno);
+                        int.TryParse(sikds.siteno, out ret_siteno);
+                        int.TryParse(sikds.host_no, out ret_host_no);
+                        cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+                        cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = ret_userno  });
+                        cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = ret_systemno });
+                        cmd.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = ret_siteno });
+                        cmd.Parameters.Add(new NpgsqlParameter("host_no", DbType.Int32) { Value = ret_host_no });
+                        cmd.Parameters.Add(new NpgsqlParameter("career", DbType.String) { Value = sikds.career });
+                        cmd.Parameters.Add(new NpgsqlParameter("type", DbType.String) { Value = sikds.type });
+                        cmd.Parameters.Add(new NpgsqlParameter("kaisenid", DbType.String) { Value = sikds.kaisenid });
+                        cmd.Parameters.Add(new NpgsqlParameter("telno1", DbType.String) { Value = sikds.telno1 });
+                        cmd.Parameters.Add(new NpgsqlParameter("telno2", DbType.String) { Value = sikds.telno2 });
+                        cmd.Parameters.Add(new NpgsqlParameter("telno3", DbType.String) { Value = sikds.telno3 });
+                        cmd.Parameters.Add(new NpgsqlParameter("isp", DbType.String) { Value = sikds.isp });
+                        cmd.Parameters.Add(new NpgsqlParameter("servicetype", DbType.String) { Value = sikds.servicetype });
+                        cmd.Parameters.Add(new NpgsqlParameter("serviceid", DbType.String) { Value = sikds.serviceid });
                         cmd.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = datet });
                         cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
 
@@ -1374,13 +1496,205 @@ namespace SMSサンプル
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("メールアドレスのインポート時" + cnt + "件目でエラーが発生しました。" + ex.Message);
+                        MessageBox.Show("回線情報のインポート時" + cnt + "件目でエラーが発生しました。" + ex.Message);
+                        logger.ErrorFormat("回線情報のインポート時{0}件目でエラーが発生しました。:{1}", i, ex.Message);
+
                         //transaction.Rollback();
                         return;
                     }
 
                 }
-                MessageBox.Show("電話番号のインポート" + i + "件 ");
+                MessageBox.Show("回線情報のインポート" + i + "件 ");
+                //終わったらコミットする
+                transaction.Commit();
+            }
+        }
+
+        private void インターフェイスkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //ファイル選択ダイアログ
+            string filePath = Disp_FileSelectDlg();
+            if (filePath == "")
+                return;
+
+            watch_InterfaceDS kds;
+            List<watch_InterfaceDS> list_interface = new List<watch_InterfaceDS>();
+
+            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
+            parser.TextFieldType = FieldType.Delimited;
+            parser.SetDelimiters(","); // 区切り文字はコンマ
+
+            String username = "";
+            String systemname = "";
+            String sitename = "";
+            String hostname = "";
+
+            while (!parser.EndOfData)
+            {
+                kds = new watch_InterfaceDS();
+                string[] cols = parser.ReadFields(); // 1行読み込み
+
+
+
+                username = cols[13];
+                systemname = cols[11];
+                sitename = cols[9];
+                hostname = cols[7];
+
+                //カスタマNOの取得
+                kds.userno = getCustomerNo(username, con);
+                if (kds.userno == "")
+                {
+                    logger.ErrorFormat("カスタマ通番が取得できませんでした。カスタマ名：" + username);
+                    //継続
+                    continue;
+                }
+                //システムNOの取得
+                kds.systemno = getSystemNo(kds.userno, systemname, con);
+                if (kds.systemno == "")
+                {
+                    logger.ErrorFormat("システム通番が取得できませんでした。");
+                    //継続
+                    continue;
+                }
+
+                //拠点NOの取得
+                kds.siteno = getSiteNo(kds.userno, kds.systemno, sitename, con);
+                if (kds.siteno == "")
+                {
+                    logger.ErrorFormat("拠点通番が取得できませんでした。");
+                    //継続
+                    continue;
+                }
+                //ホストNOの取得
+                kds.host_no = getHostNo(kds.userno, kds.systemno, kds.siteno, hostname, con);
+                if (kds.siteno == "")
+                {
+                    logger.ErrorFormat("ホスト通番が取得できませんでした。");
+                    //継続
+                    continue;
+                }
+
+                kds.interfacename = cols[0];
+                kds.status = "1";
+                kds.type = cols[2];
+                kds.kanshi = cols[3];
+
+                kds.IPaddress = cols[4];
+                kds.border = cols[5];
+                kds.IPaddressNAT = cols[6];
+
+
+                //更新日時
+                kds.chk_date = cols[14];
+
+                list_interface.Add(kds);
+            }
+            parser.Close();
+
+            if (MessageBox.Show(list_interface.Count + "件のインターフェイス情報を登録します。よろしいですか？", "インターフェイス情報インポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
+
+            //DB接続
+            if (con.FullState != ConnectionState.Open) con.Open();
+
+            NpgsqlCommand cmd;
+
+            using (var transaction = con.BeginTransaction())
+            {
+
+                //インサート文
+                int i = 0;
+                string status = "";
+                foreach (watch_InterfaceDS sikds in list_interface)
+                {
+                    if (sikds.status == "有効")
+                    {
+
+                        status = "1";
+                    }
+                    if (sikds.status == "無効")
+                    {   
+                        status = "0";
+
+                    }
+
+                    cmd = new NpgsqlCommand(@"insert into watch_Interface(interfacename,status,type,kanshi,start_date,end_date,border,ipaddress,ipaddressnat,host_no,userno,systemno,siteno,chk_date,chk_name_id) 
+                    values (:interfacename,:status,:type,:kanshi,:start_date,:end_date,:border,:ipaddress,:ipaddressnat,:host_no,:userno,:systemno,:siteno,:chk_date,:chk_name_id)", con);
+                    try
+                    {
+                        DateTime datet;
+                        DateTime.TryParse(sikds.chk_date, out datet);
+                        if (sikds.chk_date == null || sikds.chk_date == "")
+                            datet = DateTime.Now;
+
+
+
+                        Console.WriteLine(datet.ToString());
+
+                        DateTime start_dateTime = datet;
+                        DateTime end_dateTime = datet.AddYears(3);
+
+
+
+                        Int32 rowsaffected;
+
+                        //データ登録
+                        int ret_userno;
+                        int ret_systemno;
+                        int ret_siteno;
+                        int ret_host_no;
+
+                        int.TryParse(sikds.userno, out ret_userno);
+                        int.TryParse(sikds.systemno, out ret_systemno);
+                        int.TryParse(sikds.siteno, out ret_siteno);
+                        int.TryParse(sikds.host_no, out ret_host_no);
+                        cmd.Parameters.Add(new NpgsqlParameter("interfacename", DbType.String) { Value = sikds.interfacename });
+                        cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+                        cmd.Parameters.Add(new NpgsqlParameter("type", DbType.String) { Value = sikds.type });
+                        cmd.Parameters.Add(new NpgsqlParameter("kanshi", DbType.String) { Value = sikds.kanshi });
+                        cmd.Parameters.Add(new NpgsqlParameter("start_date", DbType.DateTime) { Value = start_dateTime });
+                        cmd.Parameters.Add(new NpgsqlParameter("end_date", DbType.DateTime) { Value = end_dateTime });
+
+                        cmd.Parameters.Add(new NpgsqlParameter("border", DbType.String) { Value = sikds.border });
+                        cmd.Parameters.Add(new NpgsqlParameter("ipaddress", DbType.String) { Value = sikds.IPaddress });
+                        cmd.Parameters.Add(new NpgsqlParameter("ipaddressnat", DbType.String) { Value = sikds.IPaddressNAT });
+                        cmd.Parameters.Add(new NpgsqlParameter("host_no", DbType.Int32) { Value = ret_host_no });
+                        cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = ret_userno });
+                        cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = ret_systemno });
+                        cmd.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = ret_siteno });
+                        cmd.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = datet });
+                        cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+
+                        rowsaffected = cmd.ExecuteNonQuery();
+
+                        if (rowsaffected != 1)
+                        {
+
+                            //if (MessageBox.Show("メールアドレスを登録できませんでした。担当者名:" + si.user_tantou_name + Environment.NewLine + " 継続しますか？", "担当者情報(電話)のインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            //{
+                            //    transaction.Rollback();
+                            //    return;
+                            //}
+                        }
+                        else
+                        {
+                            //登録成功
+                            i++;
+                            //MessageBox.Show("登録完了", "システム名");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("監視インターフェイス情報のインポート時" + i + "件目でエラーが発生しました。" + ex.Message);
+                        logger.ErrorFormat("監視インターフェイス情報のインポート時{0}件目でエラーが発生しました。:{1}",i,ex.Message);
+
+                        //transaction.Rollback();
+                        return;
+                    }
+
+                }
+                MessageBox.Show("監視インターフェイス情報" + i + "件 ");
                 //終わったらコミットする
                 transaction.Commit();
             }

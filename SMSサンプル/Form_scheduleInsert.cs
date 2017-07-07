@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace SMSサンプル
 {
-    public partial class Form_TimerInsert : Form
+    public partial class Form_scheduleInsert : Form
     {
         //DBコネクション
         public NpgsqlConnection con { get; set; }
@@ -29,7 +29,7 @@ namespace SMSサンプル
 
         //拠点
         public List<siteDS> siteList { get; set; }
-        public Form_TimerInsert()
+        public Form_scheduleInsert()
         {
             InitializeComponent();
         }
@@ -86,39 +86,61 @@ namespace SMSサンプル
                 MessageBox.Show("システム名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //拠点名は必須
+            if (m_siteCombo.Text == "")
+            {
+                MessageBox.Show("拠点名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
+
+            //タイマー名
             if (m_timer_name.Text == "")
             {
                 MessageBox.Show("タイマー名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             
+            //予定区分が入力されていません
             if (m_schedule_combo.Text == "")
             {
                 MessageBox.Show("予定区分が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (m_alermDate.Text == "")
-            {
-                MessageBox.Show("アラーム日時が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if (m_message.Text == "")
-            {
-                MessageBox.Show("メッセージが入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if (m_soudpath.Text == "" || System.IO.File.Exists(m_soudpath.Text) == false)
-            {
 
+            //特別対応以外のとき
+            if (m_schedule_combo.SelectedIndex != 3)
+            {
+                //アラーム日時
+                if (m_alermDate.Text == "")
+                {
+                    MessageBox.Show("アラーム日時が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                //メッセージ
+                if (m_message.Text == "")
+                {
+                    MessageBox.Show("メッセージが入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                //音が入力されていません
+                if ((m_soudpath.Text == "" || System.IO.File.Exists(m_soudpath.Text) == false) && m_schedule_combo.SelectedIndex != 0)
+                {
 
                     MessageBox.Show("アラーム音が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                    return;
+                }
             }
-
-            if (MessageBox.Show("アラーム情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                return;
-
+            //確認画面
+            if(m_radio_hour.Checked )
+            {
+                if (MessageBox.Show("1時間毎のアラームの場合、終了時間によりタイマーの登録に時間を要する場合があります。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    return;
+            }
+            else { 
+                if (MessageBox.Show("アラーム情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    return;
+            }
             string userno = m_userno.Text;
             string systemno = m_systemno.Text;
             string siteno = m_siteno.Text;
@@ -126,6 +148,7 @@ namespace SMSサンプル
             string schedule_type = m_schedule_combo.Text;
             string type = schedule_type.Split(':')[0];
             string message = m_message.Text;
+
             //ステータス
             // 0:無効 1:有効
             string status = "";
@@ -137,6 +160,7 @@ namespace SMSサンプル
                 //無効
                 status = "0";
 
+            //繰り返し区分
             string repeat_type = "0"; 
             if(m_radio_one.Checked)
                 repeat_type = "1";
@@ -148,15 +172,23 @@ namespace SMSサンプル
                 repeat_type = "4";
             else if (m_radio_month.Checked)
                 repeat_type = "5";
-            
 
-            byte[] bytes = File.ReadAllBytes(m_soudpath.Text);
 
+            byte[] bytes= null;
             //開始日時
-            DateTime startdate = m_startDate.Value;
-            //終了日時
-            DateTime enddate = m_endDate.Value;
+            DateTime ? startdate = null;
+            DateTime? enddate = null;
+            if (m_schedule_combo.SelectedIndex != 3 )
+            {
+                startdate = m_startDate.Value;
+                //終了日時
+                enddate = m_endDate.Value;
 
+                //インシデントのときは音は登録しない
+                if ( m_schedule_combo.SelectedIndex != 0) {
+                    bytes = File.ReadAllBytes(m_soudpath.Text);
+                }
+            }
 
             //DB接続
             NpgsqlCommand cmd;
@@ -181,6 +213,7 @@ namespace SMSサンプル
                 cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
                 cmd.Parameters.Add(new NpgsqlParameter("sound", DbType.Binary) { Value = bytes });
                 cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
+
                 //OUTパラメータをセットする
                 NpgsqlParameter firstColumn = new NpgsqlParameter("firstcolumn", DbType.Int32);
                 firstColumn.Direction = ParameterDirection.Output;
@@ -195,10 +228,11 @@ namespace SMSサンプル
                 }
                 else
                 {
-                    if(currval > 0) { 
-                        
-                        //引き続きアラートデータを作成し登録する
-                        make_alert(currval,type);
+                    if(currval > 0) {
+                        if (m_schedule_combo.SelectedIndex != 3) { 
+                            //引き続きアラートデータを作成し登録する
+                            make_alert(currval,type);
+                        }
                         //登録成功
                         MessageBox.Show("登録完了 " + "スケジュール番号" + currval, "タイマー登録");
                     }
@@ -433,6 +467,8 @@ namespace SMSサンプル
             
             Class_Detaget getuser = new Class_Detaget();
             getuser.con = con;
+
+            //カスタマ名を取得
             userList = getuser.getUserList();
             
             if (userList == null)
@@ -453,6 +489,10 @@ namespace SMSサンプル
             m_usernameCombo.ValueMember = "ID";
 
             Read_systemCombo();
+
+            //3年以上の期間は入力できない
+            m_endDate.MaxDate = DateTime.Now.AddYears(3);
+
             //利用不可にする
             m_startDate.Enabled = false;
             m_endDate.Enabled = false;
@@ -513,6 +553,8 @@ namespace SMSサンプル
                 m_siteno.Text = m_siteCombo.SelectedValue.ToString();
 
         }
+
+        //システム名一覧を取得してコンボボックスの値に設定する
         private void Read_systemCombo()
         {
             m_systemno.Text = "";
@@ -577,13 +619,7 @@ namespace SMSサンプル
             Read_systemCombo();
         }
 
-        
-        
-        
-        
-        
-        
-        
+
         
         //1回が選択されたとき
         private void m_radio_one_CheckedChanged(object sender, EventArgs e)
@@ -632,12 +668,38 @@ namespace SMSサンプル
         //予定区分が変更されたとき
         private void m_schedule_combo_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if(m_schedule_combo.SelectedIndex == 1)
+            if (m_schedule_combo.SelectedIndex == 0) {
+                m_alerm_group.Enabled = true;
+                //インシデントは音は選択できない
+                m_soudpath.Enabled = false;
+                button1.Enabled = false;
+                button4.Enabled = false;
+
+                m_startDate.Enabled = true;
+                m_endDate.Enabled = true;
+
+            }
+            //特別作業の場合開始終了は不要
+            else if (m_schedule_combo.SelectedIndex == 3)
             {
+                m_alerm_group.Enabled = false;
+                m_startDate.Enabled = false;
+                m_endDate.Enabled = false;
+                
+            }
+            else
+            {
+                m_soudpath.Enabled = true;
+                button1.Enabled = true;
+                button4.Enabled = true;
+
+                m_alerm_group.Enabled = true;
+                m_startDate.Enabled = true;
+                m_endDate.Enabled = true;
 
             }
         }
-
+        //拠点コンボボックスが変更されたとき
         private void m_siteCombo_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (m_siteCombo.Text == "")

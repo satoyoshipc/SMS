@@ -43,7 +43,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.m_tantoukana = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.m_biko = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.m_tantou_name = new System.Windows.Forms.TextBox();
@@ -60,15 +59,15 @@
             // 
             // m_yakusyoku
             // 
-            this.m_yakusyoku.Location = new System.Drawing.Point(100, 255);
+            this.m_yakusyoku.Location = new System.Drawing.Point(100, 226);
             this.m_yakusyoku.Name = "m_yakusyoku";
             this.m_yakusyoku.Size = new System.Drawing.Size(298, 19);
-            this.m_yakusyoku.TabIndex = 7;
+            this.m_yakusyoku.TabIndex = 8;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(14, 284);
+            this.label11.Location = new System.Drawing.Point(14, 255);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(29, 12);
             this.label11.TabIndex = 117;
@@ -77,7 +76,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(14, 258);
+            this.label10.Location = new System.Drawing.Point(14, 229);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(29, 12);
             this.label10.TabIndex = 115;
@@ -85,46 +84,46 @@
             // 
             // m_tel1
             // 
-            this.m_tel1.Location = new System.Drawing.Point(100, 205);
+            this.m_tel1.Location = new System.Drawing.Point(100, 176);
             this.m_tel1.Name = "m_tel1";
             this.m_tel1.Size = new System.Drawing.Size(298, 19);
-            this.m_tel1.TabIndex = 5;
+            this.m_tel1.TabIndex = 6;
             // 
             // m_userno
             // 
-            this.m_userno.Location = new System.Drawing.Point(98, 41);
+            this.m_userno.Location = new System.Drawing.Point(98, 12);
             this.m_userno.Name = "m_userno";
             this.m_userno.ReadOnly = true;
             this.m_userno.Size = new System.Drawing.Size(44, 19);
-            this.m_userno.TabIndex = 110;
+            this.m_userno.TabIndex = 0;
             this.m_userno.TabStop = false;
             // 
             // m_usernameCombo
             // 
             this.m_usernameCombo.FormattingEnabled = true;
-            this.m_usernameCombo.Location = new System.Drawing.Point(148, 40);
+            this.m_usernameCombo.Location = new System.Drawing.Point(148, 11);
             this.m_usernameCombo.Name = "m_usernameCombo";
             this.m_usernameCombo.Size = new System.Drawing.Size(250, 20);
-            this.m_usernameCombo.TabIndex = 0;
+            this.m_usernameCombo.TabIndex = 1;
             this.m_usernameCombo.SelectionChangeCommitted += new System.EventHandler(this.m_usernameCombo_SelectionChangeCommitted);
             // 
             // m_idlabel
             // 
-            this.m_idlabel.Location = new System.Drawing.Point(98, 332);
+            this.m_idlabel.Location = new System.Drawing.Point(98, 303);
             this.m_idlabel.Name = "m_idlabel";
             this.m_idlabel.ReadOnly = true;
             this.m_idlabel.Size = new System.Drawing.Size(44, 19);
-            this.m_idlabel.TabIndex = 107;
+            this.m_idlabel.TabIndex = 10;
             this.m_idlabel.TabStop = false;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.m_mukouRadio);
             this.groupBox1.Controls.Add(this.m_yukouRadio);
-            this.groupBox1.Location = new System.Drawing.Point(21, 66);
+            this.groupBox1.Location = new System.Drawing.Point(21, 37);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(301, 50);
-            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "有効/無効";
             // 
@@ -134,7 +133,7 @@
             this.m_mukouRadio.Location = new System.Drawing.Point(172, 22);
             this.m_mukouRadio.Name = "m_mukouRadio";
             this.m_mukouRadio.Size = new System.Drawing.Size(47, 16);
-            this.m_mukouRadio.TabIndex = 36;
+            this.m_mukouRadio.TabIndex = 1;
             this.m_mukouRadio.Text = "無効";
             this.m_mukouRadio.UseVisualStyleBackColor = true;
             // 
@@ -145,75 +144,66 @@
             this.m_yukouRadio.Location = new System.Drawing.Point(68, 22);
             this.m_yukouRadio.Name = "m_yukouRadio";
             this.m_yukouRadio.Size = new System.Drawing.Size(47, 16);
-            this.m_yukouRadio.TabIndex = 35;
+            this.m_yukouRadio.TabIndex = 0;
             this.m_yukouRadio.TabStop = true;
             this.m_yukouRadio.Text = "有効";
             this.m_yukouRadio.UseVisualStyleBackColor = true;
             // 
             // m_busyo
             // 
-            this.m_busyo.Location = new System.Drawing.Point(100, 179);
+            this.m_busyo.Location = new System.Drawing.Point(100, 150);
             this.m_busyo.Name = "m_busyo";
             this.m_busyo.Size = new System.Drawing.Size(298, 19);
-            this.m_busyo.TabIndex = 4;
+            this.m_busyo.TabIndex = 5;
             // 
             // m_labelinputOpe
             // 
-            this.m_labelinputOpe.Location = new System.Drawing.Point(148, 332);
+            this.m_labelinputOpe.Location = new System.Drawing.Point(148, 303);
             this.m_labelinputOpe.Name = "m_labelinputOpe";
             this.m_labelinputOpe.ReadOnly = true;
             this.m_labelinputOpe.Size = new System.Drawing.Size(250, 19);
-            this.m_labelinputOpe.TabIndex = 104;
+            this.m_labelinputOpe.TabIndex = 11;
             this.m_labelinputOpe.TabStop = false;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(203, 358);
+            this.button3.Location = new System.Drawing.Point(203, 329);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
-            this.button3.TabIndex = 10;
+            this.button3.TabIndex = 13;
             this.button3.Text = "登録";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(304, 357);
+            this.button2.Location = new System.Drawing.Point(304, 328);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 23);
-            this.button2.TabIndex = 11;
+            this.button2.TabIndex = 14;
             this.button2.Text = "キャンセル";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // m_tantoukana
             // 
-            this.m_tantoukana.Location = new System.Drawing.Point(100, 153);
+            this.m_tantoukana.Location = new System.Drawing.Point(100, 124);
             this.m_tantoukana.Name = "m_tantoukana";
             this.m_tantoukana.Size = new System.Drawing.Size(298, 19);
-            this.m_tantoukana.TabIndex = 3;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(18, 7);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(95, 23);
-            this.button1.TabIndex = 100;
-            this.button1.Text = "CSV登録";
-            this.button1.UseVisualStyleBackColor = true;
+            this.m_tantoukana.TabIndex = 4;
             // 
             // m_biko
             // 
-            this.m_biko.Location = new System.Drawing.Point(100, 279);
+            this.m_biko.Location = new System.Drawing.Point(100, 250);
             this.m_biko.Multiline = true;
             this.m_biko.Name = "m_biko";
             this.m_biko.Size = new System.Drawing.Size(298, 47);
-            this.m_biko.TabIndex = 8;
+            this.m_biko.TabIndex = 9;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 156);
+            this.label3.Location = new System.Drawing.Point(14, 127);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(80, 12);
             this.label3.TabIndex = 98;
@@ -221,15 +211,15 @@
             // 
             // m_tantou_name
             // 
-            this.m_tantou_name.Location = new System.Drawing.Point(100, 127);
+            this.m_tantou_name.Location = new System.Drawing.Point(100, 98);
             this.m_tantou_name.Name = "m_tantou_name";
             this.m_tantou_name.Size = new System.Drawing.Size(298, 19);
-            this.m_tantou_name.TabIndex = 2;
+            this.m_tantou_name.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 130);
+            this.label2.Location = new System.Drawing.Point(14, 101);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 96;
@@ -238,7 +228,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 43);
+            this.label1.Location = new System.Drawing.Point(14, 14);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 12);
             this.label1.TabIndex = 122;
@@ -247,7 +237,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(16, 183);
+            this.label4.Location = new System.Drawing.Point(16, 154);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 12);
             this.label4.TabIndex = 123;
@@ -256,7 +246,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(14, 211);
+            this.label5.Location = new System.Drawing.Point(14, 182);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(59, 12);
             this.label5.TabIndex = 124;
@@ -265,7 +255,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 335);
+            this.label6.Location = new System.Drawing.Point(13, 306);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(51, 12);
             this.label6.TabIndex = 125;
@@ -273,10 +263,10 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(15, 358);
+            this.button4.Location = new System.Drawing.Point(15, 329);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(121, 23);
-            this.button4.TabIndex = 9;
+            this.button4.TabIndex = 12;
             this.button4.Text = "メールアドレス登録";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
@@ -284,7 +274,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(14, 235);
+            this.label7.Location = new System.Drawing.Point(14, 206);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(59, 12);
             this.label7.TabIndex = 128;
@@ -292,16 +282,16 @@
             // 
             // m_tel2
             // 
-            this.m_tel2.Location = new System.Drawing.Point(100, 231);
+            this.m_tel2.Location = new System.Drawing.Point(100, 202);
             this.m_tel2.Name = "m_tel2";
             this.m_tel2.Size = new System.Drawing.Size(298, 19);
-            this.m_tel2.TabIndex = 6;
+            this.m_tel2.TabIndex = 7;
             // 
             // Form_UserTantouInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(411, 393);
+            this.ClientSize = new System.Drawing.Size(411, 365);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.m_tel2);
             this.Controls.Add(this.button4);
@@ -322,7 +312,6 @@
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.m_tantoukana);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.m_biko);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.m_tantou_name);
@@ -353,7 +342,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox m_tantoukana;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox m_biko;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox m_tantou_name;

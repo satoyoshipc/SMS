@@ -41,7 +41,6 @@ namespace SMSサンプル
         //再生ボタン
         private void button1_Click(object sender, EventArgs e)
         {
-
             PlaySound(strParam);
         }
         //再生
@@ -63,8 +62,6 @@ namespace SMSサンプル
             Rectangle tempRect = new Rectangle(AppLeftXPos, AppLeftYPos, AppWidth, AppHeight);
             this.DesktopBounds = tempRect;
 
-
-
             PlaySound(strParam);
         }
         //WAVEファイルを再生する
@@ -72,13 +69,13 @@ namespace SMSサンプル
         {
             try { 
 
-
                 //再生されているときは止める
                 if (player != null)
                     StopSound();
 
                 //読み込む
                 player = new System.Media.SoundPlayer(waveFile);
+
                 //非同期再生する
                 player.Play();
 
