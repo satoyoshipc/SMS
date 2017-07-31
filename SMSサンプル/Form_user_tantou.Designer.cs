@@ -204,6 +204,7 @@
             // 
             // label9
             // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(367, 269);
             this.label9.Name = "label9";
@@ -213,6 +214,8 @@
             // 
             // m_tantouno
             // 
+            this.m_tantouno.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_tantouno.Location = new System.Drawing.Point(110, 285);
             this.m_tantouno.Name = "m_tantouno";
             this.m_tantouno.ReadOnly = true;
@@ -221,6 +224,8 @@
             // 
             // m_tantouname
             // 
+            this.m_tantouname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_tantouname.Location = new System.Drawing.Point(110, 309);
             this.m_tantouname.Name = "m_tantouname";
             this.m_tantouname.Size = new System.Drawing.Size(222, 19);
@@ -228,6 +233,8 @@
             // 
             // m_tantoukana
             // 
+            this.m_tantoukana.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_tantoukana.Location = new System.Drawing.Point(110, 333);
             this.m_tantoukana.Name = "m_tantoukana";
             this.m_tantoukana.Size = new System.Drawing.Size(222, 19);
@@ -235,6 +242,8 @@
             // 
             // m_busyoname
             // 
+            this.m_busyoname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_busyoname.Location = new System.Drawing.Point(110, 356);
             this.m_busyoname.Name = "m_busyoname";
             this.m_busyoname.Size = new System.Drawing.Size(222, 19);
@@ -242,6 +251,8 @@
             // 
             // m_tel1
             // 
+            this.m_tel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_tel1.Location = new System.Drawing.Point(110, 380);
             this.m_tel1.Name = "m_tel1";
             this.m_tel1.Size = new System.Drawing.Size(222, 19);
@@ -249,6 +260,8 @@
             // 
             // m_tel2
             // 
+            this.m_tel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_tel2.Location = new System.Drawing.Point(110, 403);
             this.m_tel2.Name = "m_tel2";
             this.m_tel2.Size = new System.Drawing.Size(222, 19);
@@ -256,6 +269,8 @@
             // 
             // m_yakusyoku
             // 
+            this.m_yakusyoku.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_yakusyoku.Location = new System.Drawing.Point(110, 427);
             this.m_yakusyoku.Name = "m_yakusyoku";
             this.m_yakusyoku.Size = new System.Drawing.Size(222, 19);
@@ -274,6 +289,7 @@
             // 
             // m_biko
             // 
+            this.m_biko.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_biko.Location = new System.Drawing.Point(426, 266);
             this.m_biko.Multiline = true;
             this.m_biko.Name = "m_biko";
@@ -282,6 +298,7 @@
             // 
             // m_kousin_btn
             // 
+            this.m_kousin_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_kousin_btn.Location = new System.Drawing.Point(612, 476);
             this.m_kousin_btn.Name = "m_kousin_btn";
             this.m_kousin_btn.Size = new System.Drawing.Size(78, 28);
@@ -292,6 +309,7 @@
             // 
             // m_cancelbtn
             // 
+            this.m_cancelbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_cancelbtn.Location = new System.Drawing.Point(696, 476);
             this.m_cancelbtn.Name = "m_cancelbtn";
             this.m_cancelbtn.Size = new System.Drawing.Size(78, 28);
@@ -302,6 +320,7 @@
             // 
             // m_updateOpe
             // 
+            this.m_updateOpe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_updateOpe.Location = new System.Drawing.Point(426, 428);
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
@@ -311,6 +330,7 @@
             // 
             // label11
             // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(367, 431);
             this.label11.Name = "label11";
@@ -320,6 +340,7 @@
             // 
             // m_update
             // 
+            this.m_update.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_update.Location = new System.Drawing.Point(426, 400);
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
@@ -329,6 +350,7 @@
             // 
             // label12
             // 
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(367, 404);
             this.label12.Name = "label12";
@@ -338,6 +360,7 @@
             // 
             // m_deleteBtn
             // 
+            this.m_deleteBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_deleteBtn.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.m_deleteBtn.ForeColor = System.Drawing.Color.Red;
             this.m_deleteBtn.Location = new System.Drawing.Point(698, 255);
@@ -374,6 +397,8 @@
             // 
             // m_username
             // 
+            this.m_username.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_username.Location = new System.Drawing.Point(149, 259);
             this.m_username.Name = "m_username";
             this.m_username.ReadOnly = true;

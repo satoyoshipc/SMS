@@ -261,8 +261,22 @@ namespace SMSサンプル
                             break;
 
                         //更新日時
-                        case 10:
-                            param_dict["chk_date"] = m_selecttext.Text;
+                        case 7:
+
+                            DateTime dt;
+                            String str = m_selecttext.Text;
+
+                            //入力された日付の形式の確認
+                            if (DateTime.TryParse(str, out dt))
+                            {
+                                param_dict["chk_date"] = str;
+                            }
+                            else
+                            {
+
+                                MessageBox.Show("日付の形式が正しくありません。", "拠点検索");
+                                return;
+                            }
                             break;
                         //更新者
                         case 11:

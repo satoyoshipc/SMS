@@ -14,7 +14,6 @@ namespace SMSサンプル
 {
     public partial class Form_scheduleDetail : Form
     {
-
         //ログイン情報
         public opeDS loginDS { get; set; }
 
@@ -24,12 +23,13 @@ namespace SMSサンプル
         public List<userDS> userList { get; set; }
         //システム情報一覧
         public List<systemDS> systemList { get; set; }
-
+        //拠点
+        public List<siteDS> siteList { get; set; }
         //DBコネクション
         public NpgsqlConnection con { get; set; }
 
         //初期表示のときのﾌﾗｸﾞ
-        private Boolean firstflg=false;
+        //private Boolean firstflg=false;
         //ListViewのソートの際に使用する
         private Class_ListViewColumnSorter _columnSorter;
 
@@ -65,7 +65,7 @@ namespace SMSサンプル
 
             //サウンドだけはDBから取得する
             if (keikakudt.schedule_no != null) {
-                firstflg = true;
+                //firstflg = true;
 
                 Class_Detaget dg = new Class_Detaget();
                 keikakudt.sound = dg.getSound((Form_MainList)this.Owner, con, keikakudt.schedule_no);
@@ -119,34 +119,186 @@ namespace SMSサンプル
                 alertdt = DateTime.ParseExact(keikakudt.alertdate, "yyyy/MM/dd HH:mm:ss", null);
                 this.m_alermDate.Value = alertdt;
             }
+            
+            this.m_alermMessage.Text = keikakudt.alerm_message;
 
+            if (m_sound.Text != "")
+            {
+                //相対パスの時はファイルを削除する
+                if (System.IO.Path.IsPathRooted(@m_sound.Text) == false)
+                {
+                    
+                    if (System.IO.File.Exists(@m_sound.Text))
+                        System.IO.File.Delete(@m_sound.Text);
 
-
-                this.m_alermMessage.Text = keikakudt.alerm_message;
-                this.m_sound.Text = keikakudt.sound;
-                this.m_kakunin.Text = keikakudt.kakunin;
-
+                }
+            }
+            this.m_sound.Text = keikakudt.sound;
+            this.m_kakunin.Text = keikakudt.kakunin;
 
             this.m_incidentno.Text = keikakudt.incident_no;
 
             this.m_updateOpe.Text = keikakudt.chk_name_id;
             this.m_update.Text = keikakudt.chk_date;
 
-            Class_Detaget dg = new Class_Detaget();
-            dg.con = con;
-            m_cutomername.Text = "";
-            if (keikakudt.userno != null && keikakudt.userno != "")
-                m_cutomername.Text = dg.getCustomername(keikakudt.userno);
-            //システム情報
-            m_systemname.Text = "";
-            if (keikakudt.systemno != null && keikakudt.systemno != "")
-                m_systemname.Text = dg.getSystemname(keikakudt.systemno);
-            //拠点
-            m_sitename.Text = "";
-            if (keikakudt.siteno != null && keikakudt.siteno != "")
-                m_sitename.Text = dg.getSitename(keikakudt.siteno);
+            //コンボボックスを読み込む
+            Read_CustomerCombo();
+            m_usernameCombo.SelectedValue = keikakudt.userno;
+            if (m_usernameCombo.SelectedValue != null)
+            {
+                Read_systemCombo();
+                m_systemCombo.SelectedValue = keikakudt.systemno;
+            }
+            if (m_systemCombo.SelectedValue != null)
+            {
+                Read_siteCombo();
+                m_siteCombo.SelectedValue = keikakudt.siteno;
+                m_siteno.Text = keikakudt.siteno;
+            }
+ 
         }
+        void Read_CustomerCombo()
+        {
+            m_userno.Text = "";
+            m_usernameCombo.DataSource = null;
+            m_systemno.Text = "";
+            m_systemCombo.DataSource = null;
+            m_siteno.Text = "";
+            m_siteCombo.DataSource = null;
 
+            //コンボボックス
+            DataTable cutomerTable = new DataTable();
+            cutomerTable.Columns.Add("ID", typeof(string));
+            cutomerTable.Columns.Add("NAME", typeof(string));
+
+            if (userList == null)
+                return;
+
+            //空行を挿入
+            userDS tmp = new userDS();
+            tmp.username = "";
+            tmp.userno = "";
+            cutomerTable.Rows.Add(tmp);
+
+            //カスタマ情報を取得する
+            foreach (userDS v in userList)
+            {
+                DataRow row = cutomerTable.NewRow();
+                row["ID"] = v.userno;
+                row["NAME"] = v.username;
+                cutomerTable.Rows.Add(row);
+            }
+            //データテーブルを割り当てる
+            m_usernameCombo.DataSource = cutomerTable;
+            m_usernameCombo.DisplayMember = "NAME";
+            m_usernameCombo.ValueMember = "ID";
+
+        }
+        void Read_systemCombo()
+        {
+            m_systemno.Text = "";
+            m_systemCombo.DataSource = null;
+
+            m_siteno.Text = "";
+            m_siteCombo.DataSource = null;
+
+            //ラベルに反映
+            if (m_usernameCombo.SelectedValue != null)
+                m_userno.Text = m_usernameCombo.SelectedValue.ToString();
+
+            //システムコンボの値を取得
+            DataTable systemTable = new DataTable();
+            systemTable.Columns.Add("ID", typeof(string));
+            systemTable.Columns.Add("NAME", typeof(string));
+
+            //システム情報を取得する
+            if (systemList.Count <= 0)
+                return;
+
+            //空行を挿入
+            DataRow row = systemTable.NewRow();
+            row["ID"] = "";
+            row["NAME"] = "";
+            systemTable.Rows.Add(row);
+
+            foreach (systemDS v in systemList)
+            {
+                //カスタマNOで区別する
+                if (m_usernameCombo.SelectedValue != null)
+                {
+
+                    if (v.userno == m_usernameCombo.SelectedValue.ToString())
+                    {
+                        row = systemTable.NewRow();
+                        row["ID"] = v.systemno;
+                        row["NAME"] = v.systemname;
+                        systemTable.Rows.Add(row);
+                    }
+                }
+            }
+            //データテーブルを割り当てる
+            m_systemCombo.DataSource = systemTable;
+            m_systemCombo.DisplayMember = "NAME";
+            m_systemCombo.ValueMember = "ID";
+            if (systemTable.Rows.Count > 0)
+                m_systemno.Text = m_systemCombo.SelectedValue.ToString();
+        }
+        void Read_siteCombo()
+        {
+            m_siteCombo.DataSource = null;
+            m_siteno.Text = "";
+
+
+
+            //ラベルに反映
+            if (m_systemCombo.SelectedValue != null)
+                m_systemno.Text = m_systemCombo.SelectedValue.ToString();
+
+            //コンボボックス
+            DataTable siteTable = new DataTable();
+            siteTable.Columns.Add("ID", typeof(string));
+            siteTable.Columns.Add("NAME", typeof(string));
+
+            string systemid = "";
+            if (m_systemno.Text != "")
+                systemid = m_systemno.Text;
+
+            //拠点情報の取得
+            Class_Detaget DGclass = new Class_Detaget();
+            siteList = DGclass.getSiteList(systemid, con, true);
+
+            //取れなかったらなにもしない
+            if (siteList == null || siteList.Count <= 0)
+                return;
+
+            //空行の挿入
+            DataRow row = siteTable.NewRow();
+            row["ID"] = "";
+            row["NAME"] = "";
+            siteTable.Rows.Add(row);
+
+            //拠点件数分ループを行う
+            foreach (siteDS v in siteList)
+            {
+                if (m_systemCombo.SelectedValue != null)
+                {
+                    if (v.systemno == m_systemCombo.SelectedValue.ToString())
+                    {
+                        row = siteTable.NewRow();
+                        row["ID"] = v.siteno;
+                        row["NAME"] = v.sitename;
+                        siteTable.Rows.Add(row);
+                    }
+                }
+            }
+            //データテーブルを割り当てる
+            m_siteCombo.DataSource = siteTable;
+            m_siteCombo.DisplayMember = "NAME";
+            m_siteCombo.ValueMember = "ID";
+            if (siteTable.Rows.Count > 0)
+                if (m_siteCombo.Text != "")
+                    m_siteno.Text = m_siteCombo.SelectedValue.ToString();
+        }
         //検索ボタン
         private void m_selectBtn_Click(object sender, EventArgs e)
         {
@@ -254,13 +406,13 @@ namespace SMSサンプル
 
 
             this.m_scheduleList.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-            this.m_scheduleList.Columns.Insert(1, "タイマー名称", 120, HorizontalAlignment.Left);
+            this.m_scheduleList.Columns.Insert(1, "タイマー名称", 200, HorizontalAlignment.Left);
             this.m_scheduleList.Columns.Insert(2, "予定区分", 90, HorizontalAlignment.Left);
-            this.m_scheduleList.Columns.Insert(3, "繰り返し区分", 90, HorizontalAlignment.Left);
-            this.m_scheduleList.Columns.Insert(4, "開始日時", 80, HorizontalAlignment.Left);
+            this.m_scheduleList.Columns.Insert(3, "繰り返し区分", 40, HorizontalAlignment.Left);
+            this.m_scheduleList.Columns.Insert(4, "開始日時", 120, HorizontalAlignment.Left);
             this.m_scheduleList.Columns.Insert(5, "終了日時", 120, HorizontalAlignment.Left);
-            this.m_scheduleList.Columns.Insert(6, "ステータス", 120, HorizontalAlignment.Left);
-            this.m_scheduleList.Columns.Insert(7, "メッセージ", 50, HorizontalAlignment.Left);
+            this.m_scheduleList.Columns.Insert(6, "ステータス", 60, HorizontalAlignment.Left);
+            this.m_scheduleList.Columns.Insert(7, "メッセージ", 180, HorizontalAlignment.Left);
             this.m_scheduleList.Columns.Insert(8, "音", 50, HorizontalAlignment.Left);
             this.m_scheduleList.Columns.Insert(9, "インシデント番号(管理用)", 50, HorizontalAlignment.Left);
             this.m_scheduleList.Columns.Insert(10, "要確認", 50, HorizontalAlignment.Left);
@@ -395,7 +547,7 @@ namespace SMSサンプル
             if (this.con.FullState != ConnectionState.Open) this.con.Open();
 
             string sql = "update schedule set timer_name=:timer_name,schedule_type=:schedule_type,repeat_type=:repeat_type,start_date=:start_date,end_date=:end_date," +
-                "status=:status,alerm_message=:alerm_message,sound=:sound,incident_no=:incident_no,kakunin=:kakunin,chk_name_id =:ope,chk_date=:chdate where schedule_no = :no";
+                "status=:status,alerm_message=:alerm_message,sound=:sound,userno =:userno,systemno=:systemno,siteno=:siteno,incident_no =:incident_no,kakunin=:kakunin,chk_name_id =:ope,chk_date=:chdate where schedule_no = :no";
 
             using (var transaction = this.con.BeginTransaction())
             {
@@ -403,6 +555,31 @@ namespace SMSサンプル
                 var command = new NpgsqlCommand(@sql, this.con);
                 int incino = 0;
                 int.TryParse(m_incidentno.Text, out incino);
+
+                int userno;
+                int systemno;
+                int siteno;
+
+                int? userno2;
+                int? systemno2;
+                int? siteno2;
+
+
+                if (int.TryParse(m_userno.Text, out userno))
+                    userno2 = userno;
+                else
+                    userno2 = null;
+                if (int.TryParse(m_systemno.Text, out systemno))
+                    systemno2 = systemno;
+                else
+                    systemno2 = null;
+                if (int.TryParse(m_siteno.Text, out siteno))
+                    siteno2 = siteno;
+                else
+                    siteno2 = null;
+
+
+
 
                 DateTime? startdate = null;
                 DateTime? enddate = null;
@@ -420,6 +597,10 @@ namespace SMSサンプル
                 command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
                 command.Parameters.Add(new NpgsqlParameter("alerm_message", DbType.String) { Value = m_alermMessage.Text });
                 command.Parameters.Add(new NpgsqlParameter("sound", DbType.Binary) { Value = bytes });
+                command.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
+                command.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
+                command.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = siteno });
+
                 command.Parameters.Add(new NpgsqlParameter("incident_no", DbType.Int32) { Value = incino });
                 command.Parameters.Add(new NpgsqlParameter("kakunin", DbType.String) { Value = m_kakunin.Text });
                 command.Parameters.Add(new NpgsqlParameter("ope", DbType.String) { Value = loginDS.opeid });
@@ -796,11 +977,10 @@ namespace SMSサンプル
                 scheduledt.alertdate = alertdt;
             }
 
-
             getKeikaku(scheduledt);
 
             koumokuDisable();
-            firstflg = false;
+            //firstflg = false;
         }
         
         //参照ボタン
@@ -936,6 +1116,7 @@ namespace SMSサンプル
                 m_scheduleList.Items.Remove(item);
             }
         }
+
         //削除
         private int deleteschedule()
         {
@@ -1016,9 +1197,41 @@ namespace SMSサンプル
 
             if (m_sound.Text != "")
             {
-                if (System.IO.File.Exists(@m_sound.Text))
-                    System.IO.File.Delete(@m_sound.Text);
+                //相対パスの時に削除する
+                if (System.IO.Path.IsPathRooted(@m_sound.Text)== false)
+                {
+                    if (System.IO.File.Exists(@m_sound.Text))
+                        System.IO.File.Delete(@m_sound.Text);
+                }
             }
+        }
+        //カスタマコンボボックスが変更されたとき
+        private void m_usernameCombo_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (m_usernameCombo.Text == "")
+            {
+                m_userno.Text = "";
+                return;
+            }
+            Read_systemCombo();
+        }
+        //システムコンボが変更されたとき
+        private void m_systemCombo_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (m_systemCombo.Text == "")
+            {
+                m_systemno.Text = "";
+                return;
+            }
+            Read_siteCombo();
+        }
+        //拠点コンボボックスが変更されたとき
+        private void m_siteCombo_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            //ラベルに反映
+            if (m_siteCombo.SelectedValue != null)
+                m_siteno.Text = m_siteCombo.SelectedValue.ToString();
+
         }
     }
 }

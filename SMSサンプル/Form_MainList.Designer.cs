@@ -81,6 +81,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.m_usernameCombo = new System.Windows.Forms.ComboBox();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.m_custmMente = new System.Windows.Forms.LinkLabel();
+            this.m_systemMente = new System.Windows.Forms.LinkLabel();
             this.m_system_label = new System.Windows.Forms.LinkLabel();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.label5 = new System.Windows.Forms.Label();
@@ -88,13 +90,17 @@
             this.label7 = new System.Windows.Forms.Label();
             this.userList = new System.Windows.Forms.ListView();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.m_siteMente = new System.Windows.Forms.LinkLabel();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.label8 = new System.Windows.Forms.Label();
             this.siteList = new System.Windows.Forms.ListView();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
+            this.m_hostMente = new System.Windows.Forms.LinkLabel();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.label9 = new System.Windows.Forms.Label();
             this.m_host_list = new System.Windows.Forms.ListView();
+            this.m_kaisenMente = new System.Windows.Forms.LinkLabel();
+            this.m_InterfaceMente = new System.Windows.Forms.LinkLabel();
             this.linkLabel6 = new System.Windows.Forms.LinkLabel();
             this.linkLabel5 = new System.Windows.Forms.LinkLabel();
             this.label11 = new System.Windows.Forms.Label();
@@ -244,6 +250,7 @@
             this.treeView1.Size = new System.Drawing.Size(174, 594);
             this.treeView1.TabIndex = 1;
             this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
+            this.treeView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDoubleClick);
             // 
             // treeContext1
             // 
@@ -583,9 +590,9 @@
             // 
             // m_incidentTouroku
             // 
-            this.m_incidentTouroku.Location = new System.Drawing.Point(786, 9);
+            this.m_incidentTouroku.Location = new System.Drawing.Point(786, 11);
             this.m_incidentTouroku.Name = "m_incidentTouroku";
-            this.m_incidentTouroku.Size = new System.Drawing.Size(58, 40);
+            this.m_incidentTouroku.Size = new System.Drawing.Size(58, 38);
             this.m_incidentTouroku.TabIndex = 185;
             this.m_incidentTouroku.Text = "インシデント登録";
             this.m_incidentTouroku.UseVisualStyleBackColor = true;
@@ -596,7 +603,7 @@
             this.m_tourokuBtn.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.m_tourokuBtn.Location = new System.Drawing.Point(850, 9);
             this.m_tourokuBtn.Name = "m_tourokuBtn";
-            this.m_tourokuBtn.Size = new System.Drawing.Size(90, 40);
+            this.m_tourokuBtn.Size = new System.Drawing.Size(90, 39);
             this.m_tourokuBtn.TabIndex = 186;
             this.m_tourokuBtn.Text = "管理情報登録";
             this.m_tourokuBtn.UseVisualStyleBackColor = true;
@@ -724,6 +731,8 @@
             // 
             // splitContainer4.Panel1
             // 
+            this.splitContainer4.Panel1.Controls.Add(this.m_custmMente);
+            this.splitContainer4.Panel1.Controls.Add(this.m_systemMente);
             this.splitContainer4.Panel1.Controls.Add(this.m_system_label);
             this.splitContainer4.Panel1.Controls.Add(this.linkLabel2);
             this.splitContainer4.Panel1.Controls.Add(this.label5);
@@ -738,11 +747,34 @@
             this.splitContainer4.SplitterDistance = 122;
             this.splitContainer4.TabIndex = 0;
             // 
+            // m_custmMente
+            // 
+            this.m_custmMente.AutoSize = true;
+            this.m_custmMente.Location = new System.Drawing.Point(110, 10);
+            this.m_custmMente.Name = "m_custmMente";
+            this.m_custmMente.Size = new System.Drawing.Size(31, 12);
+            this.m_custmMente.TabIndex = 196;
+            this.m_custmMente.TabStop = true;
+            this.m_custmMente.Text = "メンテ";
+            this.m_custmMente.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel10_LinkClicked);
+            // 
+            // m_systemMente
+            // 
+            this.m_systemMente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_systemMente.AutoSize = true;
+            this.m_systemMente.Location = new System.Drawing.Point(634, 10);
+            this.m_systemMente.Name = "m_systemMente";
+            this.m_systemMente.Size = new System.Drawing.Size(31, 12);
+            this.m_systemMente.TabIndex = 195;
+            this.m_systemMente.TabStop = true;
+            this.m_systemMente.Text = "メンテ";
+            this.m_systemMente.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.m_systemMente_LinkClicked);
+            // 
             // m_system_label
             // 
             this.m_system_label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_system_label.AutoSize = true;
-            this.m_system_label.Location = new System.Drawing.Point(609, 10);
+            this.m_system_label.Location = new System.Drawing.Point(599, 10);
             this.m_system_label.Name = "m_system_label";
             this.m_system_label.Size = new System.Drawing.Size(29, 12);
             this.m_system_label.TabIndex = 194;
@@ -821,6 +853,7 @@
             // 
             // splitContainer5.Panel1
             // 
+            this.splitContainer5.Panel1.Controls.Add(this.m_siteMente);
             this.splitContainer5.Panel1.Controls.Add(this.linkLabel3);
             this.splitContainer5.Panel1.Controls.Add(this.label8);
             this.splitContainer5.Panel1.Controls.Add(this.siteList);
@@ -831,6 +864,17 @@
             this.splitContainer5.Size = new System.Drawing.Size(1030, 485);
             this.splitContainer5.SplitterDistance = 134;
             this.splitContainer5.TabIndex = 0;
+            // 
+            // m_siteMente
+            // 
+            this.m_siteMente.AutoSize = true;
+            this.m_siteMente.Location = new System.Drawing.Point(102, 7);
+            this.m_siteMente.Name = "m_siteMente";
+            this.m_siteMente.Size = new System.Drawing.Size(31, 12);
+            this.m_siteMente.TabIndex = 196;
+            this.m_siteMente.TabStop = true;
+            this.m_siteMente.Text = "メンテ";
+            this.m_siteMente.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.m_siteMente_LinkClicked);
             // 
             // linkLabel3
             // 
@@ -878,12 +922,15 @@
             // 
             // splitContainer6.Panel1
             // 
+            this.splitContainer6.Panel1.Controls.Add(this.m_hostMente);
             this.splitContainer6.Panel1.Controls.Add(this.linkLabel4);
             this.splitContainer6.Panel1.Controls.Add(this.label9);
             this.splitContainer6.Panel1.Controls.Add(this.m_host_list);
             // 
             // splitContainer6.Panel2
             // 
+            this.splitContainer6.Panel2.Controls.Add(this.m_kaisenMente);
+            this.splitContainer6.Panel2.Controls.Add(this.m_InterfaceMente);
             this.splitContainer6.Panel2.Controls.Add(this.linkLabel6);
             this.splitContainer6.Panel2.Controls.Add(this.linkLabel5);
             this.splitContainer6.Panel2.Controls.Add(this.label11);
@@ -893,6 +940,17 @@
             this.splitContainer6.Size = new System.Drawing.Size(1030, 347);
             this.splitContainer6.SplitterDistance = 191;
             this.splitContainer6.TabIndex = 0;
+            // 
+            // m_hostMente
+            // 
+            this.m_hostMente.AutoSize = true;
+            this.m_hostMente.Location = new System.Drawing.Point(101, 6);
+            this.m_hostMente.Name = "m_hostMente";
+            this.m_hostMente.Size = new System.Drawing.Size(31, 12);
+            this.m_hostMente.TabIndex = 197;
+            this.m_hostMente.TabStop = true;
+            this.m_hostMente.Text = "メンテ";
+            this.m_hostMente.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.m_hostMente_LinkClicked);
             // 
             // linkLabel4
             // 
@@ -929,6 +987,29 @@
             this.m_host_list.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_host_list_ColumnClick);
             this.m_host_list.Click += new System.EventHandler(this.m_host_list_Click);
             this.m_host_list.DoubleClick += new System.EventHandler(this.hostList_DoubleClick);
+            // 
+            // m_kaisenMente
+            // 
+            this.m_kaisenMente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_kaisenMente.AutoSize = true;
+            this.m_kaisenMente.Location = new System.Drawing.Point(623, 7);
+            this.m_kaisenMente.Name = "m_kaisenMente";
+            this.m_kaisenMente.Size = new System.Drawing.Size(31, 12);
+            this.m_kaisenMente.TabIndex = 202;
+            this.m_kaisenMente.TabStop = true;
+            this.m_kaisenMente.Text = "メンテ";
+            this.m_kaisenMente.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel14_LinkClicked);
+            // 
+            // m_InterfaceMente
+            // 
+            this.m_InterfaceMente.AutoSize = true;
+            this.m_InterfaceMente.Location = new System.Drawing.Point(173, 7);
+            this.m_InterfaceMente.Name = "m_InterfaceMente";
+            this.m_InterfaceMente.Size = new System.Drawing.Size(31, 12);
+            this.m_InterfaceMente.TabIndex = 201;
+            this.m_InterfaceMente.TabStop = true;
+            this.m_InterfaceMente.Text = "メンテ";
+            this.m_InterfaceMente.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel13_LinkClicked);
             // 
             // linkLabel6
             // 
@@ -1197,6 +1278,12 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.LinkLabel m_systemMente;
+        private System.Windows.Forms.LinkLabel m_siteMente;
+        private System.Windows.Forms.LinkLabel m_custmMente;
+        private System.Windows.Forms.LinkLabel m_hostMente;
+        private System.Windows.Forms.LinkLabel m_kaisenMente;
+        private System.Windows.Forms.LinkLabel m_InterfaceMente;
     }
 }
 

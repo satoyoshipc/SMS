@@ -30,9 +30,9 @@ namespace SMSサンプル
         {
             InitializeComponent();
         }
-        
+
         //更新ボタン
-        private void m_kousin_btn_Click(object sender, EventArgs e)
+        private void m_kousin_btn_Click_1(object sender, EventArgs e)
         {
             if (m_kubun.Text == "")
             {
@@ -65,9 +65,17 @@ namespace SMSサンプル
                 "WHERE kubun=:kubun AND opetantouno=:opetantouno AND addressno=:addressno ";
             using (var transaction = con.BeginTransaction())
             {
-
+                string kubun = m_kubun.Text;
+                if (0 <= kubun.IndexOf("オペレータ"))
+                {
+                    kubun = "1";
+                }
+                else if(0 <= kubun.IndexOf("オペレータ"))
+                {
+                    kubun = "2";
+                }
                 var command = new NpgsqlCommand(@sql, con);
-                command.Parameters.Add(new NpgsqlParameter("kubun", DbType.String) { Value = m_kubun.Text });
+                command.Parameters.Add(new NpgsqlParameter("kubun", DbType.String) { Value = kubun });
                 command.Parameters.Add(new NpgsqlParameter("opetantouno", DbType.Int32) { Value = int.Parse(m_userid.Text) });
                 command.Parameters.Add(new NpgsqlParameter("addressno", DbType.Int32) { Value = int.Parse(m_addressno.Text) });
                 command.Parameters.Add(new NpgsqlParameter("mailaddress", DbType.String) { Value = m_address.Text });
@@ -79,7 +87,7 @@ namespace SMSサンプル
                 {
                     //更新処理
                     rowsaffected = command.ExecuteNonQuery();
-                    transaction.Commit();
+
 
                     if (rowsaffected != 1)
                     {
@@ -88,6 +96,7 @@ namespace SMSサンプル
                     }
                     else
                     {
+                        transaction.Commit();
                         MessageBox.Show("更新されました。", "メールアドレス");
 
 
@@ -95,9 +104,9 @@ namespace SMSサンプル
                 }
                 catch (Exception ex)
                 {
+                    transaction.Rollback();
                     //エラー時メッセージ表示
                     MessageBox.Show(ex.Message);
-                    transaction.Rollback();
                     return;
                 }
             }
@@ -110,7 +119,6 @@ namespace SMSサンプル
             _columnSorteraddress = new Class_ListViewColumnSorter();
             m_addressslist.ListViewItemSorter = _columnSorteraddress;
 
-
             m_selectCombo.Items.Add("ユーザ区分");
             m_selectCombo.Items.Add("ユーザID");
             m_selectCombo.Items.Add("アドレス番号");
@@ -119,37 +127,54 @@ namespace SMSサンプル
             m_selectCombo.Items.Add("更新日時");
             m_selectCombo.Items.Add("更新者ID");
 
-
             add_Disp(addresssDS);
 
         }
         //オペレータの表示
         private void add_Disp(MailaddressDS addressDt)
         {
-            m_kubun.Text = addressDt.kubun;
+            string kubunstr="";
+            if (addressDt.kubun == "1")
+                kubunstr = "1:オペレータ";
+            else if (addressDt.kubun == "2")
+                kubunstr = "2:カスタマ担当者";
+
+            m_kubun.Text = kubunstr;
             m_userid.Text = addressDt.opetantouno;
             m_addressno.Text = addressDt.addressNo;
+            m_username.Text = addressDt.user_tantou_name;
+            m_Customername.Text = addressDt.username;
+
             m_address.Text = addressDt.mailAddress;
             m_addressname.Text = addressDt.addressname;
 
             m_update.Text = addressDt.chk_date;
             m_updateOpe.Text = addressDt.chk_name_id;
         }
-        private void m_cancelbtn_Click(object sender, EventArgs e)
+        //キャンセルボタン
+        private void m_cancelbtn_Click_1(object sender, EventArgs e)
         {
             this.Close();
         }
 
         //リストダブルクリック
-        private void m_addressslist_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void m_addressslist_MouseDoubleClick_1(object sender, MouseEventArgs e)
         {
             ListView.SelectedIndexCollection item = m_addressslist.SelectedIndices;
 
             MailaddressDS mailDt = new MailaddressDS();
+            string kubun = this.m_addressslist.Items[item[0]].SubItems[0].Text;
+            if(0 <= kubun.IndexOf("オペレータ"))
+                mailDt.kubun     = "1";
+            else
+                mailDt.kubun = "2";
 
-            mailDt.kubun     = this.m_addressslist.Items[item[0]].SubItems[0].Text;
             mailDt.opetantouno = this.m_addressslist.Items[item[0]].SubItems[1].Text;
             mailDt.addressNo  = this.m_addressslist.Items[item[0]].SubItems[2].Text;
+
+            mailDt.user_tantou_name= this.m_addressslist.Items[item[0]].SubItems[3].Text;
+            mailDt.username = this.m_addressslist.Items[item[0]].SubItems[4].Text;
+            
             mailDt.mailAddress  = this.m_addressslist.Items[item[0]].SubItems[5].Text;
             mailDt.addressname  = this.m_addressslist.Items[item[0]].SubItems[6].Text;
             mailDt.chk_date               = this.m_addressslist.Items[item[0]].SubItems[7].Text;
@@ -164,21 +189,20 @@ namespace SMSサンプル
 
             Class_Detaget dg = new Class_Detaget();
             List<MailaddressDS> addressList = new List<MailaddressDS>();
-            
 
-            //アドレスを取得
+            //アドレスを取得3は両方
             addressList = dg.selectMailList(param_dict, con,"3");
 
             this.m_addressslist.FullRowSelect = true;
             this.m_addressslist.HideSelection = false;
             this.m_addressslist.HeaderStyle = ColumnHeaderStyle.Clickable;
-            this.m_addressslist.Columns.Insert(0, "ユーザ区分", 50, HorizontalAlignment.Left);
+            this.m_addressslist.Columns.Insert(0, "ユーザ区分", 100, HorizontalAlignment.Left);
             this.m_addressslist.Columns.Insert(1, "ユーザ通番", 50, HorizontalAlignment.Left);
             this.m_addressslist.Columns.Insert(2, "アドレス番号", 50, HorizontalAlignment.Left);
             this.m_addressslist.Columns.Insert(3, "ユーザ名", 150, HorizontalAlignment.Left);
             this.m_addressslist.Columns.Insert(4, "カスタマ名", 150, HorizontalAlignment.Left);
-            this.m_addressslist.Columns.Insert(5, "メールアドレス", 150, HorizontalAlignment.Left);
-            this.m_addressslist.Columns.Insert(6, "アドレス名", 150, HorizontalAlignment.Left);
+            this.m_addressslist.Columns.Insert(5, "メールアドレス", 250, HorizontalAlignment.Left);
+            this.m_addressslist.Columns.Insert(6, "アドレス名", 250, HorizontalAlignment.Left);
             this.m_addressslist.Columns.Insert(7, "更新日時", 120, HorizontalAlignment.Left);
             this.m_addressslist.Columns.Insert(8, "更新者", 120, HorizontalAlignment.Left);
 
@@ -189,7 +213,13 @@ namespace SMSサンプル
                 {
 
                     ListViewItem itemx1 = new ListViewItem();
-                    itemx1.Text = ad_ds.kubun;
+                    string kubunstr = "";
+                    if (ad_ds.kubun == "1")
+                        kubunstr = "1:オペレータ";
+                    else if (ad_ds.kubun == "2")
+                        kubunstr = "2:カスタマ担当者";
+
+                    itemx1.Text = kubunstr;
                     itemx1.SubItems.Add(ad_ds.opetantouno);
 
                     itemx1.SubItems.Add(ad_ds.addressNo);
@@ -207,7 +237,7 @@ namespace SMSサンプル
 
         }
         //検索ボタン
-        private void m_select_btn_Click(object sender, EventArgs e)
+        private void m_select_btn_Click_1(object sender, EventArgs e)
         {
             m_addressslist.Clear();
             DISP_dataSet dset = new DISP_dataSet();
@@ -216,7 +246,6 @@ namespace SMSサンプル
             if(m_selecttext.Text != "") {
                 if (this.m_selectCombo.SelectedIndex.ToString() != "")
                 {
-
 
                     switch (this.m_selectCombo.SelectedIndex)
                     {
@@ -241,7 +270,20 @@ namespace SMSサンプル
                             break;
                         //更新日時
                         case 5:
-                            param_dict["chk_date"] = m_selecttext.Text;
+                            DateTime dt;
+                            String str = m_selecttext.Text;
+
+                            //入力された日付の形式の確認
+                            if (DateTime.TryParse(str, out dt))
+                            {
+                                param_dict["chk_date"] = str;
+                            }
+                            else
+                            {
+
+                                MessageBox.Show("日付の形式が正しくありません。", "メール検索");
+                                return;
+                            }
                             break;
                         //更新者
                         case 6:
@@ -260,8 +302,9 @@ namespace SMSサンプル
         }
 
         //削除ボタン
-        private void m_deleteBtn_Click(object sender, EventArgs e)
+        private void m_deleteBtn_Click_1(object sender, EventArgs e)
         {
+
             int count = m_addressslist.SelectedItems.Count;
 
             //確認メッセージ
@@ -287,22 +330,30 @@ namespace SMSサンプル
         {
 
             string operno;
+            string opetantouno;
+            string addressno;
             int ret = 0;
             if (con.FullState != ConnectionState.Open) con.Open();
 
-            string sql = "DELETE FROM mailadddress where kubun = :kubun AND opetantouno = :opetantouno AND addressNo = :addressNo ";
+            string sql = "DELETE FROM mailaddress where kubun = :kubun AND opetantouno = :opetantouno AND addressNo = :addressNo ";
 
             using (var transaction = con.BeginTransaction())
             {
                 foreach (ListViewItem item in m_addressslist.SelectedItems)
                 {
                     operno = item.SubItems[0].Text;
+                    opetantouno = item.SubItems[1].Text;
+                    addressno = item.SubItems[2].Text;
 
+                    if (0 <= operno.IndexOf("オペレータ"))
+                        operno = "1";
+                    else
+                        operno = "2";
 
                     var command = new NpgsqlCommand(@sql, con);
-                    command.Parameters.Add(new NpgsqlParameter("kubun", DbType.String) { Value = int.Parse(m_kubun.Text) });
-                    command.Parameters.Add(new NpgsqlParameter("opetantouno", DbType.Int32) { Value = int.Parse(m_userid.Text) });
-                    command.Parameters.Add(new NpgsqlParameter("addressNo", DbType.Int32) { Value = int.Parse(m_addressno.Text) });
+                    command.Parameters.Add(new NpgsqlParameter("kubun", DbType.String) { Value = operno });
+                    command.Parameters.Add(new NpgsqlParameter("opetantouno", DbType.Int32) { Value = int.Parse(opetantouno) });
+                    command.Parameters.Add(new NpgsqlParameter("addressNo", DbType.Int32) { Value = int.Parse(addressno) });
                     Int32 rowsaffected;
                     try
                     {
@@ -339,16 +390,8 @@ namespace SMSサンプル
             }
             return 1;
         }
-        //平文ボタン
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if(m_addressname.PasswordChar == '*')
-                m_addressname.PasswordChar = '\0';
-            else
-                m_addressname.PasswordChar = '*';
-        }
 
-        private void m_addressslist_ColumnClick(object sender, ColumnClickEventArgs e)
+        private void m_addressslist_ColumnClick_1(object sender, ColumnClickEventArgs e)
         {
             if (e.Column == _columnSorteraddress.SortColumn)
             {
@@ -383,5 +426,7 @@ namespace SMSサンプル
             addressIns.loginDS = loginDS;
             addressIns.Show();
         }
+
+
     }
 }

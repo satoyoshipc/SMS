@@ -16,7 +16,6 @@ namespace SMSサンプル
     {
         private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-
         NpgsqlConnection con;
 
         //ログイン情報
@@ -161,16 +160,75 @@ namespace SMSサンプル
             m_usernameCombo.ValueMember = "userno";
         }
 
+        //全ノードをループし、展開されているノードを取得する
+        private void PrintRecuesive(TreeNode treeNode,List<TreeNode> expand_array)
+        {
+            //System.Diagnostics.Debug.WriteLine(treeNode.Text);
+            
+
+            TreeNode nd;
+            if (treeNode.IsExpanded)
+            {
+
+                nd = treeNode;
+
+                expand_array.Add(nd);
+            }
+            foreach (TreeNode tn in treeNode.Nodes)
+            {
+                PrintRecuesive(tn, expand_array);
+            }
+
+        }
+        private void CallRecursive(TreeView treeView, List<TreeNode> expand_array)
+        {
+            TreeNodeCollection nodes = treeView.Nodes;
+            foreach ( TreeNode n in nodes)
+            {
+                PrintRecuesive(n, expand_array);
+            }
+        }
+
+        private void PrintRecuesiveExpand(TreeNode treeNode, string nodeText)
+        {
+            System.Diagnostics.Debug.WriteLine(treeNode.Text);
+
+            TreeNode nd;
+
+            if (nodeText == treeNode.Text)
+            {
+
+                nd = treeNode;
+
+                nd.Expand();
+            }
+            foreach (TreeNode tn in treeNode.Nodes)
+            {
+                PrintRecuesiveExpand(tn, nodeText);
+            }
+
+        }
+        private void CallRecursiveExpand(TreeView treeView, string nodeText)
+        {
+            TreeNodeCollection nodes = treeView.Nodes;
+            foreach (TreeNode n in nodes)
+            {
+                PrintRecuesiveExpand(n, nodeText);
+            }
+        }
+
+
         // TreeViewコントロールのデータを更新します。
         private void RefreshTreeView()
         {
+
+
             treeView1.Nodes.Clear();
             treeView1.ImageList = this.imageList1;
             treeView1.ImageIndex = 0;
             treeView1.SelectedImageIndex = 0;
             if (schDSList != null) schDSList.Clear();
 
-            //下から順に取りにいく
             Class_Detaget getuser = new Class_Detaget();
             getuser.con = con;
             userDSList = getuser.getUserList();
@@ -179,6 +237,7 @@ namespace SMSサンプル
             {
                 TreeNode NodeUser = new TreeNode(v.username, 0, 0);
                 NodeUser.ToolTipText = v.userno;
+
 
                 //システム名を取得
                 List<systemDS> systemDSListsub = getuser.getSystemList(v.userno, true);
@@ -751,19 +810,23 @@ namespace SMSサンプル
             scheduleList_tokubetu = new List<scheduleDS>();
 
             //
-            foreach (scheduleDS schedata in scheduleList)
-            {
-                //1:インシデント処理 2:定期 3:作業 4:特別 5:サブタスク
-                if (schedata.schedule_type == "2")
-                    scheduleList_teiki.Add(schedata);
-                else if (schedata.schedule_type == "3")
-                    scheduleList_keikaku.Add(schedata);
-                else if (schedata.schedule_type == "4")
-                    scheduleList_tokubetu.Add(schedata);
+            if (scheduleList != null)
+            { 
+                foreach (scheduleDS schedata in scheduleList)
+                {
+                    //1:インシデント処理 2:定期 3:作業 4:特別 5:サブタスク
+                    if (schedata.schedule_type == "2")
+                        scheduleList_teiki.Add(schedata);
+                    else if (schedata.schedule_type == "3")
+                        scheduleList_keikaku.Add(schedata);
+                    else if (schedata.schedule_type == "4")
+                        scheduleList_tokubetu.Add(schedata);
+                }
             }
             disp_teiki_list();
             disp_scheduleList_keikaku();
             disp_tokubetu_list();
+            
         }
         //定期作業の表示
         private void disp_teiki_list()
@@ -1848,6 +1911,12 @@ namespace SMSサンプル
                                     break;
                                 }
                             }
+                            if (userDSList != null)
+                                formdetail.userList = userDSList;
+                            if (systemDSList != null)
+                                formdetail.systemList = systemDSList;
+                            if (siteDSList != null)
+                                formdetail.siteList = siteDSList;
                             formdetail.loginDS = loginDS;
                             formdetail.con = con;
                             formdetail.Owner = this;
@@ -1895,6 +1964,12 @@ namespace SMSサンプル
                                     break;
                                 }
                             }
+                            if (userDSList != null)
+                                formdetail.userList = userDSList;
+                            if (systemDSList != null)
+                                formdetail.systemList = systemDSList;
+                            if (siteDSList != null)
+                                formdetail.siteList = siteDSList;
                             formdetail.loginDS = loginDS;
                             formdetail.con = con;
                             formdetail.Owner = this;
@@ -1943,6 +2018,12 @@ namespace SMSサンプル
                                     break;
                                 }
                             }
+                            if (userDSList != null)
+                                formdetail.userList = userDSList;
+                            if (systemDSList != null)
+                                formdetail.systemList = systemDSList;
+                            if (siteDSList != null)
+                                formdetail.siteList = siteDSList;
                             formdetail.loginDS = loginDS;
                             formdetail.con = con;
                             formdetail.Owner = this;
@@ -1990,6 +2071,12 @@ namespace SMSサンプル
                                     break;
                                 }
                             }
+                            if (userDSList != null)
+                                formdetail.userList = userDSList;
+                            if (systemDSList != null)
+                                formdetail.systemList = systemDSList;
+                            if (siteDSList != null)
+                                formdetail.siteList = siteDSList;
                             formdetail.loginDS = loginDS;
                             formdetail.con = con;
                             formdetail.Owner = this;
@@ -2023,7 +2110,23 @@ namespace SMSサンプル
             if (m_keikaku_list != null) m_keikaku_list.Clear();
             if (m_tokubetu_list != null) m_tokubetu_list.Clear();
 
+            List<TreeNode> expand_array = new List<TreeNode>();
+
+            CallRecursive(treeView1, expand_array);
+
+            treeView1.BeginUpdate();
+
             RefreshTreeView();
+
+
+            int i = 0;
+            for (i= 0;i< expand_array.Count;i++)
+                CallRecursiveExpand(treeView1, expand_array[i].Text);
+
+            treeView1.EndUpdate();
+
+            treeView1.Refresh();
+
 
             combo_set();
             //インシデント一覧データを取得
@@ -2219,138 +2322,181 @@ namespace SMSサンプル
         //カスタマ名をダブルクリック
         private void userList_MouseDoubleClick_1(object sender, MouseEventArgs e)
         {
-
+            OpenMente_customer();
+        }
+        //カスタマメンテナンス画面を開く
+        private void OpenMente_customer()
+        {
             ListView.SelectedIndexCollection item = userList.SelectedIndices;
             Form_UserDetail formdetail = new Form_UserDetail();
             formdetail.con = con;
-            userDS userdt = new userDS();
-            userdt.userno = this.userList.Items[item[0]].SubItems[0].Text;
-            userdt.username = this.userList.Items[item[0]].SubItems[2].Text;
-            userdt.username_kana = this.userList.Items[item[0]].SubItems[3].Text;
-            userdt.username_sum = this.userList.Items[item[0]].SubItems[4].Text;
 
-            string statustxt = this.userList.Items[item[0]].SubItems[1].Text;
-            if (statustxt == "有効")
-                userdt.status = "1";
-            else
-                userdt.status = "0";
+            if (item.Count > 0)
+            {
+                userDS userdt = new userDS();
+                userdt.userno = this.userList.Items[item[0]].SubItems[0].Text;
+                userdt.username = this.userList.Items[item[0]].SubItems[2].Text;
+                userdt.username_kana = this.userList.Items[item[0]].SubItems[3].Text;
+                userdt.username_sum = this.userList.Items[item[0]].SubItems[4].Text;
 
-            string reportststxt = this.userList.Items[item[0]].SubItems[5].Text;
-            if (reportststxt == "有効")
-                userdt.report_status = "1";
-            else
-                userdt.report_status = "0";
+                string statustxt = this.userList.Items[item[0]].SubItems[1].Text;
+                if (statustxt == "有効")
+                    userdt.status = "1";
+                else
+                    userdt.status = "0";
 
-            userdt.biko = this.userList.Items[item[0]].SubItems[6].Text;
-            userdt.chk_date = this.userList.Items[item[0]].SubItems[7].Text;
-            userdt.chk_name_id = this.userList.Items[item[0]].SubItems[8].Text;
+                string reportststxt = this.userList.Items[item[0]].SubItems[5].Text;
+                if (reportststxt == "有効")
+                    userdt.report_status = "1";
+                else
+                    userdt.report_status = "0";
 
+                userdt.biko = this.userList.Items[item[0]].SubItems[6].Text;
+                userdt.chk_date = this.userList.Items[item[0]].SubItems[7].Text;
+                userdt.chk_name_id = this.userList.Items[item[0]].SubItems[8].Text;
+
+
+                formdetail.userdt = userdt;
+            }
             formdetail.loginDS = loginDS;
-
-            formdetail.userdt = userdt;
             formdetail.Show();
             formdetail.Owner = this;
         }
         //システム情報の表示
         private void systemList_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            OpenMente_system();
 
+        }
+        //システムメンテナンス画面を開く
+        private void OpenMente_system()
+        {
             ListView.SelectedIndexCollection item = systemList.SelectedIndices;
             Form_SystemDetail formdetail = new Form_SystemDetail();
             formdetail.con = con;
             systemDS systemdt = new systemDS();
 
-            string systemno = this.systemList.Items[item[0]].SubItems[0].Text;
-
-            foreach (systemDS sl in systemDSList)
+            if (item.Count > 0)
             {
-                if (systemno == sl.systemno)
+                string systemno = this.systemList.Items[item[0]].SubItems[0].Text;
+
+                foreach (systemDS sl in systemDSList)
                 {
-                    formdetail.systemdt = sl;
-                    break;
+                    if (systemno == sl.systemno)
+                    {
+                        formdetail.systemdt = sl;
+                        break;
+                    }
                 }
             }
-
             formdetail.loginDS = loginDS;
 
             formdetail.Show();
             formdetail.Owner = this;
         }
+
+
         //拠点をダブルクリック
         private void siteList_DoubleClick(object sender, EventArgs e)
+        {
+
+            OpenMente_site();
+
+        }
+        //拠点情報の表示
+        private void OpenMente_site()
         {
             ListView.SelectedIndexCollection item = siteList.SelectedIndices;
             Form_SiteDetail formdetail = new Form_SiteDetail();
             formdetail.con = con;
 
-            //拠点番号
-            string siteno = this.siteList.Items[item[0]].SubItems[0].Text;
 
-            if (siteDSList == null)
+            if (item.Count > 0)
             {
-                formdetail.sitedt = new siteDS();
-                formdetail.sitedt.siteno =      this.siteList.Items[item[0]].SubItems[0].Text;
-                formdetail.sitedt.status =      this.siteList.Items[item[0]].SubItems[1].Text;
-                formdetail.sitedt.sitename =    this.siteList.Items[item[0]].SubItems[2].Text;
-                formdetail.sitedt.address1 =    this.siteList.Items[item[0]].SubItems[3].Text;
-                formdetail.sitedt.address2 =    this.siteList.Items[item[0]].SubItems[4].Text;
-                formdetail.sitedt.telno =       this.siteList.Items[item[0]].SubItems[5].Text;
-                formdetail.sitedt.biko =        this.siteList.Items[item[0]].SubItems[6].Text;
-                formdetail.sitedt.chk_date =    this.siteList.Items[item[0]].SubItems[7].Text;
-                formdetail.sitedt.chk_name_id = this.siteList.Items[item[0]].SubItems[8].Text;
-            }
-            else {
-                foreach (siteDS sl in siteDSList)
+
+                //拠点番号
+                string siteno = this.siteList.Items[item[0]].SubItems[0].Text;
+
+                if (siteDSList == null)
                 {
-                    if (siteno == sl.siteno)
+                    formdetail.sitedt = new siteDS();
+                    formdetail.sitedt.siteno = this.siteList.Items[item[0]].SubItems[0].Text;
+                    formdetail.sitedt.status = this.siteList.Items[item[0]].SubItems[1].Text;
+                    formdetail.sitedt.sitename = this.siteList.Items[item[0]].SubItems[2].Text;
+
+
+                    formdetail.sitedt.address1 = this.siteList.Items[item[0]].SubItems[3].Text;
+                    formdetail.sitedt.address2 = this.siteList.Items[item[0]].SubItems[4].Text;
+                    formdetail.sitedt.telno = this.siteList.Items[item[0]].SubItems[5].Text;
+                    formdetail.sitedt.biko = this.siteList.Items[item[0]].SubItems[6].Text;
+                    formdetail.sitedt.chk_date = this.siteList.Items[item[0]].SubItems[7].Text;
+                    formdetail.sitedt.chk_name_id = this.siteList.Items[item[0]].SubItems[8].Text;
+                }
+                else
+                {
+                    foreach (siteDS sl in siteDSList)
                     {
-                        formdetail.sitedt = sl;
-                        break;
+                        if (siteno == sl.siteno)
+                        {
+                            formdetail.sitedt = sl;
+                            break;
+                        }
                     }
                 }
             }
+
             formdetail.loginDS = loginDS;
 
             formdetail.Show();
             formdetail.Owner = this;
         }
+
         //ホストリストのダブルクリック
         private void hostList_DoubleClick(object sender, EventArgs e)
+        {
+            OpenMente_host();
+        }
+
+        private void OpenMente_host()
         {
             ListView.SelectedIndexCollection item = m_host_list.SelectedIndices;
             Form_HostDetail formdetail = new Form_HostDetail();
             formdetail.con = con;
 
-            //ホスト番号
-            string hostno = this.m_host_list.Items[item[0]].SubItems[0].Text;
-
-            if (hostDSList == null)
+            if (item.Count > 0)
             {
-                formdetail.hostdt = new hostDS();
-                formdetail.hostdt.hostname = this.siteList.Items[item[0]].SubItems[0].Text;
-                formdetail.hostdt.hostname_ja = this.siteList.Items[item[0]].SubItems[1].Text;
-                formdetail.hostdt.status = this.siteList.Items[item[0]].SubItems[2].Text;
-                formdetail.hostdt.device = this.siteList.Items[item[0]].SubItems[3].Text;
-                formdetail.hostdt.location = this.siteList.Items[item[0]].SubItems[4].Text;
-                formdetail.hostdt.usefor = this.siteList.Items[item[0]].SubItems[5].Text;
-                formdetail.hostdt.kansiStartdate = this.siteList.Items[item[0]].SubItems[6].Text;
-                formdetail.hostdt.kansiEndsdate = this.siteList.Items[item[0]].SubItems[7].Text;
-                formdetail.hostdt.hosyukanri = this.siteList.Items[item[0]].SubItems[8].Text;
-                formdetail.hostdt.hosyuinfo = this.siteList.Items[item[0]].SubItems[9].Text;
-                formdetail.hostdt.biko = this.siteList.Items[item[0]].SubItems[10].Text;
-                formdetail.hostdt.userno = this.siteList.Items[item[0]].SubItems[11].Text;
-                formdetail.hostdt.systemno = this.siteList.Items[item[0]].SubItems[12].Text;
-                formdetail.hostdt.siteno = this.siteList.Items[item[0]].SubItems[13].Text;
-                formdetail.hostdt.chk_date = this.siteList.Items[item[0]].SubItems[14].Text;
-                formdetail.hostdt.chk_name_id = this.siteList.Items[item[0]].SubItems[15].Text;
-            }
-            else {
-                foreach (hostDS sl in hostDSList)
+                //ホスト番号
+                string hostno = this.m_host_list.Items[item[0]].SubItems[0].Text;
+
+                if (hostDSList == null)
                 {
-                    if (hostno == sl.host_no)
+                    formdetail.hostdt = new hostDS();
+                    formdetail.hostdt.hostname = this.siteList.Items[item[0]].SubItems[0].Text;
+                    formdetail.hostdt.hostname_ja = this.siteList.Items[item[0]].SubItems[1].Text;
+                    formdetail.hostdt.status = this.siteList.Items[item[0]].SubItems[2].Text;
+                    formdetail.hostdt.device = this.siteList.Items[item[0]].SubItems[3].Text;
+                    formdetail.hostdt.location = this.siteList.Items[item[0]].SubItems[4].Text;
+                    formdetail.hostdt.usefor = this.siteList.Items[item[0]].SubItems[5].Text;
+                    formdetail.hostdt.kansiStartdate = this.siteList.Items[item[0]].SubItems[6].Text;
+                    formdetail.hostdt.kansiEndsdate = this.siteList.Items[item[0]].SubItems[7].Text;
+                    formdetail.hostdt.hosyukanri = this.siteList.Items[item[0]].SubItems[8].Text;
+                    formdetail.hostdt.hosyuinfo = this.siteList.Items[item[0]].SubItems[9].Text;
+                    formdetail.hostdt.biko = this.siteList.Items[item[0]].SubItems[10].Text;
+                    formdetail.hostdt.userno = this.siteList.Items[item[0]].SubItems[11].Text;
+                    formdetail.hostdt.systemno = this.siteList.Items[item[0]].SubItems[12].Text;
+                    formdetail.hostdt.siteno = this.siteList.Items[item[0]].SubItems[13].Text;
+                    formdetail.hostdt.chk_date = this.siteList.Items[item[0]].SubItems[14].Text;
+                    formdetail.hostdt.chk_name_id = this.siteList.Items[item[0]].SubItems[15].Text;
+                }
+                else
+                {
+                    foreach (hostDS sl in hostDSList)
                     {
-                        formdetail.hostdt = sl;
-                        break;
+                        if (hostno == sl.host_no)
+                        {
+                            formdetail.hostdt = sl;
+                            break;
+                        }
                     }
                 }
             }
@@ -2360,102 +2506,121 @@ namespace SMSサンプル
             formdetail.Show();
             formdetail.Owner = this;
         }
+
 
         //インターフェイス一覧
         private void interfaceList_DoubleClick(object sender, EventArgs e)
         {
+            OpenMente_interface();
+        }
+        //インターフェイス一覧表示
+        private void OpenMente_interface()
+        {
             ListView.SelectedIndexCollection item = interfaceList.SelectedIndices;
             Form_interfaceDetail formdetail = new Form_interfaceDetail();
             formdetail.con = con;
-
-            string interfaceno = this.interfaceList.Items[item[0]].SubItems[0].Text;
-
-            if (interfaceDSList == null)
+            if (item.Count > 0)
             {
-                formdetail.interfacedt = new watch_InterfaceDS();
-                string status = "0";
-                if (this.interfaceList.Items[item[0]].SubItems[1].Text != null)
-                    if (this.interfaceList.Items[item[0]].SubItems[1].Text == "有効")
-                        status = "1";
-                    else if (this.interfaceList.Items[item[0]].SubItems[1].Text == "無効")
-                        status = "0";
+                string interfaceno = this.interfaceList.Items[item[0]].SubItems[0].Text;
 
-
-                formdetail.interfacedt.watch_Interfaceno = this.interfaceList.Items[item[0]].SubItems[0].Text;
-                formdetail.interfacedt.interfacename = this.interfaceList.Items[item[0]].SubItems[2].Text;
-                formdetail.interfacedt.status = status;
-                formdetail.interfacedt.type = this.interfaceList.Items[item[0]].SubItems[3].Text;
-                formdetail.interfacedt.kanshi = this.interfaceList.Items[item[0]].SubItems[4].Text;
-                formdetail.interfacedt.start_date = this.interfaceList.Items[item[0]].SubItems[5].Text;
-                formdetail.interfacedt.end_date = this.interfaceList.Items[item[0]].SubItems[6].Text;
-                formdetail.interfacedt.border = this.interfaceList.Items[item[0]].SubItems[7].Text;
-                formdetail.interfacedt.IPaddress = this.interfaceList.Items[item[0]].SubItems[8].Text;
-                formdetail.interfacedt.IPaddressNAT = this.interfaceList.Items[item[0]].SubItems[9].Text;
-                formdetail.interfacedt.host_no = this.interfaceList.Items[item[0]].SubItems[10].Text;
-                formdetail.interfacedt.userno = this.interfaceList.Items[item[0]].SubItems[11].Text;
-                formdetail.interfacedt.systemno = this.interfaceList.Items[item[0]].SubItems[12].Text;
-                formdetail.interfacedt.siteno = this.interfaceList.Items[item[0]].SubItems[13].Text;
-                formdetail.interfacedt.chk_date = this.interfaceList.Items[item[0]].SubItems[14].Text;
-                formdetail.interfacedt.chk_name_id = this.interfaceList.Items[item[0]].SubItems[15].Text;
-            }
-            else {
-                foreach (watch_InterfaceDS il in interfaceDSList)
+                if (interfaceDSList == null)
                 {
-                    if (interfaceno == il.watch_Interfaceno)
+                    formdetail.interfacedt = new watch_InterfaceDS();
+                    string status = "0";
+                    if (this.interfaceList.Items[item[0]].SubItems[1].Text != null)
+                        if (this.interfaceList.Items[item[0]].SubItems[1].Text == "有効")
+                            status = "1";
+                        else if (this.interfaceList.Items[item[0]].SubItems[1].Text == "無効")
+                            status = "0";
+
+
+                    formdetail.interfacedt.watch_Interfaceno = this.interfaceList.Items[item[0]].SubItems[0].Text;
+                    formdetail.interfacedt.interfacename = this.interfaceList.Items[item[0]].SubItems[2].Text;
+                    formdetail.interfacedt.status = status;
+                    formdetail.interfacedt.type = this.interfaceList.Items[item[0]].SubItems[3].Text;
+                    formdetail.interfacedt.kanshi = this.interfaceList.Items[item[0]].SubItems[4].Text;
+                    formdetail.interfacedt.start_date = this.interfaceList.Items[item[0]].SubItems[5].Text;
+                    formdetail.interfacedt.end_date = this.interfaceList.Items[item[0]].SubItems[6].Text;
+                    formdetail.interfacedt.border = this.interfaceList.Items[item[0]].SubItems[7].Text;
+                    formdetail.interfacedt.IPaddress = this.interfaceList.Items[item[0]].SubItems[8].Text;
+                    formdetail.interfacedt.IPaddressNAT = this.interfaceList.Items[item[0]].SubItems[9].Text;
+                    formdetail.interfacedt.host_no = this.interfaceList.Items[item[0]].SubItems[10].Text;
+                    formdetail.interfacedt.userno = this.interfaceList.Items[item[0]].SubItems[11].Text;
+                    formdetail.interfacedt.systemno = this.interfaceList.Items[item[0]].SubItems[12].Text;
+                    formdetail.interfacedt.siteno = this.interfaceList.Items[item[0]].SubItems[13].Text;
+                    formdetail.interfacedt.chk_date = this.interfaceList.Items[item[0]].SubItems[14].Text;
+                    formdetail.interfacedt.chk_name_id = this.interfaceList.Items[item[0]].SubItems[15].Text;
+                }
+                else
+                {
+                    foreach (watch_InterfaceDS il in interfaceDSList)
                     {
-                        formdetail.interfacedt = il;
-                        break;
+                        if (interfaceno == il.watch_Interfaceno)
+                        {
+                            formdetail.interfacedt = il;
+                            break;
+                        }
                     }
                 }
             }
-
             formdetail.loginDS = loginDS;
 
             formdetail.Show();
             formdetail.Owner = this;
         }
-
         //回線情報ダブルクリック
         private void kaisenList_DoubleClick(object sender, EventArgs e)
+        {
+            OpenMente_kaisen();
+
+        }
+        private void OpenMente_kaisen()
         {
             ListView.SelectedIndexCollection item = kaisenList.SelectedIndices;
             Form_KaisenDetail formdetail = new Form_KaisenDetail();
             formdetail.con = con;
+            if (item.Count > 0)
+            {
+                string kaisenno = this.kaisenList.Items[item[0]].SubItems[0].Text;
 
-            string kaisenno = this.kaisenList.Items[item[0]].SubItems[0].Text;
+                formdetail.kaisendt = new kaisenDS();
+                string status = "0";
+                if (this.kaisenList.Items[item[0]].SubItems[1].Text != null)
+                    if (this.kaisenList.Items[item[0]].SubItems[1].Text == "有効")
+                        status = "1";
+                    else if (this.kaisenList.Items[item[0]].SubItems[1].Text == "無効")
+                        status = "0";
 
-            formdetail.kaisendt = new kaisenDS();
-            string status = "0";
-            if (this.kaisenList.Items[item[0]].SubItems[1].Text != null)
-                if (this.kaisenList.Items[item[0]].SubItems[1].Text == "有効")
-                    status = "1";
-                else if (this.kaisenList.Items[item[0]].SubItems[1].Text == "無効")
-                    status = "0";
-
-            formdetail.kaisendt.kaisenno = this.kaisenList.Items[item[0]].SubItems[0].Text;
-            formdetail.kaisendt.status = status;
-            formdetail.kaisendt.career = this.kaisenList.Items[item[0]].SubItems[2].Text;
-            formdetail.kaisendt.telno1 = this.kaisenList.Items[item[0]].SubItems[3].Text;
-            formdetail.kaisendt.telno2 = this.kaisenList.Items[item[0]].SubItems[4].Text;
-            formdetail.kaisendt.telno3 = this.kaisenList.Items[item[0]].SubItems[5].Text;
-            formdetail.kaisendt.type = this.kaisenList.Items[item[0]].SubItems[6].Text;
-            formdetail.kaisendt.kaisenid = this.kaisenList.Items[item[0]].SubItems[7].Text;
-            formdetail.kaisendt.isp = this.kaisenList.Items[item[0]].SubItems[8].Text;
-            formdetail.kaisendt.servicetype = this.kaisenList.Items[item[0]].SubItems[9].Text;
-            formdetail.kaisendt.serviceid = this.kaisenList.Items[item[0]].SubItems[10].Text;
-            formdetail.kaisendt.userno = this.kaisenList.Items[item[0]].SubItems[11].Text;
-            formdetail.kaisendt.systemno = this.kaisenList.Items[item[0]].SubItems[12].Text;
-            formdetail.kaisendt.siteno = this.kaisenList.Items[item[0]].SubItems[13].Text;
-            formdetail.kaisendt.host_no = this.kaisenList.Items[item[0]].SubItems[14].Text;
-            formdetail.kaisendt.chk_date = this.kaisenList.Items[item[0]].SubItems[15].Text;
-            formdetail.kaisendt.chk_name_id = this.kaisenList.Items[item[0]].SubItems[16].Text;
+                formdetail.kaisendt.kaisenno = this.kaisenList.Items[item[0]].SubItems[0].Text;
+                formdetail.kaisendt.status = status;
+                formdetail.kaisendt.career = this.kaisenList.Items[item[0]].SubItems[2].Text;
+                formdetail.kaisendt.telno1 = this.kaisenList.Items[item[0]].SubItems[3].Text;
+                formdetail.kaisendt.telno2 = this.kaisenList.Items[item[0]].SubItems[4].Text;
+                formdetail.kaisendt.telno3 = this.kaisenList.Items[item[0]].SubItems[5].Text;
+                formdetail.kaisendt.type = this.kaisenList.Items[item[0]].SubItems[6].Text;
+                formdetail.kaisendt.kaisenid = this.kaisenList.Items[item[0]].SubItems[7].Text;
+                formdetail.kaisendt.isp = this.kaisenList.Items[item[0]].SubItems[8].Text;
+                formdetail.kaisendt.servicetype = this.kaisenList.Items[item[0]].SubItems[9].Text;
+                formdetail.kaisendt.serviceid = this.kaisenList.Items[item[0]].SubItems[10].Text;
+                formdetail.kaisendt.userno = this.kaisenList.Items[item[0]].SubItems[11].Text;
+                formdetail.kaisendt.systemno = this.kaisenList.Items[item[0]].SubItems[12].Text;
+                formdetail.kaisendt.siteno = this.kaisenList.Items[item[0]].SubItems[13].Text;
+                formdetail.kaisendt.host_no = this.kaisenList.Items[item[0]].SubItems[14].Text;
+                formdetail.kaisendt.chk_date = this.kaisenList.Items[item[0]].SubItems[15].Text;
+                formdetail.kaisendt.chk_name_id = this.kaisenList.Items[item[0]].SubItems[16].Text;
+            }
+            if (userDSList != null)
+                formdetail.userList = userDSList;
+            if (systemDSList != null)
+                formdetail.systemList = systemDSList;
+            if (siteDSList != null)
+                formdetail.siteList = siteDSList;
 
             formdetail.loginDS = loginDS;
 
             formdetail.Show();
             formdetail.Owner = this;
         }
-
 
         //タイマー1分毎にサーバを見に行く
         private void timer1_Tick(object sender, EventArgs e)
@@ -2596,6 +2761,12 @@ namespace SMSサンプル
                     break;
                 }
             }
+            if (userDSList != null)
+                formdetail.userList = userDSList;
+            if (systemDSList != null)
+                formdetail.systemList = systemDSList;
+            if (siteDSList != null)
+                formdetail.siteList = siteDSList;
             formdetail.loginDS = loginDS;
             formdetail.con = con;
             formdetail.Owner = this;
@@ -2804,6 +2975,12 @@ namespace SMSサンプル
                     break;
                 }
             }
+            if (userDSList != null)
+                formdetail.userList = userDSList;
+            if (systemDSList != null)
+                formdetail.systemList = systemDSList;
+            if (siteDSList != null)
+                formdetail.siteList = siteDSList;
             formdetail.loginDS = loginDS;
             formdetail.con = con;
             formdetail.Owner = this;
@@ -2853,6 +3030,12 @@ namespace SMSサンプル
                     break;
                 }
             }
+            if (userDSList != null)
+                formdetail.userList = userDSList;
+            if (systemDSList != null)
+                formdetail.systemList = systemDSList;
+            if (siteDSList != null)
+                formdetail.siteList = siteDSList;
             formdetail.loginDS = loginDS;
             formdetail.con = con;
             formdetail.Owner = this;
@@ -2899,7 +3082,6 @@ namespace SMSサンプル
                 disp_interface(dsp_L, systemno);
             }
 
-
         }
         //拠点情報クリック
         private void siteList_Click(object sender, EventArgs e)
@@ -2923,7 +3105,6 @@ namespace SMSサンプル
                 disp_interface(dsp_L, siteno);
             }
 
-
         }
         //ホストをクリック
         private void m_host_list_Click(object sender, EventArgs e)
@@ -2943,10 +3124,8 @@ namespace SMSサンプル
                 //ホスト情報を絞り込む
                 disp_interface(dsp_L, null, host_no);
             }
-
         }
-
-
+        
         //カスタマデータをクリック
         private void userList_ColumnClick(object sender, ColumnClickEventArgs e)
         {
@@ -2998,9 +3177,7 @@ namespace SMSサンプル
                 userList.RedrawItems(start, userList.Items.Count - 1, true);
             }
         }
-
-
-
+        
         //拠点
         private void siteList_ColumnClick(object sender, ColumnClickEventArgs e)
         {
@@ -3457,6 +3634,12 @@ namespace SMSサンプル
                     break;
                 }
             }
+            if (userDSList != null)
+                formdetail.userList = userDSList;
+            if (systemDSList != null)
+                formdetail.systemList = systemDSList;
+            if (siteDSList != null)
+                formdetail.siteList = siteDSList;
             formdetail.loginDS = loginDS;
             formdetail.con = con;
             formdetail.Owner = this;
@@ -3650,6 +3833,60 @@ namespace SMSサンプル
 
             }
           
+        }
+        //ツリービューでダブルクリックされたとき
+        private void treeView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            //構成情報検索画面が選択されているときのみ
+            if (this.tabControl1.SelectedIndex != 1)
+                return;
+
+            //カスタマ名のみ取得
+            if (treeView1.SelectedNode.Level == 0)
+            {
+                m_usernameCombo.Text = "";
+                m_systemCombo.Text = "";
+                //選択されたノード
+                m_usernameCombo.Text = treeView1.SelectedNode.Text;
+            }
+            else if (treeView1.SelectedNode.Level == 1)
+            {
+                m_usernameCombo.Text = "";
+                m_systemCombo.Text = "";
+                //システム名がダブルクリック
+                m_usernameCombo.Text = treeView1.SelectedNode.Parent.Text;                
+                m_systemCombo.Text = treeView1.SelectedNode.Text;
+            }
+        }
+        //カスタマメンテ
+        private void linkLabel10_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenMente_customer();
+        }
+        //システムメンテ
+        private void m_systemMente_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenMente_customer();
+        }
+        //拠点メンテ
+        private void m_siteMente_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenMente_site();
+        }
+        //ホストメンテ
+        private void m_hostMente_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenMente_host();
+        }
+        //インターフェイスメンテ
+        private void linkLabel13_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenMente_interface();
+        }
+        //回線情報メンテ
+        private void linkLabel14_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenMente_kaisen();
         }
     }
 }

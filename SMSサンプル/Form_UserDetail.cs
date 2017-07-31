@@ -138,12 +138,13 @@ namespace SMSサンプル
             m_selectKoumoku.Items.Add("カスタマ名カナ");
             m_selectKoumoku.Items.Add("カスタマ名略称");
             m_selectKoumoku.Items.Add("有効/無効");
-            m_selectKoumoku.Items.Add("レポート出力有無");
+            m_selectKoumoku.Items.Add("SLO対象");
             m_selectKoumoku.Items.Add("備考");
             m_selectKoumoku.Items.Add("更新日時");
             m_selectKoumoku.Items.Add("更新者");
-
-            getcustomer(userdt);
+            if(userdt != null  ) {             
+                getcustomer(userdt);
+            }
         }
         //カスタマ一覧を取得する
         private void getcustomer(userDS userdt)
@@ -181,8 +182,7 @@ namespace SMSサンプル
             this.m_tantouList.Columns.Insert(8, "ステータス", 50, HorizontalAlignment.Left);
             this.m_tantouList.Columns.Insert(9, "カスタマ通番", 50, HorizontalAlignment.Left);
             this.m_tantouList.Columns.Insert(10, "更新日時", 80, HorizontalAlignment.Left);
-            this.m_tantouList.Columns.Insert(11, "更新者ID", 80, HorizontalAlignment.Left);
-            this.m_tantouList.Columns.Insert(12, "更新者", 80, HorizontalAlignment.Left);
+            this.m_tantouList.Columns.Insert(11, "更新者", 80, HorizontalAlignment.Left);
 
             //リストに表示
             foreach (tantouDS t_ds in slist)
@@ -260,7 +260,11 @@ namespace SMSサンプル
 
                         //レポート出力有無
                         case 5:
-                            param_dict["report_status"] = m_selecttext.Text;
+                            if (m_selecttext.Text == "無効")
+                                param_dict["report_status"] = "0";
+                            else if (m_selecttext.Text == "有効")
+                                param_dict["report_status"] = "1";
+
                             break;
                         //備考
                         case 6:
@@ -268,7 +272,20 @@ namespace SMSサンプル
                             break;
                         //更新日時
                         case 7:
-                            param_dict["chk_date"] = m_selecttext.Text;
+                            DateTime dt;
+                            String str = m_selecttext.Text;
+
+                            //入力された日付の形式の確認
+                            if (DateTime.TryParse(str, out dt))
+                            {
+                                param_dict["chk_date"] = str;
+                            }
+                            else
+                            {
+
+                                MessageBox.Show("日付の形式が正しくありません。", "カスタマ検索");
+                                return;
+                            }
                             break;
                         //更新者
                         case 8:
@@ -292,14 +309,14 @@ namespace SMSサンプル
             this.m_Customer_List.HeaderStyle = ColumnHeaderStyle.Clickable;
 
             this.m_Customer_List.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-            this.m_Customer_List.Columns.Insert(1, "カスタマ名", 120, HorizontalAlignment.Left);
-            this.m_Customer_List.Columns.Insert(2, "カスタマ名カナ", 120, HorizontalAlignment.Left);
-            this.m_Customer_List.Columns.Insert(3, "カスタマ名略称", 90, HorizontalAlignment.Left);
-            this.m_Customer_List.Columns.Insert(4, "有効/無効", 80, HorizontalAlignment.Left);
-            this.m_Customer_List.Columns.Insert(5, "レポート出力有無", 80, HorizontalAlignment.Left);
-            this.m_Customer_List.Columns.Insert(6, "備考", 50, HorizontalAlignment.Left);
-            this.m_Customer_List.Columns.Insert(7, "更新日時", 50, HorizontalAlignment.Left);
-            this.m_Customer_List.Columns.Insert(8, "更新者", 50, HorizontalAlignment.Left);
+            this.m_Customer_List.Columns.Insert(1, "カスタマ名", 200, HorizontalAlignment.Left);
+            this.m_Customer_List.Columns.Insert(2, "カスタマ名カナ", 200, HorizontalAlignment.Left);
+            this.m_Customer_List.Columns.Insert(3, "カスタマ名略称", 100, HorizontalAlignment.Left);
+            this.m_Customer_List.Columns.Insert(4, "有効/無効", 40, HorizontalAlignment.Left);
+            this.m_Customer_List.Columns.Insert(5, "SLO対象", 40, HorizontalAlignment.Left);
+            this.m_Customer_List.Columns.Insert(6, "備考", 300, HorizontalAlignment.Left);
+            this.m_Customer_List.Columns.Insert(7, "更新日時", 120, HorizontalAlignment.Left);
+            this.m_Customer_List.Columns.Insert(8, "更新者", 120, HorizontalAlignment.Left);
 
             //リストに表示
             if(dset.user_L != null)
@@ -474,7 +491,7 @@ namespace SMSサンプル
 
                         if (rowsaffected < 1)
                         {
-                            MessageBox.Show("削除できませんでした。カスタマ担当者通番:" + userno, "カスタマ担当者削除");
+                            MessageBox.Show("削除できませんでした。カスタマ担当者通番:" + userno, "カスタマ削除");
                             transaction.Rollback();
                             return -1;
                         }
@@ -492,7 +509,7 @@ namespace SMSサンプル
                 }
                 if (ret == 1)
                 {
-                    MessageBox.Show("削除完了しました。", "カスタマ担当者削除");
+                    MessageBox.Show("削除完了しました。", "カスタマ削除");
                     transaction.Commit();
                 }
             }

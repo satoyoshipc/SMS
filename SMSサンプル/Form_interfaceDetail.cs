@@ -13,6 +13,7 @@ namespace SMSサンプル
 {
     public partial class Form_interfaceDetail : Form
     {
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         //ログイン情報
         public opeDS loginDS { get; set; }
@@ -31,19 +32,51 @@ namespace SMSサンプル
         public NpgsqlConnection con { get; set; }
 
         //ListViewのソートの際に使用する
-        private Class_ListViewColumnSorter _columnSorter;
+        private int sort_kind = 0;
+
+        //監視インターフェイスの一覧
+        DataTable interface_list;
 
         public Form_interfaceDetail()
         {
             InitializeComponent();
         }
-        
+
+
+        void InterfaceList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            //	e.Item = _item[e.ItemIndex];
+            if (interface_list.Rows.Count > 0)
+            {
+
+                DataRow row = this.interface_list.Rows[e.ItemIndex];
+                e.Item = new ListViewItem(
+                    new String[]
+                    {
+                Convert.ToString(row[0]),
+                Convert.ToString(row[1]),
+                Convert.ToString(row[2]),
+                Convert.ToString(row[3]),
+                Convert.ToString(row[4]),
+                Convert.ToString(row[5]),
+                Convert.ToString(row[6]),
+                Convert.ToString(row[7]),
+                Convert.ToString(row[8]),
+                Convert.ToString(row[9]),
+                Convert.ToString(row[10]),
+                Convert.ToString(row[11]),
+                Convert.ToString(row[12]),
+                Convert.ToString(row[13]),
+                Convert.ToString(row[14]),
+                Convert.ToString(row[15])
+                    });
+            }
+
+        }
         //表示前処理
         private void Form_InterfaceDetail_Load(object sender, EventArgs e)
         {
-            //ソータを使用する
-            _columnSorter = new Class_ListViewColumnSorter();
-            m_InterfaceList.ListViewItemSorter = _columnSorter;
+
 
             m_selectKoumoku.Items.Add("監視インターフェイス通番");
             m_selectKoumoku.Items.Add("インターフェイス名");
@@ -61,8 +94,8 @@ namespace SMSサンプル
             m_selectKoumoku.Items.Add("ホスト番号");
             m_selectKoumoku.Items.Add("更新日時");
             m_selectKoumoku.Items.Add("更新者");
-
-            getInterface(interfacedt);
+            if(interfacedt != null)
+                getInterface(interfacedt);
 
         }
         //インターフェイス情報を表示する
@@ -141,11 +174,36 @@ namespace SMSサンプル
                             break;
     
                         case 5:
-                            param_dict["start_date"] = m_selecttext.Text;
+                            DateTime dt;
+                            String str = m_selecttext.Text;
+
+                            //入力された日付の形式の確認
+                            if (DateTime.TryParse(str, out dt))
+                            {
+                                param_dict["start_date"] = str;
+                            }
+                            else
+                            {
+                                MessageBox.Show("日付の形式が正しくありません。", "監視インターフェイス検索");
+                                return;
+                            }
+
                             break;
 
                         case 6:
-                            param_dict["end_date"] = m_selecttext.Text;
+
+                            str = m_selecttext.Text;
+
+                            //入力された日付の形式の確認
+                            if (DateTime.TryParse(str, out dt))
+                            {
+                                param_dict["end_date"] = str;
+                            }
+                            else
+                            {
+                                MessageBox.Show("日付の形式が正しくありません。", "監視インターフェイス検索");
+                                return;
+                            }
                             break;
 
                         case 7:
@@ -172,7 +230,17 @@ namespace SMSサンプル
 
                         //更新日時
                         case 14:
-                            param_dict["chk_date"] = m_selecttext.Text;
+
+                            str = m_selecttext.Text;
+
+                            //入力された日付の形式の確認
+                            if (DateTime.TryParse(str, out dt))
+                                param_dict["chk_date"] = str;
+                            else
+                            {
+                                MessageBox.Show("日付の形式が正しくありません。", "監視インターフェイス検索");
+                                return;
+                            }
                             break;
                         //更新者
                         case 15:
@@ -184,13 +252,25 @@ namespace SMSサンプル
                     }
                 }
             }
-
+            //まず件数を取得する
+            Int64 count = dg.getSelectInterfaceCount(param_dict, con, dset, true);
+            if(MessageBox.Show(count.ToString() + "件ヒットしました。表示しますか？","監視インターフェイス",MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.No)
+            {
+                return;
+            }
             //インターフェイス一覧を取得する
             dset = dg.getSelectInterface(param_dict, con, dset,true);
 
+            this.m_InterfaceList.VirtualMode = true;
+            // １行全体選択
             this.m_InterfaceList.FullRowSelect = true;
             this.m_InterfaceList.HideSelection = false;
             this.m_InterfaceList.HeaderStyle = ColumnHeaderStyle.Clickable;
+            //Hook up handlers for VirtualMode events.
+            this.m_InterfaceList.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(InterfaceList_RetrieveVirtualItem);
+            this.m_InterfaceList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            this.m_InterfaceList.Scrollable = true;
+
 
             this.m_InterfaceList.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
             this.m_InterfaceList.Columns.Insert(1, "インターフェイス名", 120, HorizontalAlignment.Left);
@@ -209,33 +289,59 @@ namespace SMSサンプル
             this.m_InterfaceList.Columns.Insert(14, "更新日時", 50, HorizontalAlignment.Left);
             this.m_InterfaceList.Columns.Insert(15, "更新者", 50, HorizontalAlignment.Left);
 
+            //リストビューを初期化する
+            interface_list = new DataTable("table1");
+            interface_list.Columns.Add("No", Type.GetType("System.Int32"));
+            interface_list.Columns.Add("インターフェイス名", Type.GetType("System.String"));
+            interface_list.Columns.Add("ステータス", Type.GetType("System.String"));
+            interface_list.Columns.Add("監視タイプ", Type.GetType("System.String"));
+            interface_list.Columns.Add("監視項目名", Type.GetType("System.String"));
+            interface_list.Columns.Add("監視開始日時", Type.GetType("System.String"));
+            interface_list.Columns.Add("監視終了日時", Type.GetType("System.String"));
+            interface_list.Columns.Add("閾値", Type.GetType("System.String"));
+            interface_list.Columns.Add("IPアドレス", Type.GetType("System.String"));
+            interface_list.Columns.Add("IPアドレス(NAT)", Type.GetType("System.String"));
+            interface_list.Columns.Add("カスタマ番号", Type.GetType("System.String"));
+            interface_list.Columns.Add("システム通番番号", Type.GetType("System.String"));
+            interface_list.Columns.Add("拠点通番", Type.GetType("System.String"));
+            interface_list.Columns.Add("ホスト通番", Type.GetType("System.String"));
+            interface_list.Columns.Add("更新日時", Type.GetType("System.String"));
+            interface_list.Columns.Add("更新者", Type.GetType("System.String"));
+
+
+
             //リストに表示
             if (dset.watch_L != null)
             {
+                m_InterfaceList.BeginUpdate();
+
                 foreach (watch_InterfaceDS s_ds in dset.watch_L)
                 {
+                    DataRow urow = interface_list.NewRow();
 
-                    ListViewItem itemx1 = new ListViewItem();
-                    itemx1.Text = s_ds.watch_Interfaceno;
+                    urow["No"] = s_ds.watch_Interfaceno;
+                    urow["インターフェイス名"] = s_ds.interfacename;
+                    urow["ステータス"] = s_ds.status;
+                    urow["監視タイプ"] = s_ds.type;
+                    urow["監視項目名"] = s_ds.kanshi;
+                    urow["監視開始日時"] = s_ds.start_date;
+                    urow["監視終了日時"] = s_ds.end_date;
+                    urow["閾値"] = s_ds.border;
+                    urow["IPアドレス"] =s_ds.IPaddress; 
+                    urow["IPアドレス(NAT)"] = s_ds.IPaddressNAT;
+                    urow["カスタマ番号"] = s_ds.userno;
+                    urow["システム通番番号"] = s_ds.systemno;
+                    urow["拠点通番"] = s_ds.siteno;
+                    urow["ホスト通番"] = s_ds.host_no;
+                    urow["更新日時"] = s_ds.chk_date;
+                    urow["更新者"] = s_ds.chk_name_id;
+                    interface_list.Rows.Add(urow);
 
-                    itemx1.SubItems.Add(s_ds.interfacename);
-                    itemx1.SubItems.Add(s_ds.status);
-                    itemx1.SubItems.Add(s_ds.type);
-                    itemx1.SubItems.Add(s_ds.kanshi);
-                    itemx1.SubItems.Add(s_ds.start_date);
-                    itemx1.SubItems.Add(s_ds.end_date);
-                    itemx1.SubItems.Add(s_ds.border);
-                    itemx1.SubItems.Add(s_ds.IPaddress);
-                    itemx1.SubItems.Add(s_ds.IPaddressNAT);
-                    itemx1.SubItems.Add(s_ds.userno);
-                    itemx1.SubItems.Add(s_ds.systemno);
-                    itemx1.SubItems.Add(s_ds.siteno);
-                    itemx1.SubItems.Add(s_ds.host_no);
-                    itemx1.SubItems.Add(s_ds.chk_date);
-                    itemx1.SubItems.Add(s_ds.chk_name_id);
-
-                    this.m_InterfaceList.Items.Add(itemx1);
                 }
+                this.m_InterfaceList.VirtualListSize = interface_list.Rows.Count;
+                this.m_InterfaceList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+                m_InterfaceList.EndUpdate();
             }
         }
 
@@ -333,50 +439,91 @@ namespace SMSサンプル
         private void m_InterfaceList_ColumnClick(object sender, ColumnClickEventArgs e)
         {
 
-            if (e.Column == _columnSorter.SortColumn)
+            if (this.interface_list == null)
+                return;
+            if (this.interface_list.Rows.Count <= 0)
+                return;
+            //DataViewクラス ソートするためのクラス
+            DataView dv = new DataView(interface_list);
+
+            //一時クラス
+            DataTable dttmp = new DataTable();
+
+            String strSort = "";
+
+            //0なら昇順にソート
+            if (sort_kind == 0)
             {
-                if (_columnSorter.Order == SortOrder.Ascending)
-                {
-                    _columnSorter.Order = SortOrder.Descending;
-                }
-                else
-                {
-                    _columnSorter.Order = SortOrder.Ascending;
-                }
+                strSort = " ASC";
+                sort_kind = 1;
             }
             else
             {
-                _columnSorter.SortColumn = e.Column;
-                _columnSorter.Order = SortOrder.Ascending;
+                //１の時は昇順にソート
+                strSort = " DESC";
+                sort_kind = 0;
             }
-            m_InterfaceList.Sort();
+
+            //コピーを作成
+            dttmp = interface_list.Clone();
+            //ソートを実行
+            dv.Sort = interface_list.Columns[e.Column].ColumnName + strSort;
+
+            // ソートされたレコードのコピー
+            foreach (DataRowView drv in dv)
+            {
+                // 一時テーブルに格納
+                dttmp.ImportRow(drv.Row);
+            }
+            //格納したテーブルデータを上書く
+            interface_list = dttmp.Copy();
+
+            //行が存在するかチェックを行う。
+            if (this.m_InterfaceList.TopItem != null)
+            {
+                //現在一番上の行に表示されている行を取得
+                int start = m_InterfaceList.TopItem.Index;
+                // ListView画面の再表示を行う
+                m_InterfaceList.RedrawItems(start, m_InterfaceList.Items.Count - 1, true);
+            }
         }
         //削除処理
         private void m_deleteBtn_Click(object sender, EventArgs e)
         {
-            int count = m_InterfaceList.SelectedItems.Count;
+
+                ListView.SelectedIndexCollection item = m_InterfaceList.SelectedIndices;
+                int count = item.Count;
 
             //確認メッセージ
             if (MessageBox.Show("一覧に選択された行 " + count + "件 の削除を行います。" + Environment.NewLine +
                 "よろしいですか？", "監視インターフェイス削除", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
-
-
-            int ret = deleteInterface();
+            
+            int ret = deleteInterface( item);
             if (ret == -1)
             {
                 return;
             }
             //リストの表示上からけす
-            foreach (ListViewItem item in m_InterfaceList.SelectedItems)
-            {
-                m_InterfaceList.Items.Remove(item);
-            }
+            int i = 0;
+            //削除するインターフェイス番号の取得
+            int[] indices = new int[item.Count];
+            int cnt = m_InterfaceList.SelectedIndices.Count;
+
+
+            m_InterfaceList.SelectedIndices.CopyTo(indices, 0);
+            
+            DataRowCollection items = interface_list.Rows;
+            for (i = cnt - 1; i >=0;-- i)
+                items.RemoveAt(indices[i]);
+
+            //総件数を変更し再表示を行う
+            this.m_InterfaceList.VirtualListSize = items.Count;
         }
         //削除
-        private int deleteInterface()
+        private int deleteInterface(ListView.SelectedIndexCollection item)
         {
-
+            int ret = 0;
             string interfaceno;
 
             if (con.FullState != ConnectionState.Open) con.Open();
@@ -386,10 +533,10 @@ namespace SMSサンプル
             using (var transaction = con.BeginTransaction())
             {
 
-                foreach (ListViewItem item in m_InterfaceList.SelectedItems)
+                int i = 0;
+                for (i = 0; i < item.Count; i++)
                 {
-                    interfaceno = item.SubItems[0].Text;
-
+                    interfaceno = this.m_InterfaceList.Items[item[i]].SubItems[0].Text; 
 
                     var command = new NpgsqlCommand(@sql, con);
                     command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = int.Parse(interfaceno) });
@@ -400,28 +547,34 @@ namespace SMSサンプル
                         //削除処理
                         rowsaffected = command.ExecuteNonQuery();
 
-                        if (rowsaffected != 1)
+                        if (rowsaffected < 1)
                         {
-                            MessageBox.Show("削除できませんでした。監視インターフェイスID:" + interfaceno, "監視インターフェイス削除");
                             transaction.Rollback();
-                            return -1;
+                            MessageBox.Show("削除できませんでした。監視インターフェイスID:" + interfaceno, "監視インターフェイス削除");
+
+                            ret = -1;
                         }
                         else {
-                            transaction.Commit();
-                            MessageBox.Show("削除完了しました。監視インターフェイスID:" + interfaceno, "監視インターフェイス削除");
+                            ret = 1;
                         }
                     }
                     catch (Exception ex)
                     {
+                        transaction.Rollback();
                         //エラー時メッセージ表示
                         MessageBox.Show("監視インターフェイス削除時エラーが発生しました。 " + ex.Message);
-                        transaction.Rollback();
-                        return -1;
+                        ret = -1;
                     }
                 }
+                if (ret == 1)
+                {
+                    transaction.Commit();
 
+                    MessageBox.Show("削除完了しました。", "監視インターフェイス削除");
+                    logger.InfoFormat("監視インターフェイス削除完了。 監視インターフェイス");
+                }
             }
-            return 1;
+            return ret;
         }
     }
 }

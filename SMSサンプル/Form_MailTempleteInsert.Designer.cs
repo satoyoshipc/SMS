@@ -382,9 +382,9 @@
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(550, 14);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(49, 12);
+            this.label14.Size = new System.Drawing.Size(157, 12);
             this.label14.TabIndex = 57;
-            this.label14.Text = "アカウント";
+            this.label14.Text = "アカウント(送信元メールアドレス)";
             // 
             // Form_MailTempleteInsert
             // 

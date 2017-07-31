@@ -97,16 +97,16 @@ namespace SMSサンプル
                 // Openメソッド
                 xlBooks = xlApp.Workbooks;
                 xlBook = xlBooks.Open(System.IO.Path.GetFullPath(@str));
-
+                xlApp.Visible = true;
 
                 // Book解放
                 //xlBook.Close();
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(xlBook);
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(xlBooks);
+                // System.Runtime.InteropServices.Marshal.ReleaseComObject(xlBook);
+                // System.Runtime.InteropServices.Marshal.ReleaseComObject(xlBooks);
 
                 // Excelアプリケーションを解放
                 //xlApp.Quit();
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(xlApp);
+                // System.Runtime.InteropServices.Marshal.ReleaseComObject(xlApp);
             }
             catch (Exception ex)
             {
@@ -132,48 +132,64 @@ namespace SMSサンプル
             userDS uds;
             List<userDS> list_userDS = new List<userDS>();
 
+            try { 
 
-            StreamReader reader = new StreamReader(filePath, Encoding.GetEncoding("Shift_JIS"));
+                StreamReader reader = new StreamReader(filePath, Encoding.GetEncoding("Shift_JIS"));
 
-            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
-            parser.TextFieldType = FieldType.Delimited;
-            parser.SetDelimiters(","); // 区切り文字はコンマ
-
-
-            while (!parser.EndOfData)
-            {
-                uds = new userDS();
-                string[] cols = parser.ReadFields(); // 1行読み込み
-                //カスタマ名
-                uds.username = cols[1];
-                //カスタマメイカナ
-                uds.username_kana = cols[2];
-                //カスタマ名略
-                uds.username_sum = cols[3];
-
-                //レポート有無
-                if(cols[6] == "○")
-                    uds.report_status = "1";
-                else
-                    uds.report_status = "0";
-
-                //備考(CSC管理番号)
-                uds.biko = cols[4] + Environment.NewLine + "NESIC-CSC管理番号:" + cols[7];
-
-                //最終更新日時
-                uds.chk_date = cols[8];
+                TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(","); // 区切り文字はコンマ
 
 
-                list_userDS.Add(uds);
+                while (!parser.EndOfData)
+                {
+                    uds = new userDS();
+                    string[] cols = parser.ReadFields(); // 1行読み込み
 
+                    //1文字目#はコメント
+                    string str = "";
+                    if(str.StartsWith("#"))
+                        continue;
+
+                    //カスタマ名
+                    uds.username = cols[0];
+                    //カスタマメイカナ
+                    uds.username_kana = cols[1];
+                    //カスタマ名略
+                    uds.username_sum = cols[2];
+
+                    //レポート有無
+                    if(cols[6] == "○")
+                        uds.report_status = "1";
+                    else
+                        uds.report_status = "0";
+
+                    //備考(CSC管理番号)
+                    uds.biko = cols[3] + Environment.NewLine + "NESIC-CSC管理番号:" + cols[6];
+
+                    //最終更新日時
+                    uds.chk_date = cols[7];
+
+
+                    list_userDS.Add(uds);
+
+
+                }
+                reader.Close();
+
+                if (MessageBox.Show(list_userDS.Count + "件登録します。よろしいですか？", "カスタマインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    return;
 
             }
-            reader.Close();
+            catch(Exception ex)
+            {
+                MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
+                logger.ErrorFormat("カスタマのインポートエラー。CSVファイルの読み込み時にエラーが発生しました。 ");
 
-            if (MessageBox.Show(list_userDS.Count + "件登録します。よろしいですか？", "カスタマインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
-            //DB接続
 
+            }
+            //DB接続
             if (con.FullState != ConnectionState.Open) con.Open();
 
             NpgsqlCommand cmd;
@@ -228,18 +244,19 @@ namespace SMSサンプル
                     }
                     catch (Exception ex)
                     {
+                        transaction.Rollback();
                         MessageBox.Show("カスタマ登録時エラー " + ex.Message);
                         logger.ErrorFormat("カスタマ登録に失敗しました。カスタマ名:{0}", us.username);
 
-                        transaction.Rollback();
                         return;
                     }
 
 
                 }
-                MessageBox.Show("カスタマインポート" + i + "件 ");
                 //終わったらコミットする
                 transaction.Commit();
+                MessageBox.Show("カスタマインポート" + i + "件 ");
+
             }
         }
 
@@ -369,7 +386,7 @@ namespace SMSサンプル
                         }
                         else
                         {
-                            logger.Warn("システムNOが取得できませんでした。システム名:" + Systemname + " 存在するシステムIDを返します。");
+                            logger.Warn("システムNOが取得できませんでした。存在するシステムIDを返します。　システム名:" + Systemname );
 
                         }
 
@@ -464,10 +481,7 @@ namespace SMSサンプル
 
             }
             return hostno;
-
         }
-
-
 
         //ユーザ担当者番号の取得
         private String getuserTantouNo(String userno, String UsertanntouName, NpgsqlConnection con)
@@ -506,43 +520,57 @@ namespace SMSサンプル
         //システムデータのインポート
         private void システムSToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //ファイル選択ダイアログ
-            string filePath = Disp_FileSelectDlg();
-            if(filePath == "")
+
+                //ファイル選択ダイアログ
+                string filePath = Disp_FileSelectDlg();
+                if(filePath == "")
+                {
+                    return;
+                }
+                systemDS sds;
+                List<systemDS> list_systemDS = new List<systemDS>();
+
+            try
             {
+
+                TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(","); // 区切り文字はコンマ
+
+
+                while (!parser.EndOfData)
+                {
+                    sds = new systemDS();
+                    string[] cols = parser.ReadFields(); // 1行読み込み
+                                                     
+                    //1行目#はコメント
+                    string str = "";
+                    str = cols[0];
+                    if (str.StartsWith("#"))
+                        continue;
+
+                    //会社名
+                    sds.username = cols[0];
+                    //システム名
+                    sds.systemname = cols[1];
+                    //備考(CSC管理番号)
+                    sds.biko = cols[3] + Environment.NewLine + "NESIC-CSC管理番号:" + cols[4] + Environment.NewLine;
+
+                    //更新日時
+                    sds.chk_date = cols[5];
+
+                    list_systemDS.Add(sds);
+                
+                }
+                parser.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
+                logger.ErrorFormat("システム情報のインポートエラー。CSVファイルの読み込み時にエラーが発生しました。");
+                
                 return;
             }
-            systemDS sds;
-            List<systemDS> list_systemDS = new List<systemDS>();
-
-
-            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
-            parser.TextFieldType = FieldType.Delimited;
-            parser.SetDelimiters(","); // 区切り文字はコンマ
-
-
-            while (!parser.EndOfData)
-            {
-                sds = new systemDS();
-                string[] cols = parser.ReadFields(); // 1行読み込み
-                //会社名
-                sds.username = cols[1];
-                //システム名
-                sds.systemname = cols[4];
-                //備考(CSC管理番号)
-                sds.biko = cols[8] + Environment.NewLine + "NESIC-CSC管理番号:" + cols[8] + Environment.NewLine + cols[11];
-
-                //更新日時
-                sds.chk_date = cols[13];
-
-               
-
-                list_systemDS.Add(sds);
-
-
-            }
-            parser.Close();
-
             if (MessageBox.Show(list_systemDS.Count + "件登録します。よろしいですか？", "システムインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
             //DB接続
@@ -602,77 +630,191 @@ namespace SMSサンプル
                         MessageBox.Show("システム情報のインポート" + ex.Message);
                         logger.ErrorFormat("システム情報のインポートエラー。{0} システム:{1}", ex.Message, us.systemname);
                     
-                        //transaction.Rollback();
                         return;
                     }
 
 
                 }
-                MessageBox.Show("システム情報のインポート" + i + "件 ");
                 //終わったらコミットする
                 transaction.Commit();
+
+                //システム名がないカスタマをチェックする
+                Int64 nosysCnt = check_noSystem();
+                if (nosysCnt >= 1)
+                {
+                    if (MessageBox.Show("システムが存在しないカスタマが" + nosysCnt.ToString() + "件存在します。「NW監視」で固定登録します。" + Environment.NewLine
+                        + "よろしいですか?", "システムインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        //システムを固定で挿入する
+                        systemInsert();
+
+                }
+
+
+                MessageBox.Show("システム情報のインポート" + i + "件 ");
+
             }
             
         }
+        //システムが存在しないカスタマがあるか確認する 件数を返す
+        private Int64 check_noSystem()
+        {
+            String sql = "select count(userno) from user_tbl where not exists (select systemno from system where user_tbl.userno = system.userno)";
+
+            Int64 Count = 0;
+
+            NpgsqlCommand cmd;
+
+
+            try
+            {
+                //DB接続
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                //SELECT実行
+                cmd = new NpgsqlCommand(@sql, con);
+                Count = (Int64)cmd.ExecuteScalar();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("システムテーブルチェック時にエラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("システムテーブルチェック時にエラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+                return -1;
+            }
+
+            return Count;
+        }
+        //システムを固定でインサートする
+        private void systemInsert()
+        {
+            //DB接続
+            if (con.FullState != ConnectionState.Open) con.Open();
+
+            NpgsqlCommand cmd;
+
+            using (var transaction = con.BeginTransaction())
+            {
+
+                //インサート文
+                int i = 0;
+                int cnt = 0;
+                cmd = new NpgsqlCommand(@"  insert into system (systemname,systemkana,userno,chk_date,chk_name_id) " +
+                    "select 'NM監視','ネットワーク監視',userno,:chk_date,:chk_name_id from user_tbl where not exists (select systemno from system where user_tbl.userno = system.userno)", con);
+
+                try
+                {
+                    Int32 rowsaffected;
+                    //データ登録
+                    cmd.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = DateTime.Now });
+                    cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+
+                    rowsaffected = cmd.ExecuteNonQuery();
+
+                    if (rowsaffected < 1)
+                    {
+
+                        transaction.Rollback();
+                        MessageBox.Show("固定のシステム「NW監視」が登録できませんでした。", "システムインサート", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        logger.ErrorFormat("固定のシステムが登録できませんでした。");
+                        return;
+                        
+                    }
+                    else
+                    {
+                        //終わったらコミットする
+                        transaction.Commit();
+                        MessageBox.Show("固定のシステム「NW監視システム」を登録しました " + rowsaffected + "件 ");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.ErrorFormat("固定のシステム「NW監視システム」を登録時にエラーが発生しました。{0}", ex.Message);
+                    MessageBox.Show("固定のシステム「NW監視システム」を登録時にエラーが発生しました。{0}" + ex.Message);
+                    //transaction.Rollback();
+                    return;
+                }
+
+
+            }
+
+        }
+        
         //拠点インポート
         private void 拠点KToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
             //ファイル選択ダイアログ
             string filePath = Disp_FileSelectDlg();
             if (filePath == "")
             {
                 return;
             }
+
             siteDS sds;
             List<siteDS> list_siteDS = new List<siteDS>();
 
-            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
-            parser.TextFieldType = FieldType.Delimited;
-            parser.SetDelimiters(","); // 区切り文字はコンマ
-
-
-            while (!parser.EndOfData)
+            try
             {
-                sds = new siteDS();
-                string[] cols = parser.ReadFields(); // 1行読み込み
-                //会社名
-                sds.username = cols[0];
-                //システム名
-                sds.systemname = cols[16];
+                TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(","); // 区切り文字はコンマ
+
+                while (!parser.EndOfData)
+                {
+                    sds = new siteDS();
+                    string[] cols = parser.ReadFields(); // 1行読み込み
+
+                    //1行目#はコメント
+                    string str = "";
+                    str = cols[0];
+                    if (str.StartsWith("#"))
+                        continue;
+
+                    //会社名
+                    sds.username = cols[0];
+
+                    //システム名
+                    sds.systemname = cols[16];
+
+                    //ステータス
+                    if (cols[1] == "○")
+                        sds.status = "1";
+                    if (cols[1] == "×")
+                        sds.status = "2";
+                    //拠点名
+                    sds.sitename = cols[3];
+
+                    //電話番号1
+                    sds.telno = cols[4] + " :" + cols[5] + " :" + cols[6] + " :" + cols[7] + cols[8] + " :" + cols[9];
+                    //住所1
+                    sds.address1 = cols[10];
+                    //住所2
+                    sds.address2 = cols[11];
+
+                    //備考
+                    sds.biko = cols[12] + Environment.NewLine + ":" + cols[16];
+
+                    //更新日時
+                    sds.chk_date = cols[13];
 
 
-                //ステータス
-                if (cols[1] == "○")
-                    sds.status = "1";
-                if (cols[1] == "×")
-                    sds.status = "2";
-                //拠点名
-                sds.sitename = cols[3];
-
-                //電話番号1
-                sds.telno = cols[4] + " :" + cols[5] + " :" + cols[6] + " :" + cols[7] + cols[8] + " :" + cols[9];
-                //住所1
-                sds.address1 = cols[10] ;
-                //住所2
-                sds.address2 = cols[11];
-
-                //備考
-                sds.biko = cols[12] + Environment.NewLine + ":" + cols[16] ;
-
-                //更新日時
-                sds.chk_date = cols[13];
+                    list_siteDS.Add(sds);
 
 
-                list_siteDS.Add(sds);
+                }
+                parser.Close();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
+                logger.ErrorFormat("拠点情報のインポートエラー。CSVファイルの読み込み時にエラーが発生しました。");
 
+                return;
 
             }
-            parser.Close();
-
             if (MessageBox.Show(list_siteDS.Count + "件登録します。よろしいですか？", "拠点インポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
             //DB接続
-
             if (con.FullState != ConnectionState.Open) con.Open();
 
             NpgsqlCommand cmd;
@@ -758,11 +900,11 @@ namespace SMSサンプル
 
 
                 }
-                MessageBox.Show("拠点情報のインポート" + i + "件 ");
                 //終わったらコミットする
                 transaction.Commit();
+                MessageBox.Show("拠点情報のインポート" + i + "件 ");
+
             }
-            
         }
         //ホスト情報のインポート
         private void ホストHToolStripMenuItem_Click(object sender, EventArgs e)
@@ -775,59 +917,75 @@ namespace SMSサンプル
             }
             hostDS hds;
             List<hostDS> list_hostDS = new List<hostDS>();
-
-            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
-            parser.TextFieldType = FieldType.Delimited;
-            parser.SetDelimiters(","); // 区切り文字はコンマ
-
-            while (!parser.EndOfData)
+            try
             {
-                hds = new hostDS();
-                string[] cols = parser.ReadFields(); // 1行読み込み
-                //会社名
-                hds.username = cols[0];
-                //システム名
-                hds.systemname = cols[3];
+                TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(","); // 区切り文字はコンマ
+
+                while (!parser.EndOfData)
+                {
+                    hds = new hostDS();
+                    string[] cols = parser.ReadFields(); // 1行読み込み
+
+                    //1行目#はコメント
+                    string str = "";
+                    str = cols[0];
+                    if (str.StartsWith("#"))
+                        continue;
 
 
-                //ステータス
-                if (cols[1] == "○")
-                    hds.status = "1";
-                if (cols[1] == "×")
-                    hds.status = "2";
-                //拠点名
-                hds.sitename = cols[4];
-                //ホスト名
-                hds.hostname = cols[6];
-                //機種
-                hds.device = cols[7];
-                //設置場所
-                hds.location = cols[8];
-                //用途
-                hds.usefor = cols[9];
+                    //会社名
+                    hds.username = cols[0];
+                    //システム名
+                    hds.systemname = cols[3];
 
-                //開始日時
-                hds.kansiStartdate= cols[10];
-                //終了日時
-                hds.kansiEndsdate = cols[11];
+                    //ステータス
+                    if (cols[1] == "○")
+                        hds.status = "1";
+                    if (cols[1] == "×")
+                        hds.status = "2";
+                    //拠点名
+                    hds.sitename = cols[4];
+                    //ホスト名
+                    hds.hostname = cols[6];
+                    //機種
+                    hds.device = cols[7];
+                    //設置場所
+                    hds.location = cols[8];
+                    //用途
+                    if(cols[9].Trim() == "-" || cols[9] == "")
+                        hds.usefor =  cols[9];
+                    else
+                        hds.usefor = "管理番号(NESICID):" + cols[9];
 
-                //機種保守情報を入れる
-                hds.hosyuinfo = cols[12];
-                //機種管理番号を入れる
-                hds.hosyukanri = cols[13];
+                    //開始日時
+                    hds.kansiStartdate = cols[10];
+                    //終了日時
+                    hds.kansiEndsdate = cols[11];
 
-                hds.biko = cols[14] + " :" + cols[15] + " :" + cols[16]  ;
+                    //機種保守情報を入れる
+                    hds.hosyuinfo = cols[12];
+                    //機種管理番号を入れる
+                    hds.hosyukanri = cols[13];
 
-                //更新日時
-                hds.chk_date = cols[23];
+                    hds.biko = cols[14] + " :" + cols[15] + " :" + cols[16];
 
+                    //更新日時
+                    hds.chk_date = cols[23];
 
-                list_hostDS.Add(hds);
+                    list_hostDS.Add(hds);
 
-
+                }
+                parser.Close();
             }
-            parser.Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
+                logger.ErrorFormat("ホストのインポートエラー。CSVファイルの読み込み時にエラーが発生しました。");
 
+                return;
+            }
             if (MessageBox.Show(list_hostDS.Count + "件登録します。よろしいですか？", "ホストインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
             //DB接続
@@ -925,8 +1083,8 @@ namespace SMSサンプル
 
                             if (MessageBox.Show("ホスト情報を登録できませんでした。ホスト名:" + si.hostname + Environment.NewLine + " 継続しますか？", "ホスト情報のインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                             {
-                                logger.ErrorFormat("ホスト情報を登録できませんでした。{0} ", si.hostname);
                                 transaction.Rollback();
+                                logger.ErrorFormat("ホスト情報を登録できませんでした。{0} ", si.hostname);
                                 cnt++;
                                 return;
                             }
@@ -950,9 +1108,9 @@ namespace SMSサンプル
 
                     cnt++;
                 }
-                MessageBox.Show("ホスト情報のインポート" + i + "件 ");
                 //終わったらコミットする
                 transaction.Commit();
+                MessageBox.Show("ホスト情報のインポート" + i + "件 ");
             }
 
         }
@@ -967,51 +1125,67 @@ namespace SMSサンプル
             }
             tantouDS sds;
             List<tantouDS> list_tantouDS = new List<tantouDS>();
-
-            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
-            parser.TextFieldType = FieldType.Delimited;
-            parser.SetDelimiters(","); // 区切り文字はコンマ
-
-
-            while (!parser.EndOfData)
+            try
             {
-                sds = new tantouDS();
-                string[] cols = parser.ReadFields(); // 1行読み込み
-
-                //ステータス
-                if (cols[0] == "○")
-                    sds.status = "1";
-                if (cols[0] == "×")
-                    sds.status = "2";
+                TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(","); // 区切り文字はコンマ
 
 
-                //社員名
-                sds.user_tantou_name = cols[1];
-                sds.user_tantou_name_kana = cols[2];
+                while (!parser.EndOfData)
+                {
+                    sds = new tantouDS();
+                    string[] cols = parser.ReadFields(); // 1行読み込み
 
-                //会社名
-                sds.username = cols[7];
-
-                //役職
-                sds.yakusyoku= cols[5];
-
-                //部署名
-                sds.busho_name= cols[8];
+                    //1行目#はコメント
+                    string str = "";
+                    str = cols[0];
+                    if (str.StartsWith("#"))
+                        continue;
 
 
-                //住所1
-                sds.biko = cols[11];
 
-                //更新日時
-                sds.chk_date = cols[12];
-
-
-                list_tantouDS.Add(sds);
+                    //ステータス
+                    if (cols[0] == "○")
+                        sds.status = "1";
+                    if (cols[0] == "×")
+                        sds.status = "2";
 
 
+                    //社員名
+                    sds.user_tantou_name = cols[1];
+                    sds.user_tantou_name_kana = cols[2];
+
+                    //会社名
+                    sds.username = cols[7];
+
+                    //役職
+                    sds.yakusyoku = cols[5];
+
+                    //部署名
+                    sds.busho_name = cols[8];
+
+
+                    //住所1
+                    sds.biko = cols[11];
+
+                    //更新日時
+                    sds.chk_date = cols[12];
+
+
+                    list_tantouDS.Add(sds);
+
+
+                }
+                parser.Close();
             }
-            parser.Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
+                logger.ErrorFormat("カスタマ担当者のインポートエラー。CSVファイルの読み込み時にエラーが発生しました。");
 
+                return;
+            }
             if (MessageBox.Show(list_tantouDS.Count + "件登録します。よろしいですか？", "担当者インポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
             //DB接続
@@ -1090,9 +1264,10 @@ namespace SMSサンプル
 
 
                 }
-                MessageBox.Show("担当者名情報のインポート" + i + "件 ");
                 //終わったらコミットする
                 transaction.Commit();
+                MessageBox.Show("担当者名情報のインポート" + i + "件 ");
+
             }
         }
         //電話番号のみアップデートで登録を行う。
@@ -1106,38 +1281,55 @@ namespace SMSサンプル
             }
             tantouDS sds;
             List<tantouDS> list_tantouDS = new List<tantouDS>();
-
-            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
-            parser.TextFieldType = FieldType.Delimited;
-            parser.SetDelimiters(","); // 区切り文字はコンマ
-
-
-            while (!parser.EndOfData)
+            try
             {
-                sds = new tantouDS();
-                string[] cols = parser.ReadFields(); // 1行読み込み
+                TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(","); // 区切り文字はコンマ
 
-                //ステータス
-                if (cols[0] == "○")
-                    sds.status = "1";
-                if (cols[0] == "×")
-                    sds.status = "2";
 
-                if (cols[1] == "TEL")
-                    sds.telno1 = cols[2];
-                if (cols[1] == "携帯")
-                    sds.telno2 = cols[2];
+                while (!parser.EndOfData)
+                {
+                    sds = new tantouDS();
+                    string[] cols = parser.ReadFields(); // 1行読み込み
 
-                //社員名
-                sds.user_tantou_name = cols[5];
+                    //1行目#はコメント
+                    string str = "";
+                    str = cols[0];
+                    if (str.StartsWith("#"))
+                        continue;
 
-                //更新日時
-                sds.chk_date = cols[13];
 
-                list_tantouDS.Add(sds);
 
+                    //ステータス
+                    if (cols[0] == "○")
+                        sds.status = "1";
+                    if (cols[0] == "×")
+                        sds.status = "2";
+
+                    if (cols[1] == "TEL")
+                        sds.telno1 = cols[2];
+                    if (cols[1] == "携帯")
+                        sds.telno2 = cols[2];
+
+                    //社員名
+                    sds.user_tantou_name = cols[5];
+
+                    //更新日時
+                    sds.chk_date = cols[13];
+
+                    list_tantouDS.Add(sds);
+
+                }
+                parser.Close();
             }
-            parser.Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
+                logger.ErrorFormat("カスタマ担当者のインポートエラー。CSVファイルの読み込み時にエラーが発生しました。");
+
+                return;
+            }
 
             if (MessageBox.Show(list_tantouDS.Count + "件の電話番号を登録します。よろしいですか？", "電話番号インポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
@@ -1197,9 +1389,10 @@ namespace SMSサンプル
                     }
 
                 }
-                MessageBox.Show("電話番号のインポート" + i + "件 ");
                 //終わったらコミットする
                 transaction.Commit();
+                MessageBox.Show("電話番号のインポート" + i + "件 ");
+
             }
         }
         //メールアドレスを追加する
@@ -1213,66 +1406,85 @@ namespace SMSサンプル
             MailaddressDS sds;
             List<MailaddressDS> list_mailaddressDS = new List<MailaddressDS>();
 
-            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
-            parser.TextFieldType = FieldType.Delimited;
-            parser.SetDelimiters(","); // 区切り文字はコンマ
-            String u_tantou= "";
-            int idx = 1;
-            while (!parser.EndOfData)
+            try
             {
-                sds = new MailaddressDS();
-                string[] cols = parser.ReadFields(); // 1行読み込み
 
-                //担当名が重複する場合
-                if (u_tantou != cols[4]) { 
-                    u_tantou = cols[4];
-                    idx = 1;
+                TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(","); // 区切り文字はコンマ
+                String u_tantou = "";
+                int idx = 1;
+                while (!parser.EndOfData)
+                {
+                    sds = new MailaddressDS();
+                    string[] cols = parser.ReadFields(); // 1行読み込み
+
+                    //1行目#はコメント
+                    string str = "";
+                    str = cols[0];
+                    if (str.StartsWith("#"))
+                        continue;
+
+
+
+                    //担当名が重複する場合
+                    if (u_tantou != cols[4])
+                    {
+                        u_tantou = cols[4];
+                        idx = 1;
+                    }
+                    //if (0 <= cols[1].IndexOf("Mail")) {
+                    //    if (0 <= cols[1].IndexOf("会社"))
+                    //sds.addressNo = idx.ToString() ;
+                    //else if (0 <= cols[1].IndexOf("携帯"))
+                    //sds.addressNo = idx.ToString();
+                    //else
+                    //sds.addressNo = idx.ToString();
+                    //}
+                    sds.addressNo = idx.ToString();
+                    idx++;
+
+
+                    //会社名
+                    sds.username = cols[8];
+
+                    //カスタマNOの取得
+                    sds.userno = getCustomerNo(sds.username, con);
+                    if (sds.userno == "")
+                        //継続
+                        continue;
+
+                    //社員名
+                    sds.user_tantou_name = cols[4];
+                    //社員NOの取得
+                    sds.opetantouno = getuserTantouNo(sds.userno, sds.user_tantou_name, con);
+                    if (sds.opetantouno == "")
+                        //継続
+                        continue;
+
+
+                    //メールアドレス
+                    sds.mailAddress = cols[2];
+                    //メール名
+                    sds.addressname = cols[17];
+
+
+                    //更新日時
+                    sds.chk_date = cols[13];
+
+
+                    list_mailaddressDS.Add(sds);
+
                 }
-                //if (0 <= cols[1].IndexOf("Mail")) {
-                //    if (0 <= cols[1].IndexOf("会社"))
-                //sds.addressNo = idx.ToString() ;
-                //else if (0 <= cols[1].IndexOf("携帯"))
-                //sds.addressNo = idx.ToString();
-                //else
-                //sds.addressNo = idx.ToString();
-                //}
-                sds.addressNo = idx.ToString();
-                idx++;
-
-
-                //会社名
-                sds.username = cols[8];
-                
-                //カスタマNOの取得
-                sds.userno = getCustomerNo(sds.username, con);
-                if (sds.userno == "")
-                    //継続
-                    continue;
-
-                //社員名
-                sds.user_tantou_name = cols[4];
-                //社員NOの取得
-                sds.opetantouno = getuserTantouNo(sds.userno,sds.user_tantou_name, con);
-                if (sds.opetantouno == "")
-                    //継続
-                    continue;
-
-
-                //メールアドレス
-                sds.mailAddress = cols[2];
-                //メール名
-                sds.addressname = cols[17];
-
-
-                //更新日時
-                sds.chk_date = cols[13];
-
-
-                list_mailaddressDS.Add(sds);
-
+                parser.Close();
             }
-            parser.Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
+                logger.ErrorFormat("メールアドレスのインポートエラー。CSVファイルの読み込み時にエラーが発生しました。");
 
+                return;
+            }
             if (MessageBox.Show(list_mailaddressDS.Count + "件のメールアドレスを登録します。よろしいですか？", "メールアドレスインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
 
@@ -1336,9 +1548,10 @@ namespace SMSサンプル
                     }
 
                 }
-                MessageBox.Show("電話番号のインポート" + i + "件 ");
                 //終わったらコミットする
                 transaction.Commit();
+                MessageBox.Show("電話番号のインポート" + i + "件 ");
+
             }
 
         }
@@ -1353,64 +1566,81 @@ namespace SMSサンプル
             kaisenDS kds;
             List<kaisenDS> list_kaisen = new List<kaisenDS>();
 
-            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
-            parser.TextFieldType = FieldType.Delimited;
-            parser.SetDelimiters(","); // 区切り文字はコンマ
+            try { 
+                TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(","); // 区切り文字はコンマ
 
-            String username = "";
-            String systemname = "";
-            String sitename = "";
-            String hostname = "";
+                String username = "";
+                String systemname = "";
+                String sitename = "";
+                String hostname = "";
 
 
-            while (!parser.EndOfData)
-            {
-                kds = new kaisenDS();
-                string[] cols = parser.ReadFields(); // 1行読み込み                         //ステータス
+                while (!parser.EndOfData)
+                {
+                    kds = new kaisenDS();
+                    string[] cols = parser.ReadFields(); // 1行読み込み                         //ステータス
 
-                kds.career = cols[2] + " " + cols[3];
-                kds.type = cols[4];
-                kds.kaisenid = cols[5];
-                kds.telno1 = cols[6];
-                kds.telno2 = cols[7];
-                kds.telno3 = cols[8];
+                    //1行目#はコメント
+                    string str = "";
+                    str = cols[0];
+                    if (str.StartsWith("#"))
+                        continue;
 
-                //isp
-                kds.isp = cols[9] + " " + cols[10];
-                kds.servicetype = cols[11];
-                kds.serviceid = cols[12];
 
-                hostname = cols[15];
-                systemname = cols[17];
-                sitename = cols[20];
-                username = cols[22];
-                kds.status = "1";
 
-                //カスタマNOの取得
-                kds.userno = getCustomerNo(username, con);
-                if (kds.userno == "")
-                    //継続
-                    continue;
-                
-                //システムNOの取得
-                kds.systemno = getSystemNo(kds.userno, systemname, con);
-                if (kds.systemno != "") { 
+                    kds.career = cols[2] + " " + cols[3];
+                    kds.type = cols[4];
+                    kds.kaisenid = cols[5];
+                    kds.telno1 = cols[6];
+                    kds.telno2 = cols[7];
+                    kds.telno3 = cols[8];
 
-                    //拠点NOの取得
-                    kds.siteno = getSiteNo(kds.userno, kds.systemno, sitename, con);
-                    if (kds.siteno != "") { 
-                        //ホストNOの取得
-                        kds.host_no = getHostNo(kds.userno, kds.systemno, kds.siteno, hostname, con);
+                    //isp
+                    kds.isp = cols[9] + " " + cols[10];
+                    kds.servicetype = cols[11];
+                    kds.serviceid = cols[12];
+
+                    hostname = cols[15];
+                    systemname = cols[17];
+                    sitename = cols[20];
+                    username = cols[22];
+                    kds.status = "1";
+
+                    //カスタマNOの取得
+                    kds.userno = getCustomerNo(username, con);
+                    if (kds.userno == "")
+                        //継続
+                        continue;
+
+                    //システムNOの取得
+                    kds.systemno = getSystemNo(kds.userno, systemname, con);
+                    if (kds.systemno != "") {
+
+                        //拠点NOの取得
+                        kds.siteno = getSiteNo(kds.userno, kds.systemno, sitename, con);
+                        if (kds.siteno != "") {
+                            //ホストNOの取得
+                            kds.host_no = getHostNo(kds.userno, kds.systemno, kds.siteno, hostname, con);
+                        }
                     }
+
+
+                    //更新日時
+                    kds.chk_date = cols[24];
+
+                    list_kaisen.Add(kds);
                 }
-
-
-                //更新日時
-                kds.chk_date = cols[24];
-
-                list_kaisen.Add(kds);
+                parser.Close();
             }
-            parser.Close();
+
+            catch(Exception ex){
+                MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
+                logger.ErrorFormat("回線情報のインポートエラー。CSVファイルの読み込み時にエラーが発生しました。");
+
+                return;
+            }
 
             if (MessageBox.Show(list_kaisen.Count + "件の回線情報を登録します。よろしいですか？", "回線情報インポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
@@ -1504,9 +1734,10 @@ namespace SMSサンプル
                     }
 
                 }
-                MessageBox.Show("回線情報のインポート" + i + "件 ");
                 //終わったらコミットする
                 transaction.Commit();
+                MessageBox.Show("回線情報のインポート" + i + "件 ");
+
             }
         }
 
@@ -1519,78 +1750,91 @@ namespace SMSサンプル
 
             watch_InterfaceDS kds;
             List<watch_InterfaceDS> list_interface = new List<watch_InterfaceDS>();
-
-            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
-            parser.TextFieldType = FieldType.Delimited;
-            parser.SetDelimiters(","); // 区切り文字はコンマ
-
-            String username = "";
-            String systemname = "";
-            String sitename = "";
-            String hostname = "";
-
-            while (!parser.EndOfData)
+            try
             {
-                kds = new watch_InterfaceDS();
-                string[] cols = parser.ReadFields(); // 1行読み込み
+                TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(","); // 区切り文字はコンマ
 
+                String username = "";
+                String systemname = "";
+                String sitename = "";
+                String hostname = "";
 
-
-                username = cols[13];
-                systemname = cols[11];
-                sitename = cols[9];
-                hostname = cols[7];
-
-                //カスタマNOの取得
-                kds.userno = getCustomerNo(username, con);
-                if (kds.userno == "")
+                while (!parser.EndOfData)
                 {
-                    logger.ErrorFormat("カスタマ通番が取得できませんでした。カスタマ名：" + username);
-                    //継続
-                    continue;
+                    kds = new watch_InterfaceDS();
+                    string[] cols = parser.ReadFields(); // 1行読み込み
+
+                    //1行目#はコメント
+                    string str = "";
+                    str = cols[0];
+                    if (str.StartsWith("#"))
+                        continue;
+
+                    username = cols[13];
+                    systemname = cols[11];
+                    sitename = cols[9];
+                    hostname = cols[7];
+
+                    //カスタマNOの取得
+                    kds.userno = getCustomerNo(username, con);
+                    if (kds.userno == "")
+                    {
+                        logger.ErrorFormat("カスタマ通番が取得できませんでした。カスタマ名：" + username);
+                        //継続
+                        continue;
+                    }
+                    //システムNOの取得
+                    kds.systemno = getSystemNo(kds.userno, systemname, con);
+                    if (kds.systemno == "")
+                    {
+                        logger.ErrorFormat("システム通番が取得できませんでした。");
+                        //継続
+                        continue;
+                    }
+
+                    //拠点NOの取得
+                    kds.siteno = getSiteNo(kds.userno, kds.systemno, sitename, con);
+                    if (kds.siteno == "")
+                    {
+                        logger.ErrorFormat("拠点通番が取得できませんでした。");
+                        //継続
+                        continue;
+                    }
+                    //ホストNOの取得
+                    kds.host_no = getHostNo(kds.userno, kds.systemno, kds.siteno, hostname, con);
+                    if (kds.siteno == "")
+                    {
+                        logger.ErrorFormat("ホスト通番が取得できませんでした。");
+                        //継続
+                        continue;
+                    }
+
+                    kds.interfacename = cols[0];
+                    kds.status = "1";
+                    kds.type = cols[2];
+                    kds.kanshi = cols[3];
+
+                    kds.IPaddress = cols[4];
+                    kds.border = cols[5];
+                    kds.IPaddressNAT = cols[6];
+
+
+                    //更新日時
+                    kds.chk_date = cols[14];
+
+                    list_interface.Add(kds);
                 }
-                //システムNOの取得
-                kds.systemno = getSystemNo(kds.userno, systemname, con);
-                if (kds.systemno == "")
-                {
-                    logger.ErrorFormat("システム通番が取得できませんでした。");
-                    //継続
-                    continue;
-                }
-
-                //拠点NOの取得
-                kds.siteno = getSiteNo(kds.userno, kds.systemno, sitename, con);
-                if (kds.siteno == "")
-                {
-                    logger.ErrorFormat("拠点通番が取得できませんでした。");
-                    //継続
-                    continue;
-                }
-                //ホストNOの取得
-                kds.host_no = getHostNo(kds.userno, kds.systemno, kds.siteno, hostname, con);
-                if (kds.siteno == "")
-                {
-                    logger.ErrorFormat("ホスト通番が取得できませんでした。");
-                    //継続
-                    continue;
-                }
-
-                kds.interfacename = cols[0];
-                kds.status = "1";
-                kds.type = cols[2];
-                kds.kanshi = cols[3];
-
-                kds.IPaddress = cols[4];
-                kds.border = cols[5];
-                kds.IPaddressNAT = cols[6];
-
-
-                //更新日時
-                kds.chk_date = cols[14];
-
-                list_interface.Add(kds);
+                parser.Close();
             }
-            parser.Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
+                logger.ErrorFormat("監視インターフェイスのインポートエラー。CSVファイルの読み込み時にエラーが発生しました。");
+
+                return;
+            }
 
             if (MessageBox.Show(list_interface.Count + "件のインターフェイス情報を登録します。よろしいですか？", "インターフェイス情報インポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
@@ -1694,10 +1938,20 @@ namespace SMSサンプル
                     }
 
                 }
-                MessageBox.Show("監視インターフェイス情報" + i + "件 ");
                 //終わったらコミットする
                 transaction.Commit();
+
+                MessageBox.Show("監視インターフェイス情報" + i + "件 ");
             }
+        }
+        //集計機能
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            //インシデントの受付日時から手配日時の時間が15分以上のインシデントを取得する
+            Form_incidentSummary icdForm = new Form_incidentSummary();
+            icdForm.con = con;
+            icdForm.loginDS = loginDS;
+            icdForm.Show(this);
         }
     }
 }

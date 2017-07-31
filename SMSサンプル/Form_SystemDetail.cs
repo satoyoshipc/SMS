@@ -55,12 +55,13 @@ namespace SMSサンプル
             m_selectKoumoku.Items.Add("カスタマ通番");
             m_selectKoumoku.Items.Add("更新日時");
             m_selectKoumoku.Items.Add("更新者");
-
-            getsystem(systemdt);
+            if(systemdt != null)
+                getsystem(systemdt);
         }
         //システム一覧を取得する
         private void getsystem(systemDS systemdt)
         {
+
             this.m_systemno.Text = systemdt.systemno;
             this.m_userno.Text = systemdt.userno;
             this.m_cutomername.Text = systemdt.username;
@@ -116,7 +117,20 @@ namespace SMSサンプル
 
                         //更新日時
                         case 5:
-                            param_dict["chk_date"] = m_selecttext.Text;
+                            DateTime dt;
+                            String str = m_selecttext.Text;
+
+                            //入力された日付の形式の確認
+                            if (DateTime.TryParse(str, out dt))
+                            {
+                                param_dict["chk_date"] = str;
+                            }
+                            else
+                            {
+
+                                MessageBox.Show("日付の形式が正しくありません。", "拠点検索");
+                                return;
+                            }
                             break;
                         //更新者
                         case 6:
@@ -139,12 +153,12 @@ namespace SMSサンプル
             this.m_System_List.HeaderStyle = ColumnHeaderStyle.Clickable;
 
             this.m_System_List.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-            this.m_System_List.Columns.Insert(1, "システム名", 120, HorizontalAlignment.Left);
-            this.m_System_List.Columns.Insert(2, "システム名カナ", 120, HorizontalAlignment.Left);
+            this.m_System_List.Columns.Insert(1, "システム名", 200, HorizontalAlignment.Left);
+            this.m_System_List.Columns.Insert(2, "システム名カナ", 200, HorizontalAlignment.Left);
             this.m_System_List.Columns.Insert(3, "カスタマ通番", 90, HorizontalAlignment.Left);
-            this.m_System_List.Columns.Insert(4, "カスタマ名", 80, HorizontalAlignment.Left);
-            this.m_System_List.Columns.Insert(5, "備考", 50, HorizontalAlignment.Left);
-            this.m_System_List.Columns.Insert(6, "更新日時", 50, HorizontalAlignment.Left);
+            this.m_System_List.Columns.Insert(4, "カスタマ名", 200, HorizontalAlignment.Left);
+            this.m_System_List.Columns.Insert(5, "備考", 200, HorizontalAlignment.Left);
+            this.m_System_List.Columns.Insert(6, "更新日時", 120, HorizontalAlignment.Left);
             this.m_System_List.Columns.Insert(7, "更新者", 50, HorizontalAlignment.Left);
 
             //リストに表示

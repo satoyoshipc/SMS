@@ -124,6 +124,7 @@ namespace SMSサンプル
                 {
                     //登録成功
                     MessageBox.Show("登録完了", "システム登録");
+                    this.Close();
                 }
 
             }

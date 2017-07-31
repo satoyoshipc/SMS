@@ -82,7 +82,6 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
             // 
             // splitContainer1.Panel2
             // 
@@ -138,7 +137,6 @@
             this.splitContainer2.Size = new System.Drawing.Size(844, 225);
             this.splitContainer2.SplitterDistance = 33;
             this.splitContainer2.TabIndex = 1;
-            this.splitContainer2.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer2_SplitterMoved);
             // 
             // m_selectBtn
             // 

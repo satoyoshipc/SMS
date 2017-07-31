@@ -331,7 +331,7 @@ namespace SMSサンプル
                 catch (Exception ex)
                 {
                     //エラー時メッセージ表示
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("更新する際サーバでエラーが発生しました。 " + ex.Message);
 //                    transaction.Rollback();
                     return;
                 }
@@ -503,7 +503,11 @@ namespace SMSサンプル
             }
             catch (Exception ex)
             {
-                MessageBox.Show("メールテンプレート登録時エラー " + ex.Message);
+                string msg = ex.Message;
+                if (0 <= msg.IndexOf("mail_send_address_pkc"))
+                    msg = "To Cc Bccで同じ宛先を登録することはできません。";
+
+                MessageBox.Show("メールテンプレート登録時エラー " + msg);
                 return -1;
             }
 

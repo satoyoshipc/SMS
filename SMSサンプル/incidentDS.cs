@@ -55,5 +55,10 @@ namespace SMSサンプル
 
         public String chk_date { get; set; }
         public String chk_name_id { get; set; }
+
+        //差分(Summary計算で使用する
+        public String interval { get; set; }
+
+
     }
 }

@@ -114,7 +114,7 @@ namespace SMSサンプル
                 {
                     //登録成功
                     MessageBox.Show("登録完了", "カスタマ登録");
-                        
+                    
                 }
 
             }
@@ -146,7 +146,7 @@ namespace SMSサンプル
             //担当者登録
             Form_UserTantouInsert Usertantoufm = new Form_UserTantouInsert();
             Usertantoufm.loginDS = loginDS;
-            Usertantoufm.userList = userList;
+            //Usertantoufm.userList = userList;
             Usertantoufm.con = con;
 
             Usertantoufm.Show();
@@ -154,8 +154,11 @@ namespace SMSサンプル
         //表示前処理
         private void Form_UserInsert_Load(object sender, EventArgs e)
         {
+
             m_dispOpeNo.Text = loginDS.opeid;
             m_dispOpename.Text = loginDS.lastname + loginDS.fastname;
+
+
         }
     }
 }

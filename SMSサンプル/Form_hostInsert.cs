@@ -290,6 +290,7 @@ namespace SMSサンプル
                 {
                     //登録成功
                     MessageBox.Show("登録完了", "ホスト名登録");
+                    this.Close();
                 }
 
             }

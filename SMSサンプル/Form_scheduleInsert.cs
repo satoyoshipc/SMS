@@ -87,11 +87,11 @@ namespace SMSサンプル
                 return;
             }
             //拠点名は必須
-            if (m_siteCombo.Text == "")
-            {
-                MessageBox.Show("拠点名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            //            if (m_siteCombo.Text == "")
+            //            {
+            //MessageBox.Show("拠点名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //return;
+            //}
 
 
             //タイマー名
@@ -143,7 +143,8 @@ namespace SMSサンプル
             }
             string userno = m_userno.Text;
             string systemno = m_systemno.Text;
-            string siteno = m_siteno.Text;
+            string siteno = null;
+            siteno = m_siteno.Text == "" ? null : m_siteno.Text;
             string timername = m_timer_name.Text;
             string schedule_type = m_schedule_combo.Text;
             string type = schedule_type.Split(':')[0];
@@ -235,6 +236,7 @@ namespace SMSサンプル
                         }
                         //登録成功
                         MessageBox.Show("登録完了 " + "スケジュール番号" + currval, "タイマー登録");
+                        this.Close();
                     }
                 }
 

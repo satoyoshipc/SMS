@@ -20,15 +20,10 @@ namespace SMSサンプル
         //カスタマ
         public List<userDS> userList { get; set; }
 
-
-
         public Form_UserTantouInsert()
         {
             InitializeComponent();
         }
-
-
-
 
         //メールアドレス登録
         private void button4_Click(object sender, EventArgs e)
@@ -53,9 +48,11 @@ namespace SMSサンプル
             cutomerTable.Columns.Add("ID", typeof(string));
             cutomerTable.Columns.Add("NAME", typeof(string));
 
+            Class_Detaget getuser = new Class_Detaget();
+            getuser.con = con;
+            userList = getuser.getUserList();
             if (userList == null)
                 return;
-
             //カスタマ情報を取得する
             foreach (userDS v in userList)
             {
@@ -63,8 +60,6 @@ namespace SMSサンプル
                 row["ID"] = v.userno;
                 row["NAME"] = v.username;
                 cutomerTable.Rows.Add(row);
-
-
             }
             //データテーブルを割り当てる
             m_usernameCombo.DataSource = cutomerTable;
@@ -86,18 +81,14 @@ namespace SMSサンプル
                 MessageBox.Show("カスタマ情報の取得に失敗しました。" + ex.Message);
             }
         }
-
-
         //キャンセルボタン
         private void button2_Click(object sender, EventArgs e)
         {
-
             this.Close();
         }
         //登録ボタン
         private void button3_Click(object sender, EventArgs e)
         {
-
             //担当者名は必須
             if (m_tantou_name.Text == "")
             {
@@ -119,7 +110,7 @@ namespace SMSサンプル
             else
                 //0無効
                 status = "0";
-            
+
             try
             {
                 if (con.FullState != ConnectionState.Open) con.Open();
@@ -145,7 +136,6 @@ namespace SMSサンプル
                 cmd.Parameters.Add(firstColumn);
 
 
-
                 rowsaffected = cmd.ExecuteNonQuery();
 
                 //値の取得
@@ -169,11 +159,9 @@ namespace SMSサンプル
                         addfm.username = m_tantou_name.Text;
 
                         addfm.Show();
-
+                        this.Close();
                     }
-
                 }
-                
             }
             catch (Exception ex)
             {

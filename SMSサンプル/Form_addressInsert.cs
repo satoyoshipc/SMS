@@ -114,6 +114,7 @@ namespace SMSサンプル
                 {
                     //登録成功 YESを選択でメールアドレス登録画面に遷移
                     MessageBox.Show("登録が完了しました。", "メールアドレス登録", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    this.Close();
 
                 }
 

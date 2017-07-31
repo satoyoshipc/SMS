@@ -32,7 +32,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.インポートIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +45,7 @@
             this.ホストHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.インターフェイスkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.回線情報LToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button5 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -97,18 +97,6 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // button5
-            // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(30, 166);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(222, 37);
-            this.button5.TabIndex = 5;
-            this.button5.Text = "CSVインポート";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
             // button6
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -152,79 +140,91 @@
             this.カスタマ担当者電話番号DToolStripMenuItem,
             this.メールアドレスMToolStripMenuItem1});
             this.カスタマCToolStripMenuItem.Name = "カスタマCToolStripMenuItem";
-            this.カスタマCToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.カスタマCToolStripMenuItem.Text = "カスタマ(&C)";
+            this.カスタマCToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.カスタマCToolStripMenuItem.Text = "1-カスタマ(&C)";
             // 
             // カスタマ情報ToolStripMenuItem
             // 
             this.カスタマ情報ToolStripMenuItem.Name = "カスタマ情報ToolStripMenuItem";
-            this.カスタマ情報ToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
-            this.カスタマ情報ToolStripMenuItem.Text = "カスタマ情報(&U)";
+            this.カスタマ情報ToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.カスタマ情報ToolStripMenuItem.Text = "1-1.カスタマ情報(&U)";
             this.カスタマ情報ToolStripMenuItem.Click += new System.EventHandler(this.カスタマ情報ToolStripMenuItem_Click);
             // 
             // カスタマ担当者TToolStripMenuItem
             // 
             this.カスタマ担当者TToolStripMenuItem.Name = "カスタマ担当者TToolStripMenuItem";
-            this.カスタマ担当者TToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
-            this.カスタマ担当者TToolStripMenuItem.Text = "カスタマ担当者(&T)";
+            this.カスタマ担当者TToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.カスタマ担当者TToolStripMenuItem.Text = "1-2.カスタマ担当者(&T)";
             this.カスタマ担当者TToolStripMenuItem.Click += new System.EventHandler(this.カスタマ担当者TToolStripMenuItem_Click);
             // 
             // カスタマ担当者電話番号DToolStripMenuItem
             // 
             this.カスタマ担当者電話番号DToolStripMenuItem.Name = "カスタマ担当者電話番号DToolStripMenuItem";
-            this.カスタマ担当者電話番号DToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
-            this.カスタマ担当者電話番号DToolStripMenuItem.Text = "カスタマ担当者電話番号(&D)";
+            this.カスタマ担当者電話番号DToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.カスタマ担当者電話番号DToolStripMenuItem.Text = "1-3.カスタマ担当者電話番号(&D)";
             this.カスタマ担当者電話番号DToolStripMenuItem.Click += new System.EventHandler(this.カスタマ担当者電話番号DToolStripMenuItem_Click);
             // 
             // メールアドレスMToolStripMenuItem1
             // 
             this.メールアドレスMToolStripMenuItem1.Name = "メールアドレスMToolStripMenuItem1";
-            this.メールアドレスMToolStripMenuItem1.Size = new System.Drawing.Size(227, 22);
-            this.メールアドレスMToolStripMenuItem1.Text = "メールアドレス(&M)";
+            this.メールアドレスMToolStripMenuItem1.Size = new System.Drawing.Size(250, 22);
+            this.メールアドレスMToolStripMenuItem1.Text = "1-4.メールアドレス(&M)";
             this.メールアドレスMToolStripMenuItem1.Click += new System.EventHandler(this.メールアドレスMToolStripMenuItem1_Click);
             // 
             // システムSToolStripMenuItem
             // 
             this.システムSToolStripMenuItem.Name = "システムSToolStripMenuItem";
-            this.システムSToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.システムSToolStripMenuItem.Text = "システム(&S)";
+            this.システムSToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.システムSToolStripMenuItem.Text = "2-システム(&S)";
             this.システムSToolStripMenuItem.Click += new System.EventHandler(this.システムSToolStripMenuItem_Click);
             // 
             // 拠点KToolStripMenuItem
             // 
             this.拠点KToolStripMenuItem.Name = "拠点KToolStripMenuItem";
-            this.拠点KToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.拠点KToolStripMenuItem.Text = "拠点(&K)";
+            this.拠点KToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.拠点KToolStripMenuItem.Text = "3-拠点(&K)";
             this.拠点KToolStripMenuItem.Click += new System.EventHandler(this.拠点KToolStripMenuItem_Click);
             // 
             // ホストHToolStripMenuItem
             // 
             this.ホストHToolStripMenuItem.Name = "ホストHToolStripMenuItem";
-            this.ホストHToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.ホストHToolStripMenuItem.Text = "ホスト(&H)";
+            this.ホストHToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.ホストHToolStripMenuItem.Text = "4-ホスト(&H)";
             this.ホストHToolStripMenuItem.Click += new System.EventHandler(this.ホストHToolStripMenuItem_Click);
             // 
             // インターフェイスkToolStripMenuItem
             // 
             this.インターフェイスkToolStripMenuItem.Name = "インターフェイスkToolStripMenuItem";
-            this.インターフェイスkToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.インターフェイスkToolStripMenuItem.Text = "インターフェイス(&k)";
+            this.インターフェイスkToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.インターフェイスkToolStripMenuItem.Text = "5-インターフェイス(&k)";
             this.インターフェイスkToolStripMenuItem.Click += new System.EventHandler(this.インターフェイスkToolStripMenuItem_Click);
             // 
             // 回線情報LToolStripMenuItem
             // 
             this.回線情報LToolStripMenuItem.Name = "回線情報LToolStripMenuItem";
-            this.回線情報LToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.回線情報LToolStripMenuItem.Text = "回線情報(&L)";
+            this.回線情報LToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.回線情報LToolStripMenuItem.Text = "5-回線情報(&L)";
             this.回線情報LToolStripMenuItem.Click += new System.EventHandler(this.回線情報LToolStripMenuItem_Click);
+            // 
+            // button5
+            // 
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button5.Location = new System.Drawing.Point(29, 166);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(223, 37);
+            this.button5.TabIndex = 8;
+            this.button5.Text = "集計";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click_1);
             // 
             // Form_kanri_menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(277, 253);
-            this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
@@ -247,7 +247,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem インポートIToolStripMenuItem;
@@ -261,5 +260,6 @@
         private System.Windows.Forms.ToolStripMenuItem カスタマ担当者TToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem カスタマ担当者電話番号DToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 回線情報LToolStripMenuItem;
+        private System.Windows.Forms.Button button5;
     }
 }

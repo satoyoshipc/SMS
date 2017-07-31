@@ -111,7 +111,6 @@ namespace SMSサンプル
                     itemx1.SubItems.Add(s_ds.chk_name_id);
                     m_listviewobj.Items.Add(itemx1);
 
-
                 }
                  
             }
@@ -120,17 +119,13 @@ namespace SMSサンプル
         //検索ボタン
         private void m_selectBtn_Click(object sender, EventArgs e)
         {
+
             ListView lv;
 
             if (tabcontrol1.SelectedIndex == 1)
-            {
-
-                lv = m_user_tanntouList;
-            }
+                lv = m_user_tanntouList;            
             else
-            {
                 lv = m_operaterList;
-            }
 
             lv.Clear();
             DISP_dataSet dset = new DISP_dataSet();
@@ -139,11 +134,12 @@ namespace SMSサンプル
 
             if (m_selecttext.Text != "")
             {
+
                 if (this.m_selectKoumoku.SelectedIndex.ToString() != "")
                 {
+
                     switch (this.m_selectKoumoku.SelectedIndex)
                     {
-
                         //ホスト名
                         case 0:
                             param_dict["opetantouno"] = m_selecttext.Text;
@@ -152,15 +148,12 @@ namespace SMSサンプル
                         case 1:
                             param_dict["addressNo"] = m_selecttext.Text;
                             break;
-
                         case 2:
                             param_dict["mailAddress"] = m_selecttext.Text;
                             break;
-
                         case 3:
                             param_dict["addressname"] = m_selecttext.Text;
                             break;
-
                         //更新者
                         case 4:
                             param_dict["chk_name_id"] = m_selecttext.Text;
@@ -188,7 +181,6 @@ namespace SMSサンプル
             {
                 //リストに表示
                 disp_addressList(addressList, lv);
-
             }
         }
 

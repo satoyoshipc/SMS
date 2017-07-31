@@ -33,7 +33,10 @@ namespace SMSサンプル
         public NpgsqlConnection con { get; set; }
 
         //ListViewのソートの際に使用する
-        private Class_ListViewColumnSorter _columnSorter;
+        private int sort_kind = 0;
+
+        //ホストの一覧
+        DataTable host_list;
 
         public Form_HostDetail()
         {
@@ -52,8 +55,7 @@ namespace SMSサンプル
         //表示前処理
         private void Form_HostDetail_Load(object sender, EventArgs e)
         {
-            _columnSorter = new Class_ListViewColumnSorter();
-            m_host_List.ListViewItemSorter = _columnSorter;
+
 
             m_selectKoumoku.Items.Add("ホスト番号");
             m_selectKoumoku.Items.Add("ホスト名(英数)");
@@ -72,8 +74,39 @@ namespace SMSサンプル
             m_selectKoumoku.Items.Add("備考");
             m_selectKoumoku.Items.Add("更新日時");
             m_selectKoumoku.Items.Add("更新者");
+            if(hostdt != null)
+                gethost(hostdt);
 
-            gethost(hostdt);
+        }
+        void Host_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            //	e.Item = _item[e.ItemIndex];
+            if (host_list.Rows.Count > 0)
+            {
+
+                DataRow row = this.host_list.Rows[e.ItemIndex];
+                e.Item = new ListViewItem(
+                    new String[]
+                    {
+                Convert.ToString(row[0]),
+                Convert.ToString(row[1]),
+                Convert.ToString(row[2]),
+                Convert.ToString(row[3]),
+                Convert.ToString(row[4]),
+                Convert.ToString(row[5]),
+                Convert.ToString(row[6]),
+                Convert.ToString(row[7]),
+                Convert.ToString(row[8]),
+                Convert.ToString(row[9]),
+                Convert.ToString(row[10]),
+                Convert.ToString(row[11]),
+                Convert.ToString(row[12]),
+                Convert.ToString(row[13]),
+                Convert.ToString(row[14]),
+                Convert.ToString(row[15]),
+                Convert.ToString(row[16])
+                    });
+            }
 
         }
         //ホスト情報を表示する
@@ -178,11 +211,37 @@ namespace SMSサンプル
                             break;
 
                         case 10:
-                            param_dict["kansiStartdate"] = m_selecttext.Text;
+                            DateTime dt;
+                            String str = m_selecttext.Text;
+
+                            //入力された日付の形式の確認
+                            if (DateTime.TryParse(str, out dt))
+                            {
+                                param_dict["kansiStartdate"] = str;
+                            }
+                            else
+                            {
+
+                                MessageBox.Show("日付の形式が正しくありません。", "拠点検索");
+                                return;
+                            }
                             break;
 
                         case 11:
-                            param_dict["kansiEndsdate"] = m_selecttext.Text;
+                            
+                            str = m_selecttext.Text;
+
+                            //入力された日付の形式の確認
+                            if (DateTime.TryParse(str, out dt))
+                            {
+                                param_dict["kansiEndsdate"] = str;
+                            }
+                            else
+                            {
+                                MessageBox.Show("日付の形式が正しくありません。", "拠点検索");
+                                return;
+                            }
+
                             break;
                         case 12:
                             param_dict["hosyukanri"] = m_selecttext.Text;
@@ -196,7 +255,20 @@ namespace SMSサンプル
 
                         //更新日時
                         case 15:
-                            param_dict["chk_date"] = m_selecttext.Text;
+                            
+                            str = m_selecttext.Text;
+
+                            //入力された日付の形式の確認
+                            if (DateTime.TryParse(str, out dt))
+                            {
+                                param_dict["chk_date"] = str;
+                            }
+                            else
+                            {
+
+                                MessageBox.Show("日付の形式が正しくありません。", "拠点検索");
+                                return;
+                            }
                             break;
                         //更新者
                         case 16:
@@ -208,13 +280,24 @@ namespace SMSサンプル
                     }
                 }
             }
-
+            //まず件数を取得する
+            Int64 count = dg.getSelectHostCount(param_dict, con, dset, true);
+            if (MessageBox.Show(count.ToString() + "件ヒットしました。表示しますか？", "ホスト", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            {
+                return;
+            }
             //ホスト一覧を取得する
             dset = dg.getSelectHost(param_dict, con, dset);
 
+            this.m_host_List.VirtualMode = true;
+            // １行全体選択
             this.m_host_List.FullRowSelect = true;
             this.m_host_List.HideSelection = false;
             this.m_host_List.HeaderStyle = ColumnHeaderStyle.Clickable;
+            //Hook up handlers for VirtualMode events.
+            this.m_host_List.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(Host_RetrieveVirtualItem);
+            this.m_host_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            this.m_host_List.Scrollable = true;
 
             this.m_host_List.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
             this.m_host_List.Columns.Insert(1, "ホスト名(英数)", 120, HorizontalAlignment.Left);
@@ -223,8 +306,8 @@ namespace SMSサンプル
             this.m_host_List.Columns.Insert(4, "機種", 80, HorizontalAlignment.Left);
             this.m_host_List.Columns.Insert(5, "設置場所", 50, HorizontalAlignment.Left);
             this.m_host_List.Columns.Insert(6, "用途", 50, HorizontalAlignment.Left);
-            this.m_host_List.Columns.Insert(7, "監視開始番号", 120, HorizontalAlignment.Left);
-            this.m_host_List.Columns.Insert(8, "監視終了番号", 120, HorizontalAlignment.Left);
+            this.m_host_List.Columns.Insert(7, "監視開始日時", 120, HorizontalAlignment.Left);
+            this.m_host_List.Columns.Insert(8, "監視終了日時", 120, HorizontalAlignment.Left);
             this.m_host_List.Columns.Insert(9, "保守管理番号", 50, HorizontalAlignment.Left);
             this.m_host_List.Columns.Insert(10, "保守情報", 50, HorizontalAlignment.Left);
             this.m_host_List.Columns.Insert(11, "備考", 50, HorizontalAlignment.Left);
@@ -233,35 +316,63 @@ namespace SMSサンプル
             this.m_host_List.Columns.Insert(14, "拠点通番", 50, HorizontalAlignment.Left);
             this.m_host_List.Columns.Insert(15, "更新日時", 50, HorizontalAlignment.Left);
             this.m_host_List.Columns.Insert(16, "更新者", 50, HorizontalAlignment.Left);
+ 
+            //リストビューを初期化する
+            host_list = new DataTable("table1");
+            host_list.Columns.Add("No", Type.GetType("System.Int32"));
+            host_list.Columns.Add("ホスト名(英数)", Type.GetType("System.String"));
+            host_list.Columns.Add("ホスト名(日本語)", Type.GetType("System.String"));
+            host_list.Columns.Add("ステータス", Type.GetType("System.String"));
+            host_list.Columns.Add("機種", Type.GetType("System.String"));
+            host_list.Columns.Add("設置場所", Type.GetType("System.String"));
+            host_list.Columns.Add("用途", Type.GetType("System.String"));
+            host_list.Columns.Add("監視開始日時", Type.GetType("System.String"));
+            host_list.Columns.Add("監視終了日時", Type.GetType("System.String"));
+            host_list.Columns.Add("保守管理番号", Type.GetType("System.String"));
+            host_list.Columns.Add("保守情報", Type.GetType("System.String"));
+            host_list.Columns.Add("備考", Type.GetType("System.String"));
+            host_list.Columns.Add("カスタマ番号", Type.GetType("System.String"));
+            host_list.Columns.Add("システム通番番号", Type.GetType("System.String"));
+            host_list.Columns.Add("拠点通番", Type.GetType("System.String"));
+            host_list.Columns.Add("更新日時", Type.GetType("System.String"));
+            host_list.Columns.Add("更新者", Type.GetType("System.String"));
 
             //リストに表示
             if (dset.host_L != null)
             {
+                m_host_List.BeginUpdate();
+
                 foreach (hostDS s_ds in dset.host_L)
                 {
 
-                    ListViewItem itemx1 = new ListViewItem();
-                    itemx1.Text = s_ds.host_no;
+                    DataRow urow = host_list.NewRow(); 
 
-                    itemx1.SubItems.Add(s_ds.hostname);
-                    itemx1.SubItems.Add(s_ds.hostname_ja);
-                    itemx1.SubItems.Add(s_ds.status);
-                    itemx1.SubItems.Add(s_ds.device);
-                    itemx1.SubItems.Add(s_ds.location);
-                    itemx1.SubItems.Add(s_ds.usefor);
-                    itemx1.SubItems.Add(s_ds.kansiStartdate);
-                    itemx1.SubItems.Add(s_ds.kansiEndsdate);
-                    itemx1.SubItems.Add(s_ds.hosyukanri);
-                    itemx1.SubItems.Add(s_ds.hosyuinfo);
-                    itemx1.SubItems.Add(s_ds.biko);
-                    itemx1.SubItems.Add(s_ds.userno);
-                    itemx1.SubItems.Add(s_ds.systemno);
-                    itemx1.SubItems.Add(s_ds.siteno);
-                    itemx1.SubItems.Add(s_ds.chk_date);
-                    itemx1.SubItems.Add(s_ds.chk_name_id);
+                    urow["No"] = s_ds.host_no;
 
-                    this.m_host_List.Items.Add(itemx1);
+                    urow["ホスト名(英数)"] = s_ds.hostname;
+                    urow["ホスト名(日本語)"] = s_ds.hostname_ja;
+                    urow["ステータス"] = s_ds.status;
+                    urow["機種"] = s_ds.device;
+                    urow["設置場所"] = s_ds.location;
+                    urow["用途"] = s_ds.usefor;
+                    urow["監視開始日時"] = s_ds.kansiStartdate;
+                    urow["監視終了日時"] = s_ds.kansiEndsdate;
+                    urow["保守管理番号"] = s_ds.hosyukanri;
+                    urow["保守情報"] = s_ds.hosyuinfo;
+                    urow["備考"] = s_ds.biko;
+                    urow["カスタマ番号"] = s_ds.userno;
+                    urow["システム通番番号"] = s_ds.systemno;
+                    urow["拠点通番"] = s_ds.siteno;
+                    urow["更新日時"] = s_ds.chk_date;
+                    urow["更新者"] = s_ds.chk_name_id;
+
+                    host_list.Rows.Add(urow);
                 }
+                this.m_host_List.VirtualListSize = host_list.Rows.Count;
+                this.m_host_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+
+                m_host_List.EndUpdate();
             }
         }
 
@@ -372,48 +483,88 @@ namespace SMSサンプル
         //ListViewのカラムをクリックした場合
         private void m_host_List_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            if (e.Column == _columnSorter.SortColumn)
+            if (this.host_list == null)
+                return;
+            if (this.host_list.Rows.Count <= 0)
+                return;
+            //DataViewクラス ソートするためのクラス
+            DataView dv = new DataView(host_list);
+
+            //一時クラス
+            DataTable dttmp = new DataTable();
+
+            String strSort = "";
+
+            //0なら昇順にソート
+            if (sort_kind == 0)
             {
-                if (_columnSorter.Order == SortOrder.Ascending)
-                {
-                    _columnSorter.Order = SortOrder.Descending;
-                }
-                else
-                {
-                    _columnSorter.Order = SortOrder.Ascending;
-                }
+                strSort = " ASC";
+                sort_kind = 1;
             }
             else
             {
-                _columnSorter.SortColumn = e.Column;
-                _columnSorter.Order = SortOrder.Ascending;
+                //１の時は昇順にソート
+                strSort = " DESC";
+                sort_kind = 0;
             }
-            m_host_List.Sort();
+
+            //コピーを作成
+            dttmp = host_list.Clone();
+            //ソートを実行
+            dv.Sort = host_list.Columns[e.Column].ColumnName + strSort;
+
+            // ソートされたレコードのコピー
+            foreach (DataRowView drv in dv)
+            {
+                // 一時テーブルに格納
+                dttmp.ImportRow(drv.Row);
+            }
+            //格納したテーブルデータを上書く
+            host_list = dttmp.Copy();
+
+            //行が存在するかチェックを行う。
+            if (this.m_host_List.TopItem != null)
+            {
+                //現在一番上の行に表示されている行を取得
+                int start = m_host_List.TopItem.Index;
+                // ListView画面の再表示を行う
+                m_host_List.RedrawItems(start, m_host_List.Items.Count - 1, true);
+            }
         }
         //削除ボタン
         private void m_deleteBtn_Click(object sender, EventArgs e)
         {
-            int count = m_host_List.SelectedItems.Count;
+            ListView.SelectedIndexCollection item = m_host_List.SelectedIndices;
+            int count = item.Count;
 
 
             if (MessageBox.Show("一覧に選択された行 "+ count + "件 の削除を行います。その際参照している他のテーブルデータも削除されます。"+ Environment.NewLine +
                 "よろしいですか？", "ホスト名削除", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
 
-            int ret = deleteHost();
+            int ret = deleteHost(item);
             if(ret == -1)
             {
                 return;
             }
             //リストの表示上からけす
-            foreach (ListViewItem item in m_host_List.SelectedItems)
-            {
-                m_host_List.Items.Remove(item);
-            }
-           
+            int i = 0;
+            int[] indices = new int[item.Count];
+            int cnt = m_host_List.SelectedIndices.Count;
+
+
+            m_host_List.SelectedIndices.CopyTo(indices, 0);
+
+            DataRowCollection items = host_list.Rows;
+            for (i = cnt - 1; i >= 0; --i)
+                items.RemoveAt(indices[i]);
+
+            //総件数を変更し再表示を行う
+            this.m_host_List.VirtualListSize = items.Count;
+
         }
         //削除
-        private int deleteHost()
+        private int deleteHost(ListView.SelectedIndexCollection item)
         {
 
             string hostno;
@@ -427,10 +578,10 @@ namespace SMSサンプル
 
             using (var transaction = con.BeginTransaction())
             {
-
-                foreach (ListViewItem item in m_host_List.SelectedItems)
+                int i;
+                for (i = 0; i < item.Count; i++)
                 {
-                    hostno = item.SubItems[0].Text;
+                    hostno = this.m_host_List.Items[item[i]].SubItems[0].Text;
 
                     var command = new NpgsqlCommand(@sql, con);
                     command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = int.Parse(hostno)});
@@ -444,7 +595,7 @@ namespace SMSサンプル
 
                         if (rowsaffected < 1) { 
                             //MessageBox.Show("削除できませんでした。ホストID:" + hostno, "ホスト削除");
-                            logger.WarnFormat("ホスト情報削除エラー　(監視インターフェイスが登録されていないホストに出る場合があります)。 ホスト番号:{0}", sql, hostno);
+                            logger.WarnFormat("ホスト情報削除エラー　(監視インターフェイスが登録されていないホストに出る場合があります)。{0} ホスト番号:{1}", sql, hostno);
                             //                            transaction.Rollback();
                             //return -1;
                             ret = 1;
@@ -457,31 +608,24 @@ namespace SMSサンプル
                     catch (Exception ex)
                     {
                         //エラー時メッセージ表示
-                        MessageBox.Show(ex.Message);
                         transaction.Rollback();
+                        MessageBox.Show(ex.Message);
+
                         return -1;
                     }
                 }
                 if(ret == 1)
                 {
-                    MessageBox.Show("削除完了しました。", "ホスト情報削除");
-                    logger.ErrorFormat("ホスト情報削完了。 ホスト番号");
-
                     transaction.Commit();
+                    MessageBox.Show("削除完了しました。", "ホスト情報削除");
+                    logger.InfoFormat("ホスト情報削完了。 ホスト番号");
+
+
                 }
 
             }
             return 1;
         }
 
-        private void m_statusCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void m_end_date_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

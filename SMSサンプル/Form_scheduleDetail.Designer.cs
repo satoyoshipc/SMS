@@ -29,15 +29,10 @@
         private void InitializeComponent()
         {
             this.m_statusCombo = new System.Windows.Forms.ComboBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.m_systemno = new System.Windows.Forms.TextBox();
-            this.m_systemname = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.m_timername = new System.Windows.Forms.TextBox();
-            this.m_userno = new System.Windows.Forms.TextBox();
-            this.m_cutomername = new System.Windows.Forms.TextBox();
             this.m_updateOpe = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.m_update = new System.Windows.Forms.TextBox();
@@ -52,8 +47,6 @@
             this.m_scheduleList = new System.Windows.Forms.ListView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label15 = new System.Windows.Forms.Label();
-            this.m_siteno = new System.Windows.Forms.TextBox();
-            this.m_sitename = new System.Windows.Forms.TextBox();
             this.m_deleteBtn = new System.Windows.Forms.Button();
             this.m_alermDate = new System.Windows.Forms.DateTimePicker();
             this.label13 = new System.Windows.Forms.Label();
@@ -76,6 +69,13 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.m_incidentno = new System.Windows.Forms.TextBox();
+            this.m_systemno = new System.Windows.Forms.TextBox();
+            this.m_systemCombo = new System.Windows.Forms.ComboBox();
+            this.m_siteno = new System.Windows.Forms.TextBox();
+            this.m_siteCombo = new System.Windows.Forms.ComboBox();
+            this.m_userno = new System.Windows.Forms.TextBox();
+            this.m_usernameCombo = new System.Windows.Forms.ComboBox();
+            this.label18 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -96,32 +96,7 @@
             this.m_statusCombo.Location = new System.Drawing.Point(119, 97);
             this.m_statusCombo.Name = "m_statusCombo";
             this.m_statusCombo.Size = new System.Drawing.Size(68, 20);
-            this.m_statusCombo.TabIndex = 4;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(450, 35);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(43, 12);
-            this.label12.TabIndex = 116;
-            this.label12.Text = "システム";
-            // 
-            // m_systemno
-            // 
-            this.m_systemno.Location = new System.Drawing.Point(506, 32);
-            this.m_systemno.Name = "m_systemno";
-            this.m_systemno.ReadOnly = true;
-            this.m_systemno.Size = new System.Drawing.Size(45, 19);
-            this.m_systemno.TabIndex = 16;
-            // 
-            // m_systemname
-            // 
-            this.m_systemname.Location = new System.Drawing.Point(557, 32);
-            this.m_systemname.Name = "m_systemname";
-            this.m_systemname.ReadOnly = true;
-            this.m_systemname.Size = new System.Drawing.Size(182, 19);
-            this.m_systemname.TabIndex = 17;
+            this.m_statusCombo.TabIndex = 8;
             // 
             // label10
             // 
@@ -155,23 +130,7 @@
             this.m_timername.Location = new System.Drawing.Point(119, 74);
             this.m_timername.Name = "m_timername";
             this.m_timername.Size = new System.Drawing.Size(325, 19);
-            this.m_timername.TabIndex = 3;
-            // 
-            // m_userno
-            // 
-            this.m_userno.Location = new System.Drawing.Point(119, 30);
-            this.m_userno.Name = "m_userno";
-            this.m_userno.ReadOnly = true;
-            this.m_userno.Size = new System.Drawing.Size(47, 19);
-            this.m_userno.TabIndex = 105;
-            // 
-            // m_cutomername
-            // 
-            this.m_cutomername.Location = new System.Drawing.Point(170, 31);
-            this.m_cutomername.Name = "m_cutomername";
-            this.m_cutomername.ReadOnly = true;
-            this.m_cutomername.Size = new System.Drawing.Size(274, 19);
-            this.m_cutomername.TabIndex = 1;
+            this.m_timername.TabIndex = 7;
             // 
             // m_updateOpe
             // 
@@ -211,20 +170,20 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(693, 331);
+            this.button2.Location = new System.Drawing.Point(713, 331);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(76, 33);
-            this.button2.TabIndex = 21;
+            this.button2.TabIndex = 19;
             this.button2.Text = "戻る";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(611, 331);
+            this.button1.Location = new System.Drawing.Point(631, 331);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(76, 33);
-            this.button1.TabIndex = 20;
+            this.button1.TabIndex = 18;
             this.button1.Text = "更新";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -280,7 +239,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.m_scheduleList);
-            this.splitContainer2.Size = new System.Drawing.Size(797, 300);
+            this.splitContainer2.Size = new System.Drawing.Size(803, 300);
             this.splitContainer2.SplitterDistance = 33;
             this.splitContainer2.TabIndex = 1;
             // 
@@ -291,7 +250,7 @@
             this.m_scheduleList.GridLines = true;
             this.m_scheduleList.Location = new System.Drawing.Point(0, 0);
             this.m_scheduleList.Name = "m_scheduleList";
-            this.m_scheduleList.Size = new System.Drawing.Size(797, 263);
+            this.m_scheduleList.Size = new System.Drawing.Size(803, 263);
             this.m_scheduleList.TabIndex = 0;
             this.m_scheduleList.UseCompatibleStateImageBehavior = false;
             this.m_scheduleList.View = System.Windows.Forms.View.Details;
@@ -312,9 +271,14 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.label15);
+            this.splitContainer1.Panel2.Controls.Add(this.m_systemno);
+            this.splitContainer1.Panel2.Controls.Add(this.m_systemCombo);
             this.splitContainer1.Panel2.Controls.Add(this.m_siteno);
-            this.splitContainer1.Panel2.Controls.Add(this.m_sitename);
+            this.splitContainer1.Panel2.Controls.Add(this.m_siteCombo);
+            this.splitContainer1.Panel2.Controls.Add(this.m_userno);
+            this.splitContainer1.Panel2.Controls.Add(this.m_usernameCombo);
+            this.splitContainer1.Panel2.Controls.Add(this.label18);
+            this.splitContainer1.Panel2.Controls.Add(this.label15);
             this.splitContainer1.Panel2.Controls.Add(this.m_deleteBtn);
             this.splitContainer1.Panel2.Controls.Add(this.m_alermDate);
             this.splitContainer1.Panel2.Controls.Add(this.label13);
@@ -338,15 +302,10 @@
             this.splitContainer1.Panel2.Controls.Add(this.label14);
             this.splitContainer1.Panel2.Controls.Add(this.m_incidentno);
             this.splitContainer1.Panel2.Controls.Add(this.m_statusCombo);
-            this.splitContainer1.Panel2.Controls.Add(this.label12);
-            this.splitContainer1.Panel2.Controls.Add(this.m_systemno);
-            this.splitContainer1.Panel2.Controls.Add(this.m_systemname);
             this.splitContainer1.Panel2.Controls.Add(this.label10);
             this.splitContainer1.Panel2.Controls.Add(this.label9);
             this.splitContainer1.Panel2.Controls.Add(this.label8);
             this.splitContainer1.Panel2.Controls.Add(this.m_timername);
-            this.splitContainer1.Panel2.Controls.Add(this.m_userno);
-            this.splitContainer1.Panel2.Controls.Add(this.m_cutomername);
             this.splitContainer1.Panel2.Controls.Add(this.m_updateOpe);
             this.splitContainer1.Panel2.Controls.Add(this.label6);
             this.splitContainer1.Panel2.Controls.Add(this.m_update);
@@ -354,7 +313,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.button2);
             this.splitContainer1.Panel2.Controls.Add(this.button1);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
-            this.splitContainer1.Size = new System.Drawing.Size(799, 682);
+            this.splitContainer1.Size = new System.Drawing.Size(805, 682);
             this.splitContainer1.SplitterDistance = 302;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -367,31 +326,15 @@
             this.label15.TabIndex = 183;
             this.label15.Text = "拠点";
             // 
-            // m_siteno
-            // 
-            this.m_siteno.Location = new System.Drawing.Point(119, 51);
-            this.m_siteno.Name = "m_siteno";
-            this.m_siteno.ReadOnly = true;
-            this.m_siteno.Size = new System.Drawing.Size(47, 19);
-            this.m_siteno.TabIndex = 182;
-            // 
-            // m_sitename
-            // 
-            this.m_sitename.Location = new System.Drawing.Point(170, 52);
-            this.m_sitename.Name = "m_sitename";
-            this.m_sitename.ReadOnly = true;
-            this.m_sitename.Size = new System.Drawing.Size(274, 19);
-            this.m_sitename.TabIndex = 2;
-            // 
             // m_deleteBtn
             // 
             this.m_deleteBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_deleteBtn.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.m_deleteBtn.ForeColor = System.Drawing.Color.Red;
-            this.m_deleteBtn.Location = new System.Drawing.Point(694, 3);
+            this.m_deleteBtn.Location = new System.Drawing.Point(697, 3);
             this.m_deleteBtn.Name = "m_deleteBtn";
             this.m_deleteBtn.Size = new System.Drawing.Size(92, 24);
-            this.m_deleteBtn.TabIndex = 22;
+            this.m_deleteBtn.TabIndex = 20;
             this.m_deleteBtn.Text = "削除";
             this.m_deleteBtn.UseVisualStyleBackColor = true;
             this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
@@ -404,7 +347,7 @@
             this.m_alermDate.Name = "m_alermDate";
             this.m_alermDate.ShowCheckBox = true;
             this.m_alermDate.Size = new System.Drawing.Size(206, 19);
-            this.m_alermDate.TabIndex = 9;
+            this.m_alermDate.TabIndex = 13;
             // 
             // label13
             // 
@@ -433,7 +376,7 @@
             this.m_end_date.Location = new System.Drawing.Point(121, 189);
             this.m_end_date.Name = "m_end_date";
             this.m_end_date.Size = new System.Drawing.Size(198, 19);
-            this.m_end_date.TabIndex = 8;
+            this.m_end_date.TabIndex = 12;
             // 
             // label7
             // 
@@ -451,7 +394,7 @@
             this.m_start_date.Location = new System.Drawing.Point(121, 166);
             this.m_start_date.Name = "m_start_date";
             this.m_start_date.Size = new System.Drawing.Size(198, 19);
-            this.m_start_date.TabIndex = 7;
+            this.m_start_date.TabIndex = 11;
             // 
             // label11
             // 
@@ -486,7 +429,7 @@
             this.m_repeatkbn.Location = new System.Drawing.Point(120, 143);
             this.m_repeatkbn.Name = "m_repeatkbn";
             this.m_repeatkbn.Size = new System.Drawing.Size(68, 20);
-            this.m_repeatkbn.TabIndex = 6;
+            this.m_repeatkbn.TabIndex = 10;
             // 
             // label4
             // 
@@ -509,7 +452,7 @@
             this.m_yoteikbn.Location = new System.Drawing.Point(119, 121);
             this.m_yoteikbn.Name = "m_yoteikbn";
             this.m_yoteikbn.Size = new System.Drawing.Size(200, 20);
-            this.m_yoteikbn.TabIndex = 5;
+            this.m_yoteikbn.TabIndex = 9;
             this.m_yoteikbn.SelectionChangeCommitted += new System.EventHandler(this.m_yoteikbn_SelectionChangeCommitted);
             // 
             // label2
@@ -527,14 +470,14 @@
             this.m_kakunin.Multiline = true;
             this.m_kakunin.Name = "m_kakunin";
             this.m_kakunin.Size = new System.Drawing.Size(325, 33);
-            this.m_kakunin.TabIndex = 15;
+            this.m_kakunin.TabIndex = 17;
             // 
             // m_sound
             // 
             this.m_sound.Location = new System.Drawing.Point(119, 282);
             this.m_sound.Name = "m_sound";
             this.m_sound.Size = new System.Drawing.Size(239, 19);
-            this.m_sound.TabIndex = 11;
+            this.m_sound.TabIndex = 15;
             // 
             // m_alermMessage
             // 
@@ -542,7 +485,7 @@
             this.m_alermMessage.Multiline = true;
             this.m_alermMessage.Name = "m_alermMessage";
             this.m_alermMessage.Size = new System.Drawing.Size(325, 40);
-            this.m_alermMessage.TabIndex = 10;
+            this.m_alermMessage.TabIndex = 14;
             // 
             // label1
             // 
@@ -593,13 +536,79 @@
             this.m_incidentno.Location = new System.Drawing.Point(119, 307);
             this.m_incidentno.Name = "m_incidentno";
             this.m_incidentno.Size = new System.Drawing.Size(325, 19);
-            this.m_incidentno.TabIndex = 14;
+            this.m_incidentno.TabIndex = 16;
+            // 
+            // m_systemno
+            // 
+            this.m_systemno.Location = new System.Drawing.Point(505, 34);
+            this.m_systemno.Name = "m_systemno";
+            this.m_systemno.ReadOnly = true;
+            this.m_systemno.Size = new System.Drawing.Size(44, 19);
+            this.m_systemno.TabIndex = 188;
+            this.m_systemno.TabStop = false;
+            // 
+            // m_systemCombo
+            // 
+            this.m_systemCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_systemCombo.FormattingEnabled = true;
+            this.m_systemCombo.Location = new System.Drawing.Point(555, 34);
+            this.m_systemCombo.Name = "m_systemCombo";
+            this.m_systemCombo.Size = new System.Drawing.Size(234, 20);
+            this.m_systemCombo.TabIndex = 4;
+            this.m_systemCombo.SelectionChangeCommitted += new System.EventHandler(this.m_systemCombo_SelectionChangeCommitted);
+            // 
+            // m_siteno
+            // 
+            this.m_siteno.Location = new System.Drawing.Point(119, 53);
+            this.m_siteno.Name = "m_siteno";
+            this.m_siteno.ReadOnly = true;
+            this.m_siteno.Size = new System.Drawing.Size(44, 19);
+            this.m_siteno.TabIndex = 5;
+            this.m_siteno.TabStop = false;
+            // 
+            // m_siteCombo
+            // 
+            this.m_siteCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_siteCombo.FormattingEnabled = true;
+            this.m_siteCombo.Location = new System.Drawing.Point(167, 52);
+            this.m_siteCombo.Name = "m_siteCombo";
+            this.m_siteCombo.Size = new System.Drawing.Size(277, 20);
+            this.m_siteCombo.TabIndex = 6;
+            this.m_siteCombo.SelectionChangeCommitted += new System.EventHandler(this.m_siteCombo_SelectionChangeCommitted);
+            // 
+            // m_userno
+            // 
+            this.m_userno.Location = new System.Drawing.Point(119, 31);
+            this.m_userno.Name = "m_userno";
+            this.m_userno.ReadOnly = true;
+            this.m_userno.Size = new System.Drawing.Size(44, 19);
+            this.m_userno.TabIndex = 1;
+            this.m_userno.TabStop = false;
+            // 
+            // m_usernameCombo
+            // 
+            this.m_usernameCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_usernameCombo.FormattingEnabled = true;
+            this.m_usernameCombo.Location = new System.Drawing.Point(167, 31);
+            this.m_usernameCombo.Name = "m_usernameCombo";
+            this.m_usernameCombo.Size = new System.Drawing.Size(277, 20);
+            this.m_usernameCombo.TabIndex = 2;
+            this.m_usernameCombo.SelectionChangeCommitted += new System.EventHandler(this.m_usernameCombo_SelectionChangeCommitted);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(457, 36);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(43, 12);
+            this.label18.TabIndex = 3;
+            this.label18.Text = "システム";
             // 
             // Form_scheduleDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(799, 682);
+            this.ClientSize = new System.Drawing.Size(805, 682);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form_scheduleDetail";
             this.Text = "タイマー情報";
@@ -622,15 +631,10 @@
         #endregion
 
         private System.Windows.Forms.ComboBox m_statusCombo;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox m_systemno;
-        private System.Windows.Forms.TextBox m_systemname;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox m_timername;
-        private System.Windows.Forms.TextBox m_userno;
-        private System.Windows.Forms.TextBox m_cutomername;
         private System.Windows.Forms.TextBox m_updateOpe;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox m_update;
@@ -667,7 +671,12 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button m_deleteBtn;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox m_systemno;
+        private System.Windows.Forms.ComboBox m_systemCombo;
         private System.Windows.Forms.TextBox m_siteno;
-        private System.Windows.Forms.TextBox m_sitename;
+        private System.Windows.Forms.ComboBox m_siteCombo;
+        private System.Windows.Forms.TextBox m_userno;
+        private System.Windows.Forms.ComboBox m_usernameCombo;
+        private System.Windows.Forms.Label label18;
     }
 }

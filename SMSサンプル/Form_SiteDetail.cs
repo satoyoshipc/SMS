@@ -15,9 +15,13 @@ namespace SMSサンプル
     {
         //ログイン情報
         public opeDS loginDS { get; set; }
-         
-        //
+
+        //ログ
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        //拠点データ
         public siteDS sitedt { get; set; }
+        
         //ユーザ情報一覧
         public List<userDS> userList { get; set; }
 
@@ -26,27 +30,22 @@ namespace SMSサンプル
 
         //DBコネクション
         public NpgsqlConnection con { get; set; }
-        
+
         //ListViewのソートの際に使用する
-        private Class_ListViewColumnSorter _columnSorter;
+        private int sort_kind = 0;
+
+        //拠点情報の一覧
+        DataTable site_list;
 
         public Form_SiteDetail()
         {
             InitializeComponent();
         }
-
-        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         
         //表示前処理
         //取得したデータを読み取り表示する
         private void Form_SystemDetail_Load(object sender, EventArgs e)
         {
-            _columnSorter = new Class_ListViewColumnSorter();
-            m_Site_List.ListViewItemSorter = _columnSorter;
 
             m_selectKoumoku.Items.Add("拠点通番");
             m_selectKoumoku.Items.Add("拠点名");
@@ -55,10 +54,13 @@ namespace SMSサンプル
             m_selectKoumoku.Items.Add("TEL/FAX");
             m_selectKoumoku.Items.Add("ステータス");
             m_selectKoumoku.Items.Add("備考");
+            m_selectKoumoku.Items.Add("カスタマ通番");
+            m_selectKoumoku.Items.Add("システム通番");
             m_selectKoumoku.Items.Add("更新日時");
             m_selectKoumoku.Items.Add("更新者");
 
-            getsite(sitedt);
+            if(sitedt != null)
+                getsite(sitedt);
 
         }
         //拠点一覧を取得する
@@ -88,10 +90,7 @@ namespace SMSサンプル
 
             }
         }
-        private void splitContainer2_SplitterMoved(object sender, SplitterEventArgs e)
-        {
 
-        }
 
         //検索ボタン
         private void m_selectBtn_Click(object sender, EventArgs e)
@@ -108,6 +107,7 @@ namespace SMSサンプル
                 {
                     switch (this.m_selectKoumoku.SelectedIndex)
                     {
+
                         //拠点通番
                         case 0:
                             param_dict["siteno"] = m_selecttext.Text;
@@ -154,7 +154,19 @@ namespace SMSサンプル
 
                         //更新日時
                         case 9:
-                            param_dict["chk_date"] = m_selecttext.Text;
+
+                            DateTime dt;
+                            String str = m_selecttext.Text;
+
+                            //入力された日付の形式の確認
+                            if (DateTime.TryParse(str, out dt))
+                            {
+                                param_dict["chk_date"] = str;
+                            }
+                            else {
+                                MessageBox.Show("日付の形式が正しくありません。","拠点検索");
+                                return;
+                            }
                             break;
                         //更新者
                         case 10:
@@ -163,18 +175,30 @@ namespace SMSサンプル
 
                         default:
                             break;
-
-
                     }
                 }
             }
 
-            //システム一覧を取得する
+            //まず件数を取得する
+            Int64 count = dg.getSelectSiteCount(param_dict, con, dset, true);
+            if (MessageBox.Show(count.ToString() + "件ヒットしました。表示しますか？", "拠点", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            {
+                return;
+            }
+
+            //拠点一覧を取得する
             dset = dg.getSelectSite(param_dict, con, dset,true);
-            
+
+            this.m_Site_List.VirtualMode = true;
+            // １行全体選択
             this.m_Site_List.FullRowSelect = true;
             this.m_Site_List.HideSelection = false;
             this.m_Site_List.HeaderStyle = ColumnHeaderStyle.Clickable;
+            //Hook up handlers for VirtualMode events.
+            this.m_Site_List.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(Site_RetrieveVirtualItem);
+            this.m_Site_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            this.m_Site_List.Scrollable = true;
+
 
             this.m_Site_List.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
             this.m_Site_List.Columns.Insert(1, "拠点名", 120, HorizontalAlignment.Left);
@@ -189,32 +213,77 @@ namespace SMSサンプル
             this.m_Site_List.Columns.Insert(10, "更新日時", 50, HorizontalAlignment.Left);
             this.m_Site_List.Columns.Insert(11, "更新者", 50, HorizontalAlignment.Left);
 
+            //リストビューを初期化する
+            site_list = new DataTable("table1");
+            site_list.Columns.Add("No", Type.GetType("System.Int32"));
+            site_list.Columns.Add("拠点名", Type.GetType("System.String"));
+            site_list.Columns.Add("住所1", Type.GetType("System.String"));
+            site_list.Columns.Add("住所2", Type.GetType("System.String"));
+            site_list.Columns.Add("TEL/FAX", Type.GetType("System.String"));
+            site_list.Columns.Add("ステータス", Type.GetType("System.String"));
+            site_list.Columns.Add("カスタマ番号", Type.GetType("System.String"));
+            site_list.Columns.Add("カスタマ名", Type.GetType("System.String"));
+            site_list.Columns.Add("システム番号", Type.GetType("System.String"));
+            site_list.Columns.Add("システム名", Type.GetType("System.String"));
+            site_list.Columns.Add("更新日時", Type.GetType("System.String"));
+            site_list.Columns.Add("更新者", Type.GetType("System.String"));
+
             //リストに表示
-            if(dset.site_L != null)
-            { 
-                foreach (siteDS s_ds in dset.site_L) { 
-            
+            if (dset.site_L != null)
+            {
+                m_Site_List.BeginUpdate();
 
-                    ListViewItem itemx1 = new ListViewItem();
-                    itemx1.Text = s_ds.siteno;
+                foreach (siteDS s_ds in dset.site_L) {
 
-                    itemx1.SubItems.Add(s_ds.sitename);
-                    itemx1.SubItems.Add(s_ds.address1);
-                    itemx1.SubItems.Add(s_ds.address2);
-                    itemx1.SubItems.Add(s_ds.telno);
-                    itemx1.SubItems.Add(s_ds.status);
-                    itemx1.SubItems.Add(s_ds.userno);
-                    itemx1.SubItems.Add(s_ds.username);
-                    itemx1.SubItems.Add(s_ds.systemno);
-                    itemx1.SubItems.Add(s_ds.systemname);
-                    itemx1.SubItems.Add(s_ds.chk_date);
-                    itemx1.SubItems.Add(s_ds.chk_name_id);
 
-                    this.m_Site_List.Items.Add(itemx1);
+                    DataRow urow = site_list.NewRow();
+
+                    urow["No"] = s_ds.siteno;
+                    urow["拠点名"] = s_ds.sitename;
+                    urow["住所1"] = s_ds.address1;
+                    urow["住所2"] = s_ds.address2;
+                    urow["TEL/FAX"] = s_ds.telno;
+                    urow["ステータス"] = s_ds.status;
+                    urow["カスタマ番号"] = s_ds.userno;
+                    urow["カスタマ名"] = s_ds.username;
+                    urow["システム番号"] = s_ds.systemno;
+                    urow["システム名"] = s_ds.systemname;
+                    urow["更新日時"] = s_ds.chk_date;
+                    urow["更新者"] = s_ds.chk_name_id;
+                    site_list.Rows.Add(urow);
                 }
+                this.m_Site_List.VirtualListSize = site_list.Rows.Count;
+                this.m_Site_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+                m_Site_List.EndUpdate();
             }
         }
+        void Site_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            //	e.Item = _item[e.ItemIndex];
+            if (site_list.Rows.Count > 0)
+            {
 
+                DataRow row = this.site_list.Rows[e.ItemIndex];
+                e.Item = new ListViewItem(
+                    new String[]
+                    {
+                Convert.ToString(row[0]),
+                Convert.ToString(row[1]),
+                Convert.ToString(row[2]),
+                Convert.ToString(row[3]),
+                Convert.ToString(row[4]),
+                Convert.ToString(row[5]),
+                Convert.ToString(row[6]),
+                Convert.ToString(row[7]),
+                Convert.ToString(row[8]),
+                Convert.ToString(row[9]),
+                Convert.ToString(row[10]),
+                Convert.ToString(row[11])
+                    });
+            }
+
+        }
         //戻るボタン
         private void button2_Click_1(object sender, EventArgs e)
         {
@@ -226,9 +295,9 @@ namespace SMSサンプル
             if (m_sitename.Text == "")
             {
                 MessageBox.Show("拠点名を入力して下さい。", "拠点修正", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
                 return;
             }
-
 
             //確認ダイアログ
             if (MessageBox.Show("拠点データの更新を行います。よろしいですか？", "拠点データ更新", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
@@ -239,7 +308,6 @@ namespace SMSサンプル
                 status = "1";
             else if (m_statusCombo.Text == "無効" )
                 status = "0";
-
 
             if (con.FullState != ConnectionState.Open) con.Open();
 
@@ -271,12 +339,13 @@ namespace SMSサンプル
                 catch (Exception ex)
                 {
                     //エラー時メッセージ表示
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    logger.ErrorFormat("メールアドレス取得(検索)エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
                     transaction.Rollback();
                     return;
                 }
             }
-
         }
 
         private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
@@ -316,30 +385,60 @@ namespace SMSサンプル
 
         private void m_Site_List_ColumnClick(object sender, ColumnClickEventArgs e)
         {
+            if (this.site_list == null)
+                return;
+            if (this.site_list.Rows.Count <= 0)
+                return;
+            //DataViewクラス ソートするためのクラス
+            DataView dv = new DataView(site_list);
 
-            if (e.Column == _columnSorter.SortColumn)
+            //一時クラス
+            DataTable dttmp = new DataTable();
+
+            String strSort = "";
+
+            //0なら昇順にソート
+            if (sort_kind == 0)
             {
-                if (_columnSorter.Order == SortOrder.Ascending)
-                {
-                    _columnSorter.Order = SortOrder.Descending;
-                }
-                else
-                {
-                    _columnSorter.Order = SortOrder.Ascending;
-                }
+                strSort = " ASC";
+                sort_kind = 1;
             }
             else
             {
-                _columnSorter.SortColumn = e.Column;
-                _columnSorter.Order = SortOrder.Ascending;
+                //１の時は昇順にソート
+                strSort = " DESC";
+                sort_kind = 0;
             }
-            m_Site_List.Sort();
-            
+
+            //コピーを作成
+            dttmp = site_list.Clone();
+            //ソートを実行
+            dv.Sort = site_list.Columns[e.Column].ColumnName + strSort;
+
+            // ソートされたレコードのコピー
+            foreach (DataRowView drv in dv)
+            {
+                // 一時テーブルに格納
+                dttmp.ImportRow(drv.Row);
+            }
+            //格納したテーブルデータを上書く
+            site_list = dttmp.Copy();
+
+            //行が存在するかチェックを行う。
+            if (this.m_Site_List.TopItem != null)
+            {
+                //現在一番上の行に表示されている行を取得
+                int start = m_Site_List.TopItem.Index;
+                // ListView画面の再表示を行う
+                m_Site_List.RedrawItems(start, m_Site_List.Items.Count - 1, true);
+            }
+
         }
         //削除ボタンがクリックされたとき
         private void m_deleteBtn_Click(object sender, EventArgs e)
         {
-            int count = m_Site_List.SelectedItems.Count;
+            ListView.SelectedIndexCollection item = m_Site_List.SelectedIndices;
+            int count = item.Count;
 
             //確認メッセージ
             if (MessageBox.Show("一覧に選択された行 " + count + "件 の削除を行います。その際参照している他のテーブルデータも削除されます。" + Environment.NewLine +
@@ -348,20 +447,30 @@ namespace SMSサンプル
                 return;
 
 
-            int ret = deletesite();
+            int ret = deletesite(item);
             if (ret == -1)
             {
                 return;
             }
 
             //リストの表示上からけす
-            foreach (ListViewItem item in m_Site_List.SelectedItems)
-            {
-                m_Site_List.Items.Remove(item);
-            }
+            int i =0;
+            //削除する拠点番号の取得
+            int[] indices = new int[item.Count];
+            int cnt = m_Site_List.SelectedIndices.Count;
+
+            m_Site_List.SelectedIndices.CopyTo(indices, 0);
+
+            DataRowCollection items = site_list.Rows;
+            for (i = cnt - 1; i >= 0; --i)
+                items.RemoveAt(indices[i]);
+
+            //総件数を変更し再表示を行う
+            this.m_Site_List.VirtualListSize = items.Count;
+
         }
         //削除
-        private int deletesite()
+        private int deletesite(ListView.SelectedIndexCollection item)
         {
 
             string siteno;
@@ -379,9 +488,11 @@ namespace SMSサンプル
 
             using (var transaction = con.BeginTransaction())
             {
-                foreach (ListViewItem item in m_Site_List.SelectedItems)
+
+                int i = 0;
+                for (i = 0; i < item.Count; i++)
                 {
-                    siteno = item.SubItems[0].Text;
+                    siteno = this.m_Site_List.Items[item[i]].SubItems[0].Text;
 
                     var command = new NpgsqlCommand(@sql, con);
                     command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = int.Parse(siteno) });
@@ -394,11 +505,11 @@ namespace SMSサンプル
 
                         if (rowsaffected < 1)
                         {
-         
-
+                            
+                            transaction.Rollback();
                             MessageBox.Show("削除できませんでした。拠点通番:" + siteno, "拠点情報削除");
-                            //transaction.Rollback();
-                            return -1;
+
+                            ret = 1;
                         }
                         else {
                             ret = 1;
@@ -406,22 +517,22 @@ namespace SMSサンプル
                     }
                     catch (Exception ex)
                     {
+                        if (transaction.Connection != null) transaction.Rollback();
                         //エラー時メッセージ表示
                         MessageBox.Show("拠点情報削除時エラーが発生しました。 " + ex.Message);
-                        if(transaction.Connection != null) transaction.Rollback();
                         return -1;
                     }
                 }
                 if(ret == 1)
                 {
-                    ret = -1;
-
-                    MessageBox.Show("削除完了しました。", "拠点情報削除");
                     transaction.Commit();
+                    MessageBox.Show("削除完了しました。", "拠点情報削除");
+                    logger.InfoFormat("削除完了。 拠点情報削除");
+
                 }
 
             }
-            return 1;
+            return ret;
         }
     }
 }

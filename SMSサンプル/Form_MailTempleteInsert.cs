@@ -251,7 +251,11 @@ namespace SMSサンプル
             }
             catch (Exception ex)
             {
-                MessageBox.Show("メールテンプレート登録時エラー " + ex.Message);
+                string msg = ex.Message;
+                if (0 <= msg.IndexOf("mail_send_address_pkc"))
+                    msg = "To Cc Bccで同じ宛先を登録することはできません。";
+                
+                MessageBox.Show("メールテンプレート登録時エラー " + msg);
                 return -1;
             }
 
