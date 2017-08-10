@@ -131,8 +131,8 @@ namespace SMSサンプル
 
                 itemx1.SubItems.Add(title);
                 itemx1.SubItems.Add(ads.alertdatetime);
-                itemx1.SubItems.Add(ads.alerm_message + " " + ads.timer_name);
-                itemx1.SubItems.Add(ads.incident_no );
+                itemx1.SubItems.Add(ads.timer_name);
+                itemx1.SubItems.Add(ads.alerm_message);
                 itemx1.SubItems.Add(ads.username);
                 itemx1.SubItems.Add(ads.systemname);
                 itemx1.SubItems.Add(ads.incident_no);

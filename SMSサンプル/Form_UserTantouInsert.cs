@@ -17,6 +17,8 @@ namespace SMSサンプル
         public NpgsqlConnection con { get; set; }
         public opeDS loginDS { get; set; }
 
+        //パラメータカスタマ
+        public String customername;
         //カスタマ
         public List<userDS> userList { get; set; }
 
@@ -48,7 +50,7 @@ namespace SMSサンプル
             cutomerTable.Columns.Add("ID", typeof(string));
             cutomerTable.Columns.Add("NAME", typeof(string));
 
-            Class_Detaget getuser = new Class_Detaget();
+           Class_Detaget getuser = new Class_Detaget();
             getuser.con = con;
             userList = getuser.getUserList();
             if (userList == null)

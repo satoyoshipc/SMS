@@ -36,6 +36,7 @@ namespace SMSサンプル
         public String border { get; set; }
         public String IPaddress { get; set; }
         public String IPaddressNAT { get; set; }
+        public String biko { get; set; }
         public String host_no { get; set; }
         public String userno { get; set; }
         public String systemno { get; set; }

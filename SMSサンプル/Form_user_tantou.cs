@@ -124,11 +124,13 @@ namespace SMSサンプル
             m_selectCombo.Items.Add("カスタマ通番");
             m_selectCombo.Items.Add("更新日時");
             m_selectCombo.Items.Add("更新者ID");
-
-            user_tanntou_Disp(tantoudt);
-            //アドレスを表示
-            opeAddress();
-
+            if (tantoudt != null)
+            { 
+                user_tanntou_Disp(tantoudt);
+                
+                //アドレスを表示
+                opeAddress();
+            }
 
         }
         //カスタマ担当者の表示
@@ -229,6 +231,9 @@ namespace SMSサンプル
 
                     this.m_addressslist.Items.Add(itemx1);
                 }
+
+                //件数表示
+                this.m_mail_count.Text = addressList.Count.ToString() + "件";
             }
 
         }
@@ -501,6 +506,15 @@ namespace SMSサンプル
             }
             m_customertantouList.Sort();
 
+        }
+        //メールアドレスメンテ画面を開く
+        private void m_mailMente_link_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+            Form_mailDetail addressDetail = new Form_mailDetail();
+            addressDetail.con = con;
+            addressDetail.loginDS = loginDS;
+            addressDetail.Show();
         }
     }
 }

@@ -86,7 +86,7 @@
             this.m_schedule_combo.Font = new System.Drawing.Font("MS UI Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.m_schedule_combo.FormattingEnabled = true;
             this.m_schedule_combo.Items.AddRange(new object[] {
-            "1:インシデント",
+            "",
             "2:定期業務",
             "3:計画作業",
             "4:特別作業"});
@@ -176,7 +176,10 @@
             // 
             // m_timer_name
             // 
+            this.m_timer_name.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_timer_name.Location = new System.Drawing.Point(88, 90);
+            this.m_timer_name.Multiline = true;
             this.m_timer_name.Name = "m_timer_name";
             this.m_timer_name.Size = new System.Drawing.Size(447, 19);
             this.m_timer_name.TabIndex = 6;

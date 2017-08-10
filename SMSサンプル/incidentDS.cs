@@ -59,6 +59,5 @@ namespace SMSサンプル
         //差分(Summary計算で使用する
         public String interval { get; set; }
 
-
     }
 }

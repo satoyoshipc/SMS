@@ -47,6 +47,7 @@ namespace SMSサンプル
         {
             _columnSorter = new Class_ListViewColumnSorter();
             m_System_List.ListViewItemSorter = _columnSorter;
+            this.splitContainer1.SplitterDistance = 32;
 
             m_selectKoumoku.Items.Add("システム通番");
             m_selectKoumoku.Items.Add("システム名");
@@ -147,7 +148,9 @@ namespace SMSサンプル
 
             //システム一覧を取得する
             dset = dg.getSelectSystem(param_dict, con, dset,true);
-            
+
+            this.splitContainer1.SplitterDistance = 180;
+
             this.m_System_List.FullRowSelect = true;
             this.m_System_List.HideSelection = false;
             this.m_System_List.HeaderStyle = ColumnHeaderStyle.Clickable;

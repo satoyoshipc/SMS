@@ -15,6 +15,9 @@ namespace SMSサンプル
     {
         private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        //変更前ステータス
+        private string orgStatus;
+
         //ログイン情報
         public opeDS loginDS { get; set; }
 
@@ -56,10 +59,10 @@ namespace SMSサンプル
         private void Form_HostDetail_Load(object sender, EventArgs e)
         {
 
+            this.splitContainer1.SplitterDistance = 32;
 
             m_selectKoumoku.Items.Add("ホスト番号");
-            m_selectKoumoku.Items.Add("ホスト名(英数)");
-            m_selectKoumoku.Items.Add("ホスト名(日本語)");
+            m_selectKoumoku.Items.Add("ホスト名");
             m_selectKoumoku.Items.Add("カスタマ通番");
             m_selectKoumoku.Items.Add("システム通番");
             m_selectKoumoku.Items.Add("拠点通番");
@@ -67,6 +70,7 @@ namespace SMSサンプル
             m_selectKoumoku.Items.Add("機種");
             m_selectKoumoku.Items.Add("設置場所");
             m_selectKoumoku.Items.Add("用途");
+            m_selectKoumoku.Items.Add("設置機器ID");
             m_selectKoumoku.Items.Add("監視開始日時");
             m_selectKoumoku.Items.Add("監視終了日時");
             m_selectKoumoku.Items.Add("保守管理番号");
@@ -117,13 +121,15 @@ namespace SMSサンプル
             this.m_systemno.Text = hostdt.systemno;
             this.m_siteno.Text = hostdt.siteno;
             this.m_hostname.Text = hostdt.hostname;
-            this.m_hostjpn.Text = hostdt.hostname_ja;
+            this.m_settikikiid.Text = hostdt.settikikiid;
             this.m_statusCombo.Text = hostdt.status;
-            this.m_kisyu.Text = hostdt.device;
 
+            //元のステータスを保存しておく
+            orgStatus = hostdt.status;
+
+            this.m_kisyu.Text = hostdt.device;
             this.m_locate.Text = hostdt.location;
             this.m_usefor.Text = hostdt.usefor;
-
             if (hostdt.kansiStartdate == "")
                 m_start_date.Checked =false;
             else
@@ -133,7 +139,6 @@ namespace SMSサンプル
                 m_end_date.Checked = false;
             else
                 this.m_end_date.Text = hostdt.kansiEndsdate;
-
             this.m_kanrino.Text = hostdt.hosyukanri;
             this.m_hosyu.Text = hostdt.hosyuinfo;
             this.m_biko.Text = hostdt.biko;
@@ -175,22 +180,18 @@ namespace SMSサンプル
                         case 1:
                             param_dict["hostname"] = m_selecttext.Text;
                             break;
-                        //ホスト名日本
-                        case 2:
-                            param_dict["hostname_ja"] = m_selecttext.Text;
-                            break;
                         //カスタマ通番
-                        case 3:
+                        case 2:
                             param_dict["userno"] = m_selecttext.Text;
                             break;
-                        case 4:
+                        case 3:
                             param_dict["systemno"] = m_selecttext.Text;
                             break;
-                        case 5:
+                        case 4:
                             param_dict["siteno"] = m_selecttext.Text;
                             break;
 
-                        case 6:
+                        case 5:
                             if (m_selecttext.Text == "有効")
                                 param_dict["status"] = "1";
                             else if (m_selecttext.Text == "無効")
@@ -198,16 +199,20 @@ namespace SMSサンプル
                             break;
 
 
-                        case 7:
+                        case 6:
                             param_dict["device"] = m_selecttext.Text;
                             break;
 
-                        case 8:
+                        case 7:
                             param_dict["location"] = m_selecttext.Text;
                             break;
 
-                        case 9:
+                        case 8:
                             param_dict["usefor"] = m_selecttext.Text;
+                            break;
+                        //設置機器ID
+                        case 9:
+                            param_dict["settikikiid"] = m_selecttext.Text;
                             break;
 
                         case 10:
@@ -289,6 +294,8 @@ namespace SMSサンプル
             //ホスト一覧を取得する
             dset = dg.getSelectHost(param_dict, con, dset);
 
+            this.splitContainer1.SplitterDistance = 280;
+
             this.m_host_List.VirtualMode = true;
             // １行全体選択
             this.m_host_List.FullRowSelect = true;
@@ -300,12 +307,12 @@ namespace SMSサンプル
             this.m_host_List.Scrollable = true;
 
             this.m_host_List.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-            this.m_host_List.Columns.Insert(1, "ホスト名(英数)", 120, HorizontalAlignment.Left);
-            this.m_host_List.Columns.Insert(2, "ホスト名(日本語)", 120, HorizontalAlignment.Left);
-            this.m_host_List.Columns.Insert(3, "ステータス", 90, HorizontalAlignment.Left);
-            this.m_host_List.Columns.Insert(4, "機種", 80, HorizontalAlignment.Left);
-            this.m_host_List.Columns.Insert(5, "設置場所", 50, HorizontalAlignment.Left);
-            this.m_host_List.Columns.Insert(6, "用途", 50, HorizontalAlignment.Left);
+            this.m_host_List.Columns.Insert(1, "ホスト名", 120, HorizontalAlignment.Left);
+            this.m_host_List.Columns.Insert(2, "ステータス", 90, HorizontalAlignment.Left);
+            this.m_host_List.Columns.Insert(3, "機種", 80, HorizontalAlignment.Left);
+            this.m_host_List.Columns.Insert(4, "設置場所", 50, HorizontalAlignment.Left);
+            this.m_host_List.Columns.Insert(5, "用途", 50, HorizontalAlignment.Left);
+            this.m_host_List.Columns.Insert(6, "設置機器ID", 120, HorizontalAlignment.Left);
             this.m_host_List.Columns.Insert(7, "監視開始日時", 120, HorizontalAlignment.Left);
             this.m_host_List.Columns.Insert(8, "監視終了日時", 120, HorizontalAlignment.Left);
             this.m_host_List.Columns.Insert(9, "保守管理番号", 50, HorizontalAlignment.Left);
@@ -320,12 +327,12 @@ namespace SMSサンプル
             //リストビューを初期化する
             host_list = new DataTable("table1");
             host_list.Columns.Add("No", Type.GetType("System.Int32"));
-            host_list.Columns.Add("ホスト名(英数)", Type.GetType("System.String"));
-            host_list.Columns.Add("ホスト名(日本語)", Type.GetType("System.String"));
+            host_list.Columns.Add("ホスト名", Type.GetType("System.String"));
             host_list.Columns.Add("ステータス", Type.GetType("System.String"));
             host_list.Columns.Add("機種", Type.GetType("System.String"));
             host_list.Columns.Add("設置場所", Type.GetType("System.String"));
             host_list.Columns.Add("用途", Type.GetType("System.String"));
+            host_list.Columns.Add("設置機器ID", Type.GetType("System.String"));
             host_list.Columns.Add("監視開始日時", Type.GetType("System.String"));
             host_list.Columns.Add("監視終了日時", Type.GetType("System.String"));
             host_list.Columns.Add("保守管理番号", Type.GetType("System.String"));
@@ -349,12 +356,12 @@ namespace SMSサンプル
 
                     urow["No"] = s_ds.host_no;
 
-                    urow["ホスト名(英数)"] = s_ds.hostname;
-                    urow["ホスト名(日本語)"] = s_ds.hostname_ja;
+                    urow["ホスト名"] = s_ds.hostname;
                     urow["ステータス"] = s_ds.status;
                     urow["機種"] = s_ds.device;
                     urow["設置場所"] = s_ds.location;
                     urow["用途"] = s_ds.usefor;
+                    urow["設置機器ID"] = s_ds.settikikiid;
                     urow["監視開始日時"] = s_ds.kansiStartdate;
                     urow["監視終了日時"] = s_ds.kansiEndsdate;
                     urow["保守管理番号"] = s_ds.hosyukanri;
@@ -408,7 +415,7 @@ namespace SMSサンプル
 
             if (con.FullState != ConnectionState.Open) con.Open();
 
-            string sql = "update host set hostname=:hostname,hostname_ja=:hostname_ja,status=:status,device=:device,location=:location,usefor=:usefor," +
+            string sql = "update host set hostname=:hostname,settikikiid=:settikikiid,status=:status,device=:device,location=:location,usefor=:usefor," +
                 "kansiStartdate=:kansiStartdate,kansiEndsdate=:kansiEndsdate,hosyukanri=:hosyukanri,hosyuinfo=:hosyuinfo,biko=:biko," +
                 "chk_name_id =:ope,chk_date=:chdate where host_no = :no";
             using (var transaction = con.BeginTransaction())
@@ -416,7 +423,7 @@ namespace SMSサンプル
                 var command = new NpgsqlCommand(@sql, con);
                 command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = m_hostno.Text });
                 command.Parameters.Add(new NpgsqlParameter("hostname", DbType.String) { Value = m_hostname.Text });
-                command.Parameters.Add(new NpgsqlParameter("hostname_ja", DbType.String) { Value = m_hostjpn.Text });
+                command.Parameters.Add(new NpgsqlParameter("settikikiid", DbType.String) { Value = m_settikikiid.Text });
                 command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
                 command.Parameters.Add(new NpgsqlParameter("device", DbType.String) { Value = m_kisyu.Text });
                 command.Parameters.Add(new NpgsqlParameter("location", DbType.String) { Value = m_locate.Text });
@@ -434,37 +441,158 @@ namespace SMSサンプル
                 {
                     //更新処理
                     rowsaffected = command.ExecuteNonQuery();
-                    transaction.Commit();
 
                     if (rowsaffected != 1)
+                    {
+                        transaction.Rollback();
                         MessageBox.Show("更新できませんでした。", "ホスト更新");
+                        logger.ErrorFormat("ホスト情報更新エラー メソッド名：{0}。ホスト名：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, m_hostname.Text);
+
+                    }
                     else
+                    {
+                        //ステータスが変わっている場合は下位伝播する
+                        if (orgStatus != m_statusCombo.Text.Trim())
+                        {
+                            //下位伝播
+                            int ret = statusCascade(m_hostno.Text, status);
+                            if (ret == -1)
+                            {
+                                transaction.Rollback();
+                                MessageBox.Show("下位伝播時にエラーが発生しました。ログを確認してください。", "ホスト更新");
+
+                                return;
+                            }
+
+                        }
+                        transaction.Commit();
                         MessageBox.Show("更新されました。", "ホスト更新");
+                    }
                 }
                 catch (Exception ex)
                 {
                     //エラー時メッセージ表示
-                    MessageBox.Show(ex.Message);
-                    transaction.Rollback();
+                    if (transaction.Connection != null) transaction.Rollback();
+                    MessageBox.Show("ホスト情報更新エラー " + ex.Message);
+                    logger.ErrorFormat("ホスト情報更新エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
                     return;
                 }
             }
+        }
+        //下位伝播ステータスのみ
+        private int statusCascade(String hostno, String status)
+        {
+            int ret = 0;
 
 
+            //監視インターフェイス
+            ret = interface_update(hostno, status);
+            if (ret == -1)
+                return ret;
+            //回線情報
+            ret = kasen_update(hostno, status);
+            if (ret == -1)
+                return ret;
+
+            return ret;
         }
 
-        //ダブルリック
+        //監視インターフェイスステータス更新
+        private int interface_update(String hostno, String status)
+        {
+            int ret = 0;
+
+            string sql = "update watch_Interface set status=:status,chk_name_id =:chk_name_id,chk_date=:chk_date " +
+                "WHERE host_no=:hostno";
+
+            var command = new NpgsqlCommand(@sql, con);
+            command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+            command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+            command.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = DateTime.Now });
+            command.Parameters.Add(new NpgsqlParameter("hostno", DbType.Int32) { Value = hostno });
+            Int32 rowsaffected;
+            try
+            {
+                //更新処理
+                rowsaffected = command.ExecuteNonQuery();
+
+
+                if (rowsaffected < 1)
+                {
+                    logger.Warn("監視インターフェイスのステータスを更新できませんでした。配下の監視インターフェイス数が0件のときはこのメッセージが出ることがあります。" + " ホスト:" + m_hostname.Text);
+                    ret = 0;
+                }
+                else
+                {
+                    logger.Info("監視インターフェイスのステータスを更新しました。" + " ホスト:" + m_hostname.Text);
+                    ret = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                //エラー時メッセージ表示
+                MessageBox.Show("監視インターフェイスステータス更新エラー " + ex.Message);
+                return -1;
+            }
+
+            return ret;
+        }
+
+        //回線情報
+        private int kasen_update(String hostno, String status)
+        {
+            int ret = 0;
+
+            string sql = "update Kaisen set status=:status,chk_name_id =:chk_name_id,chk_date=:chk_date " +
+                "WHERE host_no=:hostno";
+
+            var command = new NpgsqlCommand(@sql, con);
+            command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+            command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+            command.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = DateTime.Now });
+            command.Parameters.Add(new NpgsqlParameter("hostno", DbType.Int32) { Value = hostno });
+            Int32 rowsaffected;
+            try
+            {
+                //更新処理
+                rowsaffected = command.ExecuteNonQuery();
+
+
+                if (rowsaffected < 1)
+                {
+                    logger.Warn("回線情報のステータスを更新できませんでした。配下の回線情報が0件のときはこのメッセージが出ることがあります。" + " ホスト:" + m_hostname.Text);
+                    ret = 0;
+                }
+                else
+                {
+                    logger.Info("回線情報のステータスを更新しました。" + " ホスト:" + m_hostname.Text);
+                    ret = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                //エラー時メッセージ表示
+                MessageBox.Show("回線情報更新エラー " + ex.Message);
+                return -1;
+            }
+
+            return ret;
+        }
+
+
+        //ダブルクリック
         private void m_host_List_DoubleClick(object sender, EventArgs e)
         {
             ListView.SelectedIndexCollection item = m_host_List.SelectedIndices;
             hostDS hostdt = new hostDS();
             hostdt.host_no = this.m_host_List.Items[item[0]].SubItems[0].Text;
             hostdt.hostname = this.m_host_List.Items[item[0]].SubItems[1].Text;
-            hostdt.hostname_ja = this.m_host_List.Items[item[0]].SubItems[2].Text;
-            hostdt.status = this.m_host_List.Items[item[0]].SubItems[3].Text;
-            hostdt.device = this.m_host_List.Items[item[0]].SubItems[4].Text;
-            hostdt.location = this.m_host_List.Items[item[0]].SubItems[5].Text;
-            hostdt.usefor = this.m_host_List.Items[item[0]].SubItems[6].Text;
+            hostdt.status = this.m_host_List.Items[item[0]].SubItems[2].Text;
+            hostdt.device = this.m_host_List.Items[item[0]].SubItems[3].Text;
+            hostdt.location = this.m_host_List.Items[item[0]].SubItems[4].Text;
+            hostdt.usefor = this.m_host_List.Items[item[0]].SubItems[5].Text;
+            hostdt.settikikiid = this.m_host_List.Items[item[0]].SubItems[6].Text;
             hostdt.kansiStartdate = this.m_host_List.Items[item[0]].SubItems[7].Text;
             hostdt.kansiEndsdate = this.m_host_List.Items[item[0]].SubItems[8].Text;
             hostdt.hosyukanri = this.m_host_List.Items[item[0]].SubItems[9].Text;

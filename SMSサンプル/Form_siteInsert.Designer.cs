@@ -74,7 +74,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(19, 146);
+            this.label6.Location = new System.Drawing.Point(15, 146);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 12);
             this.label6.TabIndex = 50;
@@ -146,7 +146,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(18, 196);
+            this.label4.Location = new System.Drawing.Point(15, 196);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 12);
             this.label4.TabIndex = 42;
@@ -155,11 +155,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 121);
+            this.label3.Location = new System.Drawing.Point(15, 121);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 12);
+            this.label3.Size = new System.Drawing.Size(29, 12);
             this.label3.TabIndex = 41;
-            this.label3.Text = "住所2";
+            this.label3.Text = "住所";
             // 
             // m_address1
             // 
@@ -174,11 +174,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 95);
+            this.label2.Location = new System.Drawing.Point(15, 95);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 12);
+            this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 39;
-            this.label2.Text = "住所1";
+            this.label2.Text = "郵便番号";
             // 
             // m_sitename
             // 

@@ -63,6 +63,8 @@
             this.m_username = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.m_userno = new System.Windows.Forms.TextBox();
+            this.m_mailMente_link = new System.Windows.Forms.LinkLabel();
+            this.m_mail_count = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -373,7 +375,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1, 477);
+            this.button1.Location = new System.Drawing.Point(448, 476);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(115, 28);
             this.button1.TabIndex = 13;
@@ -422,11 +424,33 @@
             this.m_userno.Size = new System.Drawing.Size(33, 19);
             this.m_userno.TabIndex = 0;
             // 
+            // m_mailMente_link
+            // 
+            this.m_mailMente_link.AutoSize = true;
+            this.m_mailMente_link.Location = new System.Drawing.Point(4, 495);
+            this.m_mailMente_link.Name = "m_mailMente_link";
+            this.m_mailMente_link.Size = new System.Drawing.Size(31, 12);
+            this.m_mailMente_link.TabIndex = 197;
+            this.m_mailMente_link.TabStop = true;
+            this.m_mailMente_link.Text = "メンテ";
+            this.m_mailMente_link.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.m_mailMente_link_LinkClicked);
+            // 
+            // m_mail_count
+            // 
+            this.m_mail_count.AutoSize = true;
+            this.m_mail_count.Location = new System.Drawing.Point(60, 495);
+            this.m_mail_count.Name = "m_mail_count";
+            this.m_mail_count.Size = new System.Drawing.Size(17, 12);
+            this.m_mail_count.TabIndex = 198;
+            this.m_mail_count.Text = "件";
+            // 
             // Form_user_tantou
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(779, 617);
+            this.Controls.Add(this.m_mail_count);
+            this.Controls.Add(this.m_mailMente_link);
             this.Controls.Add(this.m_userno);
             this.Controls.Add(this.m_username);
             this.Controls.Add(this.label10);
@@ -508,5 +532,7 @@
         private System.Windows.Forms.TextBox m_username;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox m_userno;
+        private System.Windows.Forms.LinkLabel m_mailMente_link;
+        private System.Windows.Forms.Label m_mail_count;
     }
 }

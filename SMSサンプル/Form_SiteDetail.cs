@@ -13,6 +13,9 @@ namespace SMSサンプル
 {
     public partial class Form_SiteDetail : Form
     {
+        //変更前ステータス
+        private string orgStatus;
+
         //ログイン情報
         public opeDS loginDS { get; set; }
 
@@ -46,11 +49,12 @@ namespace SMSサンプル
         //取得したデータを読み取り表示する
         private void Form_SystemDetail_Load(object sender, EventArgs e)
         {
+            this.splitContainer1.SplitterDistance = 32;
 
             m_selectKoumoku.Items.Add("拠点通番");
             m_selectKoumoku.Items.Add("拠点名");
-            m_selectKoumoku.Items.Add("住所1");
-            m_selectKoumoku.Items.Add("住所2");
+            m_selectKoumoku.Items.Add("郵便番号");
+            m_selectKoumoku.Items.Add("住所");
             m_selectKoumoku.Items.Add("TEL/FAX");
             m_selectKoumoku.Items.Add("ステータス");
             m_selectKoumoku.Items.Add("備考");
@@ -75,6 +79,7 @@ namespace SMSサンプル
             this.m_address2.Text = sitedt.address2;
             this.m_tel.Text = sitedt.telno;
             this.m_statusCombo.Text = sitedt.status;
+            orgStatus = sitedt.status;
             this.m_biko.Text = sitedt.biko;
             this.m_update.Text = sitedt.chk_date;
             this.m_updateOpe.Text = sitedt.chk_name_id;
@@ -116,12 +121,12 @@ namespace SMSサンプル
                         case 1:
                             param_dict["sitename"] = m_selecttext.Text;
                             break;
-                        //住所1
+                        //郵便番号
                         case 2:
                             param_dict["address1"] = m_selecttext.Text;
                             break;
 
-                        //住所2
+                        //住所
                         case 3:
                             param_dict["address2"] = m_selecttext.Text;
                             break;
@@ -189,6 +194,7 @@ namespace SMSサンプル
             //拠点一覧を取得する
             dset = dg.getSelectSite(param_dict, con, dset,true);
 
+            this.splitContainer1.SplitterDistance = 227;
             this.m_Site_List.VirtualMode = true;
             // １行全体選択
             this.m_Site_List.FullRowSelect = true;
@@ -202,8 +208,8 @@ namespace SMSサンプル
 
             this.m_Site_List.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
             this.m_Site_List.Columns.Insert(1, "拠点名", 120, HorizontalAlignment.Left);
-            this.m_Site_List.Columns.Insert(2, "住所1", 120, HorizontalAlignment.Left);
-            this.m_Site_List.Columns.Insert(3, "住所2", 90, HorizontalAlignment.Left);
+            this.m_Site_List.Columns.Insert(2, "郵便番号", 120, HorizontalAlignment.Left);
+            this.m_Site_List.Columns.Insert(3, "住所", 90, HorizontalAlignment.Left);
             this.m_Site_List.Columns.Insert(4, "TEL/FAX", 80, HorizontalAlignment.Left);
             this.m_Site_List.Columns.Insert(5, "ステータス", 50, HorizontalAlignment.Left);
             this.m_Site_List.Columns.Insert(6, "カスタマ番号", 50, HorizontalAlignment.Left);
@@ -217,8 +223,8 @@ namespace SMSサンプル
             site_list = new DataTable("table1");
             site_list.Columns.Add("No", Type.GetType("System.Int32"));
             site_list.Columns.Add("拠点名", Type.GetType("System.String"));
-            site_list.Columns.Add("住所1", Type.GetType("System.String"));
-            site_list.Columns.Add("住所2", Type.GetType("System.String"));
+            site_list.Columns.Add("郵便番号", Type.GetType("System.String"));
+            site_list.Columns.Add("住所", Type.GetType("System.String"));
             site_list.Columns.Add("TEL/FAX", Type.GetType("System.String"));
             site_list.Columns.Add("ステータス", Type.GetType("System.String"));
             site_list.Columns.Add("カスタマ番号", Type.GetType("System.String"));
@@ -235,13 +241,12 @@ namespace SMSサンプル
 
                 foreach (siteDS s_ds in dset.site_L) {
 
-
                     DataRow urow = site_list.NewRow();
 
                     urow["No"] = s_ds.siteno;
                     urow["拠点名"] = s_ds.sitename;
-                    urow["住所1"] = s_ds.address1;
-                    urow["住所2"] = s_ds.address2;
+                    urow["郵便番号"] = s_ds.address1;
+                    urow["住所"] = s_ds.address2;
                     urow["TEL/FAX"] = s_ds.telno;
                     urow["ステータス"] = s_ds.status;
                     urow["カスタマ番号"] = s_ds.userno;
@@ -329,33 +334,186 @@ namespace SMSサンプル
                 {
                     //更新処理
                     rowsaffected = command.ExecuteNonQuery();
-                    transaction.Commit();
+                    
 
-                    if (rowsaffected != 1)
-                        MessageBox.Show("更新できませんでした。", "システム更新");
-                    else
-                        MessageBox.Show("更新されました。", "システム更新");
+                    if (rowsaffected != 1) { 
+                        MessageBox.Show("更新できませんでした。", "拠点更新");
+                        transaction.Rollback();
+                    }
+                    else {
+
+                        //ステータスが変わっている場合は下位伝播する
+                        if (orgStatus != m_statusCombo.Text.Trim())
+                        {
+                            //下位伝播
+                            int ret = statusCascade(m_siteno.Text, status);
+                            if (ret == -1)
+                            {
+                                MessageBox.Show("下位伝播時にエラーが発生しました。ログを確認してください。", "拠点更新");
+                                transaction.Rollback();
+                                return;
+                            }
+
+                        }
+                        transaction.Commit();
+                        MessageBox.Show("更新されました。", "カスタマ更新");
+
+                    }
                 }
                 catch (Exception ex)
                 {
                     //エラー時メッセージ表示
+                    if (transaction.Connection != null) transaction.Rollback();
                     MessageBox.Show(ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    logger.ErrorFormat("メールアドレス取得(検索)エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+                    logger.ErrorFormat("拠点更新エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
 
-                    transaction.Rollback();
+
                     return;
                 }
             }
         }
-
-        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
+        //下位伝播ステータスのみ
+        private int statusCascade(String siteno, String status)
         {
+            int ret = 0;
 
+            //ホスト
+            ret = host_update(siteno, status);
+            if (ret == -1)
+                return ret;
+            //監視インターフェイス
+            ret = interface_update(siteno, status);
+            if (ret == -1)
+                return ret;
+            //回線情報
+            ret = kasen_update(siteno, status);
+            if (ret == -1)
+                return ret;
+
+
+            return ret;
         }
 
-        private void m_siteno_DoubleClick(object sender, EventArgs e)
+        //ホストのステータス更新
+        private int host_update(String siteno, String status)
         {
+            int ret = 0;
 
+            string sql = "update host set status=:status,chk_name_id =:chk_name_id,chk_date=:chk_date " +
+                "WHERE siteno=:siteno";
+
+            var command = new NpgsqlCommand(@sql, con);
+            command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+            command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+            command.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = DateTime.Now });
+            command.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = siteno });
+            Int32 rowsaffected;
+            try
+            {
+                //更新処理
+                rowsaffected = command.ExecuteNonQuery();
+
+
+                if (rowsaffected < 1)
+                {
+                    logger.Warn("ホストのステータスを更新できませんでした。配下のホスト数が0件のときはこのメッセージが出ることがあります。" + " 拠点名:" + m_sitename.Text);
+                    ret = 0;
+                }
+                else
+                {
+                    logger.Info("ホストのステータスを更新しました。" + " 拠点:" + m_sitename.Text);
+                    ret = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                //エラー時メッセージ表示
+                MessageBox.Show("ホストステータス更新エラー " + ex.Message);
+                return -1;
+            }
+
+            return ret;
+        }
+        //監視インターフェイスステータス更新
+        private int interface_update(String siteno, String status)
+        {
+            int ret = 0;
+
+            string sql = "update watch_Interface set status=:status,chk_name_id =:chk_name_id,chk_date=:chk_date " +
+                "WHERE siteno=:siteno";
+
+            var command = new NpgsqlCommand(@sql, con);
+            command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+            command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+            command.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = DateTime.Now });
+            command.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = siteno });
+            Int32 rowsaffected;
+            try
+            {
+                //更新処理
+                rowsaffected = command.ExecuteNonQuery();
+
+
+                if (rowsaffected < 1)
+                {
+                    logger.Warn("監視インターフェイスのステータスを更新できませんでした。配下の監視インターフェイス数が0件のときはこのメッセージが出ることがあります。" + " 拠点:" + m_sitename.Text);
+                    ret = 0;
+                }
+                else
+                {
+                    logger.Info("監視インターフェイスのステータスを更新しました。" + " 拠点:" + m_sitename.Text);
+                    ret = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                //エラー時メッセージ表示
+                MessageBox.Show("監視インターフェイスステータス更新エラー " + ex.Message + " " + " 拠点: " + m_sitename.Text);
+                return -1;
+            }
+
+            return ret;
+        }
+
+        //回線情報
+        private int kasen_update(String siteno, String status)
+        {
+            int ret = 0;
+
+            string sql = "update Kaisen set status=:status,chk_name_id =:chk_name_id,chk_date=:chk_date " +
+                "WHERE siteno=:siteno";
+
+            var command = new NpgsqlCommand(@sql, con);
+            command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+            command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+            command.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = DateTime.Now });
+            command.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = siteno });
+            Int32 rowsaffected;
+            try
+            {
+                //更新処理
+                rowsaffected = command.ExecuteNonQuery();
+
+
+                if (rowsaffected < 1)
+                {
+                    logger.Warn("回線情報のステータスを更新できませんでした。配下の回線情報が0件のときはこのメッセージが出ることがあります。" + " 拠点:" + m_sitename.Text);
+                    ret = 0;
+                }
+                else
+                {
+                    logger.Info("回線情報のステータスを更新しました。" + " 拠点:" + m_sitename.Text);
+                    ret = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                //エラー時メッセージ表示
+                MessageBox.Show("回線情報更新エラー " + " 拠点:" + m_sitename.Text + " " + ex.Message );
+                return -1;
+            }
+
+            return ret;
         }
         //ダブルクリックのとき
         private void m_Site_List_DoubleClick(object sender, EventArgs e)
@@ -443,9 +601,7 @@ namespace SMSサンプル
             //確認メッセージ
             if (MessageBox.Show("一覧に選択された行 " + count + "件 の削除を行います。その際参照している他のテーブルデータも削除されます。" + Environment.NewLine +
                 "よろしいですか？", "拠点削除", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-
                 return;
-
 
             int ret = deletesite(item);
             if (ret == -1)

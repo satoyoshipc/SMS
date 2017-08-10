@@ -126,8 +126,8 @@ namespace SMSサンプル
             m_selectCombo.Items.Add("アドレス名");
             m_selectCombo.Items.Add("更新日時");
             m_selectCombo.Items.Add("更新者ID");
-
-            add_Disp(addresssDS);
+            if(addresssDS != null)
+                add_Disp(addresssDS);
 
         }
         //オペレータの表示

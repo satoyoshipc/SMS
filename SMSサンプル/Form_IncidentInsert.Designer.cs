@@ -310,6 +310,7 @@
             this.m_incident_kubun_combo.Name = "m_incident_kubun_combo";
             this.m_incident_kubun_combo.Size = new System.Drawing.Size(444, 20);
             this.m_incident_kubun_combo.TabIndex = 12;
+            this.m_incident_kubun_combo.SelectedIndexChanged += new System.EventHandler(this.m_incident_kubun_combo_SelectedIndexChanged);
             // 
             // label9
             // 

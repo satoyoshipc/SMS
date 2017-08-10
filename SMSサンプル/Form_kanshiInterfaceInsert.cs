@@ -227,12 +227,11 @@ namespace SMSサンプル
             string interfacename = m_interfacename.Text;
             string type = m_type.Text;
             string kanshi = m_koumoku.Text;
-            DateTime startdate = m_kansiStartdate.Value;
-            DateTime enddate = m_kansiEnddate.Value;
             string border = m_border.Text;
             string ipaddress = m_ipaddress.Text;
             string ipaddressNAT = m_ipaddressNAT.Text;
-            
+            string biko = m_biko.Text;
+
             //DB接続
 
             NpgsqlCommand cmd;
@@ -243,17 +242,16 @@ namespace SMSサンプル
                 Int32 rowsaffected;
 
                 //データ登録
-                cmd = new NpgsqlCommand(@"insert into watch_Interface(interfacename,status,type,kanshi,start_date,end_date,border,IPaddress,IPaddressNAT,host_no,userno,systemno,siteno,chk_name_id) 
-                    values ( :interfacename,:status,:type,:kanshi,:start_date,:end_date,:border,:IPaddress,:IPaddressNAT,:host_no,:userno,:systemno,:siteno,:chk_name_id)", con);
+                cmd = new NpgsqlCommand(@"insert into watch_Interface(interfacename,status,type,kanshi,border,IPaddress,IPaddressNAT,biko,host_no,userno,systemno,siteno,chk_name_id) 
+                    values ( :interfacename,:status,:type,:kanshi,:border,:IPaddress,:IPaddressNAT,:biko,:host_no,:userno,:systemno,:siteno,:chk_name_id)", con);
                 cmd.Parameters.Add(new NpgsqlParameter("interfacename", DbType.String) { Value = interfacename });
                 cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
                 cmd.Parameters.Add(new NpgsqlParameter("type", DbType.String) { Value = type });
                 cmd.Parameters.Add(new NpgsqlParameter("kanshi", DbType.String) { Value = kanshi });
-                cmd.Parameters.Add(new NpgsqlParameter("start_date", DbType.DateTime) { Value = startdate });
-                cmd.Parameters.Add(new NpgsqlParameter("end_date", DbType.DateTime) { Value = enddate });
                 cmd.Parameters.Add(new NpgsqlParameter("border", DbType.String) { Value = border });
                 cmd.Parameters.Add(new NpgsqlParameter("IPaddress", DbType.String) { Value = ipaddress });
                 cmd.Parameters.Add(new NpgsqlParameter("IPaddressNAT", DbType.String) { Value = ipaddressNAT });
+                cmd.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = biko });
                 cmd.Parameters.Add(new NpgsqlParameter("host_no", DbType.Int32) { Value = hostno });
                 cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
                 cmd.Parameters.Add(new NpgsqlParameter("host_no", DbType.Int32) { Value = hostno });

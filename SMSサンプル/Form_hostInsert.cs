@@ -234,7 +234,7 @@ namespace SMSサンプル
             string systemno = m_systemno.Text;
             string siteno = m_siteno.Text;
             string hostname = m_hostname.Text;
-            string hostname_ja = m_hostname_ja.Text;
+            string usefor = m_usefor.Text;
             string device = m_device.Text;
             string location = m_location.Text;
             //ステータス
@@ -247,7 +247,7 @@ namespace SMSサンプル
                 //無効
                 status = "0";
 
-            string usefor = m_usefor.Text;
+            string settikikiID = m_settikikiID.Text;
             DateTime startdate = m_startdate.Value;
             DateTime enddate = m_enddate.Value;
             string hosyuno = m_hosyuno.Text;
@@ -263,10 +263,10 @@ namespace SMSサンプル
                 if (con.FullState != ConnectionState.Open) con.Open();
                 Int32 rowsaffected;
                 //データ登録
-                cmd = new NpgsqlCommand(@"insert into host(hostname,hostname_ja,status,device,location,usefor,kansiStartdate,kansiEndsdate,hosyukanri,hosyuinfo,biko,systemno,siteno,userno,chk_name_id) 
-                    values ( :hostname,:hostname_ja,:status,:device,:location,:usefor,:kansiStartdate,:kansiEndsdate,:hosyukanri,:hosyuinfo,:biko,:systemno,:siteno,:userno,:chk_name_id)", con);
+                cmd = new NpgsqlCommand(@"insert into host(hostname,settikikiID,status,device,location,usefor,kansiStartdate,kansiEndsdate,hosyukanri,hosyuinfo,biko,systemno,siteno,userno,chk_name_id) 
+                    values ( :hostname,:settikikiid,:status,:device,:location,:usefor,:kansiStartdate,:kansiEndsdate,:hosyukanri,:hosyuinfo,:biko,:systemno,:siteno,:userno,:chk_name_id)", con);
                 cmd.Parameters.Add(new NpgsqlParameter("hostname", DbType.String) { Value = hostname });
-                cmd.Parameters.Add(new NpgsqlParameter("hostname_ja", DbType.String) { Value = hostname_ja });
+                cmd.Parameters.Add(new NpgsqlParameter("settikikiID", DbType.String) { Value = settikikiID });
                 cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
                 cmd.Parameters.Add(new NpgsqlParameter("device", DbType.String) { Value = device });
                 cmd.Parameters.Add(new NpgsqlParameter("location", DbType.String) { Value = location });

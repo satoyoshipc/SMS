@@ -35,6 +35,7 @@ namespace SMSサンプル
         public String telno1 { get; set; }
         public String telno2 { get; set; }
         public String telno3 { get; set; }
+        public String biko { get; set; }
 
 
         public String type { get; set; }

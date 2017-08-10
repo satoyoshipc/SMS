@@ -41,6 +41,8 @@ namespace SMSサンプル
         //表示前処理
         private void Form_KeikakuDetail_Load(object sender, EventArgs e)
         {
+            this.splitContainer1.SplitterDistance = 32;
+
             _columnSorter = new Class_ListViewColumnSorter();
             m_scheduleList.ListViewItemSorter = _columnSorter;
 
@@ -56,6 +58,7 @@ namespace SMSサンプル
             m_selectKoumoku.Items.Add("インシデント番号");
             m_selectKoumoku.Items.Add("要確認");
             m_selectKoumoku.Items.Add("カスタマ通番");
+            m_selectKoumoku.Items.Add("カスタマ名");
             m_selectKoumoku.Items.Add("システム通番");
             m_selectKoumoku.Items.Add("拠点通番");
             m_selectKoumoku.Items.Add("更新日時");
@@ -133,6 +136,7 @@ namespace SMSサンプル
 
                 }
             }
+
             this.m_sound.Text = keikakudt.sound;
             this.m_kakunin.Text = keikakudt.kakunin;
 
@@ -377,18 +381,21 @@ namespace SMSサンプル
                             param_dict["userno"] = m_selecttext.Text;
                             break;
                         case 11:
-                            param_dict["systemno"] = m_selecttext.Text;
+                            param_dict["username"] = m_selecttext.Text;
                             break;
                         case 12:
+                            param_dict["systemno"] = m_selecttext.Text;
+                            break;
+                        case 13:
                             param_dict["siteno"] = m_selecttext.Text;
                             break;
 
                         //更新日時
-                        case 13:
+                        case 14:
                             param_dict["chk_date"] = m_selecttext.Text;
                             break;
                         //更新者
-                        case 14:
+                        case 15:
                             param_dict["chk_name_id"] = m_selecttext.Text;
                             break;
                         default:
@@ -399,6 +406,9 @@ namespace SMSサンプル
 
             //計画作業
             scheduleset = dg.getSelectscheduleList((Form_MainList)this.Owner, param_dict, con);
+
+
+            this.splitContainer1.SplitterDistance = 280;
 
             this.m_scheduleList.FullRowSelect = true;
             this.m_scheduleList.HideSelection = false;
@@ -577,10 +587,7 @@ namespace SMSサンプル
                     siteno2 = siteno;
                 else
                     siteno2 = null;
-
-
-
-
+                
                 DateTime? startdate = null;
                 DateTime? enddate = null;
                 if (m_start_date.Enabled)

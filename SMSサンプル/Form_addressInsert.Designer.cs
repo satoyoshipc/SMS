@@ -49,7 +49,7 @@
             // 
             // m_idlabel
             // 
-            this.m_idlabel.Location = new System.Drawing.Point(123, 164);
+            this.m_idlabel.Location = new System.Drawing.Point(147, 164);
             this.m_idlabel.Name = "m_idlabel";
             this.m_idlabel.ReadOnly = true;
             this.m_idlabel.Size = new System.Drawing.Size(44, 19);
@@ -58,9 +58,11 @@
             // 
             // m_address
             // 
-            this.m_address.Location = new System.Drawing.Point(123, 114);
+            this.m_address.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_address.Location = new System.Drawing.Point(147, 114);
             this.m_address.Name = "m_address";
-            this.m_address.Size = new System.Drawing.Size(274, 19);
+            this.m_address.Size = new System.Drawing.Size(301, 19);
             this.m_address.TabIndex = 4;
             // 
             // label6
@@ -74,10 +76,10 @@
             // 
             // m_labelinputOpe
             // 
-            this.m_labelinputOpe.Location = new System.Drawing.Point(173, 164);
+            this.m_labelinputOpe.Location = new System.Drawing.Point(197, 164);
             this.m_labelinputOpe.Name = "m_labelinputOpe";
             this.m_labelinputOpe.ReadOnly = true;
-            this.m_labelinputOpe.Size = new System.Drawing.Size(224, 19);
+            this.m_labelinputOpe.Size = new System.Drawing.Size(251, 19);
             this.m_labelinputOpe.TabIndex = 7;
             this.m_labelinputOpe.TabStop = false;
             // 
@@ -92,7 +94,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(201, 196);
+            this.button3.Location = new System.Drawing.Point(252, 189);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
             this.button3.TabIndex = 8;
@@ -102,7 +104,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(302, 196);
+            this.button2.Location = new System.Drawing.Point(353, 189);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 23);
             this.button2.TabIndex = 9;
@@ -112,9 +114,11 @@
             // 
             // m_addressno
             // 
-            this.m_addressno.Location = new System.Drawing.Point(123, 86);
+            this.m_addressno.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_addressno.Location = new System.Drawing.Point(147, 86);
             this.m_addressno.Name = "m_addressno";
-            this.m_addressno.Size = new System.Drawing.Size(59, 19);
+            this.m_addressno.Size = new System.Drawing.Size(42, 19);
             this.m_addressno.TabIndex = 3;
             // 
             // label3
@@ -131,9 +135,9 @@
             this.m_opeID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_opeID.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.m_opeID.Location = new System.Drawing.Point(123, 35);
+            this.m_opeID.Location = new System.Drawing.Point(147, 35);
             this.m_opeID.Name = "m_opeID";
-            this.m_opeID.Size = new System.Drawing.Size(274, 19);
+            this.m_opeID.Size = new System.Drawing.Size(301, 19);
             this.m_opeID.TabIndex = 1;
             this.m_opeID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.m_opeID_KeyPress);
             // 
@@ -142,15 +146,17 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(15, 38);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(88, 12);
+            this.label1.Size = new System.Drawing.Size(132, 12);
             this.label1.TabIndex = 38;
-            this.label1.Text = "ユーザーID(通番)";
+            this.label1.Text = "ユーザ、オペレータID(通番)";
             // 
             // m_addressname
             // 
-            this.m_addressname.Location = new System.Drawing.Point(123, 139);
+            this.m_addressname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_addressname.Location = new System.Drawing.Point(147, 139);
             this.m_addressname.Name = "m_addressname";
-            this.m_addressname.Size = new System.Drawing.Size(274, 19);
+            this.m_addressname.Size = new System.Drawing.Size(301, 19);
             this.m_addressname.TabIndex = 5;
             // 
             // label4
@@ -164,13 +170,15 @@
             // 
             // m_Customerkbn_combo
             // 
+            this.m_Customerkbn_combo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_Customerkbn_combo.FormattingEnabled = true;
             this.m_Customerkbn_combo.Items.AddRange(new object[] {
             "オペレータ ",
             "カスタマ担当者"});
-            this.m_Customerkbn_combo.Location = new System.Drawing.Point(123, 9);
+            this.m_Customerkbn_combo.Location = new System.Drawing.Point(147, 11);
             this.m_Customerkbn_combo.Name = "m_Customerkbn_combo";
-            this.m_Customerkbn_combo.Size = new System.Drawing.Size(121, 20);
+            this.m_Customerkbn_combo.Size = new System.Drawing.Size(104, 20);
             this.m_Customerkbn_combo.TabIndex = 0;
             // 
             // label7
@@ -193,16 +201,18 @@
             // 
             // m_opename
             // 
-            this.m_opename.Location = new System.Drawing.Point(123, 60);
+            this.m_opename.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_opename.Location = new System.Drawing.Point(147, 60);
             this.m_opename.Name = "m_opename";
-            this.m_opename.Size = new System.Drawing.Size(274, 19);
+            this.m_opename.Size = new System.Drawing.Size(301, 19);
             this.m_opename.TabIndex = 2;
             // 
             // Form_addressInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(412, 227);
+            this.ClientSize = new System.Drawing.Size(466, 221);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.m_Customerkbn_combo);
             this.Controls.Add(this.m_addressname);

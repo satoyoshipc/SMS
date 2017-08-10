@@ -48,8 +48,7 @@ namespace SMSサンプル
         //表示前処理
         private void Form_InterfaceDetail_Load(object sender, EventArgs e)
         {
-
-
+            this.splitContainer1.SplitterDistance = 32;
 
             m_selectKoumoku.Items.Add("通番");
             m_selectKoumoku.Items.Add("ステータス");
@@ -66,15 +65,13 @@ namespace SMSサンプル
             m_selectKoumoku.Items.Add("タイマー");
             m_selectKoumoku.Items.Add("要確認メッセージ");
             m_selectKoumoku.Items.Add("カスタマ通番");
+            m_selectKoumoku.Items.Add("カスタマ名");
             m_selectKoumoku.Items.Add("システム通番");
             m_selectKoumoku.Items.Add("拠点通番");
             m_selectKoumoku.Items.Add("ホスト番号");
             m_selectKoumoku.Items.Add("更新日時");
             m_selectKoumoku.Items.Add("更新者");
-
-
-
-
+            
             if (incidentdt != null) 
                 getIncident(incidentdt);
             
@@ -461,23 +458,27 @@ namespace SMSサンプル
                         case 14:
                             param_dict["userno"] = m_selecttext.Text;
                             break;
-
                         case 15:
+                            param_dict["username"] = m_selecttext.Text;
+                            break;
+
+                        case 16:
                             param_dict["systemno"] = m_selecttext.Text;
                             break;
-                        case 16:
+
+                        case 17:
                             param_dict["siteno"] = m_selecttext.Text;
                             break;
-                        case 17:
+                        case 18:
                             param_dict["hostno"] = m_selecttext.Text;
                             break;
 
                         //更新日時
-                        case 18:
+                        case 19:
                             param_dict["chk_date"] = m_selecttext.Text;
                             break;
                         //更新者
-                        case 19:
+                        case 20:
                             param_dict["chk_name_id"] = m_selecttext.Text;
                             break;
                         default:
@@ -494,6 +495,7 @@ namespace SMSサンプル
             //インシデント一覧を取得する
             incidentdsList = dg.getIncidentList((Form_MainList)this.Owner, param_dict, con);
 
+            this.splitContainer1.SplitterDistance = 210;
 
             this.m_incidentList.VirtualMode = true;
             // １行全体選択

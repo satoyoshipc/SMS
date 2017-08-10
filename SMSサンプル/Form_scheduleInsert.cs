@@ -366,17 +366,14 @@ namespace SMSサンプル
 
                     //同じ曜日であれば登録
                     if(weeknumber == tmpweeknumber) { 
-
                         //日付毎に登録
                         int ret = alerm_insert(scheNO, type, alertdate);
                         if (ret == -1)
                             break;
                     }
-
                     //1日プラス
                     alertdate = alertdate.AddDays(1);
                     tmpweeknumber = (int)alertdate.DayOfWeek;
-
                 }
             }
             else if (m_radio_month.Checked) {
@@ -670,23 +667,24 @@ namespace SMSサンプル
         //予定区分が変更されたとき
         private void m_schedule_combo_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (m_schedule_combo.SelectedIndex == 0) {
-                m_alerm_group.Enabled = true;
-                //インシデントは音は選択できない
-                m_soudpath.Enabled = false;
-                button1.Enabled = false;
-                button4.Enabled = false;
 
-                m_startDate.Enabled = true;
-                m_endDate.Enabled = true;
+            if (m_schedule_combo.SelectedIndex == 0) {
+                //m_alerm_group.Enabled = true;
+                //インシデントは音は選択できない
+                //m_soudpath.Enabled = false;
+                //button1.Enabled = false;
+                //button4.Enabled = false;
+
+                //m_startDate.Enabled = true;
+                //m_endDate.Enabled = true;
 
             }
             //特別作業の場合開始終了は不要
             else if (m_schedule_combo.SelectedIndex == 3)
             {
-                m_alerm_group.Enabled = false;
-                m_startDate.Enabled = false;
-                m_endDate.Enabled = false;
+                //m_alerm_group.Enabled = false;
+                //m_startDate.Enabled = false;
+                //m_endDate.Enabled = false;
                 
             }
             else

@@ -44,12 +44,14 @@
             this.m_dispOpename = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.m_dispOpeNo = new System.Windows.Forms.TextBox();
+            this.m_customerID = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 15);
+            this.label1.Location = new System.Drawing.Point(10, 36);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 12);
             this.label1.TabIndex = 0;
@@ -59,24 +61,24 @@
             // 
             this.m_username.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_username.Location = new System.Drawing.Point(97, 12);
+            this.m_username.Location = new System.Drawing.Point(97, 33);
             this.m_username.Name = "m_username";
             this.m_username.Size = new System.Drawing.Size(288, 19);
-            this.m_username.TabIndex = 0;
+            this.m_username.TabIndex = 1;
             // 
             // m_userkana
             // 
             this.m_userkana.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_userkana.Location = new System.Drawing.Point(97, 33);
+            this.m_userkana.Location = new System.Drawing.Point(97, 54);
             this.m_userkana.Name = "m_userkana";
             this.m_userkana.Size = new System.Drawing.Size(288, 19);
-            this.m_userkana.TabIndex = 1;
+            this.m_userkana.TabIndex = 2;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 36);
+            this.label2.Location = new System.Drawing.Point(10, 57);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 12);
             this.label2.TabIndex = 2;
@@ -85,7 +87,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 62);
+            this.label3.Location = new System.Drawing.Point(10, 83);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(76, 12);
             this.label3.TabIndex = 4;
@@ -94,7 +96,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 137);
+            this.label4.Location = new System.Drawing.Point(10, 158);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 12);
             this.label4.TabIndex = 5;
@@ -103,20 +105,20 @@
             // m_reportchk
             // 
             this.m_reportchk.AutoSize = true;
-            this.m_reportchk.Location = new System.Drawing.Point(97, 86);
+            this.m_reportchk.Location = new System.Drawing.Point(97, 107);
             this.m_reportchk.Name = "m_reportchk";
             this.m_reportchk.Size = new System.Drawing.Size(69, 16);
-            this.m_reportchk.TabIndex = 3;
+            this.m_reportchk.TabIndex = 4;
             this.m_reportchk.Text = "SLO対象";
             this.m_reportchk.UseVisualStyleBackColor = true;
             // 
             // m_status
             // 
             this.m_status.AutoSize = true;
-            this.m_status.Location = new System.Drawing.Point(97, 108);
+            this.m_status.Location = new System.Drawing.Point(97, 129);
             this.m_status.Name = "m_status";
             this.m_status.Size = new System.Drawing.Size(48, 16);
-            this.m_status.TabIndex = 4;
+            this.m_status.TabIndex = 5;
             this.m_status.Text = "有効";
             this.m_status.UseVisualStyleBackColor = true;
             // 
@@ -124,37 +126,37 @@
             // 
             this.m_biko.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_biko.Location = new System.Drawing.Point(97, 134);
+            this.m_biko.Location = new System.Drawing.Point(97, 155);
             this.m_biko.Multiline = true;
             this.m_biko.Name = "m_biko";
             this.m_biko.Size = new System.Drawing.Size(288, 59);
-            this.m_biko.TabIndex = 5;
+            this.m_biko.TabIndex = 6;
             // 
             // m_userryaku
             // 
             this.m_userryaku.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_userryaku.Location = new System.Drawing.Point(97, 58);
+            this.m_userryaku.Location = new System.Drawing.Point(97, 79);
             this.m_userryaku.Name = "m_userryaku";
             this.m_userryaku.Size = new System.Drawing.Size(288, 19);
-            this.m_userryaku.TabIndex = 2;
+            this.m_userryaku.TabIndex = 3;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(290, 223);
+            this.button2.Location = new System.Drawing.Point(290, 244);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 23);
-            this.button2.TabIndex = 10;
+            this.button2.TabIndex = 11;
             this.button2.Text = "キャンセル";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(189, 223);
+            this.button3.Location = new System.Drawing.Point(189, 244);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
-            this.button3.TabIndex = 9;
+            this.button3.TabIndex = 10;
             this.button3.Text = "登録";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -162,7 +164,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 200);
+            this.label5.Location = new System.Drawing.Point(10, 221);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(51, 12);
             this.label5.TabIndex = 13;
@@ -172,37 +174,57 @@
             // 
             this.m_dispOpename.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_dispOpename.Location = new System.Drawing.Point(136, 197);
+            this.m_dispOpename.Location = new System.Drawing.Point(136, 218);
             this.m_dispOpename.Name = "m_dispOpename";
             this.m_dispOpename.ReadOnly = true;
             this.m_dispOpename.Size = new System.Drawing.Size(249, 19);
-            this.m_dispOpename.TabIndex = 7;
+            this.m_dispOpename.TabIndex = 8;
             this.m_dispOpename.TabStop = false;
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(12, 223);
+            this.button4.Location = new System.Drawing.Point(12, 244);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(95, 23);
-            this.button4.TabIndex = 8;
+            this.button4.TabIndex = 9;
             this.button4.Text = "担当者登録";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // m_dispOpeNo
             // 
-            this.m_dispOpeNo.Location = new System.Drawing.Point(97, 197);
+            this.m_dispOpeNo.Location = new System.Drawing.Point(97, 218);
             this.m_dispOpeNo.Name = "m_dispOpeNo";
             this.m_dispOpeNo.ReadOnly = true;
             this.m_dispOpeNo.Size = new System.Drawing.Size(35, 19);
-            this.m_dispOpeNo.TabIndex = 6;
+            this.m_dispOpeNo.TabIndex = 7;
             this.m_dispOpeNo.TabStop = false;
+            // 
+            // m_customerID
+            // 
+            this.m_customerID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_customerID.Location = new System.Drawing.Point(97, 10);
+            this.m_customerID.Name = "m_customerID";
+            this.m_customerID.Size = new System.Drawing.Size(288, 19);
+            this.m_customerID.TabIndex = 0;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(10, 13);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(51, 12);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "カスタマID";
             // 
             // Form_UserInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(397, 260);
+            this.ClientSize = new System.Drawing.Size(397, 274);
+            this.Controls.Add(this.m_customerID);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.m_dispOpeNo);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.m_dispOpename);
@@ -245,5 +267,7 @@
         private System.Windows.Forms.TextBox m_dispOpename;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.TextBox m_dispOpeNo;
+        private System.Windows.Forms.TextBox m_customerID;
+        private System.Windows.Forms.Label label6;
     }
 }

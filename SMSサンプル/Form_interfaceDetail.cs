@@ -67,8 +67,7 @@ namespace SMSサンプル
                 Convert.ToString(row[11]),
                 Convert.ToString(row[12]),
                 Convert.ToString(row[13]),
-                Convert.ToString(row[14]),
-                Convert.ToString(row[15])
+                Convert.ToString(row[14])
                     });
             }
 
@@ -77,17 +76,17 @@ namespace SMSサンプル
         private void Form_InterfaceDetail_Load(object sender, EventArgs e)
         {
 
+            this.splitContainer1.SplitterDistance = 32;
 
             m_selectKoumoku.Items.Add("監視インターフェイス通番");
             m_selectKoumoku.Items.Add("インターフェイス名");
             m_selectKoumoku.Items.Add("ステータス");
             m_selectKoumoku.Items.Add("監視タイプ");
             m_selectKoumoku.Items.Add("監視項目名");
-            m_selectKoumoku.Items.Add("監視開始日時");
-            m_selectKoumoku.Items.Add("監視終了日時");
             m_selectKoumoku.Items.Add("閾値");
             m_selectKoumoku.Items.Add("IPアドレス");
             m_selectKoumoku.Items.Add("IPアドレス(NAT)");
+            m_selectKoumoku.Items.Add("備考");
             m_selectKoumoku.Items.Add("カスタマ通番");
             m_selectKoumoku.Items.Add("システム通番");
             m_selectKoumoku.Items.Add("拠点通番");
@@ -111,11 +110,10 @@ namespace SMSサンプル
             this.m_watchtype.Text = interfacedt.type;
 
             this.m_koumoku.Text = interfacedt.kanshi;
-            this.m_start_date.Text = interfacedt.start_date;
-            this.m_end_date.Text = interfacedt.end_date;
             this.m_sikiiti.Text = interfacedt.border;
             this.m_addressIP.Text = interfacedt.IPaddress;
             this.m_addressNAT.Text = interfacedt.IPaddressNAT;
+            this.m_biko.Text = interfacedt.biko;
 
             this.m_updateOpe.Text = interfacedt.chk_name_id;
             this.m_update.Text = interfacedt.chk_date;
@@ -142,7 +140,7 @@ namespace SMSサンプル
             DISP_dataSet dset = new DISP_dataSet();
             Dictionary<string, string> param_dict = new Dictionary<string, string>();
             Class_Detaget dg = new Class_Detaget();
-
+            String str;
             if (m_selecttext.Text != "")
             {
 
@@ -174,63 +172,33 @@ namespace SMSサンプル
                             break;
     
                         case 5:
-                            DateTime dt;
-                            String str = m_selecttext.Text;
-
-                            //入力された日付の形式の確認
-                            if (DateTime.TryParse(str, out dt))
-                            {
-                                param_dict["start_date"] = str;
-                            }
-                            else
-                            {
-                                MessageBox.Show("日付の形式が正しくありません。", "監視インターフェイス検索");
-                                return;
-                            }
-
-                            break;
-
-                        case 6:
-
-                            str = m_selecttext.Text;
-
-                            //入力された日付の形式の確認
-                            if (DateTime.TryParse(str, out dt))
-                            {
-                                param_dict["end_date"] = str;
-                            }
-                            else
-                            {
-                                MessageBox.Show("日付の形式が正しくありません。", "監視インターフェイス検索");
-                                return;
-                            }
-                            break;
-
-                        case 7:
                             param_dict["border"] = m_selecttext.Text;
                             break;
-                        case 8:
+                        case 6:
                             param_dict["IPaddress"] = m_selecttext.Text;
                             break;
-                        case 9:
+                        case 7:
                             param_dict["IPaddressNAT"] = m_selecttext.Text;
                             break;
-                        case 10:
+                        case 8:
+                            param_dict["biko"] = m_selecttext.Text;
+                            break;
+                        case 9:
                             param_dict["userno"] = m_selecttext.Text;
                             break;
-                        case 11:
+                        case 10:
                             param_dict["systemno"] = m_selecttext.Text;
                             break;
-                        case 12:
+                        case 11:
                             param_dict["siteno"] = m_selecttext.Text;
                             break;
-                        case 13:
+                        case 12:
                             param_dict["host_no"] = m_selecttext.Text;
                             break;
 
                         //更新日時
-                        case 14:
-
+                        case 13:
+                            DateTime dt;
                             str = m_selecttext.Text;
 
                             //入力された日付の形式の確認
@@ -243,7 +211,7 @@ namespace SMSサンプル
                             }
                             break;
                         //更新者
-                        case 15:
+                        case 14:
                             param_dict["chk_name_id"] = m_selecttext.Text;
                             break;
                         default:
@@ -261,6 +229,9 @@ namespace SMSサンプル
             //インターフェイス一覧を取得する
             dset = dg.getSelectInterface(param_dict, con, dset,true);
 
+
+            this.splitContainer1.SplitterDistance = 250;
+
             this.m_InterfaceList.VirtualMode = true;
             // １行全体選択
             this.m_InterfaceList.FullRowSelect = true;
@@ -277,17 +248,16 @@ namespace SMSサンプル
             this.m_InterfaceList.Columns.Insert(2, "ステータス", 90, HorizontalAlignment.Left);
             this.m_InterfaceList.Columns.Insert(3, "監視タイプ", 90, HorizontalAlignment.Left);
             this.m_InterfaceList.Columns.Insert(4, "監視項目名", 80, HorizontalAlignment.Left);
-            this.m_InterfaceList.Columns.Insert(5, "監視開始日時", 120, HorizontalAlignment.Left);
-            this.m_InterfaceList.Columns.Insert(6, "監視終了日時", 120, HorizontalAlignment.Left);
-            this.m_InterfaceList.Columns.Insert(7, "閾値", 50, HorizontalAlignment.Left);
-            this.m_InterfaceList.Columns.Insert(8, "IPアドレス", 50, HorizontalAlignment.Left);
-            this.m_InterfaceList.Columns.Insert(9, "IPアドレス(NAT)", 50, HorizontalAlignment.Left);
-            this.m_InterfaceList.Columns.Insert(10, "カスタマ番号", 50, HorizontalAlignment.Left);
-            this.m_InterfaceList.Columns.Insert(11, "システム通番番号", 50, HorizontalAlignment.Left);
-            this.m_InterfaceList.Columns.Insert(12, "拠点通番", 50, HorizontalAlignment.Left);
-            this.m_InterfaceList.Columns.Insert(13, "ホスト通番", 50, HorizontalAlignment.Left);
-            this.m_InterfaceList.Columns.Insert(14, "更新日時", 50, HorizontalAlignment.Left);
-            this.m_InterfaceList.Columns.Insert(15, "更新者", 50, HorizontalAlignment.Left);
+            this.m_InterfaceList.Columns.Insert(5, "閾値", 50, HorizontalAlignment.Left);
+            this.m_InterfaceList.Columns.Insert(6, "IPアドレス", 50, HorizontalAlignment.Left);
+            this.m_InterfaceList.Columns.Insert(7, "IPアドレス(NAT)", 50, HorizontalAlignment.Left);
+            this.m_InterfaceList.Columns.Insert(8, "備考", 50, HorizontalAlignment.Left);
+            this.m_InterfaceList.Columns.Insert(9, "カスタマ番号", 50, HorizontalAlignment.Left);
+            this.m_InterfaceList.Columns.Insert(10, "システム通番番号", 50, HorizontalAlignment.Left);
+            this.m_InterfaceList.Columns.Insert(11, "拠点通番", 50, HorizontalAlignment.Left);
+            this.m_InterfaceList.Columns.Insert(12, "ホスト通番", 50, HorizontalAlignment.Left);
+            this.m_InterfaceList.Columns.Insert(13, "更新日時", 50, HorizontalAlignment.Left);
+            this.m_InterfaceList.Columns.Insert(14, "更新者", 50, HorizontalAlignment.Left);
 
             //リストビューを初期化する
             interface_list = new DataTable("table1");
@@ -296,11 +266,10 @@ namespace SMSサンプル
             interface_list.Columns.Add("ステータス", Type.GetType("System.String"));
             interface_list.Columns.Add("監視タイプ", Type.GetType("System.String"));
             interface_list.Columns.Add("監視項目名", Type.GetType("System.String"));
-            interface_list.Columns.Add("監視開始日時", Type.GetType("System.String"));
-            interface_list.Columns.Add("監視終了日時", Type.GetType("System.String"));
             interface_list.Columns.Add("閾値", Type.GetType("System.String"));
             interface_list.Columns.Add("IPアドレス", Type.GetType("System.String"));
             interface_list.Columns.Add("IPアドレス(NAT)", Type.GetType("System.String"));
+            interface_list.Columns.Add("備考", Type.GetType("System.String"));
             interface_list.Columns.Add("カスタマ番号", Type.GetType("System.String"));
             interface_list.Columns.Add("システム通番番号", Type.GetType("System.String"));
             interface_list.Columns.Add("拠点通番", Type.GetType("System.String"));
@@ -324,11 +293,11 @@ namespace SMSサンプル
                     urow["ステータス"] = s_ds.status;
                     urow["監視タイプ"] = s_ds.type;
                     urow["監視項目名"] = s_ds.kanshi;
-                    urow["監視開始日時"] = s_ds.start_date;
-                    urow["監視終了日時"] = s_ds.end_date;
                     urow["閾値"] = s_ds.border;
                     urow["IPアドレス"] =s_ds.IPaddress; 
                     urow["IPアドレス(NAT)"] = s_ds.IPaddressNAT;
+                    urow["備考"] = s_ds.biko;
+
                     urow["カスタマ番号"] = s_ds.userno;
                     urow["システム通番番号"] = s_ds.systemno;
                     urow["拠点通番"] = s_ds.siteno;
@@ -368,8 +337,8 @@ namespace SMSサンプル
                 status = "0";
             if (con.FullState != ConnectionState.Open) con.Open();
 
-            string sql = "update watch_Interface set kennshino=:kennshino,interfacename=:interfacename,status=:status,type=:type,kanshi=:kanshi,start_date=:start_date," +
-                "end_date=:end_date,border=:border,IPaddress=:IPaddress,IPaddressNAT=:IPaddressNAT," +
+            string sql = "update watch_Interface set kennshino=:kennshino,interfacename=:interfacename,status=:status,type=:type,kanshi=:kanshi," +
+                "border=:border,IPaddress=:IPaddress,IPaddressNAT=:IPaddressNAT,biko=:biko," +
                 "chk_name_id =:ope,chk_date=:chdate where kennshino = :no";
             using (var transaction = con.BeginTransaction())
             {
@@ -380,11 +349,10 @@ namespace SMSサンプル
                 command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
                 command.Parameters.Add(new NpgsqlParameter("type", DbType.String) { Value = m_watchtype.Text });
                 command.Parameters.Add(new NpgsqlParameter("kanshi", DbType.String) { Value = m_koumoku.Text });
-                command.Parameters.Add(new NpgsqlParameter("start_date", DbType.DateTime) { Value = m_start_date.Value });
-                command.Parameters.Add(new NpgsqlParameter("end_date", DbType.DateTime) { Value = m_end_date.Value });
                 command.Parameters.Add(new NpgsqlParameter("border", DbType.String) { Value = m_sikiiti.Text});
                 command.Parameters.Add(new NpgsqlParameter("IPaddress", DbType.String) { Value = m_addressIP.Text });
                 command.Parameters.Add(new NpgsqlParameter("IPaddressNAT", DbType.String) { Value = m_addressNAT.Text });
+                command.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = m_biko.Text });
                 command.Parameters.Add(new NpgsqlParameter("ope", DbType.String) { Value = loginDS.opeid });
                 command.Parameters.Add(new NpgsqlParameter("chdate", DbType.DateTime) { Value = DateTime.Now });
                 Int32 rowsaffected;
@@ -419,18 +387,17 @@ namespace SMSサンプル
             interfacedt.status = this.m_InterfaceList.Items[item[0]].SubItems[2].Text;
             interfacedt.type = this.m_InterfaceList.Items[item[0]].SubItems[3].Text;
             interfacedt.kanshi = this.m_InterfaceList.Items[item[0]].SubItems[4].Text;
-            interfacedt.start_date = this.m_InterfaceList.Items[item[0]].SubItems[5].Text;
-            interfacedt.end_date = this.m_InterfaceList.Items[item[0]].SubItems[6].Text;
-            interfacedt.border = this.m_InterfaceList.Items[item[0]].SubItems[7].Text;
-            interfacedt.IPaddress = this.m_InterfaceList.Items[item[0]].SubItems[8].Text;
-            interfacedt.IPaddressNAT = this.m_InterfaceList.Items[item[0]].SubItems[9].Text;
-            interfacedt.userno = this.m_InterfaceList.Items[item[0]].SubItems[10].Text;
+            interfacedt.border = this.m_InterfaceList.Items[item[0]].SubItems[5].Text;
+            interfacedt.IPaddress = this.m_InterfaceList.Items[item[0]].SubItems[6].Text;
+            interfacedt.IPaddressNAT = this.m_InterfaceList.Items[item[0]].SubItems[7].Text;
+            interfacedt.biko = this.m_InterfaceList.Items[item[0]].SubItems[8].Text;
+            interfacedt.userno = this.m_InterfaceList.Items[item[0]].SubItems[9].Text;
 
-            interfacedt.systemno = this.m_InterfaceList.Items[item[0]].SubItems[11].Text;
-            interfacedt.siteno = this.m_InterfaceList.Items[item[0]].SubItems[12].Text;
-            interfacedt.host_no = this.m_InterfaceList.Items[item[0]].SubItems[13].Text;
-            interfacedt.chk_date = this.m_InterfaceList.Items[item[0]].SubItems[14].Text;
-            interfacedt.chk_name_id = this.m_InterfaceList.Items[item[0]].SubItems[15].Text;
+            interfacedt.systemno = this.m_InterfaceList.Items[item[0]].SubItems[10].Text;
+            interfacedt.siteno = this.m_InterfaceList.Items[item[0]].SubItems[11].Text;
+            interfacedt.host_no = this.m_InterfaceList.Items[item[0]].SubItems[12].Text;
+            interfacedt.chk_date = this.m_InterfaceList.Items[item[0]].SubItems[13].Text;
+            interfacedt.chk_name_id = this.m_InterfaceList.Items[item[0]].SubItems[14].Text;
 
             getInterface(interfacedt);
         }

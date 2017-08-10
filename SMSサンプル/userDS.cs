@@ -9,6 +9,7 @@ namespace SMSサンプル
     public class userDS
     {
         public String userno { get; set; }
+        public String customerID { get; set; }
         public String username { get; set; }
         public String username_kana { get; set; }
         public String username_sum { get; set; }

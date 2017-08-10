@@ -58,6 +58,8 @@ namespace SMSサンプル
             if (MessageBox.Show("カスタマ情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return; ;
 
+            //カスタマID
+            string customerID = m_customerID.Text;
 
             //カスタマ名
             string username = m_username.Text;
@@ -83,7 +85,6 @@ namespace SMSサンプル
                 //0無効
                 status = "0";
 
-
             string biko = m_biko.Text;
 
             //int OpeNo = ;
@@ -95,8 +96,9 @@ namespace SMSサンプル
                 if (con.FullState != ConnectionState.Open) con.Open();
                 Int32 rowsaffected;
                 //データ登録
-                cmd = new NpgsqlCommand(@"insert into user_tbl(username, username_kana,username_sum,status,report_status,biko,chk_name_id) 
-                        values ( :username,:username_kana,:username_sum,:status,:report_status,:biko,:chk_name_id)", con);
+                cmd = new NpgsqlCommand(@"insert into user_tbl(customerID,username, username_kana,username_sum,status,report_status,biko,chk_name_id) 
+                        values ( :customerID,:username,:username_kana,:username_sum,:status,:report_status,:biko,:chk_name_id)", con);
+                cmd.Parameters.Add(new NpgsqlParameter("customerID", DbType.String) { Value = customerID });
                 cmd.Parameters.Add(new NpgsqlParameter("username", DbType.String) { Value = username });
                 cmd.Parameters.Add(new NpgsqlParameter("username_kana", DbType.String) { Value = userkana });
                 cmd.Parameters.Add(new NpgsqlParameter("username_sum", DbType.String) { Value = userryaku });
@@ -146,7 +148,7 @@ namespace SMSサンプル
             //担当者登録
             Form_UserTantouInsert Usertantoufm = new Form_UserTantouInsert();
             Usertantoufm.loginDS = loginDS;
-            //Usertantoufm.userList = userList;
+            Usertantoufm.customername = m_username.Text;
             Usertantoufm.con = con;
 
             Usertantoufm.Show();

@@ -183,7 +183,7 @@ namespace SMSサンプル
 
                 if (con.FullState != ConnectionState.Open) con.Open();
 
-                cmd = new NpgsqlCommand(@"select u.userno,u.username,u.username_kana,u.username_sum,u.status,u.report_status,u.biko,u.chk_date,u.chk_name_id,o.lastname,o.fastname from user_tbl u INNER JOIN ope o ON u.chk_name_id = o.opeid ", con);
+                cmd = new NpgsqlCommand(@"select u.userno,u.customerID,u.username,u.username_kana,u.username_sum,u.status,u.report_status,u.biko,u.chk_date,u.chk_name_id,o.lastname,o.fastname from user_tbl u INNER JOIN ope o ON u.chk_name_id = o.opeid order by u.customerid,u.username ", con);
                 var dataReader = cmd.ExecuteReader();
 
                 //カスタマ情報の取得
@@ -195,6 +195,7 @@ namespace SMSサンプル
                     ds = new userDS();
 
                     ds.userno = dataReader["userno"].ToString();
+                    ds.customerID = dataReader["customerID"].ToString();
                     ds.username = dataReader["username"].ToString();
                     ds.username_kana = dataReader["username_kana"].ToString();
                     ds.username_sum = dataReader["username_sum"].ToString();
@@ -364,7 +365,6 @@ namespace SMSサンプル
 
                     ds.host_no = dataReader["host_no"].ToString();
                     ds.hostname = dataReader["hostname"].ToString();
-                    ds.hostname_ja = dataReader["hostname_ja"].ToString();
                     ds.status = dataReader["status"].ToString();
                     ds.device = dataReader["device"].ToString();
                     ds.location = dataReader["location"].ToString();
@@ -397,7 +397,7 @@ namespace SMSサンプル
         public void getSelectKaisenInfo(DataTable dt, DISP_dataSet retDS, NpgsqlConnection conn)
         {
 
-            String sql = "SELECT k.kaisenno,k.status,k.career,k.type, k.kaisenid,k.isp,k.servicetype,k.serviceid,k.userno,k.systemno,k.siteno,k.host_no,k.telno1,k.telno2,k.telno3,k.chk_date,k.chk_name_id,o.lastname " +
+            String sql = "SELECT k.kaisenno,k.status,k.career,k.type, k.kaisenid,k.isp,k.servicetype,k.serviceid,k.userno,k.systemno,k.siteno,k.host_no,k.telno1,k.telno2,k.telno3,k.biko,k.chk_date,k.chk_name_id,o.lastname " +
                         "FROM Kaisen k INNER JOIN ope o ON o.opeid = k.chk_name_id";
 
             String param = "";
@@ -446,12 +446,16 @@ namespace SMSサンプル
                     k_ds.telno1 = dataReader["telno1"].ToString();
                     k_ds.telno2 = dataReader["telno2"].ToString();
                     k_ds.telno3 = dataReader["telno3"].ToString();
+                    k_ds.biko = dataReader["biko"].ToString();
+
                     k_ds.type = dataReader["type"].ToString();
                     k_ds.kaisenid = dataReader["kaisenid"].ToString();
+
                     k_ds.isp = dataReader["isp"].ToString();
                     k_ds.servicetype = dataReader["servicetype"].ToString();
+                    k_ds.serviceid = dataReader["serviceid"].ToString();
                     k_ds.userno = dataReader["userno"].ToString();
-                    k_ds.serviceid = dataReader["systemno"].ToString();
+                    k_ds.systemno = dataReader["systemno"].ToString();
                     k_ds.siteno = dataReader["siteno"].ToString();
                     k_ds.host_no = dataReader["host_no"].ToString();
                     k_ds.chk_name_id = dataReader["lastname"].ToString();
@@ -482,8 +486,8 @@ namespace SMSサンプル
                 "LEFT OUTER JOIN user_tbl u ON i.userno = u.userno " +
                 "LEFT OUTER JOIN system sys ON sys.systemno = i.systemno " +
                 "LEFT OUTER JOIN site s ON s.siteno=i.siteno " +
-                "LEFT OUTER JOIN host h ON i.hostno = h.host_no " +
-                "WHERE i.status = '1'";
+                "LEFT OUTER JOIN host h ON i.hostno = h.host_no ";
+                //"WHERE i.status = '1'";
 
             NpgsqlCommand cmd;
             incidentDS inc_ds;
@@ -602,6 +606,23 @@ namespace SMSサンプル
                         DateTime dt1 = dt.AddDays(1);
                         param += " i." + vdict.Key + " >='" + dt.ToString() + "' AND i." +
                             vdict.Key + " <= '" + dt1.ToString() + "' ";
+                    }
+                    //カスタマメイ
+                    else if (vdict.Key == "username")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "u." + vdict.Key + " like '%" + vdict.Value + "%'";
+
                     }
                     else
                     {
@@ -738,6 +759,23 @@ namespace SMSサンプル
                         DateTime dt1 = dt.AddDays(1);
                         param += " i." + vdict.Key + " >='" + dt.ToString() + "' AND i." +
                             vdict.Key + " <= '" + dt1.ToString() + "' ";
+                    }
+                    //カスタマメイ
+                    else if (vdict.Key == "username")
+                    {   
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "u." + vdict.Key + " like '%" + vdict.Value + "%'";
+
                     }
                     else
                     {
@@ -884,7 +922,7 @@ namespace SMSサンプル
         public DISP_dataSet getSelectUser(Dictionary<string, string> param_dict, NpgsqlConnection conn, DISP_dataSet displist, Boolean detailflg = false)
         {
 
-            String sql = "select u.userno,u.username,u.username_kana,u.username_sum,u.status user_status,u.report_status,u.biko,u.chk_date user_chk_date, u.chk_name_id user_chk_name_id " +
+            String sql = "select u.userno,u.customerID,u.username,u.username_kana,u.username_sum,u.status user_status,u.report_status,u.biko,u.chk_date user_chk_date, u.chk_name_id user_chk_name_id " +
                         "from user_tbl u,ope o  where  o.opeid = u.chk_name_id ";
 
             String param = "";
@@ -940,6 +978,7 @@ namespace SMSサンプル
                     //カスタマ情報の取得
                     u_ds = new userDS();
                     u_ds.userno = dataReader["userno"].ToString();
+                    u_ds.customerID = dataReader["customerID"].ToString();
                     u_ds.username = dataReader["username"].ToString();
                     u_ds.username_kana = dataReader["username_kana"].ToString();
                     u_ds.username_sum = dataReader["username_sum"].ToString();
@@ -1263,7 +1302,7 @@ namespace SMSサンプル
         {
 
 
-            String sql = "select h.userno,h.systemno,h.siteno,h.host_no,h.hostname,h.hostname_ja,h.status host_status, h.device,h.location,h.usefor,h.kansiStartdate,h.kansiEndsdate,h.hosyukanri,h.hosyuinfo,h.biko,h.chk_date host_chk_date, o.lastname host_chk_name_id " +
+            String sql = "select h.userno,h.systemno,h.siteno,h.host_no,h.hostname,h.settikikiid,h.status host_status, h.device,h.location,h.usefor,h.kansiStartdate,h.kansiEndsdate,h.hosyukanri,h.hosyuinfo,h.biko,h.chk_date host_chk_date, o.lastname host_chk_name_id " +
                         "from host h,ope o,system sys,site s,user_tbl u where o.opeid = h.chk_name_id and u.userno=h.userno and h.systemno=sys.systemno and h.siteno=s.siteno";
             String param = "";
 
@@ -1317,7 +1356,7 @@ namespace SMSサンプル
 
                     h_ds.host_no = dataReader["host_no"].ToString();
                     h_ds.hostname = dataReader["hostname"].ToString();
-                    h_ds.hostname_ja = dataReader["hostname_ja"].ToString();
+                    h_ds.settikikiid = dataReader["settikikiid"].ToString();
                     h_ds.status = dataReader["host_status"].ToString();
                     h_ds.device = dataReader["device"].ToString();
                     h_ds.location = dataReader["location"].ToString();
@@ -1411,7 +1450,7 @@ namespace SMSサンプル
         public DISP_dataSet getSelectInterface(Dictionary<string, string> param_dict, NpgsqlConnection conn, DISP_dataSet displist, Boolean detailflg = false)
         {
 
-            String sql = "select w.userno,w.systemno, w.siteno, w.host_no, w.kennshino, w.interfacename, w.status watch_status, w.type, w.kanshi, w.start_date, w.end_date, w.border, w.IPaddress, w.IPaddressNAT, w.chk_date watch_chk_date, o.lastname watch_chk_name_id  from watch_interface w,ope o" +
+            String sql = "select w.userno,w.systemno, w.siteno, w.host_no, w.kennshino, w.interfacename, w.status watch_status, w.type, w.kanshi, w.border, w.IPaddress, w.IPaddressNAT,w.biko, w.chk_date watch_chk_date, o.lastname watch_chk_name_id  from watch_interface w,ope o" +
                 " where o.opeid = w.chk_name_id ";
 
             String param = "";
@@ -1478,14 +1517,10 @@ namespace SMSサンプル
                     w_ds.status = dataReader["watch_status"].ToString();
                     w_ds.type = dataReader["type"].ToString();
                     w_ds.kanshi = dataReader["kanshi"].ToString();
-                    String ss = dataReader["start_date"].ToString();
-                    w_ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
-
-                    String ss2 = dataReader["end_date"].ToString();
-                    w_ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
                     w_ds.border = dataReader["border"].ToString();
                     w_ds.IPaddress = dataReader["IPaddress"].ToString();
                     w_ds.IPaddressNAT = dataReader["IPaddressNAT"].ToString();
+                    w_ds.biko = dataReader["biko"].ToString();
                     w_ds.chk_date = dataReader["watch_chk_date"].ToString();
                     w_ds.chk_name_id = dataReader["watch_chk_name_id"].ToString();
                     interface_List.Add(w_ds);
@@ -1506,7 +1541,7 @@ namespace SMSサンプル
         //回線
         public DISP_dataSet getSelectKaisenList(Dictionary<string, string> param_dict, NpgsqlConnection conn, DISP_dataSet displist, Boolean detailflg = false)
         {
-            String sql = "SELECT k.userno,k,systemno,k.siteno,k.host_no,k.kaisenno,k.status,k.career,k.type, k.kaisenid,k.isp,k.servicetype,k.serviceid,k.telno1,k.telno2,k.telno3,k.chk_date,k.chk_name_id,o.lastname " +
+            String sql = "SELECT k.userno,k,systemno,k.siteno,k.host_no,k.kaisenno,k.status,k.career,k.type, k.kaisenid,k.isp,k.servicetype,k.serviceid,k.telno1,k.telno2,k.telno3,k.biko,k.chk_date,k.chk_name_id,o.lastname " +
                         "FROM Kaisen k INNER JOIN ope o ON o.opeid = k.chk_name_id ";
             String param = "";
 
@@ -1618,6 +1653,8 @@ namespace SMSサンプル
                     kai_ds.telno1 = dataReader["telno1"].ToString();
                     kai_ds.telno2 = dataReader["telno2"].ToString();
                     kai_ds.telno3 = dataReader["telno3"].ToString();
+                    kai_ds.biko = dataReader["biko"].ToString();
+
                     kai_ds.host_no = dataReader["host_no"].ToString();
                     kai_ds.chk_date = dataReader["chk_date"].ToString();
                     kai_ds.chk_name_id = dataReader["chk_name_id"].ToString();
@@ -1842,6 +1879,11 @@ namespace SMSサンプル
                                 vdict.Key + " <= '" + dt1.ToString() + "' ";
 
                         }
+                        else if (vdict.Key == "username")
+                        {
+                            sql += " WHERE u." + vdict.Key + " like '%" + vdict.Value + "%'";
+
+                        }
                         else
                         { 
                             //Datetime型の検索のときは範囲を指定
@@ -1860,6 +1902,11 @@ namespace SMSサンプル
                             DateTime dt1 = dt.AddDays(1);
                             sql += " WHERE sc." + vdict.Key + " >='" + dt1.ToString() + "' AND sc." +
                                 vdict.Key + " <= '" + dt1.ToString() + "' ";
+
+                        }
+                        else if (vdict.Key == "username")
+                        {
+                            sql += " AND u." + vdict.Key + " like '%" + vdict.Value + "%'";
 
                         }
                         else
@@ -1960,52 +2007,52 @@ namespace SMSサンプル
             param_dict.TryGetValue("username", out username);
 
             if (ipadd != null)
-                sql[0] = "select u.userno,u.username,u.username_kana,u.username_sum,u.status u_status,u.report_status,u.biko userbiko,u.chk_date u_chk_date,u.chk_name_id u_chk_name_id," +
+                sql[0] = "select u.userno,u.customerID,u.username,u.username_kana,u.username_sum,u.status u_status,u.report_status,u.biko userbiko,u.chk_date u_chk_date,u.chk_name_id u_chk_name_id," +
                     "sys.systemno,sys.systemname,sys.systemkana, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id," +
                     "s.siteno,s.sitename,s.address1,s.address2,s.telno, s.status s_status, s.biko sitebiko, s.chk_date s_chk_date, s.chk_name_id s_chk_name_id," +
-                    "h.host_no, h.hostname, h.hostname_ja, h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id," +
-                    "w.kennshino, w.interfacename, w.status w_status,w.type,w.kanshi,w.start_date,w.end_date,w.border,w.IPaddress,w.IPaddressNAT,w.chk_date w_chk_date,w.chk_name_id w_chk_name_id " +
+                    "h.host_no, h.hostname, h.settikikiid, h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id," +
+                    "w.kennshino, w.interfacename, w.status w_status,w.type,w.kanshi,w.border,w.IPaddress,w.IPaddressNAT,w.biko interbiko,w.chk_date w_chk_date,w.chk_name_id w_chk_name_id " +
                     "from watch_interface w INNER JOIN user_tbl u ON u.userno = w.userno INNER JOIN system sys ON sys.systemno = w.systemno INNER JOIN site s ON s.siteno = w.siteno INNER JOIN host h ON h.host_no = w.host_no ";
             else if (hostname != null)
             {
-                sql[0] = "select u.userno,u.username,u.username_kana,u.username_sum,u.status u_status,u.report_status,u.biko userbiko,u.chk_date u_chk_date,u.chk_name_id u_chk_name_id," +
+                sql[0] = "select u.userno,u.customerID,u.username,u.username_kana,u.username_sum,u.status u_status,u.report_status,u.biko userbiko,u.chk_date u_chk_date,u.chk_name_id u_chk_name_id," +
                     "sys.systemno,sys.systemname,sys.systemkana, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id," +
                     "s.siteno,s.sitename,s.address1,s.address2,s.telno, s.status s_status, s.biko sitebiko, s.chk_date s_chk_date, s.chk_name_id s_chk_name_id," +
-                    "h.host_no, h.hostname, h.hostname_ja, h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id " +
+                    "h.host_no, h.hostname, h.settikikiid, h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id " +
                     "from host h INNER JOIN user_tbl u ON u.userno = h.userno INNER JOIN system sys ON sys.systemno = h.systemno INNER JOIN site s ON s.siteno = h.siteno ";
 
-                sql[1] = "select w.userno,w.systemno,w.siteno, w.host_no, w.kennshino, w.interfacename, w.status w_status, w.type,w.kanshi,w.start_date,w.end_date,w.border,w.IPaddress,w.IPaddressNAT,w.chk_date w_chk_date, w.chk_name_id w_chk_name_id " +
+                sql[1] = "select w.userno,w.systemno,w.siteno, w.host_no, w.kennshino, w.interfacename, w.status w_status, w.type,w.kanshi,w.border,w.IPaddress,w.IPaddressNAT,w.biko interbiko,w.chk_date w_chk_date, w.chk_name_id w_chk_name_id " +
                     "from user_tbl u INNER JOIN system sys ON u.userno = sys.userno INNER JOIN site s ON s.systemno=sys.systemno INNER JOIN host h ON h.siteno = s.siteno  LEFT OUTER JOIN watch_interface w ON  h.host_no = w.host_no ";
             }
             else if (sitename != null)
             {
-                sql[0] = "select u.userno,u.username,u.username_kana,u.username_sum,u.status u_status,u.report_status,u.biko userbiko,u.chk_date u_chk_date,u.chk_name_id u_chk_name_id," +
+                sql[0] = "select u.userno,u.customerID,u.username,u.username_kana,u.username_sum,u.status u_status,u.report_status,u.biko userbiko,u.chk_date u_chk_date,u.chk_name_id u_chk_name_id," +
                     "sys.systemno,sys.systemname,sys.systemkana, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id," +
                     "s.siteno,s.sitename,s.address1,s.address2,s.telno, s.status s_status, s.biko sitebiko, s.chk_date s_chk_date, s.chk_name_id s_chk_name_id " +
                     "from site s INNER JOIN user_tbl u ON u.userno = s.userno INNER JOIN system sys ON sys.systemno = s.systemno ";
 
-                sql[1] = "select w.kennshino, w.interfacename, w.status w_status, w.type,w.kanshi,w.start_date,w.end_date,w.border,w.IPaddress,w.IPaddressNAT,w.chk_date w_chk_date, w.chk_name_id w_chk_name_id, " +
-                    "h.userno,h.systemno,h.siteno,h.host_no, h.hostname, h.hostname_ja, h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id " +
+                sql[1] = "select w.kennshino, w.interfacename, w.status w_status, w.type,w.kanshi,w.border,w.IPaddress,w.IPaddressNAT,w.biko interbiko,w.chk_date w_chk_date, w.chk_name_id w_chk_name_id, " +
+                    "h.userno,h.systemno,h.siteno,h.host_no, h.hostname, h.settikikiid, h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id " +
                     "from user_tbl u INNER JOIN system sys ON u.userno = sys.userno INNER JOIN site s ON s.systemno=sys.systemno INNER JOIN host h ON s.siteno = h.siteno INNER JOIN watch_interface w ON s.siteno = w.siteno ";
             }
             else if (systemname != null)
             {
-                sql[0] = "select u.userno,u.username,u.username_kana,u.username_sum,u.status u_status,u.report_status,u.biko userbiko,u.chk_date u_chk_date,u.chk_name_id u_chk_name_id," +
+                sql[0] = "select u.userno,u.customerID,u.username,u.username_kana,u.username_sum,u.status u_status,u.report_status,u.biko userbiko,u.chk_date u_chk_date,u.chk_name_id u_chk_name_id," +
                     "sys.systemno,sys.systemname,sys.systemkana, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id " +
                     "from system sys INNER JOIN user_tbl u ON u.userno = sys.userno ";
 
-                sql[1] = "select u.userno,u.username,sys.systemno,sys.systemname,w.kennshino, w.interfacename, w.status w_status, w.type,w.kanshi,w.start_date,w.end_date,w.border,w.IPaddress,w.IPaddressNAT,w.chk_date w_chk_date, w.chk_name_id w_chk_name_id," +
-                    "h.host_no, h.hostname, h.hostname_ja, h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id, " +
+                sql[1] = "select u.userno,u.customerID,u.username,sys.systemno,sys.systemname,w.kennshino, w.interfacename, w.status w_status, w.type,w.kanshi,w.border,w.IPaddress,w.IPaddressNAT,w.biko interbiko,w.chk_date w_chk_date, w.chk_name_id w_chk_name_id," +
+                    "h.host_no, h.hostname, h.settikikiid, h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id, " +
                     "s.siteno,s.sitename,s.address1,s.address2,s.telno, s.status s_status, s.biko sitebiko, s.chk_date s_chk_date, s.chk_name_id s_chk_name_id " +
                     "from user_tbl u INNER JOIN system sys ON u.userno = sys.userno INNER JOIN site s ON s.systemno = sys.systemno LEFT OUTER JOIN host h ON h.siteno = s.siteno LEFT OUTER JOIN watch_interface w ON w.host_no = h.host_no ";
             }
             else if (username != null)
 
-                sql[0] = "select w.kennshino, w.interfacename, w.status w_status, w.type,w.kanshi,w.start_date,w.end_date,w.border,w.IPaddress,w.IPaddressNAT,w.chk_date w_chk_date, w.chk_name_id w_chk_name_id," +
-                    "h.host_no, h.hostname, h.hostname_ja, h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id, " +
+                sql[0] = "select w.kennshino, w.interfacename, w.status w_status, w.type,w.kanshi,w.border,w.IPaddress,w.IPaddressNAT,w.biko interbiko,w.chk_date w_chk_date, w.chk_name_id w_chk_name_id," +
+                    "h.host_no, h.hostname,h.settikikiid,h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id, " +
                     "s.siteno,s.sitename,s.address1,s.address2,s.telno, s.status s_status, s.biko sitebiko, s.chk_date s_chk_date, s.chk_name_id s_chk_name_id," +
                     "sys.systemno,sys.systemname,sys.systemkana, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id," +
-                    "u.userno,u.username,u.username_kana,u.username_sum,u.status u_status, u.report_status,u.biko userbiko, u.chk_date u_chk_date, u.chk_name_id u_chk_name_id " +
+                    "u.userno,u.customerID,u.username,u.username_kana,u.username_sum,u.status u_status, u.report_status,u.biko userbiko, u.chk_date u_chk_date, u.chk_name_id u_chk_name_id " +
                     "from user_tbl u LEFT OUTER JOIN system sys ON u.userno = sys.userno LEFT OUTER JOIN site s ON s.systemno = sys.systemno LEFT OUTER JOIN host h ON h.siteno = s.siteno LEFT OUTER JOIN watch_interface w ON w.host_no = h.host_no ";
 
 
@@ -2108,6 +2155,7 @@ namespace SMSサンプル
                         if (ipadd != null && i == 0)
                         {
                             u_ds.userno = dataReader["userno"].ToString();
+                            u_ds.customerID = dataReader["customerID"].ToString();
                             u_ds.username = dataReader["username"].ToString();
                             u_ds.username_kana = dataReader["username_kana"].ToString();
                             u_ds.username_sum = dataReader["username_sum"].ToString();
@@ -2141,7 +2189,7 @@ namespace SMSサンプル
 
                             h_ds.host_no = dataReader["host_no"].ToString();
                             h_ds.hostname = dataReader["hostname"].ToString();
-                            h_ds.hostname_ja = dataReader["hostname_ja"].ToString();
+                            h_ds.settikikiid = dataReader["settikikiid"].ToString();
                             h_ds.status = dataReader["h_status"].ToString();
                             h_ds.device = dataReader["device"].ToString();
                             h_ds.location = dataReader["location"].ToString();
@@ -2163,15 +2211,13 @@ namespace SMSサンプル
                             w_ds.status = dataReader["w_status"].ToString();
                             w_ds.type = dataReader["type"].ToString();
                             w_ds.kanshi = dataReader["kanshi"].ToString();
-                            String ss = dataReader["start_date"].ToString();
-                            w_ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
+                            w_ds.biko = dataReader["interbiko"].ToString();
 
-                            String ss2 = dataReader["end_date"].ToString();
-                            w_ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
 
                             w_ds.border = dataReader["border"].ToString();
                             w_ds.IPaddress = dataReader["IPaddress"].ToString();
                             w_ds.IPaddressNAT = dataReader["IPaddressNAT"].ToString();
+                            w_ds.biko = dataReader["interbiko"].ToString();
                             w_ds.userno = dataReader["userno"].ToString();
                             w_ds.host_no = dataReader["host_no"].ToString();
                             w_ds.systemno = dataReader["systemno"].ToString();
@@ -2183,6 +2229,7 @@ namespace SMSサンプル
                         if (hostname != null && i == 0)
                         {
                             u_ds.userno = dataReader["userno"].ToString();
+                            u_ds.customerID = dataReader["customerID"].ToString();
                             u_ds.username = dataReader["username"].ToString();
                             u_ds.username_kana = dataReader["username_kana"].ToString();
                             u_ds.username_sum = dataReader["username_sum"].ToString();
@@ -2219,7 +2266,7 @@ namespace SMSサンプル
 
                             h_ds.host_no = dataReader["host_no"].ToString();
                             h_ds.hostname = dataReader["hostname"].ToString();
-                            h_ds.hostname_ja = dataReader["hostname_ja"].ToString();
+                            h_ds.settikikiid = dataReader["settikikiid"].ToString();
                             h_ds.status = dataReader["h_status"].ToString();
                             h_ds.device = dataReader["device"].ToString();
                             h_ds.location = dataReader["location"].ToString();
@@ -2240,6 +2287,7 @@ namespace SMSサンプル
                         else if (sitename != null && i == 0)
                         {
                             u_ds.userno = dataReader["userno"].ToString();
+                            u_ds.customerID = dataReader["customerID"].ToString();
                             u_ds.username = dataReader["username"].ToString();
                             u_ds.username_kana = dataReader["username_kana"].ToString();
                             u_ds.username_sum = dataReader["username_sum"].ToString();
@@ -2276,6 +2324,7 @@ namespace SMSサンプル
                         else if (systemname != null && i == 0)
                         {
                             u_ds.userno = dataReader["userno"].ToString();
+                            u_ds.customerID = dataReader["customerID"].ToString();
                             u_ds.username = dataReader["username"].ToString();
                             u_ds.username_kana = dataReader["username_kana"].ToString();
                             u_ds.username_sum = dataReader["username_sum"].ToString();
@@ -2298,6 +2347,7 @@ namespace SMSサンプル
                         {
 
                             u_ds.userno = dataReader["userno"].ToString();
+                            u_ds.customerID = dataReader["customerID"].ToString();
                             u_ds.username = dataReader["username"].ToString();
                             u_ds.username_kana = dataReader["username_kana"].ToString();
                             u_ds.username_sum = dataReader["username_sum"].ToString();
@@ -2340,7 +2390,7 @@ namespace SMSサンプル
 
                                 h_ds.host_no = dataReader["host_no"].ToString();
                                 h_ds.hostname = dataReader["hostname"].ToString();
-                                h_ds.hostname_ja = dataReader["hostname_ja"].ToString();
+                                h_ds.settikikiid = dataReader["settikikiid"].ToString();
                                 h_ds.status = dataReader["h_status"].ToString();
                                 h_ds.device = dataReader["device"].ToString();
                                 h_ds.location = dataReader["location"].ToString();
@@ -2366,15 +2416,10 @@ namespace SMSサンプル
                                 w_ds.type = dataReader["type"].ToString();
                                 w_ds.kanshi = dataReader["kanshi"].ToString();
 
-                                String ss = dataReader["start_date"].ToString();
-                                w_ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
-
-                                String ss2 = dataReader["end_date"].ToString();
-                                w_ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
-
                                 w_ds.border = dataReader["border"].ToString();
                                 w_ds.IPaddress = dataReader["IPaddress"].ToString();
                                 w_ds.IPaddressNAT = dataReader["IPaddressNAT"].ToString();
+                                w_ds.biko = dataReader["interbiko"].ToString();
                                 w_ds.chk_date = dataReader["w_chk_date"].ToString();
                                 w_ds.chk_name_id = dataReader["w_chk_name_id"].ToString();
                                 w_ds.userno = dataReader["userno"].ToString();
@@ -2395,11 +2440,11 @@ namespace SMSサンプル
                                 w_ds.status = dataReader["w_status"].ToString();
                                 w_ds.type = dataReader["type"].ToString();
                                 w_ds.kanshi = dataReader["kanshi"].ToString();
-                                w_ds.start_date = dataReader["start_date"].ToString();
-                                w_ds.end_date = dataReader["end_date"].ToString();
                                 w_ds.border = dataReader["border"].ToString();
                                 w_ds.IPaddress = dataReader["IPaddress"].ToString();
                                 w_ds.IPaddressNAT = dataReader["IPaddressNAT"].ToString();
+                                w_ds.biko = dataReader["interbiko"].ToString();
+
                                 w_ds.userno = dataReader["userno"].ToString();
                                 w_ds.systemno = dataReader["systemno"].ToString();
                                 w_ds.siteno = dataReader["siteno"].ToString();
@@ -2413,7 +2458,7 @@ namespace SMSサンプル
                             {
                                 h_ds.host_no = dataReader["host_no"].ToString();
                                 h_ds.hostname = dataReader["hostname"].ToString();
-                                h_ds.hostname_ja = dataReader["hostname_ja"].ToString();
+                                h_ds.settikikiid = dataReader["settikikiid"].ToString();
                                 h_ds.status = dataReader["h_status"].ToString();
                                 h_ds.device = dataReader["device"].ToString();
                                 h_ds.location = dataReader["location"].ToString();
@@ -2438,15 +2483,10 @@ namespace SMSサンプル
                                     w_ds.type = dataReader["type"].ToString();
                                     w_ds.kanshi = dataReader["kanshi"].ToString();
 
-                                    String ss = dataReader["start_date"].ToString();
-                                    w_ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
-
-                                    String ss2 = dataReader["end_date"].ToString();
-                                    w_ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
-
                                     w_ds.border = dataReader["border"].ToString();
                                     w_ds.IPaddress = dataReader["IPaddress"].ToString();
                                     w_ds.IPaddressNAT = dataReader["IPaddressNAT"].ToString();
+                                    w_ds.biko = dataReader["interbiko"].ToString();
                                     w_ds.chk_date = dataReader["w_chk_date"].ToString();
                                     w_ds.chk_name_id = dataReader["w_chk_name_id"].ToString();
                                     w_ds.userno = dataReader["userno"].ToString();
@@ -2482,7 +2522,7 @@ namespace SMSサンプル
                                 {
                                     h_ds.host_no = dataReader["host_no"].ToString();
                                     h_ds.hostname = dataReader["hostname"].ToString();
-                                    h_ds.hostname_ja = dataReader["hostname_ja"].ToString();
+                                    h_ds.settikikiid = dataReader["settikikiid"].ToString();
                                     h_ds.status = dataReader["h_status"].ToString();
                                     h_ds.device = dataReader["device"].ToString();
                                     h_ds.location = dataReader["location"].ToString();
@@ -2508,16 +2548,10 @@ namespace SMSサンプル
                                     w_ds.type = dataReader["type"].ToString();
                                     w_ds.kanshi = dataReader["kanshi"].ToString();
 
-                                    String ss = dataReader["start_date"].ToString();
-                                    w_ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
-
-                                    String ss2 = dataReader["end_date"].ToString();
-                                    w_ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
-
-
                                     w_ds.border = dataReader["border"].ToString();
                                     w_ds.IPaddress = dataReader["IPaddress"].ToString();
                                     w_ds.IPaddressNAT = dataReader["IPaddressNAT"].ToString();
+                                    w_ds.biko = dataReader["interbiko"].ToString();
                                     w_ds.chk_date = dataReader["w_chk_date"].ToString();
                                     w_ds.chk_name_id = dataReader["w_chk_name_id"].ToString();
                                     w_ds.userno = dataReader["userno"].ToString();
@@ -2558,7 +2592,8 @@ namespace SMSサンプル
 
             if (detailflg == 0)
                 //未完了のものを表示
-                searchstring = "where sc.status= '1' AND sc.schedule_type <> '4' AND sc.start_date <= '" + nowString + "'";
+                //searchstring = "where sc.status= '1' AND sc.schedule_type <> '4' AND sc.start_date <= '" + nowString + "'";
+                searchstring = "where sc.schedule_type <> '4' AND sc.start_date <= '" + nowString + "'";
 
             if (param_dict.Count > 0)
             {
@@ -2804,8 +2839,12 @@ namespace SMSサンプル
                     "timer_taiou t INNER JOIN schedule s ON t.schedule_no = s.schedule_no " +
                     "LEFT OUTER JOIN user_tbl u ON s.userno = u.userno " +
                     "LEFT OUTER JOIN system sys ON s.systemno = sys.systemno " +
-                    "where s.status='1' and  s.start_date <= '" + nowString + "' and end_date >= '" + nowString + "' " +
-                    "and t.alertdatetime <= '" + nowString + "' and t.taioudate is null", con);
+                //                    "where s.status='1' and  s.start_date <= '" + nowString + "' and end_date >= '" + nowString + "' " +
+                //                    "and t.alertdatetime <= '" + nowString + "' and t.taioudate is null", con);
+
+                "where s.status='1' " +
+                "and t.alertdatetime <= '" + nowString + "' and t.taioudate is null", con);
+
                 var dataReader = cmd.ExecuteReader();
 
                 //スケジュール情報の取得
@@ -3103,7 +3142,11 @@ namespace SMSサンプル
                                 param += " WHERE m." + vdict.Key + " >='" + dt.ToString() + "' AND m." +
                                     vdict.Key + " <= '" + dt1.ToString() + "' ";
                             }
+                            else if (vdict.Key == "username")
+                            {
+                                param += " WHERE u." + vdict.Key + " like '%" + vdict.Value + "%'";
 
+                            }
                             else if (vdict.Key == "systemno")
                                 param += " WHERE " + vdict.Key + "='" + vdict.Value + "'";
 
@@ -3113,6 +3156,11 @@ namespace SMSサンプル
                             if (vdict.Key == "opetantouno" || vdict.Key == "addressNo")
                                 param += " and " + vdict.Key + "=" + vdict.Value;
 
+                            else if (vdict.Key == "username")
+                            {
+                                param += " and u." + vdict.Key + " like '%" + vdict.Value + "%'";
+
+                            }
                             else if (0 <= vdict.Key.IndexOf("date"))
                             {
                                 //1日分のデータを取得する

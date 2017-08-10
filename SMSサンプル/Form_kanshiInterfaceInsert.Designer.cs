@@ -32,10 +32,6 @@
             this.label13 = new System.Windows.Forms.Label();
             this.m_border = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.m_kansiEnddate = new System.Windows.Forms.DateTimePicker();
-            this.label11 = new System.Windows.Forms.Label();
-            this.m_kansiStartdate = new System.Windows.Forms.DateTimePicker();
-            this.label10 = new System.Windows.Forms.Label();
             this.m_koumoku = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.m_siteno = new System.Windows.Forms.TextBox();
@@ -63,21 +59,23 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.m_statusCombo = new System.Windows.Forms.ComboBox();
+            this.m_biko = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // m_ipaddress
             // 
             this.m_ipaddress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_ipaddress.Location = new System.Drawing.Point(113, 269);
+            this.m_ipaddress.Location = new System.Drawing.Point(113, 225);
             this.m_ipaddress.Name = "m_ipaddress";
             this.m_ipaddress.Size = new System.Drawing.Size(307, 19);
-            this.m_ipaddress.TabIndex = 11;
+            this.m_ipaddress.TabIndex = 13;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(15, 272);
+            this.label13.Location = new System.Drawing.Point(15, 228);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(51, 12);
             this.label13.TabIndex = 128;
@@ -87,55 +85,19 @@
             // 
             this.m_border.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_border.Location = new System.Drawing.Point(113, 247);
+            this.m_border.Location = new System.Drawing.Point(113, 203);
             this.m_border.Name = "m_border";
             this.m_border.Size = new System.Drawing.Size(307, 19);
-            this.m_border.TabIndex = 10;
+            this.m_border.TabIndex = 12;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(15, 249);
+            this.label12.Location = new System.Drawing.Point(15, 205);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(29, 12);
             this.label12.TabIndex = 126;
             this.label12.Text = "閾値";
-            // 
-            // m_kansiEnddate
-            // 
-            this.m_kansiEnddate.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
-            this.m_kansiEnddate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_kansiEnddate.Location = new System.Drawing.Point(113, 225);
-            this.m_kansiEnddate.Name = "m_kansiEnddate";
-            this.m_kansiEnddate.Size = new System.Drawing.Size(176, 19);
-            this.m_kansiEnddate.TabIndex = 9;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(15, 229);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(77, 12);
-            this.label11.TabIndex = 124;
-            this.label11.Text = "監視終了日時";
-            // 
-            // m_kansiStartdate
-            // 
-            this.m_kansiStartdate.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
-            this.m_kansiStartdate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_kansiStartdate.Location = new System.Drawing.Point(113, 202);
-            this.m_kansiStartdate.Name = "m_kansiStartdate";
-            this.m_kansiStartdate.Size = new System.Drawing.Size(176, 19);
-            this.m_kansiStartdate.TabIndex = 8;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(15, 207);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(77, 12);
-            this.label10.TabIndex = 122;
-            this.label10.Text = "監視開始日時";
             // 
             // m_koumoku
             // 
@@ -144,7 +106,7 @@
             this.m_koumoku.Location = new System.Drawing.Point(113, 179);
             this.m_koumoku.Name = "m_koumoku";
             this.m_koumoku.Size = new System.Drawing.Size(307, 19);
-            this.m_koumoku.TabIndex = 7;
+            this.m_koumoku.TabIndex = 11;
             // 
             // label9
             // 
@@ -161,7 +123,7 @@
             this.m_siteno.Name = "m_siteno";
             this.m_siteno.ReadOnly = true;
             this.m_siteno.Size = new System.Drawing.Size(44, 19);
-            this.m_siteno.TabIndex = 119;
+            this.m_siteno.TabIndex = 4;
             this.m_siteno.TabStop = false;
             // 
             // m_siteCombo
@@ -173,7 +135,7 @@
             this.m_siteCombo.Location = new System.Drawing.Point(163, 60);
             this.m_siteCombo.Name = "m_siteCombo";
             this.m_siteCombo.Size = new System.Drawing.Size(259, 20);
-            this.m_siteCombo.TabIndex = 2;
+            this.m_siteCombo.TabIndex = 5;
             this.m_siteCombo.SelectionChangeCommitted += new System.EventHandler(this.m_siteCombo_SelectionChangeCommitted);
             // 
             // m_systemno
@@ -182,7 +144,7 @@
             this.m_systemno.Name = "m_systemno";
             this.m_systemno.ReadOnly = true;
             this.m_systemno.Size = new System.Drawing.Size(44, 19);
-            this.m_systemno.TabIndex = 117;
+            this.m_systemno.TabIndex = 2;
             this.m_systemno.TabStop = false;
             // 
             // m_userno
@@ -191,7 +153,7 @@
             this.m_userno.Name = "m_userno";
             this.m_userno.ReadOnly = true;
             this.m_userno.Size = new System.Drawing.Size(44, 19);
-            this.m_userno.TabIndex = 116;
+            this.m_userno.TabIndex = 0;
             this.m_userno.TabStop = false;
             // 
             // m_systemCombo
@@ -203,7 +165,7 @@
             this.m_systemCombo.Location = new System.Drawing.Point(163, 36);
             this.m_systemCombo.Name = "m_systemCombo";
             this.m_systemCombo.Size = new System.Drawing.Size(259, 20);
-            this.m_systemCombo.TabIndex = 1;
+            this.m_systemCombo.TabIndex = 3;
             this.m_systemCombo.SelectionChangeCommitted += new System.EventHandler(this.m_systemCombo_SelectionChangeCommitted);
             // 
             // m_usernameCombo
@@ -215,7 +177,7 @@
             this.m_usernameCombo.Location = new System.Drawing.Point(163, 12);
             this.m_usernameCombo.Name = "m_usernameCombo";
             this.m_usernameCombo.Size = new System.Drawing.Size(259, 20);
-            this.m_usernameCombo.TabIndex = 0;
+            this.m_usernameCombo.TabIndex = 1;
             this.m_usernameCombo.SelectionChangeCommitted += new System.EventHandler(this.m_userCombo_SelectionChangeCommitted);
             // 
             // label8
@@ -238,11 +200,11 @@
             // 
             // m_idlabel
             // 
-            this.m_idlabel.Location = new System.Drawing.Point(113, 315);
+            this.m_idlabel.Location = new System.Drawing.Point(113, 316);
             this.m_idlabel.Name = "m_idlabel";
             this.m_idlabel.ReadOnly = true;
             this.m_idlabel.Size = new System.Drawing.Size(44, 19);
-            this.m_idlabel.TabIndex = 111;
+            this.m_idlabel.TabIndex = 16;
             this.m_idlabel.TabStop = false;
             // 
             // m_type
@@ -252,7 +214,7 @@
             this.m_type.Location = new System.Drawing.Point(113, 156);
             this.m_type.Name = "m_type";
             this.m_type.Size = new System.Drawing.Size(307, 19);
-            this.m_type.TabIndex = 6;
+            this.m_type.TabIndex = 10;
             // 
             // label6
             // 
@@ -267,17 +229,17 @@
             // 
             this.m_labelinputOpe.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_labelinputOpe.Location = new System.Drawing.Point(163, 315);
+            this.m_labelinputOpe.Location = new System.Drawing.Point(163, 316);
             this.m_labelinputOpe.Name = "m_labelinputOpe";
             this.m_labelinputOpe.ReadOnly = true;
             this.m_labelinputOpe.Size = new System.Drawing.Size(257, 19);
-            this.m_labelinputOpe.TabIndex = 107;
+            this.m_labelinputOpe.TabIndex = 17;
             this.m_labelinputOpe.TabStop = false;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 318);
+            this.label5.Location = new System.Drawing.Point(15, 319);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(51, 12);
             this.label5.TabIndex = 106;
@@ -286,10 +248,10 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(223, 340);
+            this.button3.Location = new System.Drawing.Point(223, 341);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
-            this.button3.TabIndex = 13;
+            this.button3.TabIndex = 18;
             this.button3.Text = "登録";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -297,10 +259,10 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(327, 340);
+            this.button2.Location = new System.Drawing.Point(327, 341);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 23);
-            this.button2.TabIndex = 14;
+            this.button2.TabIndex = 19;
             this.button2.Text = "キャンセル";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -312,7 +274,7 @@
             this.m_interfacename.Location = new System.Drawing.Point(113, 133);
             this.m_interfacename.Name = "m_interfacename";
             this.m_interfacename.Size = new System.Drawing.Size(307, 19);
-            this.m_interfacename.TabIndex = 5;
+            this.m_interfacename.TabIndex = 9;
             // 
             // label3
             // 
@@ -328,9 +290,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(15, 87);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(76, 12);
+            this.label2.Size = new System.Drawing.Size(44, 12);
             this.label2.TabIndex = 97;
-            this.label2.Text = "ホスト名(英数)";
+            this.label2.Text = "ホスト名";
             // 
             // label1
             // 
@@ -347,7 +309,7 @@
             this.m_hostno.Name = "m_hostno";
             this.m_hostno.ReadOnly = true;
             this.m_hostno.Size = new System.Drawing.Size(44, 19);
-            this.m_hostno.TabIndex = 130;
+            this.m_hostno.TabIndex = 6;
             this.m_hostno.TabStop = false;
             // 
             // m_hostCombo
@@ -359,22 +321,22 @@
             this.m_hostCombo.Location = new System.Drawing.Point(163, 84);
             this.m_hostCombo.Name = "m_hostCombo";
             this.m_hostCombo.Size = new System.Drawing.Size(259, 20);
-            this.m_hostCombo.TabIndex = 3;
+            this.m_hostCombo.TabIndex = 7;
             this.m_hostCombo.SelectionChangeCommitted += new System.EventHandler(this.m_hostCombo_SelectionChangeCommitted);
             // 
             // m_ipaddressNAT
             // 
             this.m_ipaddressNAT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_ipaddressNAT.Location = new System.Drawing.Point(113, 292);
+            this.m_ipaddressNAT.Location = new System.Drawing.Point(113, 248);
             this.m_ipaddressNAT.Name = "m_ipaddressNAT";
             this.m_ipaddressNAT.Size = new System.Drawing.Size(307, 19);
-            this.m_ipaddressNAT.TabIndex = 12;
+            this.m_ipaddressNAT.TabIndex = 14;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(15, 295);
+            this.label14.Location = new System.Drawing.Point(15, 251);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(82, 12);
             this.label14.TabIndex = 132;
@@ -399,13 +361,35 @@
             this.m_statusCombo.Location = new System.Drawing.Point(113, 108);
             this.m_statusCombo.Name = "m_statusCombo";
             this.m_statusCombo.Size = new System.Drawing.Size(68, 20);
-            this.m_statusCombo.TabIndex = 4;
+            this.m_statusCombo.TabIndex = 8;
+            // 
+            // m_biko
+            // 
+            this.m_biko.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_biko.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.m_biko.Location = new System.Drawing.Point(113, 273);
+            this.m_biko.Multiline = true;
+            this.m_biko.Name = "m_biko";
+            this.m_biko.Size = new System.Drawing.Size(307, 37);
+            this.m_biko.TabIndex = 15;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(15, 276);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(29, 12);
+            this.label10.TabIndex = 137;
+            this.label10.Text = "備考";
             // 
             // Form_kanshiInterfaceInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(432, 372);
+            this.Controls.Add(this.m_biko);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.m_statusCombo);
             this.Controls.Add(this.m_ipaddressNAT);
@@ -416,10 +400,6 @@
             this.Controls.Add(this.label13);
             this.Controls.Add(this.m_border);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.m_kansiEnddate);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.m_kansiStartdate);
-            this.Controls.Add(this.label10);
             this.Controls.Add(this.m_koumoku);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.m_siteno);
@@ -455,10 +435,6 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox m_border;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.DateTimePicker m_kansiEnddate;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.DateTimePicker m_kansiStartdate;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox m_koumoku;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox m_siteno;
@@ -486,5 +462,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox m_statusCombo;
+        private System.Windows.Forms.TextBox m_biko;
+        private System.Windows.Forms.Label label10;
     }
 }

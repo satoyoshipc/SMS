@@ -75,6 +75,7 @@ namespace SMSサンプル
             string isp = m_isp.Text;
             string servicetype = m_servicetype.Text;
             string serviceid = m_serviceid.Text;
+            string biko = m_biko.Text;
 
             //DB接続
             NpgsqlCommand cmd;
@@ -83,8 +84,8 @@ namespace SMSサンプル
                 if (con.FullState != ConnectionState.Open) con.Open();
                 Int32 rowsaffected;
                 //データ登録
-                cmd = new NpgsqlCommand(@"insert into Kaisen(status,career,type,kaisenid,isp,servicetype,serviceid,systemno,siteno,userno,host_no,telno1,telno2,telno3,chk_name_id) 
-                    values ( :status,:career,:type,:kaisenid,:isp,:servicetype,:serviceid,:systemno,:siteno,:userno,:host_no,:telno1,:telno2,:telno3,:chk_name_id)", con);
+                cmd = new NpgsqlCommand(@"insert into Kaisen(status,career,type,kaisenid,isp,servicetype,serviceid,systemno,siteno,userno,host_no,telno1,telno2,telno3,biko,chk_name_id) 
+                    values ( :status,:career,:type,:kaisenid,:isp,:servicetype,:serviceid,:systemno,:siteno,:userno,:host_no,:telno1,:telno2,:telno3,:biko,:chk_name_id)", con);
                 cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
                 cmd.Parameters.Add(new NpgsqlParameter("career", DbType.String) { Value = career });
                 cmd.Parameters.Add(new NpgsqlParameter("type", DbType.String) { Value = kaisensyubetu });
@@ -99,6 +100,7 @@ namespace SMSサンプル
                 cmd.Parameters.Add(new NpgsqlParameter("telno1", DbType.String) { Value = tel1 });
                 cmd.Parameters.Add(new NpgsqlParameter("telno2", DbType.String) { Value = tel2 });
                 cmd.Parameters.Add(new NpgsqlParameter("telno3", DbType.String) { Value = tel3 });
+                cmd.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = biko });
 
 
                 cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });

@@ -10,7 +10,7 @@ namespace SMSサンプル
     {
         public String host_no { get; set; }
         public String hostname { get; set; }
-        public String hostname_ja { get; set; }
+        public String settikikiid { get; set; }
         private string _status;
         public String status
         {

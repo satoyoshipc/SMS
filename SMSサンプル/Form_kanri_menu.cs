@@ -150,7 +150,7 @@ namespace SMSサンプル
                     string str = "";
                     if(str.StartsWith("#"))
                         continue;
-
+                    uds.customerID = cols[6];
                     //カスタマ名
                     uds.username = cols[0];
                     //カスタマメイカナ
@@ -164,8 +164,8 @@ namespace SMSサンプル
                     else
                         uds.report_status = "0";
 
-                    //備考(CSC管理番号)
-                    uds.biko = cols[3] + Environment.NewLine + "NESIC-CSC管理番号:" + cols[6];
+                    //備考
+                    uds.biko = cols[3];
 
                     //最終更新日時
                     uds.chk_date = cols[7];
@@ -696,8 +696,7 @@ namespace SMSサンプル
             {
 
                 //インサート文
-                int i = 0;
-                int cnt = 0;
+
                 cmd = new NpgsqlCommand(@"  insert into system (systemname,systemkana,userno,chk_date,chk_name_id) " +
                     "select 'NM監視','ネットワーク監視',userno,:chk_date,:chk_name_id from user_tbl where not exists (select systemno from system where user_tbl.userno = system.userno)", con);
 
@@ -786,9 +785,9 @@ namespace SMSサンプル
 
                     //電話番号1
                     sds.telno = cols[4] + " :" + cols[5] + " :" + cols[6] + " :" + cols[7] + cols[8] + " :" + cols[9];
-                    //住所1
+                    //郵便番号
                     sds.address1 = cols[10];
-                    //住所2
+                    //住所
                     sds.address2 = cols[11];
 
                     //備考
@@ -954,10 +953,10 @@ namespace SMSサンプル
                     //設置場所
                     hds.location = cols[8];
                     //用途
-                    if(cols[9].Trim() == "-" || cols[9] == "")
-                        hds.usefor =  cols[9];
-                    else
-                        hds.usefor = "管理番号(NESICID):" + cols[9];
+                    hds.usefor = "";
+
+                    //設置機器ID
+                    hds.settikikiid = cols[9];
 
                     //開始日時
                     hds.kansiStartdate = cols[10];
@@ -1022,8 +1021,8 @@ namespace SMSサンプル
                         stat = "1";
                     else if (si.status == "無効")
                         stat = "2";
-                    cmd = new NpgsqlCommand(@"insert into host(hostname,status,device,location,usefor,kansistartdate,kansiendsdate,hosyukanri,hosyuinfo,biko,userno,systemno,siteno,chk_date,chk_name_id) 
-                    values ( :hostname,:status,:device,:location,:usefor,:kansistartdate,:kansiendsdate,:hosyukanri,:hosyuinfo,:biko,:userno,:systemno,:siteno,:chk_date,:chk_name_id)", con);
+                    cmd = new NpgsqlCommand(@"insert into host(hostname,settikikiid,status,device,location,usefor,kansistartdate,kansiendsdate,hosyukanri,hosyuinfo,biko,userno,systemno,siteno,chk_date,chk_name_id) 
+                                       values ( :hostname,:settikikiid,:status,:device,:location,:usefor,:kansistartdate,:kansiendsdate,:hosyukanri,:hosyuinfo,:biko,:userno,:systemno,:siteno,:chk_date,:chk_name_id)", con);
 
                     try
                     {
@@ -1033,10 +1032,12 @@ namespace SMSサンプル
                         Int32 rowsaffected;
                         //データ登録
                         cmd.Parameters.Add(new NpgsqlParameter("hostname", DbType.String) { Value = si.hostname });
+                        cmd.Parameters.Add(new NpgsqlParameter("settikikiid", DbType.String) { Value = si.settikikiid });
                         cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = stat });
                         cmd.Parameters.Add(new NpgsqlParameter("device", DbType.String) { Value = si.device });
                         cmd.Parameters.Add(new NpgsqlParameter("location", DbType.String) { Value = si.location });
                         cmd.Parameters.Add(new NpgsqlParameter("usefor", DbType.String) { Value = si.usefor });
+
 
                         //監視開始日時
                         if (si.kansiStartdate == "" || si.kansiStartdate == null)
@@ -1099,8 +1100,6 @@ namespace SMSサンプル
                     catch (Exception ex)
                     {
                         MessageBox.Show("ホスト情報のインポート時" + cnt + "行目にエラーが発生しました。  ホスト名：" + si.hostname + "  " + ex.Message);
-                        logger.ErrorFormat("ホスト情報を登録できませんでした。{0} ", si.hostname);
-
                         //transaction.Rollback();
                         cnt++;
                         return;
@@ -1166,7 +1165,7 @@ namespace SMSサンプル
                     sds.busho_name = cols[8];
 
 
-                    //住所1
+                    //備考
                     sds.biko = cols[11];
 
                     //更新日時
@@ -1863,8 +1862,8 @@ namespace SMSサンプル
 
                     }
 
-                    cmd = new NpgsqlCommand(@"insert into watch_Interface(interfacename,status,type,kanshi,start_date,end_date,border,ipaddress,ipaddressnat,host_no,userno,systemno,siteno,chk_date,chk_name_id) 
-                    values (:interfacename,:status,:type,:kanshi,:start_date,:end_date,:border,:ipaddress,:ipaddressnat,:host_no,:userno,:systemno,:siteno,:chk_date,:chk_name_id)", con);
+                    cmd = new NpgsqlCommand(@"insert into watch_Interface(interfacename,status,type,kanshi,border,ipaddress,ipaddressnat,biko,host_no,userno,systemno,siteno,chk_date,chk_name_id) 
+                    values (:interfacename,:status,:type,:kanshi,:border,:ipaddress,:ipaddressnat,:biko,:host_no,:userno,:systemno,:siteno,:chk_date,:chk_name_id)", con);
                     try
                     {
                         DateTime datet;
@@ -1875,10 +1874,6 @@ namespace SMSサンプル
 
 
                         Console.WriteLine(datet.ToString());
-
-                        DateTime start_dateTime = datet;
-                        DateTime end_dateTime = datet.AddYears(3);
-
 
 
                         Int32 rowsaffected;
@@ -1897,12 +1892,11 @@ namespace SMSサンプル
                         cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
                         cmd.Parameters.Add(new NpgsqlParameter("type", DbType.String) { Value = sikds.type });
                         cmd.Parameters.Add(new NpgsqlParameter("kanshi", DbType.String) { Value = sikds.kanshi });
-                        cmd.Parameters.Add(new NpgsqlParameter("start_date", DbType.DateTime) { Value = start_dateTime });
-                        cmd.Parameters.Add(new NpgsqlParameter("end_date", DbType.DateTime) { Value = end_dateTime });
 
                         cmd.Parameters.Add(new NpgsqlParameter("border", DbType.String) { Value = sikds.border });
                         cmd.Parameters.Add(new NpgsqlParameter("ipaddress", DbType.String) { Value = sikds.IPaddress });
                         cmd.Parameters.Add(new NpgsqlParameter("ipaddressnat", DbType.String) { Value = sikds.IPaddressNAT });
+                        cmd.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = sikds.biko });
                         cmd.Parameters.Add(new NpgsqlParameter("host_no", DbType.Int32) { Value = ret_host_no });
                         cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = ret_userno });
                         cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = ret_systemno });

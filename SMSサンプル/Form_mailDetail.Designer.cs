@@ -30,6 +30,10 @@
         {
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_addressslist = new System.Windows.Forms.ListView();
+            this.m_username = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.m_Customername = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.m_deleteBtn = new System.Windows.Forms.Button();
             this.m_updateOpe = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -50,10 +54,6 @@
             this.m_select_btn = new System.Windows.Forms.Button();
             this.m_selectCombo = new System.Windows.Forms.ComboBox();
             this.m_selecttext = new System.Windows.Forms.TextBox();
-            this.m_Customername = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.m_username = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -97,7 +97,7 @@
             this.splitContainer2.Panel2.Controls.Add(this.label3);
             this.splitContainer2.Panel2.Controls.Add(this.label2);
             this.splitContainer2.Panel2.Controls.Add(this.label1);
-            this.splitContainer2.Size = new System.Drawing.Size(575, 477);
+            this.splitContainer2.Size = new System.Drawing.Size(677, 477);
             this.splitContainer2.SplitterDistance = 268;
             this.splitContainer2.TabIndex = 1;
             // 
@@ -107,19 +107,57 @@
             this.m_addressslist.GridLines = true;
             this.m_addressslist.Location = new System.Drawing.Point(0, 0);
             this.m_addressslist.Name = "m_addressslist";
-            this.m_addressslist.Size = new System.Drawing.Size(571, 264);
+            this.m_addressslist.Size = new System.Drawing.Size(673, 264);
             this.m_addressslist.TabIndex = 1;
             this.m_addressslist.UseCompatibleStateImageBehavior = false;
             this.m_addressslist.View = System.Windows.Forms.View.Details;
             this.m_addressslist.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_addressslist_ColumnClick_1);
             this.m_addressslist.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.m_addressslist_MouseDoubleClick_1);
             // 
+            // m_username
+            // 
+            this.m_username.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_username.Location = new System.Drawing.Point(143, 84);
+            this.m_username.Name = "m_username";
+            this.m_username.ReadOnly = true;
+            this.m_username.Size = new System.Drawing.Size(270, 19);
+            this.m_username.TabIndex = 114;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(9, 85);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(47, 12);
+            this.label7.TabIndex = 115;
+            this.label7.Text = "ユーザ名";
+            // 
+            // m_Customername
+            // 
+            this.m_Customername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_Customername.Location = new System.Drawing.Point(143, 60);
+            this.m_Customername.Name = "m_Customername";
+            this.m_Customername.ReadOnly = true;
+            this.m_Customername.Size = new System.Drawing.Size(270, 19);
+            this.m_Customername.TabIndex = 112;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(9, 63);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(52, 12);
+            this.label6.TabIndex = 113;
+            this.label6.Text = "カスタマ名";
+            // 
             // m_deleteBtn
             // 
             this.m_deleteBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_deleteBtn.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.m_deleteBtn.ForeColor = System.Drawing.Color.Red;
-            this.m_deleteBtn.Location = new System.Drawing.Point(485, 7);
+            this.m_deleteBtn.Location = new System.Drawing.Point(587, 7);
             this.m_deleteBtn.Name = "m_deleteBtn";
             this.m_deleteBtn.Size = new System.Drawing.Size(76, 27);
             this.m_deleteBtn.TabIndex = 109;
@@ -130,10 +168,10 @@
             // m_updateOpe
             // 
             this.m_updateOpe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_updateOpe.Location = new System.Drawing.Point(397, 138);
+            this.m_updateOpe.Location = new System.Drawing.Point(480, 136);
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
-            this.m_updateOpe.Size = new System.Drawing.Size(166, 19);
+            this.m_updateOpe.Size = new System.Drawing.Size(183, 19);
             this.m_updateOpe.TabIndex = 106;
             this.m_updateOpe.TabStop = false;
             // 
@@ -141,7 +179,7 @@
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(338, 141);
+            this.label11.Location = new System.Drawing.Point(421, 139);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(41, 12);
             this.label11.TabIndex = 111;
@@ -150,10 +188,10 @@
             // m_update
             // 
             this.m_update.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_update.Location = new System.Drawing.Point(397, 110);
+            this.m_update.Location = new System.Drawing.Point(480, 108);
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
-            this.m_update.Size = new System.Drawing.Size(166, 19);
+            this.m_update.Size = new System.Drawing.Size(183, 19);
             this.m_update.TabIndex = 104;
             this.m_update.TabStop = false;
             // 
@@ -161,7 +199,7 @@
             // 
             this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(338, 114);
+            this.label12.Location = new System.Drawing.Point(421, 112);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(53, 12);
             this.label12.TabIndex = 110;
@@ -170,7 +208,7 @@
             // m_cancelbtn
             // 
             this.m_cancelbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_cancelbtn.Location = new System.Drawing.Point(486, 170);
+            this.m_cancelbtn.Location = new System.Drawing.Point(585, 170);
             this.m_cancelbtn.Name = "m_cancelbtn";
             this.m_cancelbtn.Size = new System.Drawing.Size(78, 28);
             this.m_cancelbtn.TabIndex = 108;
@@ -181,7 +219,7 @@
             // m_kousin_btn
             // 
             this.m_kousin_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_kousin_btn.Location = new System.Drawing.Point(402, 170);
+            this.m_kousin_btn.Location = new System.Drawing.Point(501, 170);
             this.m_kousin_btn.Name = "m_kousin_btn";
             this.m_kousin_btn.Size = new System.Drawing.Size(78, 28);
             this.m_kousin_btn.TabIndex = 107;
@@ -193,47 +231,47 @@
             // 
             this.m_addressname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_addressname.Location = new System.Drawing.Point(92, 154);
+            this.m_addressname.Location = new System.Drawing.Point(143, 154);
             this.m_addressname.Name = "m_addressname";
-            this.m_addressname.Size = new System.Drawing.Size(222, 19);
+            this.m_addressname.Size = new System.Drawing.Size(270, 19);
             this.m_addressname.TabIndex = 102;
             // 
             // m_address
             // 
             this.m_address.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_address.Location = new System.Drawing.Point(92, 130);
+            this.m_address.Location = new System.Drawing.Point(143, 130);
             this.m_address.Name = "m_address";
-            this.m_address.Size = new System.Drawing.Size(222, 19);
+            this.m_address.Size = new System.Drawing.Size(270, 19);
             this.m_address.TabIndex = 101;
             // 
             // m_addressno
             // 
             this.m_addressno.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_addressno.Location = new System.Drawing.Point(92, 107);
+            this.m_addressno.Location = new System.Drawing.Point(143, 107);
             this.m_addressno.Name = "m_addressno";
-            this.m_addressno.Size = new System.Drawing.Size(222, 19);
+            this.m_addressno.Size = new System.Drawing.Size(270, 19);
             this.m_addressno.TabIndex = 98;
             // 
             // m_userid
             // 
             this.m_userid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_userid.Location = new System.Drawing.Point(92, 35);
+            this.m_userid.Location = new System.Drawing.Point(143, 35);
             this.m_userid.Name = "m_userid";
             this.m_userid.ReadOnly = true;
-            this.m_userid.Size = new System.Drawing.Size(222, 19);
+            this.m_userid.Size = new System.Drawing.Size(270, 19);
             this.m_userid.TabIndex = 97;
             // 
             // m_kubun
             // 
             this.m_kubun.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_kubun.Location = new System.Drawing.Point(92, 11);
+            this.m_kubun.Location = new System.Drawing.Point(143, 11);
             this.m_kubun.Name = "m_kubun";
             this.m_kubun.ReadOnly = true;
-            this.m_kubun.Size = new System.Drawing.Size(222, 19);
+            this.m_kubun.Size = new System.Drawing.Size(270, 19);
             this.m_kubun.TabIndex = 95;
             // 
             // label5
@@ -266,11 +304,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 37);
+            this.label2.Location = new System.Drawing.Point(9, 39);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 12);
+            this.label2.Size = new System.Drawing.Size(132, 12);
             this.label2.TabIndex = 99;
-            this.label2.Text = "ユーザID";
+            this.label2.Text = "ユーザ、オペレータID(通番)";
             // 
             // label1
             // 
@@ -306,49 +344,11 @@
             this.m_selecttext.Size = new System.Drawing.Size(200, 19);
             this.m_selecttext.TabIndex = 4;
             // 
-            // m_Customername
-            // 
-            this.m_Customername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_Customername.Location = new System.Drawing.Point(92, 60);
-            this.m_Customername.Name = "m_Customername";
-            this.m_Customername.ReadOnly = true;
-            this.m_Customername.Size = new System.Drawing.Size(222, 19);
-            this.m_Customername.TabIndex = 112;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 63);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(52, 12);
-            this.label6.TabIndex = 113;
-            this.label6.Text = "カスタマ名";
-            // 
-            // m_username
-            // 
-            this.m_username.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_username.Location = new System.Drawing.Point(92, 84);
-            this.m_username.Name = "m_username";
-            this.m_username.ReadOnly = true;
-            this.m_username.Size = new System.Drawing.Size(222, 19);
-            this.m_username.TabIndex = 114;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(9, 85);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(47, 12);
-            this.label7.TabIndex = 115;
-            this.label7.Text = "ユーザ名";
-            // 
             // Form_mailDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(579, 505);
+            this.ClientSize = new System.Drawing.Size(681, 505);
             this.Controls.Add(this.m_select_btn);
             this.Controls.Add(this.m_selectCombo);
             this.Controls.Add(this.m_selecttext);

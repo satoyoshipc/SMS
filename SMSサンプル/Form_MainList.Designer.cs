@@ -42,6 +42,14 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.m_tokubetu_umu_check = new System.Windows.Forms.CheckBox();
+            this.m_keikaku_umu_check = new System.Windows.Forms.CheckBox();
+            this.m_teiki_umu_check = new System.Windows.Forms.CheckBox();
+            this.m_incident_umu_check = new System.Windows.Forms.CheckBox();
+            this.m_toubetu_count = new System.Windows.Forms.Label();
+            this.m_keikaku_count = new System.Windows.Forms.Label();
+            this.m_teiki_count = new System.Windows.Forms.Label();
+            this.m_incident_count = new System.Windows.Forms.Label();
             this.print_tokubetu = new System.Windows.Forms.LinkLabel();
             this.print_keikaku = new System.Windows.Forms.LinkLabel();
             this.print_incident = new System.Windows.Forms.LinkLabel();
@@ -81,6 +89,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.m_usernameCombo = new System.Windows.Forms.ComboBox();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.m_customer_umu_check = new System.Windows.Forms.CheckBox();
             this.m_custmMente = new System.Windows.Forms.LinkLabel();
             this.m_systemMente = new System.Windows.Forms.LinkLabel();
             this.m_system_label = new System.Windows.Forms.LinkLabel();
@@ -90,15 +99,23 @@
             this.label7 = new System.Windows.Forms.Label();
             this.userList = new System.Windows.Forms.ListView();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.m_site_umu_check = new System.Windows.Forms.CheckBox();
+            this.m_site_count = new System.Windows.Forms.Label();
             this.m_siteMente = new System.Windows.Forms.LinkLabel();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.label8 = new System.Windows.Forms.Label();
             this.siteList = new System.Windows.Forms.ListView();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
+            this.m_host_umu_check = new System.Windows.Forms.CheckBox();
+            this.m_host_count = new System.Windows.Forms.Label();
             this.m_hostMente = new System.Windows.Forms.LinkLabel();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.label9 = new System.Windows.Forms.Label();
             this.m_host_list = new System.Windows.Forms.ListView();
+            this.m_kaisen_umu_check = new System.Windows.Forms.CheckBox();
+            this.m_interface_umu_check = new System.Windows.Forms.CheckBox();
+            this.m_kaisen_count = new System.Windows.Forms.Label();
+            this.m_interface_count = new System.Windows.Forms.Label();
             this.m_kaisenMente = new System.Windows.Forms.LinkLabel();
             this.m_InterfaceMente = new System.Windows.Forms.LinkLabel();
             this.linkLabel6 = new System.Windows.Forms.LinkLabel();
@@ -107,6 +124,24 @@
             this.kaisenList = new System.Windows.Forms.ListView();
             this.label10 = new System.Windows.Forms.Label();
             this.interfaceList = new System.Windows.Forms.ListView();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.m_SummaryBtn = new System.Windows.Forms.Button();
+            this.m_orbcomm_Btn = new System.Windows.Forms.Button();
+            this.m_opeUpdateBtn = new System.Windows.Forms.Button();
+            this.m_mailTemplateInsert = new System.Windows.Forms.Button();
+            this.m_opeinsertBtn = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.カスタマCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.カスタマCToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.カスタマ情報UToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.カスタマ担当者TToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.カスタマ担当者電話番号DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.メールアドレスMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.システムSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.拠点SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ホストHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.インターフェイスToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.回線情報LToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -114,6 +149,8 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tokubetuContext = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_user_count = new System.Windows.Forms.Label();
+            this.m_system_count = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -144,6 +181,8 @@
             this.splitContainer6.Panel1.SuspendLayout();
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tokubetuContext.SuspendLayout();
             this.SuspendLayout();
@@ -272,15 +311,24 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1044, 705);
-            this.tabControl1.TabIndex = 186;
+            this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.m_tokubetu_umu_check);
+            this.tabPage1.Controls.Add(this.m_keikaku_umu_check);
+            this.tabPage1.Controls.Add(this.m_teiki_umu_check);
+            this.tabPage1.Controls.Add(this.m_incident_umu_check);
+            this.tabPage1.Controls.Add(this.m_toubetu_count);
+            this.tabPage1.Controls.Add(this.m_keikaku_count);
+            this.tabPage1.Controls.Add(this.m_teiki_count);
+            this.tabPage1.Controls.Add(this.m_incident_count);
             this.tabPage1.Controls.Add(this.print_tokubetu);
             this.tabPage1.Controls.Add(this.print_keikaku);
             this.tabPage1.Controls.Add(this.print_incident);
@@ -303,8 +351,88 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(1036, 679);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "タイマー情報";
+            this.tabPage1.Text = "タスク管理";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // m_tokubetu_umu_check
+            // 
+            this.m_tokubetu_umu_check.AutoSize = true;
+            this.m_tokubetu_umu_check.Location = new System.Drawing.Point(280, 576);
+            this.m_tokubetu_umu_check.Name = "m_tokubetu_umu_check";
+            this.m_tokubetu_umu_check.Size = new System.Drawing.Size(81, 16);
+            this.m_tokubetu_umu_check.TabIndex = 212;
+            this.m_tokubetu_umu_check.Text = "完了を表示";
+            this.m_tokubetu_umu_check.UseVisualStyleBackColor = true;
+            this.m_tokubetu_umu_check.CheckedChanged += new System.EventHandler(this.m_tokubetu_umu_check_CheckedChanged);
+            // 
+            // m_keikaku_umu_check
+            // 
+            this.m_keikaku_umu_check.AutoSize = true;
+            this.m_keikaku_umu_check.Location = new System.Drawing.Point(280, 382);
+            this.m_keikaku_umu_check.Name = "m_keikaku_umu_check";
+            this.m_keikaku_umu_check.Size = new System.Drawing.Size(81, 16);
+            this.m_keikaku_umu_check.TabIndex = 211;
+            this.m_keikaku_umu_check.Text = "完了を表示";
+            this.m_keikaku_umu_check.UseVisualStyleBackColor = true;
+            this.m_keikaku_umu_check.CheckedChanged += new System.EventHandler(this.m_keikaku_umu_check_CheckedChanged);
+            // 
+            // m_teiki_umu_check
+            // 
+            this.m_teiki_umu_check.AutoSize = true;
+            this.m_teiki_umu_check.Location = new System.Drawing.Point(280, 192);
+            this.m_teiki_umu_check.Name = "m_teiki_umu_check";
+            this.m_teiki_umu_check.Size = new System.Drawing.Size(81, 16);
+            this.m_teiki_umu_check.TabIndex = 210;
+            this.m_teiki_umu_check.Text = "完了を表示";
+            this.m_teiki_umu_check.UseVisualStyleBackColor = true;
+            this.m_teiki_umu_check.CheckedChanged += new System.EventHandler(this.m_teiki_umu_check_CheckedChanged);
+            // 
+            // m_incident_umu_check
+            // 
+            this.m_incident_umu_check.AutoSize = true;
+            this.m_incident_umu_check.Location = new System.Drawing.Point(280, 12);
+            this.m_incident_umu_check.Name = "m_incident_umu_check";
+            this.m_incident_umu_check.Size = new System.Drawing.Size(81, 16);
+            this.m_incident_umu_check.TabIndex = 209;
+            this.m_incident_umu_check.Text = "完了を表示";
+            this.m_incident_umu_check.UseVisualStyleBackColor = true;
+            this.m_incident_umu_check.CheckedChanged += new System.EventHandler(this.m_incident_umu_check_CheckedChanged);
+            // 
+            // m_toubetu_count
+            // 
+            this.m_toubetu_count.AutoSize = true;
+            this.m_toubetu_count.Location = new System.Drawing.Point(200, 580);
+            this.m_toubetu_count.Name = "m_toubetu_count";
+            this.m_toubetu_count.Size = new System.Drawing.Size(23, 12);
+            this.m_toubetu_count.TabIndex = 208;
+            this.m_toubetu_count.Text = "0件";
+            // 
+            // m_keikaku_count
+            // 
+            this.m_keikaku_count.AutoSize = true;
+            this.m_keikaku_count.Location = new System.Drawing.Point(200, 385);
+            this.m_keikaku_count.Name = "m_keikaku_count";
+            this.m_keikaku_count.Size = new System.Drawing.Size(23, 12);
+            this.m_keikaku_count.TabIndex = 207;
+            this.m_keikaku_count.Text = "0件";
+            // 
+            // m_teiki_count
+            // 
+            this.m_teiki_count.AutoSize = true;
+            this.m_teiki_count.Location = new System.Drawing.Point(200, 193);
+            this.m_teiki_count.Name = "m_teiki_count";
+            this.m_teiki_count.Size = new System.Drawing.Size(23, 12);
+            this.m_teiki_count.TabIndex = 206;
+            this.m_teiki_count.Text = "0件";
+            // 
+            // m_incident_count
+            // 
+            this.m_incident_count.AutoSize = true;
+            this.m_incident_count.Location = new System.Drawing.Point(200, 14);
+            this.m_incident_count.Name = "m_incident_count";
+            this.m_incident_count.Size = new System.Drawing.Size(23, 12);
+            this.m_incident_count.TabIndex = 205;
+            this.m_incident_count.Text = "0件";
             // 
             // print_tokubetu
             // 
@@ -367,7 +495,7 @@
             this.m_tokubetu_list.GridLines = true;
             this.m_tokubetu_list.Location = new System.Drawing.Point(10, 595);
             this.m_tokubetu_list.Name = "m_tokubetu_list";
-            this.m_tokubetu_list.Size = new System.Drawing.Size(957, 138);
+            this.m_tokubetu_list.Size = new System.Drawing.Size(1020, 138);
             this.m_tokubetu_list.TabIndex = 198;
             this.m_tokubetu_list.UseCompatibleStateImageBehavior = false;
             this.m_tokubetu_list.View = System.Windows.Forms.View.Details;
@@ -407,7 +535,7 @@
             // 
             this.label15.AutoSize = true;
             this.label15.ForeColor = System.Drawing.Color.Red;
-            this.label15.Location = new System.Drawing.Point(230, 10);
+            this.label15.Location = new System.Drawing.Point(523, 14);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(241, 12);
             this.label15.TabIndex = 196;
@@ -441,7 +569,7 @@
             this.m_teiki_List.GridLines = true;
             this.m_teiki_List.Location = new System.Drawing.Point(8, 208);
             this.m_teiki_List.Name = "m_teiki_List";
-            this.m_teiki_List.Size = new System.Drawing.Size(960, 165);
+            this.m_teiki_List.Size = new System.Drawing.Size(1023, 165);
             this.m_teiki_List.TabIndex = 193;
             this.m_teiki_List.UseCompatibleStateImageBehavior = false;
             this.m_teiki_List.View = System.Windows.Forms.View.Details;
@@ -492,12 +620,13 @@
             this.m_incident_List.GridLines = true;
             this.m_incident_List.Location = new System.Drawing.Point(8, 30);
             this.m_incident_List.Name = "m_incident_List";
-            this.m_incident_List.Size = new System.Drawing.Size(960, 150);
+            this.m_incident_List.Size = new System.Drawing.Size(1023, 150);
             this.m_incident_List.TabIndex = 190;
             this.m_incident_List.UseCompatibleStateImageBehavior = false;
             this.m_incident_List.View = System.Windows.Forms.View.Details;
             this.m_incident_List.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_incident_List_ColumnClick);
             this.m_incident_List.DoubleClick += new System.EventHandler(this.m_incident_List_DoubleClick);
+            this.m_incident_List.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_incident_List_KeyDown);
             // 
             // linkLabel1
             // 
@@ -527,7 +656,7 @@
             this.m_keikaku_list.GridLines = true;
             this.m_keikaku_list.Location = new System.Drawing.Point(10, 400);
             this.m_keikaku_list.Name = "m_keikaku_list";
-            this.m_keikaku_list.Size = new System.Drawing.Size(957, 170);
+            this.m_keikaku_list.Size = new System.Drawing.Size(1020, 170);
             this.m_keikaku_list.TabIndex = 187;
             this.m_keikaku_list.UseCompatibleStateImageBehavior = false;
             this.m_keikaku_list.View = System.Windows.Forms.View.Details;
@@ -543,7 +672,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(1036, 679);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "構成情報";
+            this.tabPage2.Text = "構成管理";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // splitContainer3
@@ -590,7 +719,7 @@
             // 
             // m_incidentTouroku
             // 
-            this.m_incidentTouroku.Location = new System.Drawing.Point(786, 11);
+            this.m_incidentTouroku.Location = new System.Drawing.Point(786, 10);
             this.m_incidentTouroku.Name = "m_incidentTouroku";
             this.m_incidentTouroku.Size = new System.Drawing.Size(58, 38);
             this.m_incidentTouroku.TabIndex = 185;
@@ -731,6 +860,9 @@
             // 
             // splitContainer4.Panel1
             // 
+            this.splitContainer4.Panel1.Controls.Add(this.m_system_count);
+            this.splitContainer4.Panel1.Controls.Add(this.m_user_count);
+            this.splitContainer4.Panel1.Controls.Add(this.m_customer_umu_check);
             this.splitContainer4.Panel1.Controls.Add(this.m_custmMente);
             this.splitContainer4.Panel1.Controls.Add(this.m_systemMente);
             this.splitContainer4.Panel1.Controls.Add(this.m_system_label);
@@ -746,6 +878,18 @@
             this.splitContainer4.Size = new System.Drawing.Size(1030, 611);
             this.splitContainer4.SplitterDistance = 122;
             this.splitContainer4.TabIndex = 0;
+            // 
+            // m_customer_umu_check
+            // 
+            this.m_customer_umu_check.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_customer_umu_check.AutoSize = true;
+            this.m_customer_umu_check.Location = new System.Drawing.Point(440, 7);
+            this.m_customer_umu_check.Name = "m_customer_umu_check";
+            this.m_customer_umu_check.Size = new System.Drawing.Size(81, 16);
+            this.m_customer_umu_check.TabIndex = 197;
+            this.m_customer_umu_check.Text = "無効を表示";
+            this.m_customer_umu_check.UseVisualStyleBackColor = true;
+            this.m_customer_umu_check.CheckedChanged += new System.EventHandler(this.m_customer_umu_check_CheckedChanged);
             // 
             // m_custmMente
             // 
@@ -816,6 +960,7 @@
             this.systemList.View = System.Windows.Forms.View.Details;
             this.systemList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.systemList_ColumnClick);
             this.systemList.Click += new System.EventHandler(this.systemList_Click);
+            this.systemList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.systemList_KeyDown);
             this.systemList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.systemList_MouseDoubleClick);
             // 
             // label7
@@ -840,6 +985,7 @@
             this.userList.UseCompatibleStateImageBehavior = false;
             this.userList.View = System.Windows.Forms.View.Details;
             this.userList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.userList_ColumnClick);
+            this.userList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.userList_KeyDown);
             this.userList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.userList_MouseClick);
             this.userList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.userList_MouseDoubleClick_1);
             // 
@@ -853,6 +999,8 @@
             // 
             // splitContainer5.Panel1
             // 
+            this.splitContainer5.Panel1.Controls.Add(this.m_site_umu_check);
+            this.splitContainer5.Panel1.Controls.Add(this.m_site_count);
             this.splitContainer5.Panel1.Controls.Add(this.m_siteMente);
             this.splitContainer5.Panel1.Controls.Add(this.linkLabel3);
             this.splitContainer5.Panel1.Controls.Add(this.label8);
@@ -865,10 +1013,31 @@
             this.splitContainer5.SplitterDistance = 134;
             this.splitContainer5.TabIndex = 0;
             // 
+            // m_site_umu_check
+            // 
+            this.m_site_umu_check.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_site_umu_check.AutoSize = true;
+            this.m_site_umu_check.Location = new System.Drawing.Point(939, 6);
+            this.m_site_umu_check.Name = "m_site_umu_check";
+            this.m_site_umu_check.Size = new System.Drawing.Size(81, 16);
+            this.m_site_umu_check.TabIndex = 198;
+            this.m_site_umu_check.Text = "無効を表示";
+            this.m_site_umu_check.UseVisualStyleBackColor = true;
+            this.m_site_umu_check.CheckedChanged += new System.EventHandler(this.m_site_umu_check_CheckedChanged);
+            // 
+            // m_site_count
+            // 
+            this.m_site_count.AutoSize = true;
+            this.m_site_count.Location = new System.Drawing.Point(161, 8);
+            this.m_site_count.Name = "m_site_count";
+            this.m_site_count.Size = new System.Drawing.Size(17, 12);
+            this.m_site_count.TabIndex = 197;
+            this.m_site_count.Text = "件";
+            // 
             // m_siteMente
             // 
             this.m_siteMente.AutoSize = true;
-            this.m_siteMente.Location = new System.Drawing.Point(102, 7);
+            this.m_siteMente.Location = new System.Drawing.Point(110, 7);
             this.m_siteMente.Name = "m_siteMente";
             this.m_siteMente.Size = new System.Drawing.Size(31, 12);
             this.m_siteMente.TabIndex = 196;
@@ -879,7 +1048,7 @@
             // linkLabel3
             // 
             this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Location = new System.Drawing.Point(67, 7);
+            this.linkLabel3.Location = new System.Drawing.Point(78, 7);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(29, 12);
             this.linkLabel3.TabIndex = 185;
@@ -911,6 +1080,7 @@
             this.siteList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.siteList_ColumnClick);
             this.siteList.Click += new System.EventHandler(this.siteList_Click);
             this.siteList.DoubleClick += new System.EventHandler(this.siteList_DoubleClick);
+            this.siteList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.siteList_KeyDown);
             // 
             // splitContainer6
             // 
@@ -922,6 +1092,8 @@
             // 
             // splitContainer6.Panel1
             // 
+            this.splitContainer6.Panel1.Controls.Add(this.m_host_umu_check);
+            this.splitContainer6.Panel1.Controls.Add(this.m_host_count);
             this.splitContainer6.Panel1.Controls.Add(this.m_hostMente);
             this.splitContainer6.Panel1.Controls.Add(this.linkLabel4);
             this.splitContainer6.Panel1.Controls.Add(this.label9);
@@ -929,6 +1101,10 @@
             // 
             // splitContainer6.Panel2
             // 
+            this.splitContainer6.Panel2.Controls.Add(this.m_kaisen_umu_check);
+            this.splitContainer6.Panel2.Controls.Add(this.m_interface_umu_check);
+            this.splitContainer6.Panel2.Controls.Add(this.m_kaisen_count);
+            this.splitContainer6.Panel2.Controls.Add(this.m_interface_count);
             this.splitContainer6.Panel2.Controls.Add(this.m_kaisenMente);
             this.splitContainer6.Panel2.Controls.Add(this.m_InterfaceMente);
             this.splitContainer6.Panel2.Controls.Add(this.linkLabel6);
@@ -941,10 +1117,31 @@
             this.splitContainer6.SplitterDistance = 191;
             this.splitContainer6.TabIndex = 0;
             // 
+            // m_host_umu_check
+            // 
+            this.m_host_umu_check.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_host_umu_check.AutoSize = true;
+            this.m_host_umu_check.Location = new System.Drawing.Point(939, 5);
+            this.m_host_umu_check.Name = "m_host_umu_check";
+            this.m_host_umu_check.Size = new System.Drawing.Size(81, 16);
+            this.m_host_umu_check.TabIndex = 199;
+            this.m_host_umu_check.Text = "無効を表示";
+            this.m_host_umu_check.UseVisualStyleBackColor = true;
+            this.m_host_umu_check.CheckedChanged += new System.EventHandler(this.m_host_umu_check_CheckedChanged);
+            // 
+            // m_host_count
+            // 
+            this.m_host_count.AutoSize = true;
+            this.m_host_count.Location = new System.Drawing.Point(161, 7);
+            this.m_host_count.Name = "m_host_count";
+            this.m_host_count.Size = new System.Drawing.Size(17, 12);
+            this.m_host_count.TabIndex = 198;
+            this.m_host_count.Text = "件";
+            // 
             // m_hostMente
             // 
             this.m_hostMente.AutoSize = true;
-            this.m_hostMente.Location = new System.Drawing.Point(101, 6);
+            this.m_hostMente.Location = new System.Drawing.Point(110, 7);
             this.m_hostMente.Name = "m_hostMente";
             this.m_hostMente.Size = new System.Drawing.Size(31, 12);
             this.m_hostMente.TabIndex = 197;
@@ -955,7 +1152,7 @@
             // linkLabel4
             // 
             this.linkLabel4.AutoSize = true;
-            this.linkLabel4.Location = new System.Drawing.Point(67, 6);
+            this.linkLabel4.Location = new System.Drawing.Point(78, 6);
             this.linkLabel4.Name = "linkLabel4";
             this.linkLabel4.Size = new System.Drawing.Size(29, 12);
             this.linkLabel4.TabIndex = 186;
@@ -987,12 +1184,56 @@
             this.m_host_list.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_host_list_ColumnClick);
             this.m_host_list.Click += new System.EventHandler(this.m_host_list_Click);
             this.m_host_list.DoubleClick += new System.EventHandler(this.hostList_DoubleClick);
+            this.m_host_list.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_host_list_KeyDown);
+            // 
+            // m_kaisen_umu_check
+            // 
+            this.m_kaisen_umu_check.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_kaisen_umu_check.AutoSize = true;
+            this.m_kaisen_umu_check.Location = new System.Drawing.Point(939, 5);
+            this.m_kaisen_umu_check.Name = "m_kaisen_umu_check";
+            this.m_kaisen_umu_check.Size = new System.Drawing.Size(81, 16);
+            this.m_kaisen_umu_check.TabIndex = 206;
+            this.m_kaisen_umu_check.Text = "無効を表示";
+            this.m_kaisen_umu_check.UseVisualStyleBackColor = true;
+            this.m_kaisen_umu_check.CheckedChanged += new System.EventHandler(this.m_kaisen_umu_check_CheckedChanged);
+            // 
+            // m_interface_umu_check
+            // 
+            this.m_interface_umu_check.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_interface_umu_check.AutoSize = true;
+            this.m_interface_umu_check.Location = new System.Drawing.Point(439, 5);
+            this.m_interface_umu_check.Name = "m_interface_umu_check";
+            this.m_interface_umu_check.Size = new System.Drawing.Size(81, 16);
+            this.m_interface_umu_check.TabIndex = 205;
+            this.m_interface_umu_check.Text = "無効を表示";
+            this.m_interface_umu_check.UseVisualStyleBackColor = true;
+            this.m_interface_umu_check.CheckedChanged += new System.EventHandler(this.m_interface_umu_check_CheckedChanged);
+            // 
+            // m_kaisen_count
+            // 
+            this.m_kaisen_count.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_kaisen_count.AutoSize = true;
+            this.m_kaisen_count.Location = new System.Drawing.Point(679, 8);
+            this.m_kaisen_count.Name = "m_kaisen_count";
+            this.m_kaisen_count.Size = new System.Drawing.Size(17, 12);
+            this.m_kaisen_count.TabIndex = 204;
+            this.m_kaisen_count.Text = "件";
+            // 
+            // m_interface_count
+            // 
+            this.m_interface_count.AutoSize = true;
+            this.m_interface_count.Location = new System.Drawing.Point(227, 8);
+            this.m_interface_count.Name = "m_interface_count";
+            this.m_interface_count.Size = new System.Drawing.Size(17, 12);
+            this.m_interface_count.TabIndex = 203;
+            this.m_interface_count.Text = "件";
             // 
             // m_kaisenMente
             // 
             this.m_kaisenMente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_kaisenMente.AutoSize = true;
-            this.m_kaisenMente.Location = new System.Drawing.Point(623, 7);
+            this.m_kaisenMente.Location = new System.Drawing.Point(623, 8);
             this.m_kaisenMente.Name = "m_kaisenMente";
             this.m_kaisenMente.Size = new System.Drawing.Size(31, 12);
             this.m_kaisenMente.TabIndex = 202;
@@ -1057,6 +1298,7 @@
             this.kaisenList.View = System.Windows.Forms.View.Details;
             this.kaisenList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.kaisenList_ColumnClick);
             this.kaisenList.DoubleClick += new System.EventHandler(this.kaisenList_DoubleClick);
+            this.kaisenList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.kaisenList_KeyDown);
             // 
             // label10
             // 
@@ -1081,6 +1323,170 @@
             this.interfaceList.View = System.Windows.Forms.View.Details;
             this.interfaceList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.interfaceList_ColumnClick);
             this.interfaceList.DoubleClick += new System.EventHandler(this.interfaceList_DoubleClick);
+            this.interfaceList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.interfaceList_KeyDown);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.m_SummaryBtn);
+            this.tabPage3.Controls.Add(this.m_orbcomm_Btn);
+            this.tabPage3.Controls.Add(this.m_opeUpdateBtn);
+            this.tabPage3.Controls.Add(this.m_mailTemplateInsert);
+            this.tabPage3.Controls.Add(this.m_opeinsertBtn);
+            this.tabPage3.Controls.Add(this.menuStrip1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1036, 679);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "登録メニュー";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // m_SummaryBtn
+            // 
+            this.m_SummaryBtn.Location = new System.Drawing.Point(17, 140);
+            this.m_SummaryBtn.Name = "m_SummaryBtn";
+            this.m_SummaryBtn.Size = new System.Drawing.Size(223, 37);
+            this.m_SummaryBtn.TabIndex = 3;
+            this.m_SummaryBtn.Text = "集計";
+            this.m_SummaryBtn.UseVisualStyleBackColor = true;
+            this.m_SummaryBtn.Click += new System.EventHandler(this.m_SummaryBtn_Click);
+            // 
+            // m_orbcomm_Btn
+            // 
+            this.m_orbcomm_Btn.Location = new System.Drawing.Point(17, 246);
+            this.m_orbcomm_Btn.Name = "m_orbcomm_Btn";
+            this.m_orbcomm_Btn.Size = new System.Drawing.Size(222, 37);
+            this.m_orbcomm_Btn.TabIndex = 5;
+            this.m_orbcomm_Btn.Text = "オーブコム月間運用予定表";
+            this.m_orbcomm_Btn.UseVisualStyleBackColor = true;
+            this.m_orbcomm_Btn.Click += new System.EventHandler(this.m_orbcomm_Btn_Click);
+            // 
+            // m_opeUpdateBtn
+            // 
+            this.m_opeUpdateBtn.Location = new System.Drawing.Point(17, 87);
+            this.m_opeUpdateBtn.Name = "m_opeUpdateBtn";
+            this.m_opeUpdateBtn.Size = new System.Drawing.Size(223, 37);
+            this.m_opeUpdateBtn.TabIndex = 2;
+            this.m_opeUpdateBtn.Text = "オペレータ編集";
+            this.m_opeUpdateBtn.UseVisualStyleBackColor = true;
+            this.m_opeUpdateBtn.Click += new System.EventHandler(this.m_opeUpdateBtn_Click);
+            // 
+            // m_mailTemplateInsert
+            // 
+            this.m_mailTemplateInsert.Location = new System.Drawing.Point(17, 193);
+            this.m_mailTemplateInsert.Name = "m_mailTemplateInsert";
+            this.m_mailTemplateInsert.Size = new System.Drawing.Size(223, 37);
+            this.m_mailTemplateInsert.TabIndex = 4;
+            this.m_mailTemplateInsert.Text = "メールテンプレート登録";
+            this.m_mailTemplateInsert.UseVisualStyleBackColor = true;
+            this.m_mailTemplateInsert.Click += new System.EventHandler(this.m_mailTemplateInsert_Click);
+            // 
+            // m_opeinsertBtn
+            // 
+            this.m_opeinsertBtn.Location = new System.Drawing.Point(17, 34);
+            this.m_opeinsertBtn.Name = "m_opeinsertBtn";
+            this.m_opeinsertBtn.Size = new System.Drawing.Size(223, 37);
+            this.m_opeinsertBtn.TabIndex = 1;
+            this.m_opeinsertBtn.Text = "オペレータ登録";
+            this.m_opeinsertBtn.UseVisualStyleBackColor = true;
+            this.m_opeinsertBtn.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.カスタマCToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(3, 3);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1030, 26);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // カスタマCToolStripMenuItem
+            // 
+            this.カスタマCToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.カスタマCToolStripMenuItem1,
+            this.システムSToolStripMenuItem,
+            this.拠点SToolStripMenuItem,
+            this.ホストHToolStripMenuItem,
+            this.インターフェイスToolStripMenuItem,
+            this.回線情報LToolStripMenuItem});
+            this.カスタマCToolStripMenuItem.Name = "カスタマCToolStripMenuItem";
+            this.カスタマCToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
+            this.カスタマCToolStripMenuItem.Text = "インポート(&I)";
+            // 
+            // カスタマCToolStripMenuItem1
+            // 
+            this.カスタマCToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.カスタマ情報UToolStripMenuItem,
+            this.カスタマ担当者TToolStripMenuItem,
+            this.カスタマ担当者電話番号DToolStripMenuItem,
+            this.メールアドレスMToolStripMenuItem});
+            this.カスタマCToolStripMenuItem1.Name = "カスタマCToolStripMenuItem1";
+            this.カスタマCToolStripMenuItem1.Size = new System.Drawing.Size(202, 22);
+            this.カスタマCToolStripMenuItem1.Text = "1-カスタマ(&C)";
+            // 
+            // カスタマ情報UToolStripMenuItem
+            // 
+            this.カスタマ情報UToolStripMenuItem.Name = "カスタマ情報UToolStripMenuItem";
+            this.カスタマ情報UToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.カスタマ情報UToolStripMenuItem.Text = "1-1-カスタマ情報(&U)";
+            this.カスタマ情報UToolStripMenuItem.Click += new System.EventHandler(this.カスタマ情報UToolStripMenuItem_Click);
+            // 
+            // カスタマ担当者TToolStripMenuItem
+            // 
+            this.カスタマ担当者TToolStripMenuItem.Name = "カスタマ担当者TToolStripMenuItem";
+            this.カスタマ担当者TToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.カスタマ担当者TToolStripMenuItem.Text = "1-2-カスタマ担当者(&T)";
+            this.カスタマ担当者TToolStripMenuItem.Click += new System.EventHandler(this.カスタマ担当者TToolStripMenuItem_Click);
+            // 
+            // カスタマ担当者電話番号DToolStripMenuItem
+            // 
+            this.カスタマ担当者電話番号DToolStripMenuItem.Name = "カスタマ担当者電話番号DToolStripMenuItem";
+            this.カスタマ担当者電話番号DToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.カスタマ担当者電話番号DToolStripMenuItem.Text = "1-3-カスタマ担当者電話番号(&D)";
+            this.カスタマ担当者電話番号DToolStripMenuItem.Click += new System.EventHandler(this.カスタマ担当者電話番号DToolStripMenuItem_Click);
+            // 
+            // メールアドレスMToolStripMenuItem
+            // 
+            this.メールアドレスMToolStripMenuItem.Name = "メールアドレスMToolStripMenuItem";
+            this.メールアドレスMToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.メールアドレスMToolStripMenuItem.Text = "1-4-メールアドレス(&M)";
+            this.メールアドレスMToolStripMenuItem.Click += new System.EventHandler(this.メールアドレスMToolStripMenuItem_Click);
+            // 
+            // システムSToolStripMenuItem
+            // 
+            this.システムSToolStripMenuItem.Name = "システムSToolStripMenuItem";
+            this.システムSToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.システムSToolStripMenuItem.Text = "2-システム(&S)";
+            this.システムSToolStripMenuItem.Click += new System.EventHandler(this.システムSToolStripMenuItem_Click_1);
+            // 
+            // 拠点SToolStripMenuItem
+            // 
+            this.拠点SToolStripMenuItem.Name = "拠点SToolStripMenuItem";
+            this.拠点SToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.拠点SToolStripMenuItem.Text = "3-拠点(&K)";
+            this.拠点SToolStripMenuItem.Click += new System.EventHandler(this.拠点SToolStripMenuItem_Click);
+            // 
+            // ホストHToolStripMenuItem
+            // 
+            this.ホストHToolStripMenuItem.Name = "ホストHToolStripMenuItem";
+            this.ホストHToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.ホストHToolStripMenuItem.Text = "4-ホスト(&H)";
+            this.ホストHToolStripMenuItem.Click += new System.EventHandler(this.ホストHToolStripMenuItem_Click);
+            // 
+            // インターフェイスToolStripMenuItem
+            // 
+            this.インターフェイスToolStripMenuItem.Name = "インターフェイスToolStripMenuItem";
+            this.インターフェイスToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.インターフェイスToolStripMenuItem.Text = "5-インターフェイス(&K)";
+            this.インターフェイスToolStripMenuItem.Click += new System.EventHandler(this.インターフェイスToolStripMenuItem_Click);
+            // 
+            // 回線情報LToolStripMenuItem
+            // 
+            this.回線情報LToolStripMenuItem.Name = "回線情報LToolStripMenuItem";
+            this.回線情報LToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.回線情報LToolStripMenuItem.Text = "5-回線情報(&L)";
+            this.回線情報LToolStripMenuItem.Click += new System.EventHandler(this.回線情報LToolStripMenuItem_Click);
             // 
             // splitter1
             // 
@@ -1140,6 +1546,25 @@
             this.toolStripMenuItem2.Text = "変更";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
+            // m_user_count
+            // 
+            this.m_user_count.AutoSize = true;
+            this.m_user_count.Location = new System.Drawing.Point(161, 11);
+            this.m_user_count.Name = "m_user_count";
+            this.m_user_count.Size = new System.Drawing.Size(17, 12);
+            this.m_user_count.TabIndex = 198;
+            this.m_user_count.Text = "件";
+            // 
+            // m_system_count
+            // 
+            this.m_system_count.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_system_count.AutoSize = true;
+            this.m_system_count.Location = new System.Drawing.Point(679, 11);
+            this.m_system_count.Name = "m_system_count";
+            this.m_system_count.Size = new System.Drawing.Size(17, 12);
+            this.m_system_count.TabIndex = 199;
+            this.m_system_count.Text = "件";
+            // 
             // Form_MainList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1148,10 +1573,12 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form_MainList";
-            this.Text = "M.O.S.S (MONITORING OPERATION SERVICE SYSTEM)";
+            this.Text = "M.O.S.S (Monitoring & Operation Support System)";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_MainList_FormClosed);
             this.Load += new System.EventHandler(this.Form_MainList_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form_MainList_KeyDown);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -1190,6 +1617,10 @@
             this.splitContainer6.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.tokubetuContext.ResumeLayout(false);
@@ -1284,6 +1715,43 @@
         private System.Windows.Forms.LinkLabel m_hostMente;
         private System.Windows.Forms.LinkLabel m_kaisenMente;
         private System.Windows.Forms.LinkLabel m_InterfaceMente;
+        private System.Windows.Forms.Label m_site_count;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Button m_SummaryBtn;
+        private System.Windows.Forms.Button m_orbcomm_Btn;
+        private System.Windows.Forms.Button m_opeUpdateBtn;
+        private System.Windows.Forms.Button m_mailTemplateInsert;
+        private System.Windows.Forms.Button m_opeinsertBtn;
+        private System.Windows.Forms.Label m_host_count;
+        private System.Windows.Forms.Label m_kaisen_count;
+        private System.Windows.Forms.Label m_interface_count;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem カスタマCToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem システムSToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 拠点SToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem カスタマCToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem ホストHToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem インターフェイスToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 回線情報LToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem カスタマ情報UToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem カスタマ担当者TToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem カスタマ担当者電話番号DToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem メールアドレスMToolStripMenuItem;
+        private System.Windows.Forms.CheckBox m_customer_umu_check;
+        private System.Windows.Forms.CheckBox m_site_umu_check;
+        private System.Windows.Forms.CheckBox m_host_umu_check;
+        private System.Windows.Forms.CheckBox m_kaisen_umu_check;
+        private System.Windows.Forms.CheckBox m_interface_umu_check;
+        private System.Windows.Forms.Label m_toubetu_count;
+        private System.Windows.Forms.Label m_keikaku_count;
+        private System.Windows.Forms.Label m_teiki_count;
+        private System.Windows.Forms.Label m_incident_count;
+        private System.Windows.Forms.CheckBox m_tokubetu_umu_check;
+        private System.Windows.Forms.CheckBox m_keikaku_umu_check;
+        private System.Windows.Forms.CheckBox m_teiki_umu_check;
+        private System.Windows.Forms.CheckBox m_incident_umu_check;
+        private System.Windows.Forms.Label m_system_count;
+        private System.Windows.Forms.Label m_user_count;
     }
 }
 

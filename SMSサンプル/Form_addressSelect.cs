@@ -43,6 +43,8 @@ namespace SMSサンプル
         private void Form_addressSelect_Load(object sender, EventArgs e)
         {
             m_selectKoumoku.Items.Add("ユーザID(通番)");
+            m_selectKoumoku.Items.Add("カスタマ名");
+
             m_selectKoumoku.Items.Add("アドレス番号");
             m_selectKoumoku.Items.Add("メールアドレス");
             m_selectKoumoku.Items.Add("アドレス名");
@@ -67,12 +69,9 @@ namespace SMSサンプル
                 disp_addressList(Maillist, m_user_tanntouList);
             }
 
-
-
         }
         private void disp_addressList(List<MailaddressDS> Maillist, ListView m_listviewobj)
         {
-
 
             m_listviewobj.FullRowSelect = true;
             m_listviewobj.HideSelection = false;
@@ -140,22 +139,27 @@ namespace SMSサンプル
 
                     switch (this.m_selectKoumoku.SelectedIndex)
                     {
-                        //ホスト名
+                        //ユーザID
                         case 0:
                             param_dict["opetantouno"] = m_selecttext.Text;
                             break;
-                        //ホスト名日本
+                            //カスタマメイ
                         case 1:
+                            param_dict["username"] = m_selecttext.Text;
+                            break;
+
+                        //アドレス番号
+                        case 2:
                             param_dict["addressNo"] = m_selecttext.Text;
                             break;
-                        case 2:
+                        case 3:
                             param_dict["mailAddress"] = m_selecttext.Text;
                             break;
-                        case 3:
+                        case 4:
                             param_dict["addressname"] = m_selecttext.Text;
                             break;
                         //更新者
-                        case 4:
+                        case 5:
                             param_dict["chk_name_id"] = m_selecttext.Text;
                             break;
                         default:

@@ -112,7 +112,6 @@
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
             this.splitContainer1.Size = new System.Drawing.Size(846, 511);
             this.splitContainer1.SplitterDistance = 227;
             this.splitContainer1.TabIndex = 0;
@@ -378,7 +377,6 @@
             this.m_siteno.Size = new System.Drawing.Size(122, 19);
             this.m_siteno.TabIndex = 0;
             this.m_siteno.TabStop = false;
-            this.m_siteno.DoubleClick += new System.EventHandler(this.m_siteno_DoubleClick);
             // 
             // label7
             // 
@@ -396,16 +394,16 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(35, 12);
             this.label3.TabIndex = 91;
-            this.label3.Text = "住所2";
+            this.label3.Text = "住所";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(17, 95);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 12);
+            this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 90;
-            this.label2.Text = "住所1";
+            this.label2.Text = "郵便番号";
             // 
             // label1
             // 

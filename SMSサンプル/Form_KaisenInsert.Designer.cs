@@ -30,9 +30,9 @@
         {
             this.m_serviceid = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.m_servicetype = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
             this.m_isp = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.m_servicetype = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.m_hostno = new System.Windows.Forms.TextBox();
             this.m_hostCombo = new System.Windows.Forms.ComboBox();
@@ -65,13 +65,15 @@
             this.label11 = new System.Windows.Forms.Label();
             this.m_tel3 = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.m_biko = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // m_serviceid
             // 
             this.m_serviceid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_serviceid.Location = new System.Drawing.Point(112, 240);
+            this.m_serviceid.Location = new System.Drawing.Point(112, 251);
             this.m_serviceid.Name = "m_serviceid";
             this.m_serviceid.Size = new System.Drawing.Size(298, 19);
             this.m_serviceid.TabIndex = 14;
@@ -79,43 +81,43 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(12, 242);
+            this.label13.Location = new System.Drawing.Point(12, 254);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(53, 12);
             this.label13.TabIndex = 128;
             this.label13.Text = "サービスID";
             // 
-            // m_servicetype
+            // m_isp
             // 
-            this.m_servicetype.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.m_isp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_servicetype.Location = new System.Drawing.Point(112, 217);
-            this.m_servicetype.Name = "m_servicetype";
-            this.m_servicetype.Size = new System.Drawing.Size(298, 19);
-            this.m_servicetype.TabIndex = 13;
+            this.m_isp.Location = new System.Drawing.Point(112, 206);
+            this.m_isp.Name = "m_isp";
+            this.m_isp.Size = new System.Drawing.Size(298, 19);
+            this.m_isp.TabIndex = 12;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(12, 197);
+            this.label12.Location = new System.Drawing.Point(12, 232);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(66, 12);
             this.label12.TabIndex = 126;
             this.label12.Text = "サービス種別";
             // 
-            // m_isp
+            // m_servicetype
             // 
-            this.m_isp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.m_servicetype.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_isp.Location = new System.Drawing.Point(112, 194);
-            this.m_isp.Name = "m_isp";
-            this.m_isp.Size = new System.Drawing.Size(298, 19);
-            this.m_isp.TabIndex = 12;
+            this.m_servicetype.Location = new System.Drawing.Point(112, 228);
+            this.m_servicetype.Name = "m_servicetype";
+            this.m_servicetype.Size = new System.Drawing.Size(298, 19);
+            this.m_servicetype.TabIndex = 13;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(13, 222);
+            this.label9.Location = new System.Drawing.Point(13, 211);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(22, 12);
             this.label9.TabIndex = 120;
@@ -204,11 +206,11 @@
             // 
             // m_idlabel
             // 
-            this.m_idlabel.Location = new System.Drawing.Point(110, 343);
+            this.m_idlabel.Location = new System.Drawing.Point(110, 416);
             this.m_idlabel.Name = "m_idlabel";
             this.m_idlabel.ReadOnly = true;
             this.m_idlabel.Size = new System.Drawing.Size(44, 19);
-            this.m_idlabel.TabIndex = 18;
+            this.m_idlabel.TabIndex = 19;
             this.m_idlabel.TabStop = false;
             // 
             // m_kaisenid
@@ -233,17 +235,17 @@
             // 
             this.m_labelinputOpe.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_labelinputOpe.Location = new System.Drawing.Point(160, 343);
+            this.m_labelinputOpe.Location = new System.Drawing.Point(160, 416);
             this.m_labelinputOpe.Name = "m_labelinputOpe";
             this.m_labelinputOpe.ReadOnly = true;
             this.m_labelinputOpe.Size = new System.Drawing.Size(250, 19);
-            this.m_labelinputOpe.TabIndex = 19;
+            this.m_labelinputOpe.TabIndex = 20;
             this.m_labelinputOpe.TabStop = false;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(11, 345);
+            this.label5.Location = new System.Drawing.Point(11, 418);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(51, 12);
             this.label5.TabIndex = 106;
@@ -252,10 +254,10 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(209, 366);
+            this.button3.Location = new System.Drawing.Point(209, 439);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
-            this.button3.TabIndex = 20;
+            this.button3.TabIndex = 21;
             this.button3.Text = "登録";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -263,10 +265,10 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(313, 366);
+            this.button2.Location = new System.Drawing.Point(313, 439);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 23);
-            this.button2.TabIndex = 21;
+            this.button2.TabIndex = 22;
             this.button2.Text = "キャンセル";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -371,7 +373,7 @@
             // 
             this.m_tel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_tel1.Location = new System.Drawing.Point(112, 263);
+            this.m_tel1.Location = new System.Drawing.Point(112, 285);
             this.m_tel1.Name = "m_tel1";
             this.m_tel1.Size = new System.Drawing.Size(298, 19);
             this.m_tel1.TabIndex = 15;
@@ -379,7 +381,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(11, 266);
+            this.label10.Location = new System.Drawing.Point(11, 288);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(59, 12);
             this.label10.TabIndex = 138;
@@ -389,7 +391,7 @@
             // 
             this.m_tel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_tel2.Location = new System.Drawing.Point(112, 286);
+            this.m_tel2.Location = new System.Drawing.Point(112, 308);
             this.m_tel2.Name = "m_tel2";
             this.m_tel2.Size = new System.Drawing.Size(298, 19);
             this.m_tel2.TabIndex = 16;
@@ -397,7 +399,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(11, 289);
+            this.label11.Location = new System.Drawing.Point(11, 311);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(59, 12);
             this.label11.TabIndex = 140;
@@ -407,7 +409,7 @@
             // 
             this.m_tel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_tel3.Location = new System.Drawing.Point(112, 310);
+            this.m_tel3.Location = new System.Drawing.Point(112, 332);
             this.m_tel3.Name = "m_tel3";
             this.m_tel3.Size = new System.Drawing.Size(298, 19);
             this.m_tel3.TabIndex = 17;
@@ -415,17 +417,39 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(11, 313);
+            this.label15.Location = new System.Drawing.Point(11, 335);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(59, 12);
             this.label15.TabIndex = 142;
             this.label15.Text = "電話番号3";
             // 
+            // m_biko
+            // 
+            this.m_biko.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_biko.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.m_biko.Location = new System.Drawing.Point(112, 357);
+            this.m_biko.Multiline = true;
+            this.m_biko.Name = "m_biko";
+            this.m_biko.Size = new System.Drawing.Size(296, 53);
+            this.m_biko.TabIndex = 18;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(13, 360);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(29, 12);
+            this.label16.TabIndex = 144;
+            this.label16.Text = "備考";
+            // 
             // Form_kaisenInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(424, 394);
+            this.ClientSize = new System.Drawing.Size(424, 473);
+            this.Controls.Add(this.m_biko);
+            this.Controls.Add(this.label16);
             this.Controls.Add(this.m_tel3);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.m_tel2);
@@ -439,9 +463,9 @@
             this.Controls.Add(this.label14);
             this.Controls.Add(this.m_serviceid);
             this.Controls.Add(this.label13);
-            this.Controls.Add(this.m_servicetype);
-            this.Controls.Add(this.label12);
             this.Controls.Add(this.m_isp);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.m_servicetype);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.m_hostno);
             this.Controls.Add(this.m_hostCombo);
@@ -475,9 +499,9 @@
 
         private System.Windows.Forms.TextBox m_serviceid;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox m_servicetype;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox m_isp;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox m_servicetype;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox m_hostno;
         private System.Windows.Forms.ComboBox m_hostCombo;
@@ -510,5 +534,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox m_tel3;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox m_biko;
+        private System.Windows.Forms.Label label16;
     }
 }

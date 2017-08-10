@@ -620,5 +620,10 @@ namespace SMSサンプル
             mailselectform.loginDS = loginDS;
             mailselectform.Show();
         }
+
+        private void m_incident_kubun_combo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
