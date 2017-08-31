@@ -192,15 +192,11 @@ namespace SMSサンプル
 
         private void PrintRecuesiveExpand(TreeNode treeNode, string nodeText)
         {
-            System.Diagnostics.Debug.WriteLine(treeNode.Text);
-
             TreeNode nd;
 
             if (nodeText == treeNode.Text)
             {
-
                 nd = treeNode;
-
                 nd.Expand();
             }
             foreach (TreeNode tn in treeNode.Nodes)
@@ -209,6 +205,7 @@ namespace SMSサンプル
             }
 
         }
+        //すべて展開
         private void CallRecursiveExpand(TreeView treeView, string nodeText)
         {
             TreeNodeCollection nodes = treeView.Nodes;
@@ -223,7 +220,6 @@ namespace SMSサンプル
         private void RefreshTreeView()
         {
 
-
             treeView1.Nodes.Clear();
             treeView1.ImageList = this.imageList1;
             treeView1.ImageIndex = 0;
@@ -236,6 +232,9 @@ namespace SMSサンプル
             //カスタマ情報を読み込む
             foreach (userDS v in userDSList)
             {
+                if(v.status == "無効")
+                    continue;               
+
                 TreeNode NodeUser = new TreeNode(v.username, 0, 0);
                 NodeUser.ToolTipText = v.userno;
 
@@ -249,6 +248,7 @@ namespace SMSサンプル
                 else
                     systemDSList = systemDSListsub;
 
+
                 //システム名を表示
                 foreach (systemDS s in systemDSListsub)
                 {
@@ -258,7 +258,7 @@ namespace SMSサンプル
                     TreeNode NodeTimer1 = new TreeNode("インシデント", 2, 2);
                     NodeTimer1.ToolTipText = "1";
                     NodeSystem.Nodes.Add(NodeTimer1);
-                    TreeNode NodeTimer2 = new TreeNode("定期業務", 2, 2);
+                    TreeNode NodeTimer2 = new TreeNode("定期作業", 2, 2);
                     NodeTimer2.ToolTipText = "2";
                     NodeSystem.Nodes.Add(NodeTimer2);
                     TreeNode NodeTimer3 = new TreeNode("計画作業", 2, 2);
@@ -326,7 +326,7 @@ namespace SMSサンプル
                                 NodeTimer2.ForeColor = Color.Red;
                                 NodeTimer2.Nodes.Add(NodeTimerDetail);
                             }
-                            //定期業務
+                            //定期作業
                             else if (si.schedule_type == "3")
                             {
 
@@ -343,7 +343,7 @@ namespace SMSサンプル
                                 NodeTimer4.Nodes.Add(NodeTimerDetail);
                             }
                         }
-                        else
+                        else if(si.status == "未完了")
                         {
                             NodeTimerDetail = new TreeNode(si.timer_name, 5, 5);
                             NodeTimerDetail.ToolTipText = si.schedule_no;
@@ -359,7 +359,7 @@ namespace SMSサンプル
                             {
                                 NodeTimer2.Nodes.Add(NodeTimerDetail);
                             }
-                            //定期業務
+                            //定期作業
                             else if (si.schedule_type == "3")
                             {
                                 NodeTimer3.Nodes.Add(NodeTimerDetail);
@@ -591,7 +591,8 @@ namespace SMSサンプル
                 Convert.ToString(row[16]),
                 Convert.ToString(row[17]),
                 Convert.ToString(row[18]),
-                Convert.ToString(row[19])
+                Convert.ToString(row[19]),
+                Convert.ToString(row[20])
                     });
             }
 
@@ -1052,10 +1053,11 @@ namespace SMSサンプル
             this.m_incident_List.Columns.Insert(13, "手配日時", 30, HorizontalAlignment.Left);
             this.m_incident_List.Columns.Insert(14, "復旧日時", 80, HorizontalAlignment.Left);
             this.m_incident_List.Columns.Insert(15, "完了日時", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(16, "担当者番号", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(17, "オペレータID", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(18, "更新日時", 80, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(19, "更新者", 80, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(16, "アラート日時", 180, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(17, "担当者番号", 180, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(18, "オペレータID", 180, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(19, "更新日時", 80, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(20, "更新者", 80, HorizontalAlignment.Left);
 
             //リストビューを初期化する
             incident_List = new DataTable("table14");
@@ -1075,6 +1077,7 @@ namespace SMSサンプル
             incident_List.Columns.Add("手配日時", Type.GetType("System.String"));
             incident_List.Columns.Add("復旧日時", Type.GetType("System.String"));
             incident_List.Columns.Add("完了日時", Type.GetType("System.String"));
+            incident_List.Columns.Add("アラート日時", Type.GetType("System.String"));
             incident_List.Columns.Add("担当者番号", Type.GetType("System.String"));
             incident_List.Columns.Add("オペレータID", Type.GetType("System.String"));
             incident_List.Columns.Add("更新日時", Type.GetType("System.String"));
@@ -1130,6 +1133,7 @@ namespace SMSサンプル
                     urow["手配日時"] = v.tehaidate;
                     urow["復旧日時"] = v.fukyudate;
                     urow["完了日時"] = v.enddate;
+                    urow["アラート日時"] = v.timer;
                     urow["担当者番号"] = v.user_tantou_no;
                     urow["オペレータID"] = v.opename;
                     urow["更新日時"] = v.chk_date;
@@ -1277,7 +1281,8 @@ namespace SMSサンプル
             user_list.Columns.Add("更新日時", Type.GetType("System.String"));
             user_list.Columns.Add("更新者", Type.GetType("System.String"));
 
-
+            if (dsp_L == null)
+                return;
             //データの挿入
             if (dsp_L.user_L != null)
             {
@@ -1414,6 +1419,9 @@ namespace SMSサンプル
             site_list.Columns.Add("更新日時", Type.GetType("System.String"));
             site_list.Columns.Add("更新者", Type.GetType("System.String"));
 
+
+            if (dsp_L == null)
+                return;
             //拠点情報
             if (dsp_L.site_L != null)
             {
@@ -1522,7 +1530,8 @@ namespace SMSサンプル
             host_list.Columns.Add("備考", Type.GetType("System.String"));
             host_list.Columns.Add("更新日時", Type.GetType("System.String"));
             host_list.Columns.Add("更新者", Type.GetType("System.String"));
-
+            if (dsp_L == null)
+                return;
             //機器情報
             if (dsp_L.host_L != null)
             {
@@ -1641,6 +1650,8 @@ namespace SMSサンプル
 
             interface_list.Columns.Add("更新日時", Type.GetType("System.String"));
             interface_list.Columns.Add("更新者", Type.GetType("System.String"));
+            if (dsp_L == null)
+                return;
             //インターフェイス情報
             if (dsp_L.watch_L != null)
             {
@@ -1764,6 +1775,8 @@ namespace SMSサンプル
             kasen_list.Columns.Add("ホスト通番", Type.GetType("System.String"));
             kasen_list.Columns.Add("更新日時", Type.GetType("System.String"));
             kasen_list.Columns.Add("更新者", Type.GetType("System.String"));
+            if (dsp_L == null)
+                return;
             //回線情報
             if (dsp_L.kaisen_L != null)
             {
@@ -2178,6 +2191,9 @@ namespace SMSサンプル
             if (m_tokubetu_list != null) m_tokubetu_list.Clear();
 
             List<TreeNode> expand_array = new List<TreeNode>();
+            
+            //選択されたノードを覚えておく
+            TreeNode node = treeView1.SelectedNode;
 
             CallRecursive(treeView1, expand_array);
 
@@ -2190,11 +2206,14 @@ namespace SMSサンプル
             for (i= 0;i< expand_array.Count;i++)
                 CallRecursiveExpand(treeView1, expand_array[i].Text);
 
+
             treeView1.EndUpdate();
 
             treeView1.Refresh();
 
-
+            if (node != null)
+                node.EnsureVisible();
+            treeView1.Focus();
             combo_set();
             //インシデント一覧データを取得
             Class_Detaget dg_class = new Class_Detaget();
@@ -2204,6 +2223,9 @@ namespace SMSサンプル
             //インシデント一覧を表示
             disp_Incident(incidentDSList);
             disp_sagyoList(schDSList);
+
+
+
         }
 
         //カスタマ名コンボボックスが変更されたとき
@@ -2737,37 +2759,44 @@ namespace SMSサンプル
         {
 
             //            System.Console.WriteLine("Timer1_Tick()_Begin");
-
-            //時間になったタイマーの問い合わせ
-            Class_Detaget dataget = new Class_Detaget();
-            dataget.con = con;
-            List<alermDS> alermlist;
-            alermlist = dataget.getAlert(this, con);
-
-            //1件以上あればメッセージ表示
-            if (alermlist != null && alermlist.Count > 0)
+            try
             {
-                //既に表示されているかチェックする
-                if (alermdlg == null || alermdlg.IsDisposed)
+                //時間になったタイマーの問い合わせ
+                Class_Detaget dataget = new Class_Detaget();
+                dataget.con = con;
+                List<alermDS> alermlist;
+                alermlist = dataget.getAlert(this, con);
+
+                //1件以上あればメッセージ表示
+                if (alermlist != null && alermlist.Count > 0)
                 {
-                    alermdlg = new Form_alermlist();
-                    alermdlg.almList = alermlist;
-                    alermdlg.con = con;
-                    alermdlg.Show();
+                    //既に表示されているかチェックする
+                    if (alermdlg == null || alermdlg.IsDisposed)
+                    {
+                        alermdlg = new Form_alermlist();
+                        alermdlg.almList = alermlist;
+                        alermdlg.con = con;
+                        alermdlg.Show();
+                    }
+                    else
+                    {
+                        alermdlg.Close();
+                        alermdlg = new Form_alermlist();
+                        alermdlg.almList = alermlist;
+                        alermdlg.con = con;
+                        alermdlg.Show();
+
+
+                        alermdlg.almList = alermlist;
+                        alermdlg.Refresh();
+                    }
+
                 }
-                else
-                {
-                    alermdlg.Close();
-                    alermdlg = new Form_alermlist();
-                    alermdlg.almList = alermlist;
-                    alermdlg.con = con;
-                    alermdlg.Show();
-
-
-                    alermdlg.almList = alermlist;
-                    alermdlg.Refresh();
-                }
-
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("タイマー表示 " + ex.Message);
+                return ;
             }
         }
 
@@ -2837,7 +2866,7 @@ namespace SMSサンプル
         }
         private void m_incident_List_KeyDown(object sender, KeyEventArgs e)
         {
-            disp_schedule();
+            //disp_schedule();
         }
 
         private void disp_schedule()
@@ -3921,7 +3950,8 @@ namespace SMSサンプル
         //全ノード展開
         private void button3_Click(object sender, EventArgs e)
         {
-            if(button3.Text == "全ノード展開") { 
+            TreeNode node = treeView1.SelectedNode;
+            if (button3.Text == "全ノード展開") { 
                 treeView1.ExpandAll();
                 button3.Text = "閉じる";
             }
@@ -3929,6 +3959,13 @@ namespace SMSサンプル
             {
                 treeView1.CollapseAll();
                 button3.Text = "全ノード展開";
+            }
+
+            if (node != null)
+            {
+                treeView1.SelectedNode = node;
+                node.EnsureVisible();
+                treeView1.Focus();
             }
         }
 
@@ -4084,10 +4121,10 @@ namespace SMSサンプル
         //オペレータ編集
         private void m_opeUpdateBtn_Click(object sender, EventArgs e)
         {
-            Form_MailTempleteInsert mailInsert = new Form_MailTempleteInsert();
-            mailInsert.con = con;
-            mailInsert.loginDS = loginDS;
-            mailInsert.ShowDialog(this);
+            Form_opeDetail opeDetail = new Form_opeDetail();
+            opeDetail.con = con;
+            opeDetail.loginDS = loginDS;
+            opeDetail.ShowDialog(this);
         }
 
 

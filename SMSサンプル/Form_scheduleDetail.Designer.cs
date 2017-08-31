@@ -46,6 +46,7 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_scheduleList = new System.Windows.Forms.ListView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.m_recent_alermBtn = new System.Windows.Forms.Button();
             this.m_systemno = new System.Windows.Forms.TextBox();
             this.m_systemCombo = new System.Windows.Forms.ComboBox();
             this.m_siteno = new System.Windows.Forms.TextBox();
@@ -96,7 +97,7 @@
             this.m_statusCombo.Location = new System.Drawing.Point(119, 97);
             this.m_statusCombo.Name = "m_statusCombo";
             this.m_statusCombo.Size = new System.Drawing.Size(68, 20);
-            this.m_statusCombo.TabIndex = 8;
+            this.m_statusCombo.TabIndex = 7;
             // 
             // label10
             // 
@@ -127,13 +128,16 @@
             // 
             // m_timername
             // 
+            this.m_timername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_timername.Location = new System.Drawing.Point(119, 74);
             this.m_timername.Name = "m_timername";
             this.m_timername.Size = new System.Drawing.Size(325, 19);
-            this.m_timername.TabIndex = 7;
+            this.m_timername.TabIndex = 6;
             // 
             // m_updateOpe
             // 
+            this.m_updateOpe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_updateOpe.Location = new System.Drawing.Point(536, 261);
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
@@ -143,6 +147,7 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(478, 263);
             this.label6.Name = "label6";
@@ -152,6 +157,7 @@
             // 
             // m_update
             // 
+            this.m_update.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_update.Location = new System.Drawing.Point(536, 238);
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
@@ -161,6 +167,7 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(478, 241);
             this.label5.Name = "label5";
@@ -170,20 +177,22 @@
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Location = new System.Drawing.Point(713, 359);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(76, 33);
-            this.button2.TabIndex = 19;
+            this.button2.TabIndex = 21;
             this.button2.Text = "戻る";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(631, 359);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(76, 33);
-            this.button1.TabIndex = 18;
+            this.button1.TabIndex = 20;
             this.button1.Text = "更新";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -271,6 +280,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.m_recent_alermBtn);
             this.splitContainer1.Panel2.Controls.Add(this.m_systemno);
             this.splitContainer1.Panel2.Controls.Add(this.m_systemCombo);
             this.splitContainer1.Panel2.Controls.Add(this.m_siteno);
@@ -313,27 +323,42 @@
             this.splitContainer1.Panel2.Controls.Add(this.button2);
             this.splitContainer1.Panel2.Controls.Add(this.button1);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
+            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
             this.splitContainer1.Size = new System.Drawing.Size(805, 685);
             this.splitContainer1.SplitterDistance = 276;
             this.splitContainer1.TabIndex = 0;
             // 
+            // m_recent_alermBtn
+            // 
+            this.m_recent_alermBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_recent_alermBtn.Font = new System.Drawing.Font("MS UI Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.m_recent_alermBtn.Location = new System.Drawing.Point(332, 214);
+            this.m_recent_alermBtn.Name = "m_recent_alermBtn";
+            this.m_recent_alermBtn.Size = new System.Drawing.Size(112, 19);
+            this.m_recent_alermBtn.TabIndex = 13;
+            this.m_recent_alermBtn.Text = "直近アラームのみ変更";
+            this.m_recent_alermBtn.UseVisualStyleBackColor = true;
+            this.m_recent_alermBtn.Click += new System.EventHandler(this.m_recent_alermBtn_Click);
+            // 
             // m_systemno
             // 
+            this.m_systemno.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_systemno.Location = new System.Drawing.Point(505, 34);
             this.m_systemno.Name = "m_systemno";
             this.m_systemno.ReadOnly = true;
             this.m_systemno.Size = new System.Drawing.Size(44, 19);
-            this.m_systemno.TabIndex = 188;
+            this.m_systemno.TabIndex = 2;
             this.m_systemno.TabStop = false;
             // 
             // m_systemCombo
             // 
+            this.m_systemCombo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_systemCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_systemCombo.FormattingEnabled = true;
             this.m_systemCombo.Location = new System.Drawing.Point(555, 34);
             this.m_systemCombo.Name = "m_systemCombo";
             this.m_systemCombo.Size = new System.Drawing.Size(234, 20);
-            this.m_systemCombo.TabIndex = 4;
+            this.m_systemCombo.TabIndex = 3;
             this.m_systemCombo.SelectionChangeCommitted += new System.EventHandler(this.m_systemCombo_SelectionChangeCommitted);
             // 
             // m_siteno
@@ -342,17 +367,19 @@
             this.m_siteno.Name = "m_siteno";
             this.m_siteno.ReadOnly = true;
             this.m_siteno.Size = new System.Drawing.Size(44, 19);
-            this.m_siteno.TabIndex = 5;
+            this.m_siteno.TabIndex = 4;
             this.m_siteno.TabStop = false;
             // 
             // m_siteCombo
             // 
+            this.m_siteCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_siteCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_siteCombo.FormattingEnabled = true;
             this.m_siteCombo.Location = new System.Drawing.Point(167, 52);
             this.m_siteCombo.Name = "m_siteCombo";
             this.m_siteCombo.Size = new System.Drawing.Size(277, 20);
-            this.m_siteCombo.TabIndex = 6;
+            this.m_siteCombo.TabIndex = 5;
             this.m_siteCombo.SelectionChangeCommitted += new System.EventHandler(this.m_siteCombo_SelectionChangeCommitted);
             // 
             // m_userno
@@ -361,21 +388,24 @@
             this.m_userno.Name = "m_userno";
             this.m_userno.ReadOnly = true;
             this.m_userno.Size = new System.Drawing.Size(44, 19);
-            this.m_userno.TabIndex = 1;
+            this.m_userno.TabIndex = 0;
             this.m_userno.TabStop = false;
             // 
             // m_usernameCombo
             // 
+            this.m_usernameCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_usernameCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_usernameCombo.FormattingEnabled = true;
             this.m_usernameCombo.Location = new System.Drawing.Point(167, 31);
             this.m_usernameCombo.Name = "m_usernameCombo";
             this.m_usernameCombo.Size = new System.Drawing.Size(277, 20);
-            this.m_usernameCombo.TabIndex = 2;
+            this.m_usernameCombo.TabIndex = 1;
             this.m_usernameCombo.SelectionChangeCommitted += new System.EventHandler(this.m_usernameCombo_SelectionChangeCommitted);
             // 
             // label18
             // 
+            this.label18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(457, 36);
             this.label18.Name = "label18";
@@ -400,7 +430,7 @@
             this.m_deleteBtn.Location = new System.Drawing.Point(697, 3);
             this.m_deleteBtn.Name = "m_deleteBtn";
             this.m_deleteBtn.Size = new System.Drawing.Size(92, 24);
-            this.m_deleteBtn.TabIndex = 20;
+            this.m_deleteBtn.TabIndex = 22;
             this.m_deleteBtn.Text = "削除";
             this.m_deleteBtn.UseVisualStyleBackColor = true;
             this.m_deleteBtn.Click += new System.EventHandler(this.m_deleteBtn_Click);
@@ -413,7 +443,9 @@
             this.m_alermDate.Name = "m_alermDate";
             this.m_alermDate.ShowCheckBox = true;
             this.m_alermDate.Size = new System.Drawing.Size(206, 19);
-            this.m_alermDate.TabIndex = 13;
+            this.m_alermDate.TabIndex = 12;
+            this.m_alermDate.ValueChanged += new System.EventHandler(this.m_alermDate_ValueChanged);
+            this.m_alermDate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_alermDate_KeyDown);
             // 
             // label13
             // 
@@ -426,11 +458,12 @@
             // 
             // m_testbtn
             // 
+            this.m_testbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_testbtn.Font = new System.Drawing.Font("MS UI Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.m_testbtn.Location = new System.Drawing.Point(358, 310);
             this.m_testbtn.Name = "m_testbtn";
             this.m_testbtn.Size = new System.Drawing.Size(35, 19);
-            this.m_testbtn.TabIndex = 12;
+            this.m_testbtn.TabIndex = 16;
             this.m_testbtn.Text = "♪";
             this.m_testbtn.UseVisualStyleBackColor = true;
             this.m_testbtn.Click += new System.EventHandler(this.button3_Click);
@@ -442,7 +475,7 @@
             this.m_end_date.Location = new System.Drawing.Point(121, 189);
             this.m_end_date.Name = "m_end_date";
             this.m_end_date.Size = new System.Drawing.Size(198, 19);
-            this.m_end_date.TabIndex = 12;
+            this.m_end_date.TabIndex = 11;
             // 
             // label7
             // 
@@ -460,7 +493,7 @@
             this.m_start_date.Location = new System.Drawing.Point(121, 166);
             this.m_start_date.Name = "m_start_date";
             this.m_start_date.Size = new System.Drawing.Size(198, 19);
-            this.m_start_date.TabIndex = 11;
+            this.m_start_date.TabIndex = 10;
             // 
             // label11
             // 
@@ -473,11 +506,12 @@
             // 
             // m_sansyoBtn
             // 
+            this.m_sansyoBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_sansyoBtn.Font = new System.Drawing.Font("MS UI Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.m_sansyoBtn.Location = new System.Drawing.Point(397, 310);
             this.m_sansyoBtn.Name = "m_sansyoBtn";
             this.m_sansyoBtn.Size = new System.Drawing.Size(47, 19);
-            this.m_sansyoBtn.TabIndex = 13;
+            this.m_sansyoBtn.TabIndex = 17;
             this.m_sansyoBtn.Text = "参照";
             this.m_sansyoBtn.UseVisualStyleBackColor = true;
             this.m_sansyoBtn.Click += new System.EventHandler(this.m_soundBtn_Click);
@@ -495,7 +529,8 @@
             this.m_repeatkbn.Location = new System.Drawing.Point(120, 143);
             this.m_repeatkbn.Name = "m_repeatkbn";
             this.m_repeatkbn.Size = new System.Drawing.Size(68, 20);
-            this.m_repeatkbn.TabIndex = 10;
+            this.m_repeatkbn.TabIndex = 9;
+            this.m_repeatkbn.SelectionChangeCommitted += new System.EventHandler(this.m_repeatkbn_SelectionChangeCommitted);
             // 
             // label4
             // 
@@ -518,7 +553,7 @@
             this.m_yoteikbn.Location = new System.Drawing.Point(119, 121);
             this.m_yoteikbn.Name = "m_yoteikbn";
             this.m_yoteikbn.Size = new System.Drawing.Size(200, 20);
-            this.m_yoteikbn.TabIndex = 9;
+            this.m_yoteikbn.TabIndex = 8;
             this.m_yoteikbn.SelectionChangeCommitted += new System.EventHandler(this.m_yoteikbn_SelectionChangeCommitted);
             // 
             // label2
@@ -532,14 +567,18 @@
             // 
             // m_kakunin
             // 
+            this.m_kakunin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_kakunin.Location = new System.Drawing.Point(119, 359);
             this.m_kakunin.Multiline = true;
             this.m_kakunin.Name = "m_kakunin";
             this.m_kakunin.Size = new System.Drawing.Size(325, 33);
-            this.m_kakunin.TabIndex = 17;
+            this.m_kakunin.TabIndex = 19;
             // 
             // m_sound
             // 
+            this.m_sound.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_sound.Location = new System.Drawing.Point(119, 310);
             this.m_sound.Name = "m_sound";
             this.m_sound.Size = new System.Drawing.Size(239, 19);
@@ -547,6 +586,8 @@
             // 
             // m_alermMessage
             // 
+            this.m_alermMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_alermMessage.Location = new System.Drawing.Point(119, 235);
             this.m_alermMessage.Multiline = true;
             this.m_alermMessage.Name = "m_alermMessage";
@@ -599,10 +640,12 @@
             // 
             // m_incidentno
             // 
+            this.m_incidentno.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_incidentno.Location = new System.Drawing.Point(119, 335);
             this.m_incidentno.Name = "m_incidentno";
             this.m_incidentno.Size = new System.Drawing.Size(325, 19);
-            this.m_incidentno.TabIndex = 16;
+            this.m_incidentno.TabIndex = 18;
             // 
             // Form_scheduleDetail
             // 
@@ -678,5 +721,6 @@
         private System.Windows.Forms.TextBox m_userno;
         private System.Windows.Forms.ComboBox m_usernameCombo;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Button m_recent_alermBtn;
     }
 }

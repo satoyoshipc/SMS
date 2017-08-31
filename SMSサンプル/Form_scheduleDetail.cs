@@ -28,8 +28,13 @@ namespace SMSサンプル
         //DBコネクション
         public NpgsqlConnection con { get; set; }
 
-        //初期表示のときのﾌﾗｸﾞ
         //private Boolean firstflg=false;
+        //更新対象のアラーム日時
+        private String _orgrecentalerm;
+
+        //空欄許可のdatetimepicker
+        DateTime? dateTime_alermDate;
+
         //ListViewのソートの際に使用する
         private Class_ListViewColumnSorter _columnSorter;
 
@@ -46,7 +51,11 @@ namespace SMSサンプル
             _columnSorter = new Class_ListViewColumnSorter();
             m_scheduleList.ListViewItemSorter = _columnSorter;
 
+            dateTime_alermDate = null;
+            //日付コントロールを空白にする
+            setDateTimePicker(dateTime_alermDate, m_alermDate);
 
+            
             m_selectKoumoku.Items.Add("予定通番");
             m_selectKoumoku.Items.Add("タイマー名称");
             m_selectKoumoku.Items.Add("予定区分");
@@ -253,7 +262,6 @@ namespace SMSサンプル
             m_siteno.Text = "";
 
 
-
             //ラベルに反映
             if (m_systemCombo.SelectedValue != null)
                 m_systemno.Text = m_systemCombo.SelectedValue.ToString();
@@ -407,13 +415,11 @@ namespace SMSサンプル
             //計画作業
             scheduleset = dg.getSelectscheduleList((Form_MainList)this.Owner, param_dict, con);
 
-
             this.splitContainer1.SplitterDistance = 280;
 
             this.m_scheduleList.FullRowSelect = true;
             this.m_scheduleList.HideSelection = false;
             this.m_scheduleList.HeaderStyle = ColumnHeaderStyle.Clickable;
-
 
             this.m_scheduleList.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
             this.m_scheduleList.Columns.Insert(1, "タイマー名称", 200, HorizontalAlignment.Left);
@@ -454,34 +460,29 @@ namespace SMSサンプル
 
                     itemx1.SubItems.Add(schetype);
 
-
-
-                        //1:1回、2:1時間毎、3:日毎、4:週毎、5:月毎
-                        string repType = "";
-                        if (s_ds.repeat_type == "1")
-                            repType = "1回";
-                        else if (s_ds.repeat_type == "2")
-                            repType = "1時間毎";
-                        else if (s_ds.repeat_type == "3")
-                            repType = "日毎";
-                        else if (s_ds.repeat_type == "4")
-                            repType = "週毎";
-                        else if (s_ds.repeat_type == "5")
-                            repType = "月毎";
-
+                    //1:1回、2:1時間毎、3:日毎、4:週毎、5:月毎
+                    string repType = "";
+                    if (s_ds.repeat_type == "1")
+                        repType = "1回";
+                    else if (s_ds.repeat_type == "2")
+                        repType = "1時間毎";
+                    else if (s_ds.repeat_type == "3")
+                        repType = "日毎";
+                    else if (s_ds.repeat_type == "4")
+                        repType = "週毎";
+                    else if (s_ds.repeat_type == "5")
+                        repType = "月毎";
 
                     itemx1.SubItems.Add(repType);
                     itemx1.SubItems.Add(s_ds.start_date);
                     itemx1.SubItems.Add(s_ds.end_date);
- 
+
 
                     itemx1.SubItems.Add(s_ds.status);
 
 
                     itemx1.SubItems.Add(s_ds.alerm_message);
                     itemx1.SubItems.Add(s_ds.sound);
-
-
 
                     itemx1.SubItems.Add(s_ds.incident_no);
                     itemx1.SubItems.Add(s_ds.kakunin);
@@ -511,8 +512,10 @@ namespace SMSサンプル
             }
             if (m_sound.Text == "" && m_yoteikbn.SelectedIndex != 0 && m_yoteikbn.SelectedIndex != 3)
             {
-                MessageBox.Show("音を入力して下さい。", "スケジュール修正", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
+                if(m_usernameCombo.Text != "オーブコムジャパン" && m_yoteikbn.SelectedIndex != 2) { 
+                    MessageBox.Show("音を入力して下さい。", "スケジュール修正", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
             }
 
             //確認ダイアログ
@@ -547,7 +550,6 @@ namespace SMSサンプル
             else if (m_repeatkbn.Text == "月毎")
                 repType = "5";
 
-
             byte[] bytes = null;
             if (m_sound.Text != "" && m_yoteikbn.SelectedIndex != 0 && m_yoteikbn.SelectedIndex != 3)
             {
@@ -573,7 +575,6 @@ namespace SMSサンプル
                 int? userno2;
                 int? systemno2;
                 int? siteno2;
-
 
                 if (int.TryParse(m_userno.Text, out userno))
                     userno2 = userno;
@@ -616,21 +617,20 @@ namespace SMSサンプル
                 try
                 {
                     //更新処理
-
                     //OUTパラメータをセットする
                     rowsaffected = command.ExecuteNonQuery();
 
                     if (rowsaffected != 1)
                         MessageBox.Show("更新できませんでした。", "スケジュール更新");
-
                     else
                     {
                         //タイマー情報も更新する
                         //まず登録されているタイマーは削除
                         int ret = deleteTimer(m_scheduleno.Text);
                         if(ret == 0)
-                        //引き続きアラートデータを作成し登録する
-                        make_alert(int.Parse(m_scheduleno.Text), yoteikbn);
+
+                            //引き続きアラートデータを作成し登録する
+                            make_alert(int.Parse(m_scheduleno.Text), yoteikbn);
 
                         MessageBox.Show("スケジュール情報を変更しました。","スケジュール更新",MessageBoxButtons.OK);
                         transaction.Commit();
@@ -676,7 +676,6 @@ namespace SMSサンプル
                 return -1;
             }
             return 1;
-            
         }
 
         // 引き続きアラートデータを作成し登録する
@@ -701,6 +700,8 @@ namespace SMSサンプル
                     DateTime alertdate = m_alermDate.Value.Date;
                     TimeSpan dtt = m_alermDate.Value.TimeOfDay;
                     alertdate = alertdate + dtt;
+
+
                     //開始日
                     DateTime startdt = m_start_date.Value;
 
@@ -898,6 +899,10 @@ namespace SMSサンプル
             //サウンドファイルを削除する
             deleteSoundFile();
 
+                            dateTime_alermDate = null;
+                setDateTimePicker(dateTime_alermDate, m_alermDate);
+
+
             ListView.SelectedIndexCollection item = m_scheduleList.SelectedIndices;
             string schedule_type = "";
             string status = "";
@@ -982,6 +987,7 @@ namespace SMSサンプル
                 Class_Detaget dg = new Class_Detaget();
                 String alertdt = dg.getLatestAlerm(scheduledt.schedule_no,con);
                 scheduledt.alertdate = alertdt;
+                _orgrecentalerm = alertdt;
             }
 
             getKeikaku(scheduledt);
@@ -1021,7 +1027,7 @@ namespace SMSサンプル
             soundfm.ShowDialog(this);
         }
 
-        //スケジュール区分を選択したとき
+        //予定区分を選択したとき
         private void m_yoteikbn_SelectionChangeCommitted(object sender, EventArgs e)
         {
             koumokuDisable();
@@ -1049,7 +1055,7 @@ namespace SMSサンプル
                 m_start_date.Enabled = true;
                 m_end_date.Enabled = true;
                 m_alermMessage.Enabled = true;
-                m_alermDate.Enabled = false;
+                m_alermDate.Enabled = true;
                 m_sound.Enabled = true;
                 m_testbtn.Enabled = true;
                 m_sansyoBtn.Enabled = true;
@@ -1059,7 +1065,7 @@ namespace SMSサンプル
                 //計画作業
                 m_start_date.Enabled = true;
                 m_end_date.Enabled = true;
-                m_alermDate.Enabled = false;
+                m_alermDate.Enabled = true;
                 m_alermMessage.Enabled = true;
                 m_sound.Enabled = true;
                 m_testbtn.Enabled = true;
@@ -1239,6 +1245,179 @@ namespace SMSサンプル
             if (m_siteCombo.SelectedValue != null)
                 m_siteno.Text = m_siteCombo.SelectedValue.ToString();
 
+        }
+
+        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+        //直近アラームを変更する
+        private void m_recent_alermBtn_Click(object sender, EventArgs e)
+        {
+            if (m_alermDate.Checked == false) {
+                MessageBox.Show("直近アラーム日時のチェックボックスがチェックされていません。");
+                return;
+            }
+            if (m_alermDate.Text.Trim() == "")
+            {
+                MessageBox.Show("直近アラーム日時が入力されていません。");
+                return;
+            }
+            //期間外のときは登録しない
+            //if (m_start_date.Value.CompareTo(m_alermDate.Value) == 1 ||
+            //    m_end_date.Value.CompareTo(m_alermDate.Value) == -1)
+
+            //日時が期間外(後)のときは登録しない
+            if (m_end_date.Value < m_alermDate.Value)
+            {
+                MessageBox.Show("直近アラーム日時が監視終了日時よりも後には設定できません。","直近アラーム変更",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                return;
+            }
+
+            if (MessageBox.Show("直近アラーム日時を変更します。よろしいですか?" + Environment.NewLine + "旧：" + _orgrecentalerm + Environment.NewLine +
+            "新：" + m_alermDate.Text, "アラーム時変更", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) == DialogResult.Cancel)
+                return;
+
+            DateTime dtime = m_alermDate.Value;
+
+            alerm_update(int.Parse(m_scheduleno.Text),m_yoteikbn.SelectedIndex.ToString(), dtime);
+
+        }
+        //タイマー対応テーブルを更新する
+        private int alerm_update(int scheNO, String type,DateTime NEW_alertdatetime)
+        {
+            //DB接続
+            NpgsqlCommand cmd;
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+                Int32 rowsaffected;
+                //元アラーム日時が取得できない場合は初期INSERTを行う
+                if (_orgrecentalerm != null && _orgrecentalerm != "")
+                {
+
+                    //データ更新
+                    cmd = new NpgsqlCommand(@"UPDATE timer_taiou SET alertdatetime=:alertdatetime,=:chk_name_id,chk_name_id=:chk_name_id " +
+                        "WHERE schedule_no=:schedule_no AND alertdatetime=:ORGalertdatetime", con);
+
+                    cmd.Parameters.Add(new NpgsqlParameter("alertdatetime", DbType.DateTime) { Value = NEW_alertdatetime });
+                    cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_updateOpe.Text });
+                    cmd.Parameters.Add(new NpgsqlParameter("schedule_no", DbType.Int32) { Value = scheNO });
+                    cmd.Parameters.Add(new NpgsqlParameter("ORGalertdatetime", DbType.String) { Value = _orgrecentalerm });
+                }
+                else
+                {
+                    //データ登録
+                    cmd = new NpgsqlCommand(@"insert into timer_taiou(schedule_no,schedule_type,alertdatetime,chk_name_id) 
+                    values ( :schedule_no,:schedule_type,:alertdatetime,:chk_name_id) ", con);
+                    cmd.Parameters.Add(new NpgsqlParameter("schedule_type", DbType.String) { Value = type });
+                    cmd.Parameters.Add(new NpgsqlParameter("schedule_no", DbType.Int32) { Value = scheNO });
+                    cmd.Parameters.Add(new NpgsqlParameter("alertdatetime", DbType.DateTime) { Value = NEW_alertdatetime });
+                    cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+                    
+                }
+
+                rowsaffected = cmd.ExecuteNonQuery();
+
+                if (rowsaffected != 1)
+                {
+                    MessageBox.Show("直近アラーム時刻を変更できませんでした。", "スケジュール変更");
+                    return -1;
+                }
+                else
+                {
+                    MessageBox.Show("直近アラーム時刻を変更しました。", "スケジュール変更");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("タイマー対応テーブル登録エラー " + ex.Message);
+                return -1;
+            }
+            return 1;
+        }
+
+        private void m_repeatkbn_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+          // kubunComboSelect();
+
+
+
+        }
+        //コンボボックスが変更されたとき
+        private void kubunComboSelect()
+        {
+            if (m_repeatkbn.SelectedItem.ToString() == "1回")
+            {
+                //1回が選択されたとき
+                m_start_date.Enabled = false;
+                m_end_date.Enabled = false;
+                m_alermDate.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
+            }
+
+            else if (m_repeatkbn.SelectedItem.ToString() == "1時間毎")
+            {
+                //利用可能にする
+                m_start_date.Enabled = true;
+                m_end_date.Enabled = true;
+                m_alermDate.CustomFormat = "mm分";
+
+            }
+            else if (m_repeatkbn.SelectedItem.ToString() == "日毎")
+            {
+                //利用可能にする
+                m_start_date.Enabled = true;
+                m_end_date.Enabled = true;
+                m_alermDate.CustomFormat = "HH:mm";
+            }
+            else if (m_repeatkbn.SelectedItem.ToString() == "週毎")
+            {
+                //利用可能にする
+                m_start_date.Enabled = true;
+                m_end_date.Enabled = true;
+                m_alermDate.CustomFormat = "(dddd) HH:mm";
+            }
+            else if (m_repeatkbn.SelectedItem.ToString() == "月毎")
+            {
+                //利用可能にする
+                m_start_date.Enabled = true;
+                m_end_date.Enabled = true;
+                m_alermDate.CustomFormat = "d日  HH:mm";
+            }
+        }
+
+        private void m_alermDate_ValueChanged(object sender, EventArgs e)
+        {
+            //dateTimePicker1の値が変更されたら表示する
+            dateTime_alermDate = m_alermDate.Value;
+            setDateTimePicker(dateTime_alermDate, m_alermDate);
+        }
+
+        private void m_alermDate_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Delete)
+            {
+                //Deleteキーが押されたら、dateTimeにnullを設定してdateTimePicker1を非表示に
+                dateTime_alermDate = null;
+                setDateTimePicker(dateTime_alermDate, m_alermDate);
+            }
+        }
+        //日付コントロールを空白にする
+        private void setDateTimePicker(DateTime? datetime, DateTimePicker m_datetimepickercontrol)
+        {
+            if (datetime == null)
+            {
+                //DateTimePickerFormat.Custom　にして、CostomFormatは半角の空白を入れておくと、日時が非表示になる。
+                m_datetimepickercontrol.Format = DateTimePickerFormat.Custom;
+                m_datetimepickercontrol.CustomFormat = " ";
+            }
+            else
+            {
+                //フォーマットを元に戻して、値をセットする。
+                m_datetimepickercontrol.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
+                m_datetimepickercontrol.Value = (DateTime)datetime;
+            }
         }
     }
 }

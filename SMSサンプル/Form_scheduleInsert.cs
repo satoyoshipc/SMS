@@ -97,7 +97,7 @@ namespace SMSサンプル
             //タイマー名
             if (m_timer_name.Text == "")
             {
-                MessageBox.Show("タイマー名が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("タイトルが入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             
@@ -120,15 +120,17 @@ namespace SMSサンプル
                 //メッセージ
                 if (m_message.Text == "")
                 {
-                    MessageBox.Show("メッセージが入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("作業内容(メッセージ)が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 //音が入力されていません
                 if ((m_soudpath.Text == "" || System.IO.File.Exists(m_soudpath.Text) == false) && m_schedule_combo.SelectedIndex != 0)
                 {
+                     if (m_usernameCombo.Text != "オーブコムジャパン" && m_schedule_combo.SelectedIndex != 2) { 
 
-                    MessageBox.Show("アラーム音が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                        MessageBox.Show("アラーム音が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                 }
             }
             //確認画面
@@ -174,7 +176,6 @@ namespace SMSサンプル
             else if (m_radio_month.Checked)
                 repeat_type = "5";
 
-
             byte[] bytes= null;
             //開始日時
             DateTime ? startdate = null;
@@ -187,7 +188,8 @@ namespace SMSサンプル
 
                 //インシデントのときは音は登録しない
                 if ( m_schedule_combo.SelectedIndex != 0) {
-                    bytes = File.ReadAllBytes(m_soudpath.Text);
+                    if ((m_usernameCombo.Text == "オーブコムジャパン" && m_schedule_combo.SelectedIndex == 2) == false)
+                        bytes = File.ReadAllBytes(m_soudpath.Text);
                 }
             }
 
@@ -439,9 +441,7 @@ namespace SMSサンプル
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {

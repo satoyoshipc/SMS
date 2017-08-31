@@ -13,6 +13,11 @@ namespace SMSサンプル
 {
     public partial class Form_addressSelect : Form
     {
+        //ListViewのソートの際に使用する
+        private Class_ListViewColumnSorter _columnSorter1;
+        //ListViewのソートの際に使用する
+        private Class_ListViewColumnSorter _columnSorter2;
+
         //DBコネクション
         public NpgsqlConnection con { get; set; }
         public List<MailaddressDS> addressList_tantou;
@@ -42,6 +47,13 @@ namespace SMSサンプル
         //アドレスの表示
         private void Form_addressSelect_Load(object sender, EventArgs e)
         {
+            _columnSorter1 = new Class_ListViewColumnSorter();
+            m_operaterList.ListViewItemSorter = _columnSorter1;
+
+            _columnSorter2 = new Class_ListViewColumnSorter();
+            m_user_tanntouList.ListViewItemSorter = _columnSorter2;
+
+
             m_selectKoumoku.Items.Add("ユーザID(通番)");
             m_selectKoumoku.Items.Add("カスタマ名");
 
@@ -251,6 +263,49 @@ namespace SMSサンプル
         {
             //メールアドレスをメール画面に表示
             mailtempleteInsert(m_operaterList);
+        }
+
+        private void m_operaterList_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (e.Column == _columnSorter1.SortColumn)
+            {
+                if (_columnSorter1.Order == SortOrder.Ascending)
+                {
+                    _columnSorter1.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    _columnSorter1.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                _columnSorter1.SortColumn = e.Column;
+                _columnSorter1.Order = SortOrder.Ascending;
+            }
+            m_operaterList.Sort();
+
+        }
+
+        private void m_user_tanntouList_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (e.Column == _columnSorter2.SortColumn)
+            {
+                if (_columnSorter2.Order == SortOrder.Ascending)
+                {
+                    _columnSorter2.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    _columnSorter2.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                _columnSorter2.SortColumn = e.Column;
+                _columnSorter2.Order = SortOrder.Ascending;
+            }
+            m_user_tanntouList.Sort();
         }
     }
 }

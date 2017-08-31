@@ -160,9 +160,7 @@ namespace SMSサンプル
             //カスタマ担当者
             ret = user_tantou_update(userno,status);
             if(ret == -1)
-
                 return ret;
-
 
             //拠点
             ret = site_update(userno, status);

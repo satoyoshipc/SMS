@@ -111,7 +111,8 @@ namespace SMSサンプル
         {
             m_siteCombo.DataSource = null;
             m_siteno.Text = "";
-
+            m_hostno.Text = "";
+            m_hostCombo.DataSource = null;
 
             //ラベルに反映
             if (m_systemCombo.SelectedValue != null)
@@ -168,6 +169,10 @@ namespace SMSサンプル
             
             m_systemno.Text = "";
             m_systemCombo.DataSource = null;
+            m_siteno.Text = "";
+            m_siteCombo.DataSource = null;
+            m_hostno.Text = "";
+            m_hostCombo.DataSource = null;
 
             //ラベルに反映
             if (m_usernameCombo.SelectedValue != null)
@@ -256,6 +261,12 @@ namespace SMSサンプル
             if(m_usernameCombo.Text == "")
             {
                 m_userno.Text = "";
+                m_systemno.Text = "";
+                m_systemCombo.DataSource = null;
+                m_siteno.Text = "";
+                m_siteCombo.DataSource = null;
+                m_hostno.Text = "";
+                m_hostCombo.DataSource = null;
                 return;
             }
             Read_systemCombo();
@@ -266,6 +277,10 @@ namespace SMSサンプル
             if (m_systemCombo.Text == "")
             {
                 m_systemno.Text = "";
+                m_siteno.Text = "";
+                m_siteCombo.DataSource = null;
+                m_hostno.Text = "";
+                m_hostCombo.DataSource = null;
                 return;
             }
             Read_siteCombo();
@@ -282,6 +297,9 @@ namespace SMSサンプル
             if (m_siteCombo.Text == "")
             {
                 m_siteno.Text = "";
+                m_hostno.Text = "";
+                m_hostCombo.DataSource = null;
+
                 return;
             }
             //ホスト名コンボボックスを取得する
@@ -302,18 +320,18 @@ namespace SMSサンプル
                 return;
 
             int? userno = null;
-            if (m_MSMSno.Text != "")
+            if (m_userno.Text != null && m_userno.Text != "")
                 userno = int.Parse(m_userno.Text);
             int? systemno = null;
-            if (m_systemno.Text != "")
+            if (m_systemno.Text != null && m_systemno.Text != "")
                 systemno = int.Parse(m_systemno.Text);
 
             int? siteno = null;
-            if (m_siteno.Text != "")
+            if (m_siteno.Text != null && m_siteno.Text != "")
                 siteno = int.Parse(m_siteno.Text);
 
             int? hostno = null;
-            if (m_hostno.Text != "")
+            if (m_hostno.Text != null && m_hostno.Text != "")
                 hostno = int.Parse(m_hostno.Text);
 
             //ステータス 1:未完了 0:完了
@@ -460,7 +478,6 @@ namespace SMSサンプル
                             {
                                 if (currvalsch > 0)
                                 {
-
                                     //引き続きアラートデータを作成し登録する
                                     alerm_insert(currvalsch, alertTime);
                                     //登録成功
@@ -501,7 +518,7 @@ namespace SMSサンプル
                     values ( :schedule_no,:schedule_type,:alertdatetime,:chk_name_id) ", con);
 
                 cmd.Parameters.Add(new NpgsqlParameter("schedule_no", DbType.Int32) { Value = scheNO });
-                //インシデントなので3固定
+                //インシデントなので1固定
                 cmd.Parameters.Add(new NpgsqlParameter("schedule_type", DbType.String) { Value = "1" });
                 cmd.Parameters.Add(new NpgsqlParameter("alertdatetime", DbType.DateTime) { Value = alertdatetime });
                 cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
@@ -624,6 +641,13 @@ namespace SMSサンプル
         private void m_incident_kubun_combo_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        //テンプレート
+        private void m_templeteCombo_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            //インシデントテンプレート
+            
         }
     }
 }

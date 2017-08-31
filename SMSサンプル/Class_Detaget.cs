@@ -718,7 +718,7 @@ namespace SMSサンプル
             String param = "";
             Int64 Count = 0;
 
-            List<incidentDS> incidnet_List = null;
+//            List<incidentDS> incidnet_List = null;
 
             if (param_dict.Count > 0)
             {
@@ -2934,6 +2934,7 @@ namespace SMSサンプル
 
                 while (dataReader.Read())
                 {
+
                     if (dataReader["alertdatetime"].ToString() != "")
                     {
                         String formatString = Convert.ToDateTime(dataReader["alertdatetime"].ToString()).ToString("yyyy/MM/dd HH:mm:ss");
@@ -2947,12 +2948,9 @@ namespace SMSサンプル
                 con.Close();
                 MessageBox.Show("直近タイマー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 logger.ErrorFormat("直近タイマー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
-
-
             }
 
             return latestdatetime;
-
         }
 
 

@@ -116,23 +116,23 @@ namespace SMSサンプル
                     itemx1.SubItems.Add(str);
 
                     //繰り返しタイプ //1:1回、2:1時間毎、3:日毎、4:週毎、5:月毎
-                    if (ads.schedule_type == "1")
+                    if (ads.repeat_type == "1")
                     {
                         str = "1回";
                     }
-                    else if (ads.schedule_type == "2")
+                    else if (ads.repeat_type == "2")
                     {
                         str = "時間毎";
                     }
-                    else if (ads.schedule_type == "3")
+                    else if (ads.repeat_type == "3")
                     {
                         str = "日毎";
                     }
-                    else if (ads.schedule_type == "4")
+                    else if (ads.repeat_type == "4")
                     {
                         str = "週毎";
                     }
-                    else if (ads.schedule_type == "5")
+                    else if (ads.repeat_type == "5")
                     {
                         str = "月毎";
                     }

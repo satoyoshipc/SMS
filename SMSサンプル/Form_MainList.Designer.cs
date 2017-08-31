@@ -89,6 +89,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.m_usernameCombo = new System.Windows.Forms.ComboBox();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.m_system_count = new System.Windows.Forms.Label();
+            this.m_user_count = new System.Windows.Forms.Label();
             this.m_customer_umu_check = new System.Windows.Forms.CheckBox();
             this.m_custmMente = new System.Windows.Forms.LinkLabel();
             this.m_systemMente = new System.Windows.Forms.LinkLabel();
@@ -149,8 +151,6 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tokubetuContext = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_user_count = new System.Windows.Forms.Label();
-            this.m_system_count = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -879,6 +879,25 @@
             this.splitContainer4.SplitterDistance = 122;
             this.splitContainer4.TabIndex = 0;
             // 
+            // m_system_count
+            // 
+            this.m_system_count.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_system_count.AutoSize = true;
+            this.m_system_count.Location = new System.Drawing.Point(679, 11);
+            this.m_system_count.Name = "m_system_count";
+            this.m_system_count.Size = new System.Drawing.Size(17, 12);
+            this.m_system_count.TabIndex = 199;
+            this.m_system_count.Text = "件";
+            // 
+            // m_user_count
+            // 
+            this.m_user_count.AutoSize = true;
+            this.m_user_count.Location = new System.Drawing.Point(161, 11);
+            this.m_user_count.Name = "m_user_count";
+            this.m_user_count.Size = new System.Drawing.Size(17, 12);
+            this.m_user_count.TabIndex = 198;
+            this.m_user_count.Text = "件";
+            // 
             // m_customer_umu_check
             // 
             this.m_customer_umu_check.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1141,7 +1160,7 @@
             // m_hostMente
             // 
             this.m_hostMente.AutoSize = true;
-            this.m_hostMente.Location = new System.Drawing.Point(110, 7);
+            this.m_hostMente.Location = new System.Drawing.Point(110, 6);
             this.m_hostMente.Name = "m_hostMente";
             this.m_hostMente.Size = new System.Drawing.Size(31, 12);
             this.m_hostMente.TabIndex = 197;
@@ -1545,25 +1564,6 @@
             this.toolStripMenuItem2.Size = new System.Drawing.Size(75, 22);
             this.toolStripMenuItem2.Text = "変更";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
-            // 
-            // m_user_count
-            // 
-            this.m_user_count.AutoSize = true;
-            this.m_user_count.Location = new System.Drawing.Point(161, 11);
-            this.m_user_count.Name = "m_user_count";
-            this.m_user_count.Size = new System.Drawing.Size(17, 12);
-            this.m_user_count.TabIndex = 198;
-            this.m_user_count.Text = "件";
-            // 
-            // m_system_count
-            // 
-            this.m_system_count.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_system_count.AutoSize = true;
-            this.m_system_count.Location = new System.Drawing.Point(679, 11);
-            this.m_system_count.Name = "m_system_count";
-            this.m_system_count.Size = new System.Drawing.Size(17, 12);
-            this.m_system_count.TabIndex = 199;
-            this.m_system_count.Text = "件";
             // 
             // Form_MainList
             // 

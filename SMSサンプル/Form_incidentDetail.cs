@@ -173,6 +173,7 @@ namespace SMSサンプル
                 Read_siteCombo();
                 m_siteCombo.SelectedValue = incidentdt.siteno;
             }
+
             if (m_siteCombo.SelectedValue != null && m_siteCombo.SelectedValue.ToString() != "")
             {
                 Read_hostCombo();
@@ -180,6 +181,14 @@ namespace SMSサンプル
                 if(m_hostCombo.Text != "")
                     m_hostno.Text = m_hostCombo.SelectedValue.ToString();
             }
+
+            //直近アラーム日時の取得を行う
+//            Class_Detaget dg = new Class_Detaget();
+//            String alertdt = dg.getLatestAlerm(incidentdt.incident_no, con);
+//            scheduledt.alertdate = alertdt;
+//            _orgrecentalerm = alertdt;
+
+
         }
         //
         void Read_CustomerCombo()
@@ -291,12 +300,15 @@ namespace SMSサンプル
             siteTable.Columns.Add("NAME", typeof(string));
 
             string systemid = "";
-            if (m_systemno.Text != "")
+            Boolean flg = false;
+            if (m_systemno.Text != "") { 
                 systemid = m_systemno.Text;
-
+                flg = true;
+            }
             //拠点情報の取得
             Class_Detaget DGclass = new Class_Detaget();
-            siteList = DGclass.getSiteList(systemid, con, true);
+
+            siteList = DGclass.getSiteList(systemid, con, flg);
 
             //取れなかったらなにもしない
             if (siteList == null || siteList.Count <= 0)

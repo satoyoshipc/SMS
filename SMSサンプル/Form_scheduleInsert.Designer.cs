@@ -87,7 +87,7 @@
             this.m_schedule_combo.FormattingEnabled = true;
             this.m_schedule_combo.Items.AddRange(new object[] {
             "",
-            "2:定期業務",
+            "2:定期作業",
             "3:計画作業",
             "4:特別作業"});
             this.m_schedule_combo.Location = new System.Drawing.Point(88, 115);

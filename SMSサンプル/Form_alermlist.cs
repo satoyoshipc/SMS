@@ -90,11 +90,13 @@ namespace SMSサンプル
                 }
                 
                 
-                //インシデントのは特定の音
-                if(type == "1")
+                //インシデントのは特定の音 
+                //オーブコムの定期作業のときも
+                if(type == "1" || (ads.username == "オーブコムジャパン" && ads.systemname == "衛星運用監視" ))
                 {
-
-                    ads.sound = "標準サウンド.wav";
+                    
+                    String s_path = System.Configuration.ConfigurationManager.AppSettings["sound_path"];
+                    ads.sound = s_path + "標準サウンド.wav";
 
                 }
 

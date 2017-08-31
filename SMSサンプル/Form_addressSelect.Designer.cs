@@ -164,6 +164,7 @@
             this.m_operaterList.TabIndex = 0;
             this.m_operaterList.UseCompatibleStateImageBehavior = false;
             this.m_operaterList.View = System.Windows.Forms.View.Details;
+            this.m_operaterList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_operaterList_ColumnClick);
             this.m_operaterList.DoubleClick += new System.EventHandler(this.m_operaterList_DoubleClick);
             // 
             // tabPage2
@@ -188,6 +189,7 @@
             this.m_user_tanntouList.TabIndex = 0;
             this.m_user_tanntouList.UseCompatibleStateImageBehavior = false;
             this.m_user_tanntouList.View = System.Windows.Forms.View.Details;
+            this.m_user_tanntouList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_user_tanntouList_ColumnClick);
             this.m_user_tanntouList.DoubleClick += new System.EventHandler(this.m_user_tanntouList_DoubleClick);
             // 
             // Form_addressSelect

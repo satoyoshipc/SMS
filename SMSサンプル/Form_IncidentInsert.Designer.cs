@@ -73,13 +73,15 @@
             this.label16 = new System.Windows.Forms.Label();
             this.m_kakunin = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.m_templeteCombo = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 249);
+            this.label5.Location = new System.Drawing.Point(12, 270);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(84, 12);
             this.label5.TabIndex = 145;
@@ -108,10 +110,10 @@
             this.m_content.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_content.Location = new System.Drawing.Point(143, 244);
+            this.m_content.Location = new System.Drawing.Point(143, 270);
             this.m_content.Multiline = true;
             this.m_content.Name = "m_content";
-            this.m_content.Size = new System.Drawing.Size(445, 55);
+            this.m_content.Size = new System.Drawing.Size(445, 68);
             this.m_content.TabIndex = 13;
             // 
             // m_userno
@@ -139,7 +141,7 @@
             // 
             this.m_idlabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_idlabel.Location = new System.Drawing.Point(143, 454);
+            this.m_idlabel.Location = new System.Drawing.Point(143, 493);
             this.m_idlabel.Name = "m_idlabel";
             this.m_idlabel.ReadOnly = true;
             this.m_idlabel.Size = new System.Drawing.Size(44, 19);
@@ -150,7 +152,7 @@
             // 
             this.m_labelinputOpe.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_labelinputOpe.Location = new System.Drawing.Point(193, 454);
+            this.m_labelinputOpe.Location = new System.Drawing.Point(193, 493);
             this.m_labelinputOpe.Name = "m_labelinputOpe";
             this.m_labelinputOpe.ReadOnly = true;
             this.m_labelinputOpe.Size = new System.Drawing.Size(372, 19);
@@ -160,7 +162,7 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(389, 595);
+            this.button3.Location = new System.Drawing.Point(389, 634);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
             this.button3.TabIndex = 22;
@@ -171,7 +173,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(490, 595);
+            this.button2.Location = new System.Drawing.Point(490, 634);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 23);
             this.button2.TabIndex = 23;
@@ -192,7 +194,7 @@
             // 
             this.m_matcommand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_matcommand.Location = new System.Drawing.Point(143, 334);
+            this.m_matcommand.Location = new System.Drawing.Point(143, 373);
             this.m_matcommand.Multiline = true;
             this.m_matcommand.Name = "m_matcommand";
             this.m_matcommand.Size = new System.Drawing.Size(445, 59);
@@ -290,7 +292,7 @@
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 340);
+            this.label8.Location = new System.Drawing.Point(12, 379);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(88, 12);
             this.label8.TabIndex = 153;
@@ -316,7 +318,7 @@
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(87, 404);
+            this.label9.Location = new System.Drawing.Point(87, 443);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(53, 12);
             this.label9.TabIndex = 155;
@@ -326,7 +328,7 @@
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(87, 432);
+            this.label11.Location = new System.Drawing.Point(87, 471);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(53, 12);
             this.label11.TabIndex = 156;
@@ -336,7 +338,7 @@
             // 
             this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(348, 403);
+            this.label12.Location = new System.Drawing.Point(348, 442);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(53, 12);
             this.label12.TabIndex = 157;
@@ -346,7 +348,7 @@
             // 
             this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(348, 430);
+            this.label13.Location = new System.Drawing.Point(348, 469);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(53, 12);
             this.label13.TabIndex = 158;
@@ -357,7 +359,7 @@
             this.m_uketukedate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_uketukedate.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
             this.m_uketukedate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_uketukedate.Location = new System.Drawing.Point(146, 400);
+            this.m_uketukedate.Location = new System.Drawing.Point(146, 439);
             this.m_uketukedate.Name = "m_uketukedate";
             this.m_uketukedate.Size = new System.Drawing.Size(173, 19);
             this.m_uketukedate.TabIndex = 16;
@@ -369,7 +371,7 @@
             this.m_tehaidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_tehaidate.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
             this.m_tehaidate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_tehaidate.Location = new System.Drawing.Point(146, 428);
+            this.m_tehaidate.Location = new System.Drawing.Point(146, 467);
             this.m_tehaidate.Name = "m_tehaidate";
             this.m_tehaidate.Size = new System.Drawing.Size(173, 19);
             this.m_tehaidate.TabIndex = 17;
@@ -381,7 +383,7 @@
             this.m_fukyudate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_fukyudate.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
             this.m_fukyudate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_fukyudate.Location = new System.Drawing.Point(405, 399);
+            this.m_fukyudate.Location = new System.Drawing.Point(405, 438);
             this.m_fukyudate.Name = "m_fukyudate";
             this.m_fukyudate.Size = new System.Drawing.Size(182, 19);
             this.m_fukyudate.TabIndex = 18;
@@ -393,7 +395,7 @@
             this.m_enddate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_enddate.CustomFormat = "yyyy年M月d日(ddd) HH:mm";
             this.m_enddate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_enddate.Location = new System.Drawing.Point(405, 425);
+            this.m_enddate.Location = new System.Drawing.Point(405, 464);
             this.m_enddate.Name = "m_enddate";
             this.m_enddate.Size = new System.Drawing.Size(182, 19);
             this.m_enddate.TabIndex = 19;
@@ -415,7 +417,7 @@
             this.label18.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(12, 461);
+            this.label18.Location = new System.Drawing.Point(12, 500);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(51, 12);
             this.label18.TabIndex = 173;
@@ -426,7 +428,7 @@
             this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(12, 310);
+            this.label19.Location = new System.Drawing.Point(12, 349);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(53, 12);
             this.label19.TabIndex = 174;
@@ -441,7 +443,7 @@
             this.m_matflgCombo.Items.AddRange(new object[] {
             "あり",
             "なし"});
-            this.m_matflgCombo.Location = new System.Drawing.Point(144, 305);
+            this.m_matflgCombo.Location = new System.Drawing.Point(144, 344);
             this.m_matflgCombo.Name = "m_matflgCombo";
             this.m_matflgCombo.Size = new System.Drawing.Size(68, 20);
             this.m_matflgCombo.TabIndex = 14;
@@ -495,7 +497,7 @@
             this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.m_kakunin);
             this.groupBox1.Controls.Add(this.label15);
-            this.groupBox1.Location = new System.Drawing.Point(12, 483);
+            this.groupBox1.Location = new System.Drawing.Point(12, 522);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(575, 103);
             this.groupBox1.TabIndex = 181;
@@ -549,11 +551,38 @@
             this.label15.TabIndex = 182;
             this.label15.Text = "タイマー";
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(12, 248);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(59, 12);
+            this.label17.TabIndex = 182;
+            this.label17.Text = "テンプレート";
+            // 
+            // m_templeteCombo
+            // 
+            this.m_templeteCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_templeteCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_templeteCombo.FormattingEnabled = true;
+            this.m_templeteCombo.Items.AddRange(new object[] {
+            "アラーム検知",
+            "障害申告",
+            "問い合わせ"});
+            this.m_templeteCombo.Location = new System.Drawing.Point(143, 245);
+            this.m_templeteCombo.Name = "m_templeteCombo";
+            this.m_templeteCombo.Size = new System.Drawing.Size(442, 20);
+            this.m_templeteCombo.TabIndex = 183;
+            this.m_templeteCombo.SelectionChangeCommitted += new System.EventHandler(this.m_templeteCombo_SelectionChangeCommitted);
+            // 
             // Form_IncidentInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(597, 620);
+            this.ClientSize = new System.Drawing.Size(597, 659);
+            this.Controls.Add(this.m_templeteCombo);
+            this.Controls.Add(this.label17);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.m_systemno);
@@ -651,5 +680,7 @@
         private System.Windows.Forms.TextBox m_kakunin;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.DateTimePicker m_timerpicker;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.ComboBox m_templeteCombo;
     }
 }
