@@ -11,10 +11,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-namespace SMSサンプル
+namespace moss_AP
 {
     public partial class Form_scheduleInsert : Form
     {
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         //DBコネクション
         public NpgsqlConnection con { get; set; }
 
@@ -234,9 +236,10 @@ namespace SMSサンプル
                     if(currval > 0) {
                         if (m_schedule_combo.SelectedIndex != 3) { 
                             //引き続きアラートデータを作成し登録する
-                            make_alert(currval,type);
+                            int ret = make_alert(currval,type);
                         }
                         //登録成功
+
                         MessageBox.Show("登録完了 " + "スケジュール番号" + currval, "タイマー登録");
                         this.Close();
                     }
@@ -252,18 +255,20 @@ namespace SMSサンプル
         }
         // 引き続きアラートデータを作成し登録する
         // タイマースケジュールを登録する
-        public void make_alert(int scheNO, string type)
+        private  int make_alert(int scheNO, string type)
         {
+            int ret = 1;
             //ステータス
             if (m_radio_mukou.Checked)
-                return;
+                return -1;
             //アラーム周期            
             //1回の時
             if (m_radio_one.Checked)
             {
                 //入力された日時を登録する
                 DateTime dd = m_alermDate.Value;
-                alerm_insert(scheNO, type, dd);
+                ret = alerm_insert(scheNO, type, dd);
+
             }
             //毎時の時
             else if (m_radio_hour.Checked) {
@@ -291,8 +296,8 @@ namespace SMSサンプル
                     break;
 
                     //時間毎に登録
-                    int ret =alerm_insert(scheNO, type, alertdate);
-                    if (ret == -1)
+                    ret =alerm_insert(scheNO, type, alertdate);
+                    if (ret != 1)
                         break;
 
                     //1時間プラス
@@ -328,8 +333,8 @@ namespace SMSサンプル
                         break;
 
                     //日付毎に登録
-                    int ret = alerm_insert(scheNO, type, alertdate);
-                    if (ret == -1)
+                    ret = alerm_insert(scheNO, type, alertdate);
+                    if (ret != 1)
                         break;
 
                     //1日プラス
@@ -369,7 +374,7 @@ namespace SMSサンプル
                     //同じ曜日であれば登録
                     if(weeknumber == tmpweeknumber) { 
                         //日付毎に登録
-                        int ret = alerm_insert(scheNO, type, alertdate);
+                        ret = alerm_insert(scheNO, type, alertdate);
                         if (ret == -1)
                             break;
                     }
@@ -405,7 +410,7 @@ namespace SMSサンプル
                         break;
 
                     //日付毎に登録
-                    int ret = alerm_insert(scheNO, type, alertdate);
+                    ret = alerm_insert(scheNO, type, alertdate);
                     if (ret == -1)
                         break;
 
@@ -414,6 +419,7 @@ namespace SMSサンプル
                 }
                 
             }
+            return 1;
         }
         //タイマー対応テーブルに登録する
         int  alerm_insert(int scheNO, string type,DateTime alertdatetime)
@@ -449,9 +455,7 @@ namespace SMSサンプル
                 return -1;
             }
             return 1;
-
         }
-        
         //表示前処理
         private void Form_TimerInsert_Load(object sender, EventArgs e)
         {
@@ -607,7 +611,7 @@ namespace SMSサンプル
 
 
 
-        //システムコンボボックスが変更されたときにデータ取得されているかの確認
+        //カスタマコンボボックスが変更されたときにデータ取得されているかの確認
         private void m_usernameCombo_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (m_usernameCombo.Text == "")

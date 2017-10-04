@@ -1,4 +1,4 @@
-﻿namespace SMSサンプル
+﻿namespace moss_AP
 {
     partial class Form_opeDetail
     {

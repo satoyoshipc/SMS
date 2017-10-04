@@ -6,14 +6,15 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
-namespace SMSサンプル
+
+
+namespace moss_AP
 {
     public partial class Form_kanri_menu : Form
     {
         public NpgsqlConnection con { get; set; }
         public opeDS loginDS { get; set; }
         private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
 
         public List<userDS> userList;
         public List<systemDS> systemList;
@@ -1946,6 +1947,26 @@ namespace SMSサンプル
             icdForm.con = con;
             icdForm.loginDS = loginDS;
             icdForm.Show(this);
+        }
+
+        private void m_inc_templete_insert_btn_Click(object sender, EventArgs e)
+        {
+            Form_inc_templete_insert templeteInsert = new Form_inc_templete_insert();
+            templeteInsert.con = con;
+            if (userList != null)
+                templeteInsert.userList = userList;
+            templeteInsert.loginDS = loginDS;
+            templeteInsert.ShowDialog(this);
+        }
+
+        private void m_inc_templete_update_btn_Click(object sender, EventArgs e)
+        {
+            Form_inc_templete_update templeteUpdate = new Form_inc_templete_update();
+            templeteUpdate.con = con;
+            if (userList != null)
+                templeteUpdate.userList = userList;
+            templeteUpdate.loginDS = loginDS;
+            templeteUpdate.ShowDialog(this);
         }
     }
 }

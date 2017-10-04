@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SMSサンプル
+namespace moss_AP
 {
     public class mailTempleteDS
     {

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SMSサンプル
+namespace moss_AP
 {
 
     public partial class Form_systemInsert : Form
@@ -30,6 +30,7 @@ namespace SMSサンプル
         //表示前処理
         private void Form_systemInsert_Load(object sender, EventArgs e)
         {
+            m_statusCombo.Text = "有効";
             m_idlabel.Text = loginDS.opeid;
             m_labelinputOpe.Text = loginDS.lastname + loginDS.fastname;
 
@@ -99,7 +100,16 @@ namespace SMSサンプル
             string systemkana = m_systemnamekana.Text;
             string biko = m_biko.Text;
             string userno = m_userID.Text;
-            
+
+            //ステータス
+            string status = "";
+            if (m_statusCombo.SelectedIndex == 0)
+                //有効
+                status = "1";
+            else
+                //無効
+                status = "0";
+
             //DB接続
             NpgsqlCommand cmd;
             try
@@ -107,10 +117,12 @@ namespace SMSサンプル
                 if (con.FullState != ConnectionState.Open) con.Open();
                 Int32 rowsaffected;
                 //データ登録
-                cmd = new NpgsqlCommand(@"insert into system(systemname,systemkana,biko,userno,chk_name_id) 
+                cmd = new NpgsqlCommand(@"insert into system(systemname,systemkana,status,biko,userno,chk_name_id) 
                     values ( :systemname,:systemkana,:biko,:userno,:chk_name_id)", con);
                 cmd.Parameters.Add(new NpgsqlParameter("systemname", DbType.String) { Value = systemname });
                 cmd.Parameters.Add(new NpgsqlParameter("systemkana", DbType.String) { Value = systemkana });
+                cmd.Parameters.Add(new NpgsqlParameter("systemkana", DbType.String) { Value = systemkana });
+                cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
                 cmd.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = biko });
                 cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
                 cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });

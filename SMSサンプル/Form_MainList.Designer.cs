@@ -1,4 +1,4 @@
-﻿namespace SMSサンプル
+﻿namespace moss_AP
 {
     partial class Form_MainList
     {
@@ -42,6 +42,7 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.m_taskInsert_lnk = new System.Windows.Forms.LinkLabel();
             this.m_tokubetu_umu_check = new System.Windows.Forms.CheckBox();
             this.m_keikaku_umu_check = new System.Windows.Forms.CheckBox();
             this.m_teiki_umu_check = new System.Windows.Forms.CheckBox();
@@ -89,6 +90,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.m_usernameCombo = new System.Windows.Forms.ComboBox();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.m_system_umu_check = new System.Windows.Forms.CheckBox();
             this.m_system_count = new System.Windows.Forms.Label();
             this.m_user_count = new System.Windows.Forms.Label();
             this.m_customer_umu_check = new System.Windows.Forms.CheckBox();
@@ -127,6 +129,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.interfaceList = new System.Windows.Forms.ListView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.m_inc_templete_update_btn = new System.Windows.Forms.Button();
+            this.m_inc_templete_insert_btn = new System.Windows.Forms.Button();
             this.m_SummaryBtn = new System.Windows.Forms.Button();
             this.m_orbcomm_Btn = new System.Windows.Forms.Button();
             this.m_opeUpdateBtn = new System.Windows.Forms.Button();
@@ -321,6 +325,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.m_taskInsert_lnk);
             this.tabPage1.Controls.Add(this.m_tokubetu_umu_check);
             this.tabPage1.Controls.Add(this.m_keikaku_umu_check);
             this.tabPage1.Controls.Add(this.m_teiki_umu_check);
@@ -353,6 +358,17 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "タスク管理";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // m_taskInsert_lnk
+            // 
+            this.m_taskInsert_lnk.AutoSize = true;
+            this.m_taskInsert_lnk.Location = new System.Drawing.Point(76, 192);
+            this.m_taskInsert_lnk.Name = "m_taskInsert_lnk";
+            this.m_taskInsert_lnk.Size = new System.Drawing.Size(54, 12);
+            this.m_taskInsert_lnk.TabIndex = 213;
+            this.m_taskInsert_lnk.TabStop = true;
+            this.m_taskInsert_lnk.Text = "タスク登録";
+            this.m_taskInsert_lnk.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.m_taskInsert_lnk_LinkClicked);
             // 
             // m_tokubetu_umu_check
             // 
@@ -544,7 +560,7 @@
             // linkLabel8
             // 
             this.linkLabel8.AutoSize = true;
-            this.linkLabel8.Location = new System.Drawing.Point(111, 193);
+            this.linkLabel8.Location = new System.Drawing.Point(136, 192);
             this.linkLabel8.Name = "linkLabel8";
             this.linkLabel8.Size = new System.Drawing.Size(29, 12);
             this.linkLabel8.TabIndex = 195;
@@ -860,6 +876,7 @@
             // 
             // splitContainer4.Panel1
             // 
+            this.splitContainer4.Panel1.Controls.Add(this.m_system_umu_check);
             this.splitContainer4.Panel1.Controls.Add(this.m_system_count);
             this.splitContainer4.Panel1.Controls.Add(this.m_user_count);
             this.splitContainer4.Panel1.Controls.Add(this.m_customer_umu_check);
@@ -878,6 +895,18 @@
             this.splitContainer4.Size = new System.Drawing.Size(1030, 611);
             this.splitContainer4.SplitterDistance = 122;
             this.splitContainer4.TabIndex = 0;
+            // 
+            // m_system_umu_check
+            // 
+            this.m_system_umu_check.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_system_umu_check.AutoSize = true;
+            this.m_system_umu_check.Location = new System.Drawing.Point(939, 7);
+            this.m_system_umu_check.Name = "m_system_umu_check";
+            this.m_system_umu_check.Size = new System.Drawing.Size(81, 16);
+            this.m_system_umu_check.TabIndex = 200;
+            this.m_system_umu_check.Text = "無効を表示";
+            this.m_system_umu_check.UseVisualStyleBackColor = true;
+            this.m_system_umu_check.CheckedChanged += new System.EventHandler(this.m_system_umu_check_CheckedChanged);
             // 
             // m_system_count
             // 
@@ -971,7 +1000,7 @@
             this.systemList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.systemList.GridLines = true;
-            this.systemList.Location = new System.Drawing.Point(526, 26);
+            this.systemList.Location = new System.Drawing.Point(544, 28);
             this.systemList.Name = "systemList";
             this.systemList.Size = new System.Drawing.Size(494, 91);
             this.systemList.TabIndex = 191;
@@ -1346,6 +1375,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.m_inc_templete_update_btn);
+            this.tabPage3.Controls.Add(this.m_inc_templete_insert_btn);
             this.tabPage3.Controls.Add(this.m_SummaryBtn);
             this.tabPage3.Controls.Add(this.m_orbcomm_Btn);
             this.tabPage3.Controls.Add(this.m_opeUpdateBtn);
@@ -1360,9 +1391,29 @@
             this.tabPage3.Text = "登録メニュー";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // m_inc_templete_update_btn
+            // 
+            this.m_inc_templete_update_btn.Location = new System.Drawing.Point(17, 179);
+            this.m_inc_templete_update_btn.Name = "m_inc_templete_update_btn";
+            this.m_inc_templete_update_btn.Size = new System.Drawing.Size(223, 37);
+            this.m_inc_templete_update_btn.TabIndex = 7;
+            this.m_inc_templete_update_btn.Text = "インシデント/タスクテンプレート編集";
+            this.m_inc_templete_update_btn.UseVisualStyleBackColor = true;
+            this.m_inc_templete_update_btn.Click += new System.EventHandler(this.m_inc_templete_update_btn_Click);
+            // 
+            // m_inc_templete_insert_btn
+            // 
+            this.m_inc_templete_insert_btn.Location = new System.Drawing.Point(17, 130);
+            this.m_inc_templete_insert_btn.Name = "m_inc_templete_insert_btn";
+            this.m_inc_templete_insert_btn.Size = new System.Drawing.Size(223, 37);
+            this.m_inc_templete_insert_btn.TabIndex = 6;
+            this.m_inc_templete_insert_btn.Text = "インシデント/タスクテンプレート登録";
+            this.m_inc_templete_insert_btn.UseVisualStyleBackColor = true;
+            this.m_inc_templete_insert_btn.Click += new System.EventHandler(this.m_inc_templete_insert_btn_Click);
+            // 
             // m_SummaryBtn
             // 
-            this.m_SummaryBtn.Location = new System.Drawing.Point(17, 140);
+            this.m_SummaryBtn.Location = new System.Drawing.Point(17, 233);
             this.m_SummaryBtn.Name = "m_SummaryBtn";
             this.m_SummaryBtn.Size = new System.Drawing.Size(223, 37);
             this.m_SummaryBtn.TabIndex = 3;
@@ -1372,7 +1423,7 @@
             // 
             // m_orbcomm_Btn
             // 
-            this.m_orbcomm_Btn.Location = new System.Drawing.Point(17, 246);
+            this.m_orbcomm_Btn.Location = new System.Drawing.Point(17, 337);
             this.m_orbcomm_Btn.Name = "m_orbcomm_Btn";
             this.m_orbcomm_Btn.Size = new System.Drawing.Size(222, 37);
             this.m_orbcomm_Btn.TabIndex = 5;
@@ -1382,7 +1433,7 @@
             // 
             // m_opeUpdateBtn
             // 
-            this.m_opeUpdateBtn.Location = new System.Drawing.Point(17, 87);
+            this.m_opeUpdateBtn.Location = new System.Drawing.Point(17, 83);
             this.m_opeUpdateBtn.Name = "m_opeUpdateBtn";
             this.m_opeUpdateBtn.Size = new System.Drawing.Size(223, 37);
             this.m_opeUpdateBtn.TabIndex = 2;
@@ -1392,7 +1443,7 @@
             // 
             // m_mailTemplateInsert
             // 
-            this.m_mailTemplateInsert.Location = new System.Drawing.Point(17, 193);
+            this.m_mailTemplateInsert.Location = new System.Drawing.Point(17, 286);
             this.m_mailTemplateInsert.Name = "m_mailTemplateInsert";
             this.m_mailTemplateInsert.Size = new System.Drawing.Size(223, 37);
             this.m_mailTemplateInsert.TabIndex = 4;
@@ -1402,7 +1453,7 @@
             // 
             // m_opeinsertBtn
             // 
-            this.m_opeinsertBtn.Location = new System.Drawing.Point(17, 34);
+            this.m_opeinsertBtn.Location = new System.Drawing.Point(17, 36);
             this.m_opeinsertBtn.Name = "m_opeinsertBtn";
             this.m_opeinsertBtn.Size = new System.Drawing.Size(223, 37);
             this.m_opeinsertBtn.TabIndex = 1;
@@ -1531,7 +1582,7 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 60000;
+            this.timer1.Interval = 180000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // statusStrip1
@@ -1752,6 +1803,10 @@
         private System.Windows.Forms.CheckBox m_incident_umu_check;
         private System.Windows.Forms.Label m_system_count;
         private System.Windows.Forms.Label m_user_count;
+        private System.Windows.Forms.CheckBox m_system_umu_check;
+        private System.Windows.Forms.Button m_inc_templete_update_btn;
+        private System.Windows.Forms.Button m_inc_templete_insert_btn;
+        private System.Windows.Forms.LinkLabel m_taskInsert_lnk;
     }
 }
 

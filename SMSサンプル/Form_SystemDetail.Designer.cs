@@ -1,4 +1,4 @@
-﻿namespace SMSサンプル
+﻿namespace moss_AP
 {
     partial class Form_SystemDetail
     {
@@ -52,6 +52,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.m_statusCombo = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -77,6 +79,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.m_statusCombo);
+            this.splitContainer1.Panel2.Controls.Add(this.label9);
             this.splitContainer1.Panel2.Controls.Add(this.m_deleteBtn);
             this.splitContainer1.Panel2.Controls.Add(this.m_userno);
             this.splitContainer1.Panel2.Controls.Add(this.m_cutomername);
@@ -95,8 +99,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Size = new System.Drawing.Size(846, 415);
-            this.splitContainer1.SplitterDistance = 186;
+            this.splitContainer1.Size = new System.Drawing.Size(846, 425);
+            this.splitContainer1.SplitterDistance = 190;
             this.splitContainer1.TabIndex = 0;
             // 
             // splitContainer2
@@ -116,7 +120,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.m_System_List);
-            this.splitContainer2.Size = new System.Drawing.Size(844, 184);
+            this.splitContainer2.Size = new System.Drawing.Size(844, 188);
             this.splitContainer2.SplitterDistance = 33;
             this.splitContainer2.TabIndex = 1;
             this.splitContainer2.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer2_SplitterMoved);
@@ -153,7 +157,7 @@
             this.m_System_List.GridLines = true;
             this.m_System_List.Location = new System.Drawing.Point(0, 0);
             this.m_System_List.Name = "m_System_List";
-            this.m_System_List.Size = new System.Drawing.Size(844, 147);
+            this.m_System_List.Size = new System.Drawing.Size(844, 151);
             this.m_System_List.TabIndex = 0;
             this.m_System_List.UseCompatibleStateImageBehavior = false;
             this.m_System_List.View = System.Windows.Forms.View.Details;
@@ -199,7 +203,7 @@
             // 
             // m_updateOpe
             // 
-            this.m_updateOpe.Location = new System.Drawing.Point(641, 123);
+            this.m_updateOpe.Location = new System.Drawing.Point(641, 144);
             this.m_updateOpe.Name = "m_updateOpe";
             this.m_updateOpe.ReadOnly = true;
             this.m_updateOpe.Size = new System.Drawing.Size(166, 19);
@@ -209,7 +213,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(582, 126);
+            this.label6.Location = new System.Drawing.Point(582, 147);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 12);
             this.label6.TabIndex = 101;
@@ -217,7 +221,7 @@
             // 
             // m_update
             // 
-            this.m_update.Location = new System.Drawing.Point(641, 95);
+            this.m_update.Location = new System.Drawing.Point(641, 116);
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
             this.m_update.Size = new System.Drawing.Size(166, 19);
@@ -227,7 +231,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(582, 99);
+            this.label5.Location = new System.Drawing.Point(582, 120);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 99;
@@ -235,7 +239,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(748, 169);
+            this.button2.Location = new System.Drawing.Point(748, 190);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(76, 33);
             this.button2.TabIndex = 9;
@@ -245,7 +249,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(666, 169);
+            this.button1.Location = new System.Drawing.Point(666, 190);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(76, 33);
             this.button1.TabIndex = 8;
@@ -255,7 +259,7 @@
             // 
             // m_biko
             // 
-            this.m_biko.Location = new System.Drawing.Point(121, 117);
+            this.m_biko.Location = new System.Drawing.Point(121, 138);
             this.m_biko.Multiline = true;
             this.m_biko.Name = "m_biko";
             this.m_biko.Size = new System.Drawing.Size(436, 39);
@@ -287,7 +291,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(18, 117);
+            this.label7.Location = new System.Drawing.Point(18, 138);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(29, 12);
             this.label7.TabIndex = 92;
@@ -320,11 +324,32 @@
             this.label1.TabIndex = 89;
             this.label1.Text = "システム通番";
             // 
+            // m_statusCombo
+            // 
+            this.m_statusCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_statusCombo.FormattingEnabled = true;
+            this.m_statusCombo.Items.AddRange(new object[] {
+            "有効",
+            "無効"});
+            this.m_statusCombo.Location = new System.Drawing.Point(121, 115);
+            this.m_statusCombo.Name = "m_statusCombo";
+            this.m_statusCombo.Size = new System.Drawing.Size(68, 20);
+            this.m_statusCombo.TabIndex = 112;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(18, 118);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(50, 12);
+            this.label9.TabIndex = 113;
+            this.label9.Text = "ステータス";
+            // 
             // Form_SystemDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(846, 415);
+            this.ClientSize = new System.Drawing.Size(846, 425);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form_SystemDetail";
             this.Text = "システム情報";
@@ -369,5 +394,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox m_userno;
         private System.Windows.Forms.Button m_deleteBtn;
+        private System.Windows.Forms.ComboBox m_statusCombo;
+        private System.Windows.Forms.Label label9;
     }
 }

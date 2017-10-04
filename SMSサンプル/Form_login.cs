@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using log4net;
 
-namespace SMSサンプル
+namespace moss_AP
 {
     public partial class Form_login : Form
     {

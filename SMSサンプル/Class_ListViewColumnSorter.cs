@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.Globalization;
 
 
-namespace SMSサンプル
+namespace moss_AP
 {
 
     public class Class_ListViewColumnSorter : IComparer

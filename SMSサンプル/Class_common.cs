@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SMSサンプル
+namespace moss_AP
 {
     class Class_common
     {

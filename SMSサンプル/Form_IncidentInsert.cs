@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SMSサンプル
+namespace moss_AP
 {
     public partial class Form_IncidentInsert : Form
     {
@@ -648,6 +648,11 @@ namespace SMSサンプル
         {
             //インシデントテンプレート
             
+        }
+        //テンプレートの登録
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

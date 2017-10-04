@@ -112,6 +112,18 @@
     <Compile Include="Form_incidentSummary.Designer.cs">
       <DependentUpon>Form_incidentSummary.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_inc_templete_insert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_inc_templete_insert.Designer.cs">
+      <DependentUpon>Form_inc_templete_insert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_inc_templete_update.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_inc_templete_update.Designer.cs">
+      <DependentUpon>Form_inc_templete_update.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_mailDetail.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -262,6 +274,18 @@
     <Compile Include="Form_systemInsert.Designer.cs">
       <DependentUpon>Form_systemInsert.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_taskDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_taskDetail.Designer.cs">
+      <DependentUpon>Form_taskDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_taskInsert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_taskInsert.Designer.cs">
+      <DependentUpon>Form_taskInsert.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_testSound.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -326,10 +350,13 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="sagyoDS.cs" />
+    <Compile Include="timerDS.cs" />
+    <Compile Include="taskDS.cs" />
     <Compile Include="scheduleDS.cs" />
     <Compile Include="siteDS.cs" />
     <Compile Include="systemDS.cs" />
     <Compile Include="tantouDS.cs" />
+    <Compile Include="templeteDS.cs" />
     <Compile Include="userDS.cs" />
     <Compile Include="watch_InterfaceDS.cs" />
     <EmbeddedResource Include="Form_Import.resx">
@@ -337,6 +364,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_incidentSummary.resx">
       <DependentUpon>Form_incidentSummary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_inc_templete_insert.resx">
+      <DependentUpon>Form_inc_templete_insert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_inc_templete_update.resx">
+      <DependentUpon>Form_inc_templete_update.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_mailDetail.resx">
       <DependentUpon>Form_mailDetail.cs</DependentUpon>
@@ -413,6 +446,12 @@
     <EmbeddedResource Include="Form_systemInsert.resx">
       <DependentUpon>Form_systemInsert.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_taskDetail.resx">
+      <DependentUpon>Form_taskDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_taskInsert.resx">
+      <DependentUpon>Form_taskInsert.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_testSound.resx">
       <DependentUpon>Form_testSound.cs</DependentUpon>
     </EmbeddedResource>
@@ -462,7 +501,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="SMSサンプル_一時キー.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

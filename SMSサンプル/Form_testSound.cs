@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SMSサンプル
+namespace moss_AP
 {
     public partial class Form_testSound : Form
     {
@@ -17,8 +17,11 @@ namespace SMSサンプル
         //サウンドパスプロパティ
         public String strParam { get; set; }
 
-        //フォームインスタンスを保持するフィールド
-        private static Form_testSound _instance;
+        public void play(string pass) { PlaySound(pass); }
+
+
+    //フォームインスタンスを保持するフィールド
+    private static Form_testSound _instance;
 
         //フォームにアクセスするためのプロパティ
         public static Form_testSound Instance

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Outlook = Microsoft.Office.Interop.Outlook;
 
-namespace SMSサンプル
+namespace moss_AP
 {
     public partial class Form_mailTempleteList : Form
     {

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SMSサンプル
+namespace moss_AP
 {
     public partial class Form_alermlist : Form
     {
@@ -109,13 +109,17 @@ namespace SMSサンプル
                 }
                 else {
 
-                    if(flg == false) { 
+                    if(flg == false) {
                         //音の再生
-                        Form_testSound soundfm = new Form_testSound();
-                        //Form_testSound.Instance.strParam = ads.sound;
-                        //Form_testSound.Instance.Show();
-                        soundfm.strParam = ads.sound;
-                        soundfm.Show();
+                        //Form_testSound soundfm = new Form_testSound();
+                           
+
+                        //再生ダイアログは1画面以上は表示しない
+                        Form_testSound.Instance.strParam = ads.sound;
+                        Form_testSound.Instance.Show();
+                        Form_testSound.Instance.play(ads.sound);
+                        //soundfm.strParam = ads.sound;
+                        //soundfm.Show();
                         //1回で1音のみ鳴らす
                         flg = true;
                         //読み込む
@@ -240,9 +244,7 @@ namespace SMSサンプル
                         MessageBox.Show("処理情報を更新できませんでした。アラーム番号:"+ no , "アラーム");
                         con.Close();
                         return;
-
                     }
-
                 }
                 catch (Exception ex)
                 {

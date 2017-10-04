@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SMSサンプル
+namespace moss_AP
 {
     public partial class Form_MainList : Form
     {
@@ -71,10 +71,10 @@ namespace SMSサンプル
         List<hostDS> hostDSList;
         List<watch_InterfaceDS> interfaceDSList;
 
-        List<scheduleDS> schDSList;
-        List<scheduleDS> scheduleList_keikaku;
-        List<scheduleDS> scheduleList_teiki;
-        List<scheduleDS> scheduleList_tokubetu;
+        List<taskDS> schDSList;
+        List<taskDS> scheduleList_keikaku;
+        List<taskDS> scheduleList_teiki;
+        List<taskDS> scheduleList_tokubetu;
 
         List<incidentDS> incidentDSList;
 
@@ -273,37 +273,37 @@ namespace SMSサンプル
 
 
                     param_dict["userno"] = s.userno;
-                    param_dict["systemno"] = s.systemno;
+//                    param_dict["systemno"] = s.systemno;
 
                     //スケジュール情報を取得する
-                    List<scheduleDS> timerDSListsub = getuser.getTimerList(param_dict, con);
+                    List<taskDS> taskDSListsub = getuser.getTimerList(param_dict, con);
 
                     //特別対応のみ別に取得する
-                    List<scheduleDS> tokubetu_list = getuser.gettokubetulist(param_dict, con);
+                    List<taskDS> tokubetu_list = getuser.gettokubetulist(param_dict, con);
 
                     //後ろに特別対応を結合する
-                    timerDSListsub.AddRange(tokubetu_list);
+                    taskDSListsub.AddRange(tokubetu_list);
 
                     //リストに入れる
                     if (schDSList != null)
-                        schDSList.AddRange(timerDSListsub);
+                        schDSList.AddRange(taskDSListsub);
                     else
-                        schDSList = timerDSListsub;
+                        schDSList = taskDSListsub;
 
                     // 現在時刻
                     DateTime nowdate = DateTime.Now;
 
-                    foreach (scheduleDS si in timerDSListsub)
+                    foreach (taskDS si in taskDSListsub)
                     {
                         TreeNode NodeTimerDetail;
                         DateTime dt1= new DateTime();
                         if (si.schedule_type != "4")
-                            dt1 = DateTime.Parse(si.end_date);
+                            dt1 = DateTime.Parse(si.enddate);
 
                         //有効でかつ期間内
-                        if (si.status == "未完了" && si.start_date != "" && dt1 > nowdate)
+                        if (si.status == "有効" && si.startdate != "" && dt1 > nowdate)
                         {
-                            NodeTimerDetail = new TreeNode(si.timer_name, 6, 6);
+                            NodeTimerDetail = new TreeNode(si.naiyou, 6, 6);
                             NodeTimerDetail.ToolTipText = si.schedule_no;
 
                             NodeUser.ForeColor = Color.Red;
@@ -312,7 +312,7 @@ namespace SMSサンプル
                             //インシデントの時
                             if (si.schedule_type == "1")
                             {
-                                NodeTimerDetail.Text = si.incident_no + "  " + NodeTimerDetail.Text;
+                                NodeTimerDetail.Text =  NodeTimerDetail.Text;
                                 NodeTimer1.Parent.ForeColor = Color.Red;
                                 NodeTimer1.ForeColor = Color.Red;
                                 NodeTimer1.Nodes.Add(NodeTimerDetail);
@@ -343,15 +343,15 @@ namespace SMSサンプル
                                 NodeTimer4.Nodes.Add(NodeTimerDetail);
                             }
                         }
-                        else if(si.status == "未完了")
+                        else if(si.status == "有効")
                         {
-                            NodeTimerDetail = new TreeNode(si.timer_name, 5, 5);
+                            NodeTimerDetail = new TreeNode(si.naiyou, 5, 5);
                             NodeTimerDetail.ToolTipText = si.schedule_no;
 
                             //インシデントの時
                             if (si.schedule_type == "1")
                             {
-                                NodeTimerDetail.Text = si.incident_no + "  " + NodeTimerDetail.Text;
+                                NodeTimerDetail.Text =  NodeTimerDetail.Text;
                                 NodeTimer1.Nodes.Add(NodeTimerDetail);
                             }
                             //計画作業
@@ -440,7 +440,8 @@ namespace SMSサンプル
                         Convert.ToString(row[2]),
                         Convert.ToString(row[3]),
                         Convert.ToString(row[4]),
-                        Convert.ToString(row[5])
+                        Convert.ToString(row[5]),
+                        Convert.ToString(row[6])
 
                 });
             }
@@ -620,7 +621,8 @@ namespace SMSサンプル
                 Convert.ToString(row[8]),
                 Convert.ToString(row[9]),
                 Convert.ToString(row[10]),
-                Convert.ToString(row[11])
+                Convert.ToString(row[11]),
+                Convert.ToString(row[12])
                     });
             }
 
@@ -647,7 +649,8 @@ namespace SMSサンプル
                 Convert.ToString(row[8]),
                 Convert.ToString(row[9]),
                 Convert.ToString(row[10]),
-                Convert.ToString(row[11])
+                Convert.ToString(row[11]),
+                Convert.ToString(row[12])
                     });
             }
 
@@ -674,7 +677,8 @@ namespace SMSサンプル
                 Convert.ToString(row[8]),
                 Convert.ToString(row[9]),
                 Convert.ToString(row[10]),
-                Convert.ToString(row[11])
+                Convert.ToString(row[11]),
+                Convert.ToString(row[12])
                     });
             }
 
@@ -724,7 +728,6 @@ namespace SMSサンプル
         //拠点登録
         private void linkLabel3_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
             Form_siteInsert sitefm = new Form_siteInsert();
             sitefm.loginDS = loginDS;
             sitefm.con = con;
@@ -806,16 +809,18 @@ namespace SMSサンプル
             sagyofm.Show();
 
         }
-        private void disp_sagyoList(List<scheduleDS> scheduleList)
+
+        //作業一覧を表示する
+        private void disp_sagyoList(List<taskDS> scheduleList)
         {
-            scheduleList_keikaku = new List<scheduleDS>();
-            scheduleList_teiki = new List<scheduleDS>();
-            scheduleList_tokubetu = new List<scheduleDS>();
+            scheduleList_keikaku = new List<taskDS>();
+            scheduleList_teiki = new List<taskDS>();
+            scheduleList_tokubetu = new List<taskDS>();
 
             //
             if (scheduleList != null)
             { 
-                foreach (scheduleDS schedata in scheduleList)
+                foreach (taskDS schedata in scheduleList)
                 {
                     //1:インシデント処理 2:定期 3:作業 4:特別 5:サブタスク
                     if (schedata.schedule_type == "2")
@@ -847,30 +852,33 @@ namespace SMSサンプル
 
             // Column追加
             this.m_teiki_List.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(1, "完了", 30, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(2, "カスタマ", 50, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(3, "システム", 50, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(4, "拠点", 50, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(1, "ステータス", 30, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(2, "カスタマ通番", 50, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(3, "カスタマ名", 50, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(4, "内容", 50, HorizontalAlignment.Left);
 
-            this.m_teiki_List.Columns.Insert(5, "タイマー名", 180, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(6, "予定区分", 110, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(7, "開始日時", 110, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(8, "終了日時", 110, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(9, "メッセージ", 180, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(10, "更新日時", 80, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(11, "更新者", 80, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(5, "テンプレートNO", 180, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(6, "開始日時", 110, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(7, "終了日時", 110, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(8, "備考", 110, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(9, "登録日時", 180, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(10, "登録者", 80, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(11, "更新日時", 80, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(12, "更新者", 80, HorizontalAlignment.Left);
+
             //リストビューを初期化する
             teiki_sagyo_list = new DataTable("table12");
             teiki_sagyo_list.Columns.Add("No", Type.GetType("System.Int32"));
-            teiki_sagyo_list.Columns.Add("完了", Type.GetType("System.String"));
-            teiki_sagyo_list.Columns.Add("カスタマ", Type.GetType("System.String"));
-            teiki_sagyo_list.Columns.Add("システム", Type.GetType("System.String"));
-            teiki_sagyo_list.Columns.Add("拠点", Type.GetType("System.String"));
-            teiki_sagyo_list.Columns.Add("タイマー名", Type.GetType("System.String"));
-            teiki_sagyo_list.Columns.Add("予定区分", Type.GetType("System.String"));
+            teiki_sagyo_list.Columns.Add("ステータス", Type.GetType("System.String"));
+            teiki_sagyo_list.Columns.Add("カスタマ通番", Type.GetType("System.String"));
+            teiki_sagyo_list.Columns.Add("カスタマ名", Type.GetType("System.String"));
+            teiki_sagyo_list.Columns.Add("内容", Type.GetType("System.String"));
+            teiki_sagyo_list.Columns.Add("テンプレートNO", Type.GetType("System.String"));
             teiki_sagyo_list.Columns.Add("開始日時", Type.GetType("System.String"));
             teiki_sagyo_list.Columns.Add("終了日時", Type.GetType("System.String"));
-            teiki_sagyo_list.Columns.Add("メッセージ", Type.GetType("System.String"));
+            teiki_sagyo_list.Columns.Add("備考", Type.GetType("System.String"));
+            teiki_sagyo_list.Columns.Add("登録日時", Type.GetType("System.String"));
+            teiki_sagyo_list.Columns.Add("登録者", Type.GetType("System.String"));
             teiki_sagyo_list.Columns.Add("更新日時", Type.GetType("System.String"));
             teiki_sagyo_list.Columns.Add("更新者", Type.GetType("System.String"));
 
@@ -878,11 +886,10 @@ namespace SMSサンプル
             //データの挿入
             if (scheduleList_teiki != null)
             {
-                string fastline = "";
-                foreach (scheduleDS v in scheduleList_teiki)
+                foreach (taskDS v in scheduleList_teiki)
                 {
                     //チェックボックスがOFFになっている場合は表示しない
-                    if (this.m_teiki_umu_check.Checked == false && v.status == "完了")
+                    if (this.m_teiki_umu_check.Checked == false && v.status == "無効")
                         continue;
 
 
@@ -892,11 +899,12 @@ namespace SMSサンプル
                     DataRow urow = teiki_sagyo_list.NewRow();
 
                     urow["No"] = v.schedule_no;
-                    urow["完了"] = v.status;
-                    urow["カスタマ"] = v.username;
-                    urow["システム"] = v.systemname;
-                    urow["拠点"] = v.sitename;
-                    urow["タイマー名"] = v.timer_name;
+                    urow["スタータス"] = v.status;
+                    urow["カスタマ通番"] = v.userno;
+                    urow["カスタマ名"] = v.username;
+                    urow["内容"] = v.naiyou;
+                    urow["テンプレートNO"] = v.templeteno;
+
                     //1:インシデント処理 2:定期作業業務促し 3:計画作業 4:特別作業
                     if (v.schedule_type == "1")
                         urow["予定区分"] = "インシデント処理";
@@ -908,14 +916,14 @@ namespace SMSサンプル
                         urow["予定区分"] = "特別対応";
 
 
-                    urow["開始日時"] = v.start_date;
-                    urow["終了日時"] = v.end_date;
-                    urow["メッセージ"] = v.alerm_message;
+                    urow["開始日時"] = v.startdate;
+                    urow["終了日時"] = v.enddate;
+                    urow["備考"] = v.biko;
+                    urow["登録日時"] = v.ins_date;
+                    urow["登録者"] = v.ins_name_id;
                     urow["更新日時"] = v.chk_date;
                     urow["更新者"] = v.chk_name_id;
                     teiki_sagyo_list.Rows.Add(urow);
-
-                    fastline = v.incident_no;
                 }
                 //件数を書き込む
                 this.m_teiki_count.Text = teiki_sagyo_list.Rows.Count.ToString() + "件";
@@ -942,32 +950,34 @@ namespace SMSサンプル
             this.m_keikaku_list.Scrollable = true;
 
             // Column追加
-            this.m_keikaku_list.Columns.Insert(0, "No", 80, HorizontalAlignment.Right);
-            this.m_keikaku_list.Columns.Insert(1, "完了", 30, HorizontalAlignment.Left);
-            this.m_keikaku_list.Columns.Insert(2, "カスタマ", 50, HorizontalAlignment.Left);
-            this.m_keikaku_list.Columns.Insert(3, "システム", 50, HorizontalAlignment.Left);
-            this.m_keikaku_list.Columns.Insert(4, "拠点", 50, HorizontalAlignment.Left);
+            this.m_keikaku_list.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
+            this.m_keikaku_list.Columns.Insert(1, "ステータス", 30, HorizontalAlignment.Left);
+            this.m_keikaku_list.Columns.Insert(2, "カスタマ通番", 50, HorizontalAlignment.Left);
+            this.m_keikaku_list.Columns.Insert(3, "カスタマ名", 50, HorizontalAlignment.Left);
+            this.m_keikaku_list.Columns.Insert(4, "内容", 50, HorizontalAlignment.Left);
 
-            this.m_keikaku_list.Columns.Insert(5, "タイマー名", 180, HorizontalAlignment.Left);
-            this.m_keikaku_list.Columns.Insert(6, "予定区分", 110, HorizontalAlignment.Left);
-            this.m_keikaku_list.Columns.Insert(7, "開始日時", 110, HorizontalAlignment.Left);
-            this.m_keikaku_list.Columns.Insert(8, "終了日時", 110, HorizontalAlignment.Left);
-            this.m_keikaku_list.Columns.Insert(9, "メッセージ", 180, HorizontalAlignment.Left);
-            this.m_keikaku_list.Columns.Insert(10, "更新日時", 80, HorizontalAlignment.Left);
-            this.m_keikaku_list.Columns.Insert(11, "更新者", 80, HorizontalAlignment.Left);
+            this.m_keikaku_list.Columns.Insert(5, "テンプレートNO", 180, HorizontalAlignment.Left);
+            this.m_keikaku_list.Columns.Insert(6, "開始日時", 110, HorizontalAlignment.Left);
+            this.m_keikaku_list.Columns.Insert(7, "終了日時", 110, HorizontalAlignment.Left);
+            this.m_keikaku_list.Columns.Insert(8, "備考", 110, HorizontalAlignment.Left);
+            this.m_keikaku_list.Columns.Insert(9, "登録日時", 180, HorizontalAlignment.Left);
+            this.m_keikaku_list.Columns.Insert(10, "登録者", 80, HorizontalAlignment.Left);
+            this.m_keikaku_list.Columns.Insert(11, "更新日時", 80, HorizontalAlignment.Left);
+            this.m_keikaku_list.Columns.Insert(12, "更新者", 80, HorizontalAlignment.Left);
 
             //リストビューを初期化する
-            keikaku_sagyo_list = new DataTable("table13");
+            keikaku_sagyo_list = new DataTable("table12");
             keikaku_sagyo_list.Columns.Add("No", Type.GetType("System.Int32"));
-            keikaku_sagyo_list.Columns.Add("完了", Type.GetType("System.String"));
-            keikaku_sagyo_list.Columns.Add("カスタマ", Type.GetType("System.String"));
-            keikaku_sagyo_list.Columns.Add("システム", Type.GetType("System.String"));
-            keikaku_sagyo_list.Columns.Add("拠点", Type.GetType("System.String"));
-            keikaku_sagyo_list.Columns.Add("タイマー名", Type.GetType("System.String"));
-            keikaku_sagyo_list.Columns.Add("予定区分", Type.GetType("System.String"));
+            keikaku_sagyo_list.Columns.Add("ステータス", Type.GetType("System.String"));
+            keikaku_sagyo_list.Columns.Add("カスタマ通番", Type.GetType("System.String"));
+            keikaku_sagyo_list.Columns.Add("カスタマ名", Type.GetType("System.String"));
+            keikaku_sagyo_list.Columns.Add("内容", Type.GetType("System.String"));
+            keikaku_sagyo_list.Columns.Add("テンプレートNO", Type.GetType("System.String"));
             keikaku_sagyo_list.Columns.Add("開始日時", Type.GetType("System.String"));
             keikaku_sagyo_list.Columns.Add("終了日時", Type.GetType("System.String"));
-            keikaku_sagyo_list.Columns.Add("メッセージ", Type.GetType("System.String"));
+            keikaku_sagyo_list.Columns.Add("備考", Type.GetType("System.String"));
+            keikaku_sagyo_list.Columns.Add("登録日時", Type.GetType("System.String"));
+            keikaku_sagyo_list.Columns.Add("登録者", Type.GetType("System.String"));
             keikaku_sagyo_list.Columns.Add("更新日時", Type.GetType("System.String"));
             keikaku_sagyo_list.Columns.Add("更新者", Type.GetType("System.String"));
 
@@ -975,43 +985,38 @@ namespace SMSサンプル
             //データの挿入
             if (scheduleList_keikaku != null)
             {
-                string fastline = "";
-                foreach (scheduleDS v in scheduleList_keikaku)
+                foreach (taskDS v in scheduleList_keikaku)
                 {
                     //チェックボックスがOFFになっている場合は表示しない
-                    if (this.m_keikaku_umu_check.Checked == false && v.status == "完了")
+                    if (this.m_keikaku_umu_check.Checked == false && v.status == "無効")
                         continue;
-
-                    //if (fastline == v.incident_no)
-                    //    continue;
 
                     DataRow urow = keikaku_sagyo_list.NewRow();
 
                     urow["No"] = v.schedule_no;
-                    urow["完了"] = v.status;
-                    urow["カスタマ"] = v.username;
-                    urow["システム"] = v.systemname;
-                    urow["拠点"] = v.sitename;
-                    urow["タイマー名"] = v.timer_name;
+                    urow["ステータス"] = v.status;
+                    urow["カスタマ通番"] = v.userno;
+                    urow["カスタマ名"] = v.username;
+
                     //1:インシデント処理 2:定期作業業務促し 3:計画作業 4:特別作業
-                    if (v.schedule_type == "1")
-                        urow["予定区分"] = "インシデント処理";
-                    else if (v.schedule_type == "2")
-                        urow["予定区分"] = "定期作業";
-                    else if (v.schedule_type == "3")
-                        urow["予定区分"] = "計画作業";
-                    else if (v.schedule_type == "4")
-                        urow["予定区分"] = "特別対応";
-
-
-                    urow["開始日時"] = v.start_date;
-                    urow["終了日時"] = v.end_date;
-                    urow["メッセージ"] = v.alerm_message;
+                    //if (v.schedule_type == "1")
+                    //    urow["予定区分"] = "インシデント処理";
+                    //else if (v.schedule_type == "2")
+                    //    urow["予定区分"] = "定期作業";
+                    //else if (v.schedule_type == "3")
+                    //    urow["予定区分"] = "計画作業";
+                    //else if (v.schedule_type == "4")
+                    //    urow["予定区分"] = "特別対応";
+                    urow["内容"] = v.naiyou;
+                    urow["テンプレートNO"] = v.templeteno;
+                    urow["開始日時"] = v.startdate;
+                    urow["終了日時"] = v.enddate;
+                    urow["登録日時"] = v.ins_date;
+                    urow["登録者"] = v.ins_name_id;
                     urow["更新日時"] = v.chk_date;
                     urow["更新者"] = v.chk_name_id;
                     keikaku_sagyo_list.Rows.Add(urow);
 
-                    fastline = v.incident_no;
 
                 }
 
@@ -1091,7 +1096,7 @@ namespace SMSサンプル
                 foreach (incidentDS v in incidentList)
                 {
                     //チェックボックスがOFFになっている場合は表示しない
-                    if (this.m_incident_umu_check.Checked == false && v.status == "完了")
+                    if (this.m_incident_umu_check.Checked == false && v.status == "無効")
                         continue;
 
                     if (fastline == v.incident_no)
@@ -1168,29 +1173,33 @@ namespace SMSサンプル
 
             // Column追加
             this.m_tokubetu_list.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-            this.m_tokubetu_list.Columns.Insert(1, "完了", 30, HorizontalAlignment.Left);
-            this.m_tokubetu_list.Columns.Insert(2, "カスタマ", 50, HorizontalAlignment.Left);
-            this.m_tokubetu_list.Columns.Insert(3, "システム", 50, HorizontalAlignment.Left);
-            this.m_tokubetu_list.Columns.Insert(4, "拠点", 50, HorizontalAlignment.Left);
-            this.m_tokubetu_list.Columns.Insert(5, "タイマー名", 180, HorizontalAlignment.Left);
-            this.m_tokubetu_list.Columns.Insert(6, "予定区分", 110, HorizontalAlignment.Left);
-            this.m_tokubetu_list.Columns.Insert(7, "開始日時", 110, HorizontalAlignment.Left);
-            this.m_tokubetu_list.Columns.Insert(8, "終了日時", 110, HorizontalAlignment.Left);
-            this.m_tokubetu_list.Columns.Insert(9, "メッセージ", 180, HorizontalAlignment.Left);
-            this.m_tokubetu_list.Columns.Insert(10, "更新日時", 80, HorizontalAlignment.Left);
-            this.m_tokubetu_list.Columns.Insert(11, "更新者", 80, HorizontalAlignment.Left);
+            this.m_tokubetu_list.Columns.Insert(1, "ステータス", 30, HorizontalAlignment.Left);
+            this.m_tokubetu_list.Columns.Insert(2, "カスタマ通番", 50, HorizontalAlignment.Left);
+            this.m_tokubetu_list.Columns.Insert(3, "カスタマ名", 50, HorizontalAlignment.Left);
+            this.m_tokubetu_list.Columns.Insert(4, "内容", 50, HorizontalAlignment.Left);
+
+            this.m_tokubetu_list.Columns.Insert(5, "テンプレートNO", 180, HorizontalAlignment.Left);
+            this.m_tokubetu_list.Columns.Insert(6, "開始日時", 110, HorizontalAlignment.Left);
+            this.m_tokubetu_list.Columns.Insert(7, "終了日時", 110, HorizontalAlignment.Left);
+            this.m_tokubetu_list.Columns.Insert(8, "備考", 110, HorizontalAlignment.Left);
+            this.m_tokubetu_list.Columns.Insert(9, "登録日時", 180, HorizontalAlignment.Left);
+            this.m_tokubetu_list.Columns.Insert(10, "登録者", 80, HorizontalAlignment.Left);
+            this.m_tokubetu_list.Columns.Insert(11, "更新日時", 80, HorizontalAlignment.Left);
+            this.m_tokubetu_list.Columns.Insert(12, "更新者", 80, HorizontalAlignment.Left);
+
             //リストビューを初期化する
-            tokubetu_sagyo_list = new DataTable("table15");
+            tokubetu_sagyo_list = new DataTable("table12");
             tokubetu_sagyo_list.Columns.Add("No", Type.GetType("System.Int32"));
-            tokubetu_sagyo_list.Columns.Add("完了", Type.GetType("System.String"));
-            tokubetu_sagyo_list.Columns.Add("カスタマ", Type.GetType("System.String"));
-            tokubetu_sagyo_list.Columns.Add("システム", Type.GetType("System.String"));
-            tokubetu_sagyo_list.Columns.Add("拠点", Type.GetType("System.String"));
-            tokubetu_sagyo_list.Columns.Add("タイマー名", Type.GetType("System.String"));
-            tokubetu_sagyo_list.Columns.Add("予定区分", Type.GetType("System.String"));
+            tokubetu_sagyo_list.Columns.Add("ステータス", Type.GetType("System.String"));
+            tokubetu_sagyo_list.Columns.Add("カスタマ通番", Type.GetType("System.String"));
+            tokubetu_sagyo_list.Columns.Add("カスタマ名", Type.GetType("System.String"));
+            tokubetu_sagyo_list.Columns.Add("内容", Type.GetType("System.String"));
+            tokubetu_sagyo_list.Columns.Add("テンプレートNO", Type.GetType("System.String"));
             tokubetu_sagyo_list.Columns.Add("開始日時", Type.GetType("System.String"));
             tokubetu_sagyo_list.Columns.Add("終了日時", Type.GetType("System.String"));
-            tokubetu_sagyo_list.Columns.Add("メッセージ", Type.GetType("System.String"));
+            tokubetu_sagyo_list.Columns.Add("備考", Type.GetType("System.String"));
+            tokubetu_sagyo_list.Columns.Add("登録日時", Type.GetType("System.String"));
+            tokubetu_sagyo_list.Columns.Add("登録者", Type.GetType("System.String"));
             tokubetu_sagyo_list.Columns.Add("更新日時", Type.GetType("System.String"));
             tokubetu_sagyo_list.Columns.Add("更新者", Type.GetType("System.String"));
 
@@ -1198,11 +1207,10 @@ namespace SMSサンプル
             //データの挿入
             if (scheduleList_tokubetu != null)
             {
-                string fastline = "";
-                foreach (scheduleDS v in scheduleList_tokubetu)
+                foreach (taskDS v in scheduleList_tokubetu)
                 {
                     //チェックボックスがOFFになっている場合は表示しない
-                    if (this.m_tokubetu_umu_check.Checked == false && v.status == "完了")
+                    if (this.m_tokubetu_umu_check.Checked == false && v.status == "無効")
                         continue;
 
                     //if (fastline == v.incident_no)
@@ -1210,11 +1218,10 @@ namespace SMSサンプル
                     //    continue;
 
                     urow["No"] = v.schedule_no;
-                    urow["完了"] = v.status;
-                    urow["カスタマ"] = v.username;
-                    urow["システム"] = v.systemname;
-                    urow["拠点"] = v.systemname;
-                    urow["タイマー名"] = v.timer_name;
+                    urow["ステータス"] = v.status;
+                    urow["カスタマ通番"] = v.userno;
+                    urow["カスタマ名"] = v.username;
+
                     //1:インシデント処理 2:定期作業業務促し 3:計画作業 4:特別作業
                     if (v.schedule_type == "1")
                         urow["予定区分"] = "インシデント処理";
@@ -1224,14 +1231,17 @@ namespace SMSサンプル
                         urow["予定区分"] = "計画作業";
                     else if (v.schedule_type == "4")
                         urow["予定区分"] = "特別対応";
-                    urow["開始日時"] = v.start_date;
-                    urow["終了日時"] = v.end_date;
-                    urow["メッセージ"] = v.alerm_message;
+                    urow["内容"] = v.naiyou;
+                    urow["テンプレートNO"] = v.templeteno;
+                    urow["開始日時"] = v.startdate;
+                    urow["終了日時"] = v.enddate;
+                    urow["備考"] = v.biko;
+                    urow["登録日時"] = v.ins_date;
+                    urow["登録者"] = v.ins_name_id;
+
                     urow["更新日時"] = v.chk_date;
                     urow["更新者"] = v.chk_name_id;
                     tokubetu_sagyo_list.Rows.Add(urow);
-
-                    fastline = v.incident_no;
                 }
 
                 //件数を書き込む
@@ -1338,17 +1348,20 @@ namespace SMSサンプル
 
             // Column追加
             this.systemList.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-            this.systemList.Columns.Insert(1, "システム名", 180, HorizontalAlignment.Left);
-            this.systemList.Columns.Insert(2, "システム名カナ", 50, HorizontalAlignment.Left);
-            this.systemList.Columns.Insert(3, "備考", 30, HorizontalAlignment.Left);
-            this.systemList.Columns.Insert(4, "更新日時", 80, HorizontalAlignment.Left);
-            this.systemList.Columns.Insert(5, "更新者", 80, HorizontalAlignment.Left);
+            this.systemList.Columns.Insert(1, "有効", 50, HorizontalAlignment.Left);
+            this.systemList.Columns.Insert(2, "システム名", 180, HorizontalAlignment.Left);
+            this.systemList.Columns.Insert(3, "システム名カナ", 50, HorizontalAlignment.Left);
+            this.systemList.Columns.Insert(4, "備考", 30, HorizontalAlignment.Left);
+            this.systemList.Columns.Insert(5, "更新日時", 80, HorizontalAlignment.Left);
+            this.systemList.Columns.Insert(6, "更新者", 80, HorizontalAlignment.Left);
 
             //リストビューを初期化する
             system_list = new DataTable("table3");
             system_list.Columns.Add("No", Type.GetType("System.Int32"));
+            system_list.Columns.Add("有効", Type.GetType("System.String"));
             system_list.Columns.Add("システム名", Type.GetType("System.String"));
             system_list.Columns.Add("システム名カナ", Type.GetType("System.String"));
+
             system_list.Columns.Add("備考", Type.GetType("System.String"));
             system_list.Columns.Add("更新日時", Type.GetType("System.String"));
             system_list.Columns.Add("更新者", Type.GetType("System.String"));
@@ -1362,9 +1375,13 @@ namespace SMSサンプル
 
                     if (fastline == sys.systemno)
                         continue;
+                    //チェックボックスがOFFになっている場合は表示しない
+                    if (this.m_system_umu_check.Checked == false && sys.status == "無効")
+                        continue;
 
                     DataRow row = system_list.NewRow();
                     row["No"] = sys.systemno;
+                    row["有効"] = sys.status;
                     row["システム名"] = sys.systemname;
                     row["システム名カナ"] = sys.systemkana;
                     row["備考"] = sys.biko;
@@ -1379,7 +1396,6 @@ namespace SMSサンプル
 
                 this.systemList.VirtualListSize = system_list.Rows.Count;
                 this.systemList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
             }
         }
         //拠点情報一覧の表示
@@ -1903,7 +1919,7 @@ namespace SMSサンプル
                 hostDSList = dsp_L.host_L;
 
                 //回線情報を取得
-                if (dsp_L.user_L != null)
+                if (dsp_L.user_L != null )
                 {
                     Class_Detaget dataget = new Class_Detaget();
                     dataget.getSelectKaisenInfo(user_list, dsp_L, con);
@@ -1938,13 +1954,13 @@ namespace SMSサンプル
         {
             try
             {
-                String scheduleNo;
+                String teskNO;
                 if (e.Node.Level == 3)
                 {
 
-                    scheduleNo = e.Node.ToolTipText;
+                    teskNO = e.Node.ToolTipText;
 
-                    if (scheduleNo != "" && e.Node.Nodes.Count == 0)
+                    if (teskNO != "" && e.Node.Nodes.Count == 0)
                     {
                         //インシデントの時         
                         if (e.Node.Parent.ToolTipText == "1")
@@ -1953,50 +1969,45 @@ namespace SMSサンプル
                             Dictionary<string, string> param_dict = new Dictionary<string, string>();
                             Class_Detaget dg = new Class_Detaget();
 
-                            Form_scheduleDetail formdetail = new Form_scheduleDetail();
+                            //Form_scheduleDetail formdetail = new Form_scheduleDetail();
+                            Form_taskDetail formdetail = new Form_taskDetail();
 
                             string scheduleno = e.Node.ToolTipText;
 
-                            formdetail.keikakudt = new scheduleDS();
+                            formdetail.taskds = new taskDS();
 
                             string status = "0";
-                            foreach (scheduleDS sch in schDSList)
+                            foreach (taskDS sch in schDSList)
                             {
                                 if (scheduleno == sch.schedule_no)
                                 {
-                                    formdetail.keikakudt = sch;
+                                    formdetail.taskds = sch;
                                     if (sch.status != null)
                                         if (sch.status == "未完了")
                                             status = "1";
                                         else if (sch.status == "完了")
                                             status = "0";
 
-                                    formdetail.keikakudt.schedule_no = sch.schedule_no;
-                                    formdetail.keikakudt.status = status;
-                                    formdetail.keikakudt.timer_name = sch.timer_name;
-                                    formdetail.keikakudt.schedule_type = sch.schedule_type;
-                                    formdetail.keikakudt.repeat_type = sch.repeat_type;
-                                    formdetail.keikakudt.start_date = sch.start_date;
-                                    formdetail.keikakudt.end_date = sch.end_date;
-                                    formdetail.keikakudt.alerm_message = sch.alerm_message;
-                                    formdetail.keikakudt.sound = sch.sound;
-                                    formdetail.keikakudt.incident_no = sch.incident_no;
-                                    formdetail.keikakudt.kakunin = sch.kakunin;
-                                    formdetail.keikakudt.userno = sch.userno;
-                                    formdetail.keikakudt.systemno = sch.systemno;
-                                    formdetail.keikakudt.siteno = sch.siteno;
-                                    formdetail.keikakudt.chk_date = sch.chk_date;
-                                    formdetail.keikakudt.chk_name_id = sch.chk_name_id;
+                                    formdetail.taskds.schedule_no = sch.schedule_no;
+                                    formdetail.taskds.schedule_type = sch.schedule_type;
+                                    formdetail.taskds.status = status;
+                                    formdetail.taskds.templeteno = sch.templeteno;
+                                    formdetail.taskds.naiyou = sch.naiyou;
+                                    formdetail.taskds.startdate = sch.startdate;
+                                    formdetail.taskds.enddate = sch.enddate;
+                                    formdetail.taskds.biko = sch.biko;
+                                    formdetail.taskds.userno= sch.userno;
+                                    formdetail.taskds.username = sch.username;
+                                    formdetail.taskds.ins_date = sch.ins_date;
+                                    formdetail.taskds.ins_name_id = sch.ins_name_id;
+                                    formdetail.taskds.chk_date = sch.chk_date;
+                                    formdetail.taskds.chk_name_id = sch.chk_name_id;
 
                                     break;
                                 }
                             }
                             if (userDSList != null)
                                 formdetail.userList = userDSList;
-                            if (systemDSList != null)
-                                formdetail.systemList = systemDSList;
-                            if (siteDSList != null)
-                                formdetail.siteList = siteDSList;
                             formdetail.loginDS = loginDS;
                             formdetail.con = con;
                             formdetail.Owner = this;
@@ -2005,41 +2016,40 @@ namespace SMSサンプル
                         //定期作業のとき
                         else if (e.Node.Parent.ToolTipText == "2")
                         {
-                            Form_scheduleDetail formdetail = new Form_scheduleDetail();
+                            //Form_scheduleDetail formdetail = new Form_scheduleDetail();
+                            Form_taskDetail formdetail = new Form_taskDetail();
                             formdetail.con = con;
 
                             string scheduleno = e.Node.ToolTipText;
 
-                            formdetail.keikakudt = new scheduleDS();
+                            formdetail.taskds = new taskDS();
 
                             string status = "0";
-                            foreach (scheduleDS sch in scheduleList_teiki)
+                            foreach (taskDS sch in scheduleList_teiki)
                             {
                                 if (scheduleno == sch.schedule_no)
                                 {
-                                    formdetail.keikakudt = sch;
+                                    formdetail.taskds = sch;
                                     if (sch.status != null)
                                         if (sch.status == "未完了")
                                             status = "1";
                                         else if (sch.status == "完了")
                                             status = "0";
 
-                                    formdetail.keikakudt.schedule_no = sch.schedule_no;
-                                    formdetail.keikakudt.status = status;
-                                    formdetail.keikakudt.timer_name = sch.timer_name;
-                                    formdetail.keikakudt.schedule_type = sch.schedule_type;
-                                    formdetail.keikakudt.repeat_type = sch.repeat_type;
-                                    formdetail.keikakudt.start_date = sch.start_date;
-                                    formdetail.keikakudt.end_date = sch.end_date;
-                                    formdetail.keikakudt.alerm_message = sch.alerm_message;
-                                    formdetail.keikakudt.sound = sch.sound;
-                                    formdetail.keikakudt.incident_no = sch.incident_no;
-                                    formdetail.keikakudt.kakunin = sch.kakunin;
-                                    formdetail.keikakudt.userno = sch.userno;
-                                    formdetail.keikakudt.systemno = sch.systemno;
-                                    formdetail.keikakudt.siteno = sch.siteno;
-                                    formdetail.keikakudt.chk_date = sch.chk_date;
-                                    formdetail.keikakudt.chk_name_id = sch.chk_name_id;
+                                    formdetail.taskds.schedule_no = sch.schedule_no;
+                                    formdetail.taskds.status = status;
+                                    formdetail.taskds.schedule_type = sch.schedule_type;
+                                    formdetail.taskds.templeteno = sch.templeteno;
+                                    formdetail.taskds.naiyou = sch.naiyou;
+                                    formdetail.taskds.startdate = sch.startdate;
+                                    formdetail.taskds.enddate = sch.enddate;
+                                    formdetail.taskds.biko = sch.biko;
+                                    formdetail.taskds.userno    = sch.userno;
+                                    formdetail.taskds.username = sch.username;
+                                    formdetail.taskds.ins_date = sch.ins_date;
+                                    formdetail.taskds.ins_name_id = sch.ins_name_id;
+                                    formdetail.taskds.chk_date = sch.chk_date;
+                                    formdetail.taskds.chk_name_id = sch.chk_name_id;
 
                                     break;
                                 }
@@ -2059,51 +2069,50 @@ namespace SMSサンプル
                         //計画作業のとき
                         else if (e.Node.Parent.ToolTipText == "3")
                         {
-                            Form_scheduleDetail formdetail = new Form_scheduleDetail();
+                            Form_taskDetail formdetail = new Form_taskDetail();
                             formdetail.con = con;
 
                             string scheduleno = e.Node.ToolTipText;
 
-                            formdetail.keikakudt = new scheduleDS();
+                            formdetail.taskds  = new taskDS();
 
                             string status = "0";
-                            foreach (scheduleDS sch in scheduleList_keikaku)
+                            foreach (taskDS sch in scheduleList_keikaku)
                             {
                                 if (scheduleno == sch.schedule_no)
                                 {
-                                    formdetail.keikakudt = sch;
+                                    formdetail.taskds = sch;
                                     if (sch.status != null)
-                                        if (sch.status == "未完了")
+                                        if (sch.status == "有効")
                                             status = "1";
-                                        else if (sch.status == "完了")
+                                        else if (sch.status == "無効")
                                             status = "0";
 
-                                    formdetail.keikakudt.schedule_no = sch.schedule_no;
-                                    formdetail.keikakudt.status = status;
-                                    formdetail.keikakudt.timer_name = sch.timer_name;
-                                    formdetail.keikakudt.schedule_type = sch.schedule_type;
-                                    formdetail.keikakudt.repeat_type = sch.repeat_type;
-                                    formdetail.keikakudt.start_date = sch.start_date;
-                                    formdetail.keikakudt.end_date = sch.end_date;
-                                    formdetail.keikakudt.alerm_message = sch.alerm_message;
-                                    formdetail.keikakudt.sound = sch.sound;
-                                    formdetail.keikakudt.incident_no = sch.incident_no;
-                                    formdetail.keikakudt.kakunin = sch.kakunin;
-                                    formdetail.keikakudt.userno = sch.userno;
-                                    formdetail.keikakudt.systemno = sch.systemno;
-                                    formdetail.keikakudt.siteno = sch.siteno;
-                                    formdetail.keikakudt.chk_date = sch.chk_date;
-                                    formdetail.keikakudt.chk_name_id = sch.chk_name_id;
+                                    formdetail.taskds.schedule_no = sch.schedule_no;
+                                    formdetail.taskds.status = status;
+                                    formdetail.taskds.schedule_type = sch.schedule_type;
+                                    formdetail.taskds.templeteno = sch.templeteno;
+                                    formdetail.taskds.naiyou = sch.naiyou;
+                                    formdetail.taskds.startdate = sch.startdate;
+                                    formdetail.taskds.enddate = sch.enddate;
+                                    formdetail.taskds.biko = sch.biko;
+                                    formdetail.taskds.userno = sch.userno;
+                                    formdetail.taskds.username = sch.username;
+                                    formdetail.taskds.ins_date = sch.ins_date;
+                                    formdetail.taskds.ins_name_id = sch.ins_name_id;
+                                    formdetail.taskds.chk_date = sch.chk_date;
+                                    formdetail.taskds.chk_name_id = sch.chk_name_id;
 
                                     break;
                                 }
                             }
                             if (userDSList != null)
                                 formdetail.userList = userDSList;
-                            if (systemDSList != null)
-                                formdetail.systemList = systemDSList;
-                            if (siteDSList != null)
-                                formdetail.siteList = siteDSList;
+                            //if (systemDSList != null)
+                            //    formdetail.systemList = systemDSList;
+                            //if (siteDSList != null)
+                            //    formdetail.siteList = siteDSList;
+
                             formdetail.loginDS = loginDS;
                             formdetail.con = con;
                             formdetail.Owner = this;
@@ -2112,51 +2121,49 @@ namespace SMSサンプル
                         //特別対応のとき
                         else if (e.Node.Parent.ToolTipText == "4")
                         {
-                            Form_scheduleDetail formdetail = new Form_scheduleDetail();
+                            Form_taskDetail formdetail = new Form_taskDetail();
                             formdetail.con = con;
 
                             string scheduleno = e.Node.ToolTipText;
 
-                            formdetail.keikakudt = new scheduleDS();
+                            formdetail.taskds = new taskDS();
 
                             string status = "0";
-                            foreach (scheduleDS sch in scheduleList_tokubetu)
+                            foreach (taskDS sch in scheduleList_tokubetu)
                             {
                                 if (scheduleno == sch.schedule_no)
                                 {
-                                    formdetail.keikakudt = sch;
+                                    formdetail.taskds = sch;
                                     if (sch.status != null)
-                                        if (sch.status == "未完了")
+                                        if (sch.status == "有効")
                                             status = "1";
-                                        else if (sch.status == "完了")
+                                        else if (sch.status == "無効")
                                             status = "0";
 
-                                    formdetail.keikakudt.schedule_no = sch.schedule_no;
-                                    formdetail.keikakudt.status = status;
-                                    formdetail.keikakudt.timer_name = sch.timer_name;
-                                    formdetail.keikakudt.schedule_type = sch.schedule_type;
-                                    formdetail.keikakudt.repeat_type = sch.repeat_type;
-                                    formdetail.keikakudt.start_date = sch.start_date;
-                                    formdetail.keikakudt.end_date = sch.end_date;
-                                    formdetail.keikakudt.alerm_message = sch.alerm_message;
-                                    formdetail.keikakudt.sound = sch.sound;
-                                    formdetail.keikakudt.incident_no = sch.incident_no;
-                                    formdetail.keikakudt.kakunin = sch.kakunin;
-                                    formdetail.keikakudt.userno = sch.userno;
-                                    formdetail.keikakudt.systemno = sch.systemno;
-                                    formdetail.keikakudt.siteno = sch.siteno;
-                                    formdetail.keikakudt.chk_date = sch.chk_date;
-                                    formdetail.keikakudt.chk_name_id = sch.chk_name_id;
+                                    formdetail.taskds.schedule_no = sch.schedule_no;
+                                    formdetail.taskds.status = status;
+                                    formdetail.taskds.schedule_type = sch.schedule_type;
+                                    formdetail.taskds.templeteno = sch.templeteno;
+                                    formdetail.taskds.naiyou = sch.naiyou;
+                                    formdetail.taskds.startdate = sch.startdate;
+                                    formdetail.taskds.enddate = sch.enddate;
+                                    formdetail.taskds.biko = sch.biko;
+                                    formdetail.taskds.userno = sch.userno;
+                                    formdetail.taskds.username = sch.username;
+                                    formdetail.taskds.ins_date = sch.ins_date;
+                                    formdetail.taskds.ins_name_id = sch.ins_name_id;
+                                    formdetail.taskds.chk_date = sch.chk_date;
+                                    formdetail.taskds.chk_name_id = sch.chk_name_id;
 
                                     break;
                                 }
                             }
                             if (userDSList != null)
                                 formdetail.userList = userDSList;
-                            if (systemDSList != null)
-                                formdetail.systemList = systemDSList;
-                            if (siteDSList != null)
-                                formdetail.siteList = siteDSList;
+                            //if (systemDSList != null)
+                            //    formdetail.systemList = systemDSList;
+                            //if (siteDSList != null)
+                            //    formdetail.siteList = siteDSList;
                             formdetail.loginDS = loginDS;
                             formdetail.con = con;
                             formdetail.Owner = this;
@@ -2872,50 +2879,46 @@ namespace SMSサンプル
         private void disp_schedule()
         {
             ListView.SelectedIndexCollection item = m_keikaku_list.SelectedIndices;
-            Form_scheduleDetail formdetail = new Form_scheduleDetail();
+            Form_taskDetail formdetail = new Form_taskDetail();
             formdetail.con = con;
 
             string scheduleno = this.m_keikaku_list.Items[item[0]].SubItems[0].Text;
 
-            formdetail.keikakudt = new scheduleDS();
+            formdetail.taskds = new taskDS();
 
             string status = "0";
-            foreach (scheduleDS sch in scheduleList_keikaku)
+            foreach (taskDS sch in scheduleList_keikaku)
             {
                 if (scheduleno == sch.schedule_no)
                 {
-                    formdetail.keikakudt = sch;
+                    formdetail.taskds = sch;
                     if (sch.status != null)
-                        if (sch.status == "未完了")
+                        if (sch.status == "有効")
                             status = "1";
-                        else if (sch.status == "完了")
+                        else if (sch.status == "無効")
                             status = "0";
 
-                    formdetail.keikakudt.schedule_no = sch.schedule_no;
-                    formdetail.keikakudt.status = status;
-                    formdetail.keikakudt.timer_name = sch.timer_name;
-                    formdetail.keikakudt.schedule_type = sch.schedule_type;
-                    formdetail.keikakudt.repeat_type = sch.repeat_type;
-                    formdetail.keikakudt.start_date = sch.start_date;
-                    formdetail.keikakudt.end_date = sch.end_date;
-                    formdetail.keikakudt.alerm_message = sch.alerm_message;
-                    formdetail.keikakudt.sound = sch.sound;
-                    formdetail.keikakudt.incident_no = sch.incident_no;
-                    formdetail.keikakudt.kakunin = sch.kakunin;
-                    formdetail.keikakudt.userno = sch.userno;
-                    formdetail.keikakudt.systemno = sch.systemno;
-                    formdetail.keikakudt.chk_date = sch.chk_date;
-                    formdetail.keikakudt.chk_name_id = sch.chk_name_id;
+                    formdetail.taskds.schedule_no = sch.schedule_no;
+                    formdetail.taskds.status = status;
+                    formdetail.taskds.schedule_type = sch.schedule_type;
+                    formdetail.taskds.templeteno = sch.templeteno;
+
+                    formdetail.taskds.naiyou = sch.naiyou;
+                    formdetail.taskds.startdate = sch.startdate;
+                    formdetail.taskds.enddate = sch.enddate;
+                    formdetail.taskds.biko = sch.biko;
+                    formdetail.taskds.userno = sch.userno;
+                    formdetail.taskds.username = sch.username;
+                    formdetail.taskds.ins_date = sch.ins_date;
+                    formdetail.taskds.ins_name_id = sch.ins_name_id;
+                    formdetail.taskds.chk_date = sch.chk_date;
+                    formdetail.taskds.chk_name_id = sch.chk_name_id;
 
                     break;
                 }
             }
             if (userDSList != null)
                 formdetail.userList = userDSList;
-            if (systemDSList != null)
-                formdetail.systemList = systemDSList;
-            if (siteDSList != null)
-                formdetail.siteList = siteDSList;
             formdetail.loginDS = loginDS;
             formdetail.con = con;
             formdetail.Owner = this;
@@ -2934,8 +2937,8 @@ namespace SMSサンプル
             string status = this.m_keikaku_list.Items[item[0]].SubItems[1].Text;
 
             string menustring = "";
-            if (status == "未完了")
-                menustring = "完了";
+            if (status == "有効")
+                menustring = "無効";
             else
                 return;
 
@@ -2959,8 +2962,8 @@ namespace SMSサンプル
             string status = this.m_teiki_List.Items[item[0]].SubItems[1].Text;
 
             string menustring = "";
-            if (status == "未完了")
-                menustring = "完了";
+            if (status == "有効")
+                menustring = "無効";
             else
                 return;
 
@@ -3086,50 +3089,50 @@ namespace SMSサンプル
         {
 
             ListView.SelectedIndexCollection item = m_teiki_List.SelectedIndices;
-            Form_scheduleDetail formdetail = new Form_scheduleDetail();
+
+            Form_taskDetail formdetail = new Form_taskDetail();
+
             formdetail.con = con;
 
             string scheduleno = this.m_teiki_List.Items[item[0]].SubItems[0].Text;
 
-            formdetail.keikakudt = new scheduleDS();
+            formdetail.taskds = new taskDS();
 
             string status = "0";
-            foreach (scheduleDS sch in scheduleList_teiki)
+            foreach (taskDS sch in scheduleList_teiki)
             {
                 if (scheduleno == sch.schedule_no)
                 {
-                    formdetail.keikakudt = sch;
+                    formdetail.taskds = sch;
                     if (sch.status != null)
-                        if (sch.status == "未完了")
+                        if (sch.status == "有効")
                             status = "1";
-                        else if (sch.status == "完了")
+                        else if (sch.status == "無効")
                             status = "0";
 
-                    formdetail.keikakudt.schedule_no = sch.schedule_no;
-                    formdetail.keikakudt.status = status;
-                    formdetail.keikakudt.timer_name = sch.timer_name;
-                    formdetail.keikakudt.schedule_type = sch.schedule_type;
-                    formdetail.keikakudt.repeat_type = sch.repeat_type;
-                    formdetail.keikakudt.start_date = sch.start_date;
-                    formdetail.keikakudt.end_date = sch.end_date;
-                    formdetail.keikakudt.alerm_message = sch.alerm_message;
-                    formdetail.keikakudt.sound = sch.sound;
-                    formdetail.keikakudt.incident_no = sch.incident_no;
-                    formdetail.keikakudt.kakunin = sch.kakunin;
-                    formdetail.keikakudt.userno = sch.userno;
-                    formdetail.keikakudt.systemno = sch.systemno;
-                    formdetail.keikakudt.chk_date = sch.chk_date;
-                    formdetail.keikakudt.chk_name_id = sch.chk_name_id;
+                    formdetail.taskds.schedule_no = sch.schedule_no;
+                    formdetail.taskds.schedule_type = sch.schedule_type;
+                    formdetail.taskds.status = status;
+
+                    formdetail.taskds.schedule_type = sch.schedule_type;
+                    formdetail.taskds.templeteno = sch.templeteno;
+                    formdetail.taskds.naiyou = sch.naiyou;
+                    formdetail.taskds.startdate = sch.startdate;
+                    formdetail.taskds.enddate = sch.enddate;
+                    formdetail.taskds.biko = sch.biko;
+                    formdetail.taskds.userno = sch.userno;
+                    formdetail.taskds.username = sch.username;
+                    formdetail.taskds.ins_date = sch.ins_date;
+                    formdetail.taskds.ins_name_id = sch.ins_name_id;
+                    formdetail.taskds.chk_date = sch.chk_date;
+                    formdetail.taskds.chk_name_id = sch.chk_name_id;
 
                     break;
                 }
             }
+            //
             if (userDSList != null)
                 formdetail.userList = userDSList;
-            if (systemDSList != null)
-                formdetail.systemList = systemDSList;
-            if (siteDSList != null)
-                formdetail.siteList = siteDSList;
             formdetail.loginDS = loginDS;
             formdetail.con = con;
             formdetail.Owner = this;
@@ -3154,9 +3157,9 @@ namespace SMSサンプル
                 {
                     formdetail.incidentdt = sch;
                     if (sch.status != null)
-                        if (sch.status == "未完了")
+                        if (sch.status == "有効")
                             status = "1";
-                        else if (sch.status == "完了")
+                        else if (sch.status == "無効")
                             status = "0";
 
                     formdetail.incidentdt.incident_no = sch.incident_no;
@@ -3803,50 +3806,45 @@ namespace SMSサンプル
         private void m_tokubetu_list_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ListView.SelectedIndexCollection item = m_tokubetu_list.SelectedIndices;
-            Form_scheduleDetail formdetail = new Form_scheduleDetail();
+            Form_taskDetail formdetail = new Form_taskDetail();
             formdetail.con = con;
 
             string scheduleno = this.m_tokubetu_list.Items[item[0]].SubItems[0].Text;
 
-            formdetail.keikakudt = new scheduleDS();
+            formdetail.taskds = new taskDS();
 
             string status = "0";
-            foreach (scheduleDS sch in scheduleList_tokubetu)
+            foreach (taskDS sch in scheduleList_tokubetu)
             {
                 if (scheduleno == sch.schedule_no)
                 {
-                    formdetail.keikakudt = sch;
+                    formdetail.taskds = sch;
                     if (sch.status != null)
-                        if (sch.status == "未完了")
+                        if (sch.status == "有効")
                             status = "1";
-                        else if (sch.status == "完了")
+                        else if (sch.status == "無効")
                             status = "0";
 
-                    formdetail.keikakudt.schedule_no = sch.schedule_no;
-                    formdetail.keikakudt.status = status;
-                    formdetail.keikakudt.timer_name = sch.timer_name;
-                    formdetail.keikakudt.schedule_type = sch.schedule_type;
-                    formdetail.keikakudt.repeat_type = sch.repeat_type;
-                    formdetail.keikakudt.start_date = sch.start_date;
-                    formdetail.keikakudt.end_date = sch.end_date;
-                    formdetail.keikakudt.alerm_message = sch.alerm_message;
-                    formdetail.keikakudt.sound = sch.sound;
-                    formdetail.keikakudt.incident_no = sch.incident_no;
-                    formdetail.keikakudt.kakunin = sch.kakunin;
-                    formdetail.keikakudt.userno = sch.userno;
-                    formdetail.keikakudt.systemno = sch.systemno;
-                    formdetail.keikakudt.chk_date = sch.chk_date;
-                    formdetail.keikakudt.chk_name_id = sch.chk_name_id;
+                    formdetail.taskds.schedule_no = sch.schedule_no;
+                    formdetail.taskds.status = status;
+                    formdetail.taskds.templeteno = sch.templeteno;
+                    formdetail.taskds.schedule_type = sch.schedule_type;
+                    formdetail.taskds.naiyou = sch.naiyou;
+                    formdetail.taskds.startdate = sch.startdate;
+                    formdetail.taskds.enddate = sch.enddate;
+                    formdetail.taskds.biko = sch.biko;
+                    formdetail.taskds.userno = sch.userno;
+                    formdetail.taskds.username = sch.username;
+                    formdetail.taskds.ins_date = sch.ins_date;
+                    formdetail.taskds.ins_name_id = sch.ins_name_id;
+                    formdetail.taskds.chk_date = sch.chk_date;
+                    formdetail.taskds.chk_name_id = sch.chk_name_id;
 
                     break;
                 }
             }
             if (userDSList != null)
                 formdetail.userList = userDSList;
-            if (systemDSList != null)
-                formdetail.systemList = systemDSList;
-            if (siteDSList != null)
-                formdetail.siteList = siteDSList;
             formdetail.loginDS = loginDS;
             formdetail.con = con;
             formdetail.Owner = this;
@@ -6155,7 +6153,11 @@ namespace SMSサンプル
             userList.Clear();
             disp_User(dsp_L);
         }
-
+        private void m_system_umu_check_CheckedChanged(object sender, EventArgs e)
+        {
+            systemList.Clear();
+            disp_system(dsp_L);
+        }
         //拠点のチェックを変えたとき
         private void m_site_umu_check_CheckedChanged(object sender, EventArgs e)
         {
@@ -6178,7 +6180,13 @@ namespace SMSサンプル
         private void m_kaisen_umu_check_CheckedChanged(object sender, EventArgs e)
         {
             kaisenList.Clear();
-            this.disp_kaisen(dsp_L);
+            DISP_dataSet dset = new DISP_dataSet();
+            Dictionary<string, string> param_dict = new Dictionary<string, string>();
+            Class_Detaget dg = new Class_Detaget();
+
+            dset = dg.getSelectKaisenList(param_dict, con, dset);
+
+            disp_kaisen(dset);
         }
 
         private void m_incident_umu_check_CheckedChanged(object sender, EventArgs e)
@@ -6206,8 +6214,38 @@ namespace SMSサンプル
             m_tokubetu_list.Clear();
             this.disp_tokubetu_list();
         }
+        //テンプレート登録
+        private void m_inc_templete_insert_btn_Click(object sender, EventArgs e)
+        {
+            Form_inc_templete_insert templeteInsert = new Form_inc_templete_insert();
+            templeteInsert.con = con;
+            if (userList != null)
+                templeteInsert.userList = userDSList;
+            templeteInsert.loginDS = loginDS;
+            templeteInsert.ShowDialog(this);
+        }
+        //テンプレート編集
+        private void m_inc_templete_update_btn_Click(object sender, EventArgs e)
+        {
+            Form_inc_templete_update templeteUpdate = new Form_inc_templete_update();
+            templeteUpdate.con = con;
+            if (userList != null)
+                templeteUpdate.userList = userDSList;
+            templeteUpdate.loginDS = loginDS;
+            templeteUpdate.ShowDialog(this);
+        }
 
-
+        //タスク登録ボタン
+        private void m_taskInsert_lnk_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Form_taskInsert taskinsert = new Form_taskInsert();
+            taskinsert.con = con;
+            if (userList != null)
+                taskinsert.userList = userDSList;
+            taskinsert.systemList = systemDSList;
+            taskinsert.loginDS = loginDS;
+            taskinsert.Show();
+        }
     }
 
 

@@ -9,13 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SMSサンプル
+namespace moss_AP
 {
     public partial class Form_SystemDetail : Form
     {
         //ログイン情報
         public opeDS loginDS { get; set; }
-         
+
+        //変更前ステータス
+        private string orgStatus;
 
         //システム
         public systemDS systemdt { get; set; }
@@ -25,6 +27,11 @@ namespace SMSサンプル
 
         //DBコネクション
         public NpgsqlConnection con { get; set; }
+
+        //ログ
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
 
         //ListViewのソートの際に使用する
         private Class_ListViewColumnSorter _columnSorter;
@@ -52,6 +59,7 @@ namespace SMSサンプル
             m_selectKoumoku.Items.Add("システム通番");
             m_selectKoumoku.Items.Add("システム名");
             m_selectKoumoku.Items.Add("システム名カナ");
+            m_selectKoumoku.Items.Add("ステータス");
             m_selectKoumoku.Items.Add("備考");
             m_selectKoumoku.Items.Add("カスタマ通番");
             m_selectKoumoku.Items.Add("更新日時");
@@ -68,7 +76,9 @@ namespace SMSサンプル
             this.m_cutomername.Text = systemdt.username;
             this.m_systemname.Text = systemdt.systemname;
             this.m_systemname_kana.Text = systemdt.systemkana;
+            this.m_statusCombo.Text = systemdt.status;
             this.m_biko.Text = systemdt.biko;
+            this.m_statusCombo.Text = systemdt.status;
             this.m_update.Text = systemdt.chk_date;
             this.m_updateOpe.Text = systemdt.chk_name_id;
 
@@ -106,18 +116,23 @@ namespace SMSサンプル
                             param_dict["systemkana"] = m_selecttext.Text;
                             break;
 
-                        //備考
+                        //ステータス
                         case 3:
+                            param_dict["status"] = m_selecttext.Text;
+                            break;
+
+                        //備考
+                        case 4:
                             param_dict["biko"] = m_selecttext.Text;
                             break;
 
                         //カスタマ通番
-                        case 4:
+                        case 5:
                             param_dict["userno"] = m_selecttext.Text;
                             break;
 
                         //更新日時
-                        case 5:
+                        case 6:
                             DateTime dt;
                             String str = m_selecttext.Text;
 
@@ -128,19 +143,17 @@ namespace SMSサンプル
                             }
                             else
                             {
-
                                 MessageBox.Show("日付の形式が正しくありません。", "拠点検索");
                                 return;
                             }
                             break;
                         //更新者
-                        case 6:
+                        case 7:
                             param_dict["chk_name_id"] = m_selecttext.Text;
                             break;
 
                         default:
                             break;
-
 
                     }
                 }
@@ -160,16 +173,16 @@ namespace SMSサンプル
             this.m_System_List.Columns.Insert(2, "システム名カナ", 200, HorizontalAlignment.Left);
             this.m_System_List.Columns.Insert(3, "カスタマ通番", 90, HorizontalAlignment.Left);
             this.m_System_List.Columns.Insert(4, "カスタマ名", 200, HorizontalAlignment.Left);
-            this.m_System_List.Columns.Insert(5, "備考", 200, HorizontalAlignment.Left);
-            this.m_System_List.Columns.Insert(6, "更新日時", 120, HorizontalAlignment.Left);
-            this.m_System_List.Columns.Insert(7, "更新者", 50, HorizontalAlignment.Left);
+            this.m_System_List.Columns.Insert(5, "ステータス", 50, HorizontalAlignment.Left);
+            this.m_System_List.Columns.Insert(6, "備考", 200, HorizontalAlignment.Left);
+            this.m_System_List.Columns.Insert(7, "更新日時", 120, HorizontalAlignment.Left);
+            this.m_System_List.Columns.Insert(8, "更新者", 50, HorizontalAlignment.Left);
 
             //リストに表示
             if(dset.system_L != null)
             { 
                 foreach (systemDS s_ds in dset.system_L) { 
             
-
                     ListViewItem itemx1 = new ListViewItem();
                     itemx1.Text = s_ds.systemno;
 
@@ -177,6 +190,7 @@ namespace SMSサンプル
                     itemx1.SubItems.Add(s_ds.systemkana);
                     itemx1.SubItems.Add(s_ds.userno);
                     itemx1.SubItems.Add(s_ds.username);
+                    itemx1.SubItems.Add(s_ds.status);
                     itemx1.SubItems.Add(s_ds.biko);
                     itemx1.SubItems.Add(s_ds.chk_date);
                     itemx1.SubItems.Add(s_ds.chk_name_id);
@@ -196,10 +210,10 @@ namespace SMSサンプル
             systemdt.systemkana = this.m_System_List.Items[item[0]].SubItems[2].Text;
             systemdt.userno = this.m_System_List.Items[item[0]].SubItems[3].Text;
             systemdt.username = this.m_System_List.Items[item[0]].SubItems[4].Text;
-
-            systemdt.biko =           this.m_System_List.Items[item[0]].SubItems[5].Text;
-            systemdt.chk_date =       this.m_System_List.Items[item[0]].SubItems[6].Text;
-            systemdt.chk_name_id =    this.m_System_List.Items[item[0]].SubItems[7].Text;
+            systemdt.status = this.m_System_List.Items[item[0]].SubItems[5].Text;
+            systemdt.biko =           this.m_System_List.Items[item[0]].SubItems[6].Text;
+            systemdt.chk_date =       this.m_System_List.Items[item[0]].SubItems[7].Text;
+            systemdt.chk_name_id =    this.m_System_List.Items[item[0]].SubItems[8].Text;
 
             getsystem(systemdt);
         }
@@ -222,15 +236,23 @@ namespace SMSサンプル
             if (MessageBox.Show("システムデータの更新を行います。よろしいですか？", "システムデータ更新", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
 
+            //ステータス
+            string status = "";
+            if (m_statusCombo.Text == "有効")
+                status = "1";
+            else if (m_statusCombo.Text == "無効")
+                status = "0";
+
             if (con.FullState != ConnectionState.Open) con.Open();
 
-            string sql = "update system set systemname =:name,systemkana =:kana,biko=:biko,chk_name_id =:ope,chk_date=:chdate where systemno = :no";
+            string sql = "update system set systemname =:name,systemkana =:kana,status=:status,biko=:biko,chk_name_id =:ope,chk_date=:chdate where systemno = :no";
             using (var transaction = con.BeginTransaction())
             {
                 var command = new NpgsqlCommand(@sql, con);
                 command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = m_systemno.Text });
                 command.Parameters.Add(new NpgsqlParameter("name", DbType.String) { Value = m_systemname.Text });
                 command.Parameters.Add(new NpgsqlParameter("kana", DbType.String) { Value = m_systemname_kana.Text });
+                command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
                 command.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = m_biko.Text });
                 command.Parameters.Add(new NpgsqlParameter("ope", DbType.String) { Value = loginDS.opeid });
                 command.Parameters.Add(new NpgsqlParameter("chdate", DbType.DateTime) { Value = DateTime.Now });
@@ -239,12 +261,31 @@ namespace SMSサンプル
                 {
                     //更新処理
                     rowsaffected = command.ExecuteNonQuery();
-                    transaction.Commit();
+
 
                     if (rowsaffected != 1)
+                    { 
                         MessageBox.Show("更新できませんでした。", "システム更新");
+                        transaction.Rollback();
+                    }
                     else
+                    {
+                        //ステータスが変わっている場合は下位伝播する
+                        if (orgStatus != m_statusCombo.Text.Trim())
+                        {
+                            //下位伝播
+                            int ret = statusCascade(m_systemno.Text, status);
+                            if (ret == -1)
+                            {
+                                MessageBox.Show("下位伝播時にエラーが発生しました。ログを確認してください。", "拠点更新");
+                                transaction.Rollback();
+                                return;
+                            }
+
+                        }
+                        transaction.Commit();
                         MessageBox.Show("更新されました。", "システム更新");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -256,6 +297,194 @@ namespace SMSサンプル
             }
 
         }
+        //下位伝播ステータスのみ
+        private int statusCascade(String systemno, String status)
+        {
+            int ret = 0;
+
+            //拠点
+            ret = site_update(systemno, status);
+            if (ret == -1)
+                return ret;
+            //ホスト
+            ret = host_update(systemno, status);
+            if (ret == -1)
+                return ret;
+            //監視インターフェイス
+            ret = interface_update(systemno, status);
+            if (ret == -1)
+                return ret;
+            //回線情報
+            ret = kasen_update(systemno, status);
+            if (ret == -1)
+                return ret;
+
+
+            return ret;
+        }
+
+        //拠点のステータス更新
+        private int site_update(String systemno, String status)
+        {
+            int ret = 0;
+
+            string sql = "update site set status=:status,chk_name_id =:chk_name_id,chk_date=:chk_date " +
+                "WHERE systemno=:systemno";
+
+            var command = new NpgsqlCommand(@sql, con);
+            command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+            command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+            command.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = DateTime.Now });
+            command.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
+            Int32 rowsaffected;
+            try
+            {
+                //更新処理
+                rowsaffected = command.ExecuteNonQuery();
+
+
+                if (rowsaffected < 1)
+                {
+                    logger.Warn("拠点のステータスを更新できませんでした。配下の拠点数が0件のときはこのメッセージが出ることがあります。" + " システム:" + m_systemname.Text);
+                    ret = 0;
+                }
+                else
+                {
+                    logger.Info("拠点のステータスを更新しました。" + " システム:" + m_systemname.Text);
+                    ret = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                //エラー時メッセージ表示
+                MessageBox.Show("拠点ステータス更新時エラー " + ex.Message);
+                return -1;
+            }
+
+            return ret;
+        }
+        //ホストのステータス更新
+        private int host_update(String systemno, String status)
+        {
+            int ret = 0;
+
+            string sql = "update host set status=:status,chk_name_id =:chk_name_id,chk_date=:chk_date " +
+                "WHERE systemno=:systemno";
+
+            var command = new NpgsqlCommand(@sql, con);
+            command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+            command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+            command.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = DateTime.Now });
+            command.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
+            Int32 rowsaffected;
+            try
+            {
+                //更新処理
+                rowsaffected = command.ExecuteNonQuery();
+
+
+                if (rowsaffected < 1)
+                {
+                    logger.Warn("ホストのステータスを更新できませんでした。配下のホスト数が0件のときはこのメッセージが出ることがあります。" + " システム:" + m_systemno.Text);
+                    ret = 0;
+                }
+                else
+                {
+                    logger.Info("ホストのステータスを更新しました。" + " システム:" + m_systemname.Text);
+                    ret = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                //エラー時メッセージ表示
+                MessageBox.Show("ホストステータス更新エラー " + ex.Message);
+                return -1;
+            }
+
+            return ret;
+        }
+        //監視インターフェイスステータス更新
+        private int interface_update(String systemno, String status)
+        {
+            int ret = 0;
+
+            string sql = "update watch_Interface set status=:status,chk_name_id =:chk_name_id,chk_date=:chk_date " +
+                "WHERE systemno=:systemno";
+
+            var command = new NpgsqlCommand(@sql, con);
+            command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+            command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+            command.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = DateTime.Now });
+            command.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
+            Int32 rowsaffected;
+            try
+            {
+                //更新処理
+                rowsaffected = command.ExecuteNonQuery();
+
+
+                if (rowsaffected < 1)
+                {
+                    logger.Warn("監視インターフェイスのステータスを更新できませんでした。配下の監視インターフェイス数が0件のときはこのメッセージが出ることがあります。" +" システム:" + m_systemname.Text);
+                    ret = 0;
+                }
+                else
+                {
+                    logger.Info("監視インターフェイスのステータスを更新しました。" + " システム:" + m_systemname.Text);
+                    ret = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                //エラー時メッセージ表示
+                MessageBox.Show("監視インターフェイスステータス更新エラー " + ex.Message);
+                return -1;
+            }
+
+            return ret;
+        }
+
+        //回線情報
+        private int kasen_update(String systemno, String status)
+        {
+            int ret = 0;
+
+            string sql = "update Kaisen set status=:status,chk_name_id =:chk_name_id,chk_date=:chk_date " +
+                "WHERE systemno=:systemno";
+
+            var command = new NpgsqlCommand(@sql, con);
+            command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+            command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+            command.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = DateTime.Now });
+            command.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = systemno });
+            Int32 rowsaffected;
+            try
+            {
+                //更新処理
+                rowsaffected = command.ExecuteNonQuery();
+
+
+                if (rowsaffected < 1)
+                {
+                    logger.Warn("回線情報のステータスを更新できませんでした。配下の回線情報が0件のときはこのメッセージが出ることがあります。" + " システム:" + m_systemname.Text);
+                    ret = 0;
+                }
+                else
+                {
+                    logger.Info("回線情報のステータスを更新しました。" + " システム:" + m_systemname.Text);
+                    ret = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                //エラー時メッセージ表示
+                MessageBox.Show("回線情報更新エラー " + ex.Message);
+                return -1;
+            }
+
+            return ret;
+        }
+
         //カラムクリックからのソート
         private void m_System_List_ColumnClick(object sender, ColumnClickEventArgs e)
         {

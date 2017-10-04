@@ -1,4 +1,4 @@
-﻿namespace SMSサンプル
+﻿namespace moss_AP
 {
     partial class Form_scheduleInsert
     {
@@ -98,6 +98,7 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 437);
             this.label2.Name = "label2";
@@ -107,6 +108,7 @@
             // 
             // m_startDate
             // 
+            this.m_startDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_startDate.CustomFormat = "yyyy年M月d日(dddd) HH:mm";
             this.m_startDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.m_startDate.Location = new System.Drawing.Point(102, 433);
@@ -116,6 +118,7 @@
             // 
             // m_endDate
             // 
+            this.m_endDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_endDate.CustomFormat = "yyyy年M月d日(dddd) HH:mm";
             this.m_endDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.m_endDate.Location = new System.Drawing.Point(102, 458);
@@ -125,6 +128,7 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 461);
             this.label3.Name = "label3";
@@ -186,6 +190,7 @@
             // 
             // button3
             // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button3.Location = new System.Drawing.Point(370, 517);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
@@ -196,6 +201,7 @@
             // 
             // m_cencelBtn
             // 
+            this.m_cencelBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_cencelBtn.Location = new System.Drawing.Point(473, 517);
             this.m_cencelBtn.Name = "m_cencelBtn";
             this.m_cencelBtn.Size = new System.Drawing.Size(95, 23);
@@ -206,6 +212,9 @@
             // 
             // m_alerm_group
             // 
+            this.m_alerm_group.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_alerm_group.Controls.Add(this.button4);
             this.m_alerm_group.Controls.Add(this.button1);
             this.m_alerm_group.Controls.Add(this.label4);
@@ -228,6 +237,7 @@
             // 
             // button4
             // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button4.Font = new System.Drawing.Font("MS UI Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button4.Location = new System.Drawing.Point(460, 188);
             this.button4.Name = "button4";
@@ -239,6 +249,7 @@
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button1.Font = new System.Drawing.Font("MS UI Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button1.Location = new System.Drawing.Point(408, 188);
             this.button1.Name = "button1";
@@ -250,6 +261,7 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(9, 193);
             this.label4.Name = "label4";
@@ -259,6 +271,7 @@
             // 
             // m_soudpath
             // 
+            this.m_soudpath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_soudpath.Location = new System.Drawing.Point(96, 190);
             this.m_soudpath.Name = "m_soudpath";
             this.m_soudpath.Size = new System.Drawing.Size(306, 19);
@@ -266,6 +279,9 @@
             // 
             // m_message
             // 
+            this.m_message.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_message.Location = new System.Drawing.Point(96, 78);
             this.m_message.Multiline = true;
             this.m_message.Name = "m_message";
@@ -418,6 +434,7 @@
             // 
             // m_idlabel
             // 
+            this.m_idlabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_idlabel.Location = new System.Drawing.Point(102, 491);
             this.m_idlabel.Name = "m_idlabel";
             this.m_idlabel.ReadOnly = true;
@@ -427,6 +444,7 @@
             // 
             // m_labelinputOpe
             // 
+            this.m_labelinputOpe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_labelinputOpe.Location = new System.Drawing.Point(152, 491);
             this.m_labelinputOpe.Name = "m_labelinputOpe";
             this.m_labelinputOpe.ReadOnly = true;
@@ -436,6 +454,7 @@
             // 
             // label9
             // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(11, 494);
             this.label9.Name = "label9";

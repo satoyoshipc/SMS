@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SMSサンプル
+namespace moss_AP
 {
     public partial class Form_print : Form
     {
@@ -23,7 +23,7 @@ namespace SMSサンプル
 
         //インシデントリスト
         public List<incidentDS> incidentDSList;
-        public List<scheduleDS> scheduleList;
+        public List<taskDS> scheduleList;
         public String kubunstr; 
 
         //DBコネクション
@@ -64,7 +64,6 @@ namespace SMSサンプル
             ppd.Document = pd;
             //印刷プレビューダイアログを表示する
             ppd.ShowDialog();
-
 
             //印刷を開始する
             //pd.Print();
@@ -161,20 +160,20 @@ namespace SMSサンプル
 
                 str_b.Append("計画作業" + Environment.NewLine + "\t\t期間：" + m_start_date.Value.ToString() + "～" + m_end_date.Value.ToString() + Environment.NewLine + Environment.NewLine);
                 //ループ
-                foreach (scheduleDS sl in scheduleList)
+                foreach (taskDS sl in scheduleList)
                 {
 
                     //未完了のみ
                     if (sl.status == "未完了")
                     {
-                        if (DateTime.Parse(sl.start_date) <= m_end_date.Value && DateTime.Parse(sl.end_date) >= m_start_date.Value)
+                        if (DateTime.Parse(sl.startdate) <= m_end_date.Value && DateTime.Parse(sl.enddate) >= m_start_date.Value)
                         {
 
                             str_b.Append("------------------------------------------------------------" + Environment.NewLine);
 
-                            str_b.Append(String.Format("開始：{0,-30}\t カスタマ：{1}" + Environment.NewLine, sl.start_date, sl.username));
-                            str_b.Append(String.Format("終了：{0,-30}\t 拠点：{1}" + Environment.NewLine, sl.end_date, sl.sitename));
-                            str_b.Append(String.Format("\t内容：{0}", sl.alerm_message));
+                            str_b.Append(String.Format("開始：{0,-30}\t カスタマ：{1}" + Environment.NewLine, sl.startdate, sl.username));
+                            str_b.Append(String.Format("終了：{0,-30}\t " + Environment.NewLine, sl.enddate));
+                            str_b.Append(String.Format("\t内容：{0}", sl.naiyou));
                             str_b.Append(Environment.NewLine);
                         }
 
@@ -190,7 +189,7 @@ namespace SMSサンプル
 
                 str_b.Append("特別対応" + Environment.NewLine + "\t\t期間：" + m_start_date.Value.ToString() + "～" + m_end_date.Value.ToString() + Environment.NewLine + Environment.NewLine);
                 //ループ
-                foreach (scheduleDS sl in scheduleList)
+                foreach (taskDS sl in scheduleList)
                 {
 
                     //未完了のみ
@@ -198,9 +197,9 @@ namespace SMSサンプル
                     {
                         str_b.Append("------------------------------------------------------------" + Environment.NewLine);
 
-                        str_b.Append(String.Format("開始：{0,-30}\t カスタマ：{1}" + Environment.NewLine, sl.start_date, sl.username));
-                        str_b.Append(String.Format("終了：{0,-30}\t 拠点：{1}" + Environment.NewLine, sl.end_date, sl.sitename));
-                        str_b.Append(String.Format("\t内容：{0}", sl.alerm_message));
+                        str_b.Append(String.Format("開始：{0,-30}\t カスタマ：{1}" + Environment.NewLine, sl.startdate, sl.username));
+                        str_b.Append(String.Format("終了：{0,-30}\t " + Environment.NewLine, sl.enddate));
+                        str_b.Append(String.Format("\t内容：{0}", sl.naiyou));
                         str_b.Append(Environment.NewLine);
 
                     }

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SMSサンプル
+namespace moss_AP
 {
     class Class_Detaget
     {
@@ -53,6 +53,41 @@ namespace SMSサンプル
 
             }
             return username;
+        }
+        //カスタマ名からカスタマ通番を取得する
+        public string getCustomerID(string username, NpgsqlConnection con)
+        {
+            NpgsqlCommand cmd;
+            string userid = "";
+            NpgsqlDataReader dataReader1 = null;
+            try
+            {
+
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                cmd = new NpgsqlCommand(@"select userno,username FROM user_tbl WHERE username=:name", con);
+                cmd.Parameters.Add(new NpgsqlParameter("name", DbType.String) { Value = username });
+
+                dataReader1 = cmd.ExecuteReader();
+                if (dataReader1.HasRows)
+                {
+
+                    dataReader1.Read();
+                    userid = dataReader1["userno"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("カスタマ通番の取得に失敗しました。 " + ex.Message, "カスタマ通番取得", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("カスタマ通番の取得に失敗しました。MSG：{0} userno = {1}", ex.Message, userid);
+            }
+            finally
+            {
+                if (dataReader1 != null)
+                    dataReader1.Close();
+
+            }
+            return userid;
         }
         //システム通番からシステム名を取得する
         public string getSystemname(string systemno)
@@ -157,7 +192,7 @@ namespace SMSサンプル
             {
                 MessageBox.Show("ホスト名の取得に失敗しました。 " + ex.Message, "ホスト名取得", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 logger.ErrorFormat("ホスト名の取得に失敗しました。MSG：{0} hostno = {1}", ex.Message, hostno);
- 
+
             }
             finally
             {
@@ -174,7 +209,7 @@ namespace SMSサンプル
         public List<userDS> getUserList()
         {
 
-            NpgsqlCommand cmd = null ;
+            NpgsqlCommand cmd = null;
             userDS ds;
             List<userDS> retList = null;
             //DB接続
@@ -244,7 +279,7 @@ namespace SMSサンプル
                     if (con.FullState != ConnectionState.Open) con.Open();
 
                     //SELECT実行
-                    cmd = new NpgsqlCommand(@"select sys.systemno,sys.systemname,sys.systemkana,sys.biko,sys.userno,u.username,sys.chk_date,sys.chk_name_id from system sys" +
+                    cmd = new NpgsqlCommand(@"select sys.systemno,sys.systemname,sys.systemkana,sys.status,sys.biko,sys.userno,u.username,sys.chk_date,sys.chk_name_id from system sys" +
                         " INNER JOIN user_tbl u ON u.userno = sys.userno" + searchstring, con);
                     var dataReader = cmd.ExecuteReader();
 
@@ -260,6 +295,7 @@ namespace SMSサンプル
                         ds.systemname = dataReader["systemname"].ToString();
                         ds.systemkana = dataReader["systemkana"].ToString();
                         ds.biko = dataReader["biko"].ToString();
+                        ds.status = dataReader["status"].ToString();
                         ds.userno = dataReader["userno"].ToString();
                         ds.username = dataReader["username"].ToString();
 
@@ -402,22 +438,27 @@ namespace SMSサンプル
 
             String param = "";
             int i = 0;
-            if (dt.Rows.Count > 0)
+            if (dt.Rows.Count == 0)
             {
-                foreach (DataRow row in dt.Rows)
-                {
-                    if (i == 0)
-                    {
-                        param += " where userno=" + row[0];
-                    }
-                    else
-                        param += " or userno=" + row[0];
-
-
-                    i++;
-                }
-                sql += param + "limit 100";
+                retDS.kaisen_L = new List<kaisenDS>();
+                return;
             }
+
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (i == 0)
+                {
+                    param += " where userno=" + row[0];
+                }
+                else
+                    param += " or userno=" + row[0];
+
+
+                i++;
+            }
+            sql += param + "limit 100";
+
             NpgsqlCommand cmd;
             kaisenDS k_ds;
 
@@ -475,6 +516,143 @@ namespace SMSサンプル
 
         }
 
+
+        //テンプレート一覧を取得する
+        public List<templeteDS> getTempleteList(Form_MainList ownerForm, Dictionary<string, string> param_dict, NpgsqlConnection con)
+        {
+
+            String sql = "SELECT t.templeteno,t.templetetype,t.templetename,t.title, t.text,t.userno,t.chk_name_id " +
+                        "LEFT OUTER JOIN user_tbl u ON t.userno = u.userno FROM templete t ";
+
+            NpgsqlCommand cmd;
+            templeteDS inc_ds;
+            String param = "";
+
+            List<templeteDS> templete_List = null;
+
+            if (param_dict.Count > 0)
+            {
+                int i = 0;
+                foreach (KeyValuePair<string, string> vdict in param_dict)
+                {
+                    //テンプレート
+                    if (vdict.Key == "templeteno" || vdict.Key == "userno")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "t." + vdict.Key + "=" + vdict.Value;
+                    }
+                    //日付のとき
+                    else if (0 <= vdict.Key.IndexOf("date"))
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        DateTime dt = DateTime.Parse(vdict.Value);
+                        DateTime dt1 = dt.AddDays(1);
+                        param += " t." + vdict.Key + " >='" + dt.ToString() + "' AND t." +
+                            vdict.Key + " <= '" + dt1.ToString() + "' ";
+                    }
+                    //カスタマメイ
+                    else if (vdict.Key == "username")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "u." + vdict.Key + " like '%" + vdict.Value + "%'";
+
+                    }
+                    else
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+                        param += " t." + vdict.Key + "='" + vdict.Value + "'";
+                    }
+                }
+
+                sql += param;
+            }
+
+
+            //DB接続
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                //SELECT実行
+                cmd = new NpgsqlCommand(@sql, con);
+                var dataReader = cmd.ExecuteReader();
+
+                //構成情報の取得
+                templete_List = new List<templeteDS>();
+                while (dataReader.Read())
+                {
+
+                    inc_ds = new templeteDS();
+
+                    inc_ds.templeteno = dataReader["templeteno"].ToString();
+                    inc_ds.templetename = dataReader["templetename"].ToString();
+
+                    inc_ds.username = dataReader["username"].ToString();
+                    inc_ds.templetetype = dataReader["templetetype"].ToString();
+                    inc_ds.title = dataReader["title"].ToString();
+
+
+                    inc_ds.text = dataReader["text"].ToString();
+                    inc_ds.chk_date = dataReader["chk_date"].ToString();
+                    inc_ds.chk_name_id = dataReader["chk_name_id"].ToString();
+
+                    templete_List.Add(inc_ds);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("テンプレート情報の取得に失敗しました。" + ex.Message, "テンプレート情報検索", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("テンプレート情報の取得に失敗しました メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
+            }
+            return templete_List;
+
+        }
+
+
+
+
+
         //インシデント一覧データを取得
         public List<incidentDS> getOpenIncident(NpgsqlConnection conn)
         {
@@ -487,7 +665,7 @@ namespace SMSサンプル
                 "LEFT OUTER JOIN system sys ON sys.systemno = i.systemno " +
                 "LEFT OUTER JOIN site s ON s.siteno=i.siteno " +
                 "LEFT OUTER JOIN host h ON i.hostno = h.host_no ";
-                //"WHERE i.status = '1'";
+            //"WHERE i.status = '1'";
 
             NpgsqlCommand cmd;
             incidentDS inc_ds;
@@ -553,7 +731,7 @@ namespace SMSサンプル
 
         //インシデントデータの取得(検索)
         public List<incidentDS> getIncidentList(Form_MainList ownerForm, Dictionary<string, string> param_dict, NpgsqlConnection con)
-         {
+        {
             String sql = "SELECT u.username,sys.systemname,s.sitename,h.hostname," +
             "i.incident_no,i.status,i.mpms_incident,i.s_cube_id,i.incident_type,i.content,i.matflg,i.matcommand,i.uketukedate,i.tehaidate," +
             "i.fukyudate,i.enddate,i.timer,i.kakunin,i.hostno,i.opeid,o.lastname,i.siteno,i.userno,i.systemno,i.chk_date,i.chk_name_id FROM incident i " +
@@ -583,7 +761,8 @@ namespace SMSサンプル
                             param += " WHERE ";
                             i++;
                         }
-                        else {
+                        else
+                        {
                             param += " AND ";
                         }
 
@@ -632,7 +811,8 @@ namespace SMSサンプル
                             param += " WHERE ";
                             i++;
                         }
-                        else {
+                        else
+                        {
                             param += " AND ";
                         }
                         param += " i." + vdict.Key + "='" + vdict.Value + "'";
@@ -704,6 +884,7 @@ namespace SMSサンプル
 
         }
 
+
         //インシデントデータの取得(検索)
         public Int64 getIncidentListCount(Form_MainList ownerForm, Dictionary<string, string> param_dict, NpgsqlConnection con)
         {
@@ -718,7 +899,7 @@ namespace SMSサンプル
             String param = "";
             Int64 Count = 0;
 
-//            List<incidentDS> incidnet_List = null;
+            //            List<incidentDS> incidnet_List = null;
 
             if (param_dict.Count > 0)
             {
@@ -743,7 +924,7 @@ namespace SMSサンプル
                     }
                     //日付のとき
                     else if (0 <= vdict.Key.IndexOf("date"))
-                    {                        
+                    {
                         //番号
                         if (i == 0)
                         {
@@ -762,7 +943,7 @@ namespace SMSサンプル
                     }
                     //カスタマメイ
                     else if (vdict.Key == "username")
-                    {   
+                    {
                         //番号
                         if (i == 0)
                         {
@@ -833,9 +1014,9 @@ namespace SMSサンプル
                     if (vdict.Key == "openo")
                     {
                         if (param == "")
-                            param = "WHERE " + vdict.Key + "=" + vdict.Value ;
+                            param = "WHERE " + vdict.Key + "=" + vdict.Value;
                         else
-                            param += " and " + vdict.Key + "=" + vdict.Value ;
+                            param += " and " + vdict.Key + "=" + vdict.Value;
                     }
                     else
                     {
@@ -856,15 +1037,15 @@ namespace SMSサンプル
 
                         else
                             if (0 <= vdict.Key.IndexOf("date"))
-                            {
-                                //1日分のデータを取得する
-                                DateTime dt = DateTime.Parse(vdict.Value);
-                                DateTime dt1 = dt.AddDays(1);
-                                param += " and " + vdict.Key + " >='" + dt.ToString() + "' AND " +
-                                    vdict.Key + " <= '" + dt1.ToString() + "' ";
-                            }
-                            else
-                                param += " and " + vdict.Key + "='" + vdict.Value + "'";
+                        {
+                            //1日分のデータを取得する
+                            DateTime dt = DateTime.Parse(vdict.Value);
+                            DateTime dt1 = dt.AddDays(1);
+                            param += " and " + vdict.Key + " >='" + dt.ToString() + "' AND " +
+                                vdict.Key + " <= '" + dt1.ToString() + "' ";
+                        }
+                        else
+                            param += " and " + vdict.Key + "='" + vdict.Value + "'";
                     }
                 }
 
@@ -941,7 +1122,8 @@ namespace SMSサンプル
                             param += " AND u." + vdict.Key + " >='" + dt.ToString() + "' AND u." +
                                 vdict.Key + " <= '" + dt1.ToString() + "' ";
                         }
-                        else { 
+                        else
+                        {
                             param += " and u." + vdict.Key + "='" + vdict.Value + "'";
                         }
                     }
@@ -1006,7 +1188,7 @@ namespace SMSサンプル
         public DISP_dataSet getSelectSystem(Dictionary<string, string> param_dict, NpgsqlConnection conn, DISP_dataSet displist, Boolean detailflg = false)
         {
 
-            String sql = "select sys.systemno,sys.systemname,sys.systemkana,sys.biko,u.userno,u.username,sys.chk_date system_chk_date,o.lastname system_chk_name_id " +
+            String sql = "select sys.systemno,sys.systemname,sys.systemkana,sys.status,sys.biko,u.userno,u.username,sys.chk_date system_chk_date,o.lastname system_chk_name_id " +
                         "from system sys,ope o,user_tbl u where o.opeid = sys.chk_name_id and u.userno = sys.userno";
 
             String param = "";
@@ -1015,7 +1197,8 @@ namespace SMSサンプル
             {
                 foreach (KeyValuePair<string, string> vdict in param_dict)
                 {
-                    if (detailflg) { 
+                    if (detailflg)
+                    {
                         if (0 <= vdict.Key.IndexOf("date"))
                         {
                             //1日分のデータを取得する
@@ -1025,7 +1208,7 @@ namespace SMSサンプル
                                 vdict.Key + " <= '" + dt1.ToString() + "' ";
                         }
                         else
-                        { 
+                        {
                             param += " and sys." + vdict.Key + "='" + vdict.Value + "'";
                         }
                     }
@@ -1063,12 +1246,12 @@ namespace SMSサンプル
                 while (dataReader.Read())
                 {
 
-
                     //システム情報の取得
                     sys_ds = new systemDS();
                     sys_ds.systemno = dataReader["systemno"].ToString();
                     sys_ds.systemname = dataReader["systemname"].ToString();
                     sys_ds.systemkana = dataReader["systemkana"].ToString();
+                    sys_ds.status = dataReader["status"].ToString();
                     sys_ds.biko = dataReader["biko"].ToString();
                     sys_ds.chk_date = dataReader["system_chk_date"].ToString();
                     sys_ds.chk_name_id = dataReader["system_chk_name_id"].ToString();
@@ -1076,7 +1259,6 @@ namespace SMSサンプル
                     sys_ds.username = dataReader["username"].ToString();
 
                     system_List.Add(sys_ds);
-
 
                 }
 
@@ -1179,7 +1361,7 @@ namespace SMSサンプル
                         }
                         else
                             param += " and s." + vdict.Key + "='" + vdict.Value + "'";
-                    } 
+                    }
                     else
                     {
                         if (vdict.Key == "sitename")
@@ -1301,7 +1483,6 @@ namespace SMSサンプル
         public DISP_dataSet getSelectHost(Dictionary<string, string> param_dict, NpgsqlConnection conn, DISP_dataSet displist, Boolean detailflg = false)
         {
 
-
             String sql = "select h.userno,h.systemno,h.siteno,h.host_no,h.hostname,h.settikikiid,h.status host_status, h.device,h.location,h.usefor,h.kansiStartdate,h.kansiEndsdate,h.hosyukanri,h.hosyuinfo,h.biko,h.chk_date host_chk_date, o.lastname host_chk_name_id " +
                         "from host h,ope o,system sys,site s,user_tbl u where o.opeid = h.chk_name_id and u.userno=h.userno and h.systemno=sys.systemno and h.siteno=s.siteno";
             String param = "";
@@ -1313,13 +1494,14 @@ namespace SMSサンプル
 
                     //日付のとき
                     if (0 <= vdict.Key.IndexOf("date"))
-                    { 
+                    {
                         DateTime dt = DateTime.Parse(vdict.Value);
                         DateTime dt1 = dt.AddDays(1);
                         sql += " and h." + vdict.Key + " >='" + dt1.ToString() + "' AND h." +
                             vdict.Key + " <= '" + dt1.ToString() + "' ";
                     }
-                    else { 
+                    else
+                    {
                         param += " and h." + vdict.Key + "='" + vdict.Value + "'";
                     }
                 }
@@ -1434,7 +1616,7 @@ namespace SMSサンプル
                 //SELECT実行
                 cmd = new NpgsqlCommand(@sql, conn);
                 Count = (Int64)cmd.ExecuteScalar();
-                
+
             }
             catch (Exception ex)
             {
@@ -1477,7 +1659,8 @@ namespace SMSサンプル
                             param += " and w." + vdict.Key + "='" + vdict.Value + "'";
                     }
                 }
-                else {
+                else
+                {
                     foreach (KeyValuePair<string, string> vdict in param_dict)
                     {
                         if (vdict.Key == "IPaddress")
@@ -1583,7 +1766,8 @@ namespace SMSサンプル
                         }
                         i++;
                     }
-                    else {
+                    else
+                    {
                         if (vdict.Key == "userno" || vdict.Key == "systemno" || vdict.Key == "siteno" || vdict.Key == "host_no" || vdict.Key == "kennshino" ||
                         vdict.Key == "kaisenno")
                         {
@@ -1673,6 +1857,13 @@ namespace SMSサンプル
 
             return displist;
         }
+
+
+
+
+
+
+
         //作業情報を取得する
         public List<scheduleDS> getSelectSagyoList(NpgsqlConnection con)
         {
@@ -1795,7 +1986,8 @@ namespace SMSサンプル
                             vdict.Key + " <= '" + dt1.ToString() + "' ";
                         i++;
                     }
-                    else { 
+                    else
+                    {
                         sql += " WHERE " + vdict.Key + "='" + vdict.Value + "'";
                         i++;
                     }
@@ -1885,7 +2077,7 @@ namespace SMSサンプル
 
                         }
                         else
-                        { 
+                        {
                             //Datetime型の検索のときは範囲を指定
                             sql += " WHERE sc." + vdict.Key + "='" + vdict.Value + "'";
                             i++;
@@ -1949,7 +2141,7 @@ namespace SMSサンプル
                     retDS.repeat_type = dataReader["repeat_type"].ToString();
 
                     String ss = dataReader["start_date"].ToString();
-                    if(ss != null && ss !="")
+                    if (ss != null && ss != "")
                         retDS.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
 
                     String ss2 = dataReader["end_date"].ToString();
@@ -1960,19 +2152,19 @@ namespace SMSサンプル
                     retDS.alerm_message = dataReader["alerm_message"].ToString();
                     retDS.kakunin = dataReader["kakunin"].ToString();
 
-//                    retDS.sound = dataReader["sound"].ToString();
+                    //                    retDS.sound = dataReader["sound"].ToString();
 
-//                    if (!dataReader.IsDBNull(dataReader.GetOrdinal("sound")))
-//                    {
-//                        File.WriteAllBytes("sound" + idx.ToString() + ".wav", (byte[])dataReader["sound"]);
+                    //                    if (!dataReader.IsDBNull(dataReader.GetOrdinal("sound")))
+                    //                    {
+                    //                        File.WriteAllBytes("sound" + idx.ToString() + ".wav", (byte[])dataReader["sound"]);
 
-//                        if (dataReader["sound"] != null)
-                            if(retDS.schedule_type == "1" || retDS.schedule_type == "4")
-                                retDS.sound = "";
-                            else
-                                retDS.sound = "SOUND";
-//                        idx++;
-//                    }
+                    //                        if (dataReader["sound"] != null)
+                    if (retDS.schedule_type == "1" || retDS.schedule_type == "4")
+                        retDS.sound = "";
+                    else
+                        retDS.sound = "SOUND";
+                    //                        idx++;
+                    //                    }
 
 
                     retDS.incident_no = dataReader["incident_no"].ToString();
@@ -2008,7 +2200,7 @@ namespace SMSサンプル
 
             if (ipadd != null)
                 sql[0] = "select u.userno,u.customerID,u.username,u.username_kana,u.username_sum,u.status u_status,u.report_status,u.biko userbiko,u.chk_date u_chk_date,u.chk_name_id u_chk_name_id," +
-                    "sys.systemno,sys.systemname,sys.systemkana, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id," +
+                    "sys.systemno,sys.systemname,sys.systemkana,sys.status sysstatus, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id," +
                     "s.siteno,s.sitename,s.address1,s.address2,s.telno, s.status s_status, s.biko sitebiko, s.chk_date s_chk_date, s.chk_name_id s_chk_name_id," +
                     "h.host_no, h.hostname, h.settikikiid, h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id," +
                     "w.kennshino, w.interfacename, w.status w_status,w.type,w.kanshi,w.border,w.IPaddress,w.IPaddressNAT,w.biko interbiko,w.chk_date w_chk_date,w.chk_name_id w_chk_name_id " +
@@ -2016,7 +2208,7 @@ namespace SMSサンプル
             else if (hostname != null)
             {
                 sql[0] = "select u.userno,u.customerID,u.username,u.username_kana,u.username_sum,u.status u_status,u.report_status,u.biko userbiko,u.chk_date u_chk_date,u.chk_name_id u_chk_name_id," +
-                    "sys.systemno,sys.systemname,sys.systemkana, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id," +
+                    "sys.systemno,sys.systemname,sys.systemkana,sys.status sysstatus, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id," +
                     "s.siteno,s.sitename,s.address1,s.address2,s.telno, s.status s_status, s.biko sitebiko, s.chk_date s_chk_date, s.chk_name_id s_chk_name_id," +
                     "h.host_no, h.hostname, h.settikikiid, h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id " +
                     "from host h INNER JOIN user_tbl u ON u.userno = h.userno INNER JOIN system sys ON sys.systemno = h.systemno INNER JOIN site s ON s.siteno = h.siteno ";
@@ -2027,7 +2219,7 @@ namespace SMSサンプル
             else if (sitename != null)
             {
                 sql[0] = "select u.userno,u.customerID,u.username,u.username_kana,u.username_sum,u.status u_status,u.report_status,u.biko userbiko,u.chk_date u_chk_date,u.chk_name_id u_chk_name_id," +
-                    "sys.systemno,sys.systemname,sys.systemkana, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id," +
+                    "sys.systemno,sys.systemname,sys.systemkana,sys.status sysstatus, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id," +
                     "s.siteno,s.sitename,s.address1,s.address2,s.telno, s.status s_status, s.biko sitebiko, s.chk_date s_chk_date, s.chk_name_id s_chk_name_id " +
                     "from site s INNER JOIN user_tbl u ON u.userno = s.userno INNER JOIN system sys ON sys.systemno = s.systemno ";
 
@@ -2038,7 +2230,7 @@ namespace SMSサンプル
             else if (systemname != null)
             {
                 sql[0] = "select u.userno,u.customerID,u.username,u.username_kana,u.username_sum,u.status u_status,u.report_status,u.biko userbiko,u.chk_date u_chk_date,u.chk_name_id u_chk_name_id," +
-                    "sys.systemno,sys.systemname,sys.systemkana, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id " +
+                    "sys.systemno,sys.systemname,sys.systemkana,sys.status sysstatus, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id " +
                     "from system sys INNER JOIN user_tbl u ON u.userno = sys.userno ";
 
                 sql[1] = "select u.userno,u.customerID,u.username,sys.systemno,sys.systemname,w.kennshino, w.interfacename, w.status w_status, w.type,w.kanshi,w.border,w.IPaddress,w.IPaddressNAT,w.biko interbiko,w.chk_date w_chk_date, w.chk_name_id w_chk_name_id," +
@@ -2051,7 +2243,7 @@ namespace SMSサンプル
                 sql[0] = "select w.kennshino, w.interfacename, w.status w_status, w.type,w.kanshi,w.border,w.IPaddress,w.IPaddressNAT,w.biko interbiko,w.chk_date w_chk_date, w.chk_name_id w_chk_name_id," +
                     "h.host_no, h.hostname,h.settikikiid,h.status h_status, h.device, h.location, h.usefor, h.kansistartdate, h.kansiendsdate, h.hosyukanri, h.hosyuinfo, h.biko hostbiko, h.chk_date h_chk_date,h.chk_name_id h_chk_name_id, " +
                     "s.siteno,s.sitename,s.address1,s.address2,s.telno, s.status s_status, s.biko sitebiko, s.chk_date s_chk_date, s.chk_name_id s_chk_name_id," +
-                    "sys.systemno,sys.systemname,sys.systemkana, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id," +
+                    "sys.systemno,sys.systemname,sys.systemkana,sys.status sysstatus, sys.biko sysbiko, sys.chk_date sys_chk_date, sys.chk_name_id sys_chk_name_id," +
                     "u.userno,u.customerID,u.username,u.username_kana,u.username_sum,u.status u_status, u.report_status,u.biko userbiko, u.chk_date u_chk_date, u.chk_name_id u_chk_name_id " +
                     "from user_tbl u LEFT OUTER JOIN system sys ON u.userno = sys.userno LEFT OUTER JOIN site s ON s.systemno = sys.systemno LEFT OUTER JOIN host h ON h.siteno = s.siteno LEFT OUTER JOIN watch_interface w ON w.host_no = h.host_no ";
 
@@ -2169,6 +2361,7 @@ namespace SMSサンプル
                             sys_ds.systemno = dataReader["systemno"].ToString();
                             sys_ds.systemname = dataReader["systemname"].ToString();
                             sys_ds.systemkana = dataReader["systemkana"].ToString();
+                            sys_ds.status = dataReader["sysstatus"].ToString();
                             sys_ds.biko = dataReader["sysbiko"].ToString();
                             sys_ds.chk_date = dataReader["sys_chk_date"].ToString();
                             sys_ds.chk_name_id = dataReader["sys_chk_name_id"].ToString();
@@ -2243,6 +2436,7 @@ namespace SMSサンプル
                             sys_ds.systemno = dataReader["systemno"].ToString();
                             sys_ds.systemname = dataReader["systemname"].ToString();
                             sys_ds.systemkana = dataReader["systemkana"].ToString();
+                            sys_ds.status = dataReader["sysstatus"].ToString();
                             sys_ds.biko = dataReader["sysbiko"].ToString();
                             sys_ds.chk_date = dataReader["sys_chk_date"].ToString();
                             sys_ds.chk_name_id = dataReader["sys_chk_name_id"].ToString();
@@ -2301,6 +2495,7 @@ namespace SMSサンプル
                             sys_ds.systemno = dataReader["systemno"].ToString();
                             sys_ds.systemname = dataReader["systemname"].ToString();
                             sys_ds.systemkana = dataReader["systemkana"].ToString();
+                            sys_ds.status = dataReader["sysstatus"].ToString();
                             sys_ds.biko = dataReader["sysbiko"].ToString();
                             sys_ds.chk_date = dataReader["sys_chk_date"].ToString();
                             sys_ds.chk_name_id = dataReader["sys_chk_name_id"].ToString();
@@ -2338,6 +2533,7 @@ namespace SMSサンプル
                             sys_ds.systemno = dataReader["systemno"].ToString();
                             sys_ds.systemname = dataReader["systemname"].ToString();
                             sys_ds.systemkana = dataReader["systemkana"].ToString();
+                            sys_ds.status = dataReader["sysstatus"].ToString();
                             sys_ds.biko = dataReader["sysbiko"].ToString();
                             sys_ds.chk_date = dataReader["sys_chk_date"].ToString();
                             sys_ds.chk_name_id = dataReader["sys_chk_name_id"].ToString();
@@ -2358,17 +2554,19 @@ namespace SMSサンプル
                             u_ds.chk_name_id = dataReader["u_chk_name_id"].ToString();
                             user_List.Add(u_ds);
 
-                            if (dataReader["systemno"] != null && dataReader["systemno"].ToString() != "" ) { 
+                            if (dataReader["systemno"] != null && dataReader["systemno"].ToString() != "")
+                            {
                                 sys_ds.systemno = dataReader["systemno"].ToString();
                                 sys_ds.systemname = dataReader["systemname"].ToString();
                                 sys_ds.systemkana = dataReader["systemkana"].ToString();
+                                sys_ds.status = dataReader["sysstatus"].ToString();
                                 sys_ds.biko = dataReader["sysbiko"].ToString();
                                 sys_ds.chk_date = dataReader["sys_chk_date"].ToString();
                                 sys_ds.chk_name_id = dataReader["sys_chk_name_id"].ToString();
                                 system_List.Add(sys_ds);
                             }
 
-                            if (dataReader["siteno"] != null && dataReader["siteno"].ToString() != "" )
+                            if (dataReader["siteno"] != null && dataReader["siteno"].ToString() != "")
                             {
 
                                 s_ds.siteno = dataReader["siteno"].ToString();
@@ -2430,7 +2628,7 @@ namespace SMSサンプル
                                 interface_List.Add(w_ds);
                             }
                         }
-                        
+
                         if (i == 1)
                         {
                             if (hostname != null)
@@ -2584,7 +2782,7 @@ namespace SMSサンプル
         }
 
         //タイマーで有効なものをすべて表示する
-        public List<scheduleDS> getTimerList(Dictionary<string, string> param_dict, NpgsqlConnection con, int detailflg = 0)
+        public List<taskDS> getTimerList(Dictionary<string, string> param_dict, NpgsqlConnection con, int detailflg = 0)
         {
             string searchstring = "";
             DateTime nowdt = DateTime.Now;
@@ -2593,7 +2791,7 @@ namespace SMSサンプル
             if (detailflg == 0)
                 //未完了のものを表示
                 //searchstring = "where sc.status= '1' AND sc.schedule_type <> '4' AND sc.start_date <= '" + nowString + "'";
-                searchstring = "where sc.schedule_type <> '4' AND sc.start_date <= '" + nowString + "'";
+                searchstring = "where sc.schedule_type <> '4' AND sc.startdate <= '" + nowString + "'";
 
             if (param_dict.Count > 0)
             {
@@ -2615,54 +2813,52 @@ namespace SMSサンプル
             }
 
             NpgsqlCommand cmd;
-            scheduleDS ds;
-            List<scheduleDS> retList = null;
+            taskDS ds;
+            List<taskDS> retList = null;
             //DB接続
             try
             {
                 if (con.FullState != ConnectionState.Open) con.Open();
 
                 //SELECT実行
-                cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.timer_name,sc.schedule_type,sc.status,sc.repeat_type,sc.start_date,sc.end_date,sc.status,sc.alerm_message,sc.incident_no,sc.kakunin,sc.userno,u.username,sc.systemno,sys.systemname,sc.siteno,si.sitename,sc.chk_date,sc.chk_name_id " +
-                    "FROM schedule sc LEFT OUTER JOIN user_tbl u ON sc.userno = u.userno " +
-                    "LEFT OUTER JOIN system sys ON sys.systemno = sc.systemno " +
-                    "LEFT OUTER JOIN site si ON si.siteno = sc.siteno " + searchstring, con);
+//                cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.timer_name,sc.schedule_type,sc.status,sc.repeat_type,sc.start_date,sc.end_date,sc.status,sc.alerm_message,sc.incident_no,sc.kakunin,sc.userno,u.username,sc.systemno,sys.systemname,sc.siteno,si.sitename,sc.chk_date,sc.chk_name_id " +
+//                    "FROM schedule sc LEFT OUTER JOIN user_tbl u ON sc.userno = u.userno " +
+//                    "LEFT OUTER JOIN system sys ON sys.systemno = sc.systemno " +
+//                    "LEFT OUTER JOIN site si ON si.siteno = sc.siteno " + searchstring, con);
+
+                cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.schedule_type,sc.status,sc.templeteno,sc.naiyou,sc.startdate,sc.enddate,sc.biko,sc.userno,u.username,sc.ins_date,sc.ins_name_id,sc.chk_date,sc.chk_name_id " +
+                    "FROM task sc LEFT OUTER JOIN user_tbl u ON sc.userno = u.userno " + searchstring, con);
+
 
                 var dataReader = cmd.ExecuteReader();
 
                 //スケジュール情報の取得
-                retList = new List<scheduleDS>();
+                retList = new List<taskDS>();
 
                 while (dataReader.Read())
                 {
 
-                    ds = new scheduleDS();
+                    ds = new taskDS();
 
                     ds.schedule_no = dataReader["schedule_no"].ToString();
                     ds.userno = dataReader["userno"].ToString();
                     ds.username = dataReader["username"].ToString();
-                    ds.systemno = dataReader["systemno"].ToString();
-                    ds.systemname = dataReader["systemname"].ToString();
-                    ds.siteno = dataReader["siteno"].ToString();
-                    ds.sitename = dataReader["sitename"].ToString();
-
-
-                    ds.timer_name = dataReader["timer_name"].ToString();
                     ds.schedule_type = dataReader["schedule_type"].ToString();
                     ds.status = dataReader["status"].ToString();
-                    ds.repeat_type = dataReader["repeat_type"].ToString();
+                    ds.templeteno = dataReader["templeteno"].ToString();
+                    ds.naiyou = dataReader["naiyou"].ToString();
 
-                    String ss = dataReader["start_date"].ToString();
-                    ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
+                    String ss = dataReader["startdate"].ToString();
+                    ds.startdate = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
 
-                    String ss2 = dataReader["end_date"].ToString();
-                    ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
+                    String ss2 = dataReader["enddate"].ToString();
+                    ds.enddate = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
 
+                    ds.biko = dataReader["biko"].ToString();
 
-                    ds.alerm_message = dataReader["alerm_message"].ToString();
-                    ds.kakunin = dataReader["kakunin"].ToString();
+                    ds.ins_date = dataReader["ins_date"].ToString();
+                    ds.ins_name_id = dataReader["ins_name_id"].ToString();
 
-                    ds.incident_no = dataReader["incident_no"].ToString();
                     ds.chk_name_id = dataReader["chk_name_id"].ToString();
                     ds.chk_date = dataReader["chk_date"].ToString();
 
@@ -2682,7 +2878,7 @@ namespace SMSサンプル
         }
 
         //特別対応のみ取得
-        public List<scheduleDS> gettokubetulist(Dictionary<string, string> param_dict, NpgsqlConnection con, int detailflg = 0)
+        public List<taskDS> gettokubetulist(Dictionary<string, string> param_dict, NpgsqlConnection con, int detailflg = 0)
         {
             string searchstring = "";
             DateTime nowdt = DateTime.Now;
@@ -2712,54 +2908,52 @@ namespace SMSサンプル
             }
 
             NpgsqlCommand cmd;
-            scheduleDS ds;
-            List<scheduleDS> retList = null;
+            taskDS ds;
+            List<taskDS> retList = null;
             //DB接続
             try
             {
                 if (con.FullState != ConnectionState.Open) con.Open();
 
                 //SELECT実行
-                cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.timer_name,sc.schedule_type,sc.status,sc.repeat_type,sc.start_date,sc.end_date,sc.status,sc.alerm_message,sc.incident_no,sc.kakunin,sc.userno,u.username,sc.systemno,sys.systemname,sc.siteno,si.sitename,sc.chk_date,sc.chk_name_id " +
-                    "FROM schedule sc LEFT OUTER JOIN user_tbl u ON sc.userno = u.userno " +
-                    "LEFT OUTER JOIN system sys ON sys.systemno = sc.systemno " +
-                    "LEFT OUTER JOIN site si ON si.siteno = sc.siteno " + searchstring, con);
+                //cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.timer_name,sc.schedule_type,sc.status,sc.repeat_type,sc.start_date,sc.end_date,sc.status,sc.alerm_message,sc.incident_no,sc.kakunin,sc.userno,u.username,sc.systemno,sys.systemname,sc.siteno,si.sitename,sc.chk_date,sc.chk_name_id " +
+                //    "FROM schedule sc LEFT OUTER JOIN user_tbl u ON sc.userno = u.userno " +
+                //    "LEFT OUTER JOIN system sys ON sys.systemno = sc.systemno " +
+                //    "LEFT OUTER JOIN site si ON si.siteno = sc.siteno " + searchstring, con);
+
+                cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.schedule_type,sc.status,sc.templeteno,sc.naiyou,sc.startdate,sc.enddate,sc.biko,sc.userno,u.username,sc.ins_date,sc.ins_name_id,sc.chk_date,sc.chk_name_id " +
+                    "FROM task sc LEFT OUTER JOIN user_tbl u ON sc.userno = u.userno " + searchstring, con);
+
 
                 var dataReader = cmd.ExecuteReader();
 
                 //スケジュール情報の取得
-                retList = new List<scheduleDS>();
+                retList = new List<taskDS>();
 
                 while (dataReader.Read())
                 {
 
-                    ds = new scheduleDS();
+                    ds = new taskDS();
 
                     ds.schedule_no = dataReader["schedule_no"].ToString();
                     ds.userno = dataReader["userno"].ToString();
                     ds.username = dataReader["username"].ToString();
-                    ds.systemno = dataReader["systemno"].ToString();
-                    ds.systemname = dataReader["systemname"].ToString();
-                    ds.siteno = dataReader["siteno"].ToString();
-                    ds.sitename = dataReader["sitename"].ToString();
-
-
-                    ds.timer_name = dataReader["timer_name"].ToString();
                     ds.schedule_type = dataReader["schedule_type"].ToString();
                     ds.status = dataReader["status"].ToString();
-                    ds.repeat_type = dataReader["repeat_type"].ToString();
+                    ds.templeteno = dataReader["templeteno"].ToString();
+                    ds.naiyou = dataReader["naiyou"].ToString();
 
-                    //String ss = dataReader["start_date"].ToString();
-                    //ds.start_date = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
+                    String ss = dataReader["startdate"].ToString();
+                    ds.startdate = Convert.ToDateTime(ss).ToString("yyyy/MM/dd HH:mm:ss");
 
-                    //String ss2 = dataReader["end_date"].ToString();
-                    //ds.end_date = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
+                    String ss2 = dataReader["enddate"].ToString();
+                    ds.enddate = Convert.ToDateTime(ss2).ToString("yyyy/MM/dd HH:mm:ss");
 
+                    ds.biko = dataReader["biko"].ToString();
 
-                    //ds.alerm_message = dataReader["alerm_message"].ToString();
-                    //ds.kakunin = dataReader["kakunin"].ToString();
+                    ds.ins_date = dataReader["ins_date"].ToString();
+                    ds.ins_name_id = dataReader["ins_name_id"].ToString();
 
-                    ds.incident_no = dataReader["incident_no"].ToString();
                     ds.chk_name_id = dataReader["chk_name_id"].ToString();
                     ds.chk_date = dataReader["chk_date"].ToString();
 
@@ -3088,7 +3282,8 @@ namespace SMSサンプル
             NpgsqlCommand cmd;
             String sql = "";
             int i = 0;
-            if (tabidx == "1") {
+            if (tabidx == "1")
+            {
                 //オペレータ 
                 sql = "select m.kubun,m.opetantouno,m.addressNo,m.mailAddress,m.addressname," +
                         "ta.opeid,ta.lastname,ta.fastname,m.chk_name_id,m.chk_date FROM mailAddress m " +
@@ -3110,10 +3305,10 @@ namespace SMSサンプル
             else if (tabidx == "3")
             {
                 sql = "select m.kubun,m.opetantouno,m.addressNo,m.mailAddress,m.addressname," +
-                        "o.opeid,o.lastname,o.fastname," + 
+                        "o.opeid,o.lastname,o.fastname," +
                         "ta.user_tantou_name,ta.userno,u.username,m.chk_name_id,m.chk_date FROM mailAddress m " +
                         "LEFT OUTER JOIN user_tanntou ta ON ta.user_tantou_no = m.opetantouno " +
-                        "LEFT OUTER JOIN ope o ON o.openo = m.opetantouno " + 
+                        "LEFT OUTER JOIN ope o ON o.openo = m.opetantouno " +
                         "LEFT OUTER JOIN user_tbl u ON ta.userno = u.userno ";
             }
             //DB接続
@@ -3126,7 +3321,7 @@ namespace SMSサンプル
                 {
                     foreach (KeyValuePair<string, string> vdict in param_dict)
                     {
-                        if(i == 0)
+                        if (i == 0)
                         {
                             if (vdict.Key == "opetantouno" || vdict.Key == "addressNo")
                                 param += " WHERE " + vdict.Key + "=" + vdict.Value;
@@ -3150,7 +3345,8 @@ namespace SMSサンプル
 
                             i++;
                         }
-                        else { 
+                        else
+                        {
                             if (vdict.Key == "opetantouno" || vdict.Key == "addressNo")
                                 param += " and " + vdict.Key + "=" + vdict.Value;
 
@@ -3184,7 +3380,8 @@ namespace SMSサンプル
                     ds = new MailaddressDS();
                     ds.kubun = dataReader["kubun"].ToString();
                     ds.opetantouno = dataReader["opetantouno"].ToString();
-                    if(tabidx == "2" || tabidx == "3") {
+                    if (tabidx == "2" || tabidx == "3")
+                    {
                         ds.user_tantou_name = dataReader["user_tantou_name"].ToString();
                         ds.userno = dataReader["userno"].ToString();
                         ds.username = dataReader["username"].ToString();
@@ -3221,7 +3418,7 @@ namespace SMSサンプル
             mailTempleteDS ds;
             NpgsqlCommand cmd;
             String sql = "select m.templateno,m.template_name,m.subject,m.body,m.mail_account,m.attach1,m.attach2,m.attach3,m.attach4,m.attach5," +
-                
+
                 "chk_name_id,chk_date FROM mail_form m ";
 
             //DB接続
@@ -3235,9 +3432,9 @@ namespace SMSサンプル
                 {
                     foreach (KeyValuePair<string, string> vdict in param_dict)
                     {
-                        if (vdict.Key == "templateno" )
+                        if (vdict.Key == "templateno")
                             param += " and " + vdict.Key + "=" + vdict.Value;
-                        else 
+                        else
                             param += " and " + vdict.Key + "='" + vdict.Value + "'";
                     }
                     sql += param;
@@ -3255,7 +3452,7 @@ namespace SMSサンプル
                     ds.subject = dataReader["subject"].ToString();
                     ds.body = dataReader["body"].ToString();
                     ds.account = dataReader["mail_account"].ToString();
-                    
+
                     ds.attach1 = dataReader["attach1"].ToString();
                     ds.attach2 = dataReader["attach2"].ToString();
                     ds.attach3 = dataReader["attach3"].ToString();
@@ -3279,9 +3476,9 @@ namespace SMSサンプル
         //
         public List<mailsendaddressDS> getToCcBcc(string templateno, NpgsqlConnection con)
         {
-            List<mailsendaddressDS> retDS = new List < mailsendaddressDS>();
+            List<mailsendaddressDS> retDS = new List<mailsendaddressDS>();
             string wherestr = "";
-            wherestr = "AND m.templateno = " +templateno;
+            wherestr = "AND m.templateno = " + templateno;
             mailsendaddressDS ds;
             NpgsqlCommand cmd;
             String sql = "select m.kubun,m.opetantouno,m.toccbcc,m.addressno,m.templateno,ad.addressname,ad.mailaddress,m.chk_date,m.chk_name_id FROM mail_send_address m,mailaddress ad " +
@@ -3349,7 +3546,7 @@ namespace SMSサンプル
                         {
                             if (i == 1)
                                 param = " WHERE ta." + vdict.Key + "='" + vdict.Value + "'";
-                            else 
+                            else
                                 param = " and ta." + vdict.Key + "='" + vdict.Value + "'";
                             i++;
                         }
@@ -3374,7 +3571,7 @@ namespace SMSサンプル
                         else if (vdict.Key == "taiou")
                         {
                             if (i == 1)
-                            { 
+                            {
                                 if (vdict.Value == "True")
                                     param = " WHERE ta.opeid IS NULL ";
                             }
@@ -3393,10 +3590,10 @@ namespace SMSサンプル
                 if (con.FullState != ConnectionState.Open) con.Open();
 
                 //SELECT実行
-                cmd = new NpgsqlCommand(@"SELECT ta.schedule_no,ta.alertdatetime,ta.opeid,ta.taioudate,ss.timer_name,ss.schedule_type,ss.repeat_type,u.userno,u.username,sys.systemno,sys.systemname,s.siteno,s.sitename " + 
-                                        "FROM timer_taiou ta LEFT OUTER JOIN schedule ss ON ta.schedule_no = ss.schedule_no " + 
-	                                    "LEFT OUTER JOIN user_tbl u ON ss.userno = u.userno " + 
-	                                    "LEFT OUTER JOIN system sys ON ss.systemno = sys.systemno " +
+                cmd = new NpgsqlCommand(@"SELECT ta.schedule_no,ta.alertdatetime,ta.opeid,ta.taioudate,ss.timer_name,ss.schedule_type,ss.repeat_type,u.userno,u.username,sys.systemno,sys.systemname,s.siteno,s.sitename " +
+                                        "FROM timer_taiou ta LEFT OUTER JOIN schedule ss ON ta.schedule_no = ss.schedule_no " +
+                                        "LEFT OUTER JOIN user_tbl u ON ss.userno = u.userno " +
+                                        "LEFT OUTER JOIN system sys ON ss.systemno = sys.systemno " +
                                         "LEFT OUTER JOIN site s ON ss.siteno = s.siteno" + sql, con);
                 var dataReader = cmd.ExecuteReader();
 
@@ -3406,19 +3603,19 @@ namespace SMSサンプル
                 while (dataReader.Read())
                 {
                     ds = new alermDS();
-                    ds.userno       = dataReader["userno"].ToString();
-                    ds.username     = dataReader["username"].ToString();
-                    ds.systemno     = dataReader["systemno"].ToString();
-                    ds.systemname   = dataReader["systemname"].ToString();
-                    ds.siteno       = dataReader["siteno"].ToString();
-                    ds.sitename     = dataReader["sitename"].ToString();
+                    ds.userno = dataReader["userno"].ToString();
+                    ds.username = dataReader["username"].ToString();
+                    ds.systemno = dataReader["systemno"].ToString();
+                    ds.systemname = dataReader["systemname"].ToString();
+                    ds.siteno = dataReader["siteno"].ToString();
+                    ds.sitename = dataReader["sitename"].ToString();
 
-                    ds.schedule_no  = dataReader["schedule_no"].ToString();
+                    ds.schedule_no = dataReader["schedule_no"].ToString();
                     ds.repeat_type = dataReader["repeat_type"].ToString();
-                    ds.taiou_date   = dataReader["taioudate"].ToString();
-                    ds.timer_name   = dataReader["timer_name"].ToString();
-                    ds.opeid        = dataReader["opeid"].ToString();
-                    ds.taiou_date   = dataReader["taioudate"].ToString();
+                    ds.taiou_date = dataReader["taioudate"].ToString();
+                    ds.timer_name = dataReader["timer_name"].ToString();
+                    ds.opeid = dataReader["opeid"].ToString();
+                    ds.taiou_date = dataReader["taioudate"].ToString();
 
 
                     ds.schedule_type = dataReader["schedule_type"].ToString();
@@ -3428,7 +3625,7 @@ namespace SMSサンプル
                         String formatString = Convert.ToDateTime(dataReader["alertdatetime"].ToString()).ToString("yyyy/MM/dd HH:mm:ss");
                         ds.alertdatetime = formatString;
                     }
-                    
+
 
                     retList.Add(ds);
                 }
@@ -3446,7 +3643,7 @@ namespace SMSサンプル
         }
 
         //インシデントサマリの取得 受付日時から手配日時まで15分以上かかっているとき
-        public List<incidentDS> getIncidentSummary( Dictionary<string, string> param_dict, NpgsqlConnection con)
+        public List<incidentDS> getIncidentSummary(Dictionary<string, string> param_dict, NpgsqlConnection con)
         {
             String sql = "SELECT i.tehaidate - i.uketukedate AS interval,u.username,sys.systemname,s.sitename,h.hostname," +
             "i.incident_no,i.status,i.mpms_incident,i.s_cube_id,i.incident_type,i.content,i.matflg,i.matcommand,i.uketukedate,i.tehaidate," +
@@ -3505,14 +3702,14 @@ namespace SMSサンプル
 
                 //構成情報の取得
                 incidnet_List = new List<incidentDS>();
-                string  interval="";
+                string interval = "";
                 while (dataReader.Read())
                 {
 
                     inc_ds = new incidentDS();
                     interval = dataReader["interval"].ToString();
                     TimeSpan ts = TimeSpan.Parse(interval);
-                    inc_ds.interval= String.Format("{0}日 {1:00}:{2:00}", ts.Days, ts.Hours, ts.Minutes);
+                    inc_ds.interval = String.Format("{0}日 {1:00}:{2:00}", ts.Days, ts.Hours, ts.Minutes);
                     inc_ds.incident_no = dataReader["incident_no"].ToString();
                     inc_ds.hostname = dataReader["hostname"].ToString();
 
@@ -3557,14 +3754,401 @@ namespace SMSサンプル
             return incidnet_List;
 
         }
+        //テンプレートを取得する
+        public List<templeteDS> getTempleteList(string userno, string tepletetype, NpgsqlConnection con, Boolean searchflg = false)
+        {
 
 
+            string searchstring = "";
+            NpgsqlCommand cmd;
+            templeteDS ds;
+            List<templeteDS> retList = null;
+
+            try
+            {
+                if (searchflg)
+                {
+                    //1がインシデント
+                    //2が計画作業
+                    if (tepletetype == "")
+                        throw new Exception("タスク区分が取得できませんでした。");
+
+                    searchstring = " WHERE t.templetetype='" + tepletetype + "'";
+
+                    if (userno == "")
+                        searchstring += " AND t.userno=0";
+                    else
+                        searchstring += " AND (t.userno=0 OR t.userno=" + userno + ") ";
+                }
 
 
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                //SELECT実行
+                cmd = new NpgsqlCommand(@"SELECT t.templeteno,t.templetetype,t.templetename,t.title,t.text,t.userno,t.chk_date,t.chk_name_id FROM templete t " + searchstring, con);
+                var dataReader = cmd.ExecuteReader();
+
+                //テンプレート情報の取得
+                retList = new List<templeteDS>();
+
+                while (dataReader.Read())
+                {
+
+                    ds = new templeteDS();
+
+                    ds.templeteno = dataReader["templeteno"].ToString();
+                    ds.templetetype = dataReader["templetetype"].ToString();
+                    ds.templetename = dataReader["templetename"].ToString();
+                    ds.title = dataReader["title"].ToString();
+                    ds.text = dataReader["text"].ToString();
+                    ds.userno = dataReader["userno"].ToString();
+                    ds.chk_name_id = dataReader["chk_name_id"].ToString();
+                    ds.chk_date = dataReader["chk_date"].ToString();
+
+                    retList.Add(ds);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("テンプレート情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("テンプレート情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
+            }
+
+            return retList;
+        }
+        //テンプレートを取得する
+        public List<templeteDS> selectTempleteList(String tepletetype, Dictionary<string, string> param_dict, NpgsqlConnection con)
+        {
+            
+            string searchstring = "";
+            string userid = "";
+            NpgsqlCommand cmd;
+            templeteDS ds;
+            List<templeteDS> retList = null;
+
+            try
+            {
+                if(tepletetype != "")
+                    searchstring = " WHERE t.templetetype='" + tepletetype + "' ";
+
+                if (param_dict.Count > 0)
+                {
+                    int i = 1;
+                    foreach (KeyValuePair<string, string> vdict in param_dict)
+                    {
+
+                        if (i == 1)
+                            searchstring += "WHERE ";
 
 
+                        if (vdict.Key == "username")
+                        {
+                            string username = vdict.Value;
+
+                            //部分一致で検索しヒットした場合はカスタマ名は固定
+                            if (0 <= "全てのカスタマ".IndexOf(username))
+                            {
+                                if (i > 1)
+                                    searchstring += "AND ";
+                                searchstring += "t.userno = 0";
+                            }
+                            else { 
+                                userid = getCustomerID(username,con);
+                                if (i > 1)
+                                    searchstring += "AND ";
+
+                                searchstring += "(t.userno=" + userid + " OR t.userno=0) ";
+                            }
+                        }
+                        else if (vdict.Key == "userno")
+                        {
+                            if (i > 1)
+                                searchstring += "AND ";
+                            searchstring += "(t.userno=" + userid + " OR t.userno=0) ";
+                        }
+                        //数値 (templeteno)のとき
+                        else if ( vdict.Key == "templeteno") {
+
+                            if (i > 1)
+                                searchstring += "AND ";
+                            searchstring += "t." + vdict.Key + "=" + vdict.Value + " ";
+                        }
+                            
+                        //日付のとき
+                        else if (0 <= vdict.Key.IndexOf("date"))
+                        {
+                            //1日分のデータを取得する
+                            DateTime dt = DateTime.Parse(vdict.Value);
+                            DateTime dt1 = dt.AddDays(1);
+
+                            if (i > 1)
+                                searchstring += "AND ";
+
+                            searchstring += "t." + vdict.Key + " >='" + dt.ToString() + "' AND t." +
+                                vdict.Key + " <= '" + dt1.ToString() + "' ";
+                        }
+                        else {
+                            if (i > 1)
+                                searchstring += "AND ";
+                            searchstring += "t." + vdict.Key + "='" + vdict.Value + "' ";
+                        }
+                        i++;
+                    }
+
+                }
 
 
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                //SELECT実行
+                cmd = new NpgsqlCommand(@"SELECT t.templeteno,t.templetetype,t.templetename,t.title,t.text,t.userno,t.chk_date,t.chk_name_id FROM templete t " + searchstring, con);
+                var dataReader = cmd.ExecuteReader();
+
+                //テンプレート情報の取得
+                retList = new List<templeteDS>();
+
+                while (dataReader.Read())
+                {
+
+                    ds = new templeteDS();
+
+                    ds.templeteno = dataReader["templeteno"].ToString();
+                    ds.templetetype = dataReader["templetetype"].ToString();
+                    ds.templetename = dataReader["templetename"].ToString();
+                    ds.title = dataReader["title"].ToString();
+                    ds.text = dataReader["text"].ToString();
+                    ds.userno = dataReader["userno"].ToString();
+                    ds.chk_name_id = dataReader["chk_name_id"].ToString();
+                    ds.chk_date = dataReader["chk_date"].ToString();
+
+                    retList.Add(ds);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("テンプレート情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("テンプレート情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
+            }
+
+            return retList;
+        }
+
+        //テンプレートを取得する
+        public long getTempleteListCount(String tepletetype, Dictionary<string, string> param_dict, NpgsqlConnection con)
+        {
+
+            string searchstring = "";
+            string userid = "";
+            NpgsqlCommand cmd;
+            String param = "";
+            Int64 Count = 0;
+
+            if (tepletetype != "")
+                searchstring = " WHERE t.templetetype='" + tepletetype + "' ";
+
+            if (param_dict.Count > 0)
+            {
+                int i = 1;
+                foreach (KeyValuePair<string, string> vdict in param_dict)
+                {
+
+                    if (i == 1)
+                        searchstring += "WHERE ";
+
+
+                    if (vdict.Key == "username")
+                    {
+                        string username = vdict.Value;
+
+                        //部分一致で検索しヒットした場合はカスタマ名は固定
+                        if (0 <= "全てのカスタマ".IndexOf(username))
+                        {
+                            if (i > 1)
+                                searchstring += "AND ";
+                            searchstring += "t.userno = 0";
+                        }
+                        else
+                        {
+                            userid = getCustomerID(username, con);
+                            if (i > 1)
+                                searchstring += "AND ";
+
+                            searchstring += "(t.userno=" + userid + " OR t.userno=0) ";
+                        }
+                    }
+                    else if (vdict.Key == "userno")
+                    {
+                        if (i > 1)
+                            searchstring += "AND ";
+                        searchstring += "(t.userno=" + userid + " OR t.userno=0) ";
+                    }
+                    //数値 (templeteno)のとき
+                    else if (vdict.Key == "templeteno")
+                    {
+
+                        if (i > 1)
+                            searchstring += "AND ";
+                        searchstring += "t." + vdict.Key + "=" + vdict.Value + " ";
+                    }
+
+                    //日付のとき
+                    else if (0 <= vdict.Key.IndexOf("date"))
+                    {
+                        //1日分のデータを取得する
+                        DateTime dt = DateTime.Parse(vdict.Value);
+                        DateTime dt1 = dt.AddDays(1);
+
+                        if (i > 1)
+                            searchstring += "AND ";
+
+                        searchstring += "t." + vdict.Key + " >='" + dt.ToString() + "' AND t." +
+                            vdict.Key + " <= '" + dt1.ToString() + "' ";
+                    }
+                    else
+                    {
+                        if (i > 1)
+                            searchstring += "AND ";
+                        searchstring += "t." + vdict.Key + "='" + vdict.Value + "' ";
+                    }
+                    i++;
+                }
+
+            }
+
+            //SELECT実行
+            String sql = "SELECT count(*) FROM templete t " + searchstring;
+
+            //DB接続
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                //SELECT実行
+                cmd = new NpgsqlCommand(@sql, con);
+                Count = (Int64)cmd.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("テンプレートの取得に失敗しました。" + ex.Message, "テンプレート検索", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("テンプレートの取得に失敗しました メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+            return Count;
+        }
+
+        //タイマー情報を取得する
+        public List<timerDS> getTimer(Dictionary<string, string> param_dict, NpgsqlConnection con)
+        {
+            string searchstring = "";
+            String param = "";
+            string userid = "";
+            NpgsqlCommand cmd;
+            timerDS ds;
+            List<timerDS> retList = null;
+
+            try
+            {
+
+                if (param_dict.Count > 0)
+                {
+                    int i = 0;
+                    foreach (KeyValuePair<string, string> vdict in param_dict)
+                    {
+                        //スケジュール
+                        if (vdict.Key == "schedule_no" || vdict.Key == "timerid")
+                        {
+                            //番号
+                            if (i == 0)
+                            {
+                                param += " WHERE ";
+                                i++;
+                            }
+                            else
+                            {
+                                param += " AND ";
+                            }
+
+                            param += "t." + vdict.Key + "=" + vdict.Value;
+                        }
+                        //日付のときその日一日を検索対象とする
+                        else if (0 <= vdict.Key.IndexOf("date"))
+                        {
+                            //番号
+                            if (i == 0)
+                            {
+                                param += " WHERE ";
+                                i++;
+                            }
+                            else
+                            {
+                                param += " AND ";
+                            }
+
+                            DateTime dt = DateTime.Parse(vdict.Value);
+                            DateTime dt1 = dt.AddDays(1);
+                            param += " t." + vdict.Key + " >='" + dt.ToString() + "' AND t." +
+                                vdict.Key + " <= '" + dt1.ToString() + "' ";
+                        }
+
+                        else
+                        {
+                            //文字列のとき
+                            if (i == 0)
+                            {
+                                param += " WHERE ";
+                                i++;
+                            }
+                            else
+                            {
+                                param += " AND ";
+                            }
+                            param += " t." + vdict.Key + "='" + vdict.Value + "'";
+                        }
+                    }
+
+                    searchstring += param;
+                }
+
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                //SELECT実行
+                cmd = new NpgsqlCommand(@"SELECT t.schedule_no,t.timerid,t.timername,t.repeat_type,t.alert_time,t.start_date,t.end_date,t.status,t.chk_date,t.chk_name_id FROM timer t " + searchstring, con);
+                var dataReader = cmd.ExecuteReader();
+
+                //テンプレート情報の取得
+                retList = new List<timerDS>();
+
+                while (dataReader.Read())
+                {
+
+                    ds = new timerDS();
+
+                    ds.schedule_no = dataReader["schedule_no"].ToString();
+                    ds.timerid = dataReader["timerid"].ToString();
+                    ds.timername = dataReader["timername"].ToString();
+                    ds.repeat_type = dataReader["repeat_type"].ToString();
+                    ds.alert_time = dataReader["alert_time"].ToString();
+                    ds.start_date = dataReader["start_date"].ToString();
+                    ds.end_date = dataReader["end_date"].ToString();
+
+                    ds.status = dataReader["status"].ToString();
+                    ds.chk_name_id = dataReader["chk_name_id"].ToString();
+                    ds.chk_date = dataReader["chk_date"].ToString();
+
+                    retList.Add(ds);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("タイマー情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("タイマー情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
+            }
+
+            return retList;
+
+        }
 
     }
 }

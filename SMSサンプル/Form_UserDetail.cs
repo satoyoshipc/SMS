@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SMSサンプル
+namespace moss_AP
 {
     public partial class Form_UserDetail : Form
     {
@@ -161,6 +161,11 @@ namespace SMSサンプル
             ret = user_tantou_update(userno,status);
             if(ret == -1)
                 return ret;
+            
+            //システム
+            ret = system_update(userno, status);
+            if (ret == -1)
+                return ret;
 
             //拠点
             ret = site_update(userno, status);
@@ -217,6 +222,46 @@ namespace SMSサンプル
             {
                 //エラー時メッセージ表示
                 MessageBox.Show(ex.Message);
+                return -1;
+            }
+
+            return ret;
+        }
+        //システムのステータス更新
+        private int system_update(String userno, String status)
+        {
+            int ret = 0;
+
+            string sql = "update system set status=:status,chk_name_id =:chk_name_id,chk_date=:chk_date " +
+                "WHERE userno=:userno";
+
+            var command = new NpgsqlCommand(@sql, con);
+            command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
+            command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+            command.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = DateTime.Now });
+            command.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = userno });
+            Int32 rowsaffected;
+            try
+            {
+                //更新処理
+                rowsaffected = command.ExecuteNonQuery();
+
+
+                if (rowsaffected < 1)
+                {
+                    logger.Warn("システムのステータスを更新できませんでした。配下の拠点数が0件のときはこのメッセージが出ることがあります。" + " カスタマ:" + m_username.Text);
+                    ret = 0;
+                }
+                else
+                {
+                    logger.Info("システムのステータスを更新しました。" + " カスタマ:" + m_username.Text);
+                    ret = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                //エラー時メッセージ表示
+                MessageBox.Show("拠点ステータス更新時エラー " + ex.Message);
                 return -1;
             }
 
