@@ -22,7 +22,13 @@ namespace moss_AP
         //ログイン情報
         public opeDS loginDS { get; set; }
 
+        //タスク一覧
+        public List<taskDS> taskDSlist { get; set; }
+
         public  List<templeteDS> templist { get; set; }
+
+        //タスク一覧
+        DataTable task_list;
 
         //カスタマ
         public List<userDS> userList { get; set; }
@@ -37,30 +43,24 @@ namespace moss_AP
         public timerDS timerds { get; set; }
         public List<timerDS> timerList { get; set; }
 
-        //空欄許可のdatetimepicker
-        DateTime? dateTime_alermDate;
 
 
         //ListViewのソートの際に使用する
-        private Class_ListViewColumnSorter _columnSorter;
+        private int sort_kind = 0;
 
         public Form_taskDetail()
         {
             InitializeComponent();
         }
 
-        private void label11_Click(object sender, EventArgs e)
-        {
 
-        }
         //表示前
         private void Form_taskDetail_Load(object sender, EventArgs e)
         {
             this.splitContainer1.SplitterDistance = 32;
-            _columnSorter = new Class_ListViewColumnSorter();
-            m_taskList.ListViewItemSorter = _columnSorter;
 
-            dateTime_alermDate = null;
+
+
 
             m_selectKoumoku.Items.Add("タスク通番");
             m_selectKoumoku.Items.Add("タスク区分");
@@ -71,16 +71,17 @@ namespace moss_AP
             m_selectKoumoku.Items.Add("ステータス");
             m_selectKoumoku.Items.Add("内容");
             m_selectKoumoku.Items.Add("備考");
-            m_selectKoumoku.Items.Add("更新日時");
-            m_selectKoumoku.Items.Add("更新者");
             m_selectKoumoku.Items.Add("タイマー名");
             m_selectKoumoku.Items.Add("アラート日時");
             m_selectKoumoku.Items.Add("タイマーステータス");
             m_selectKoumoku.Items.Add("繰り返し区分");
+            m_selectKoumoku.Items.Add("アラーム日時");
             m_selectKoumoku.Items.Add("タイマー開始日時");
             m_selectKoumoku.Items.Add("タイマー終了日時");
             m_selectKoumoku.Items.Add("作成日時");
             m_selectKoumoku.Items.Add("作成者");
+            m_selectKoumoku.Items.Add("更新日時");
+            m_selectKoumoku.Items.Add("更新者");
 
             if (taskds != null)
             {
@@ -439,29 +440,29 @@ namespace moss_AP
             {
                 case "1":
                     //１回のとき
-                    rb = (RadioButton)RadioOnes[index];
+                    rb = (RadioButton)RadioOnes[index - 1];
                     rb.Checked = true;
                     break;
                 case "2":
                     //毎時
-                    rb = (RadioButton)RadioHours[index];
+                    rb = (RadioButton)RadioHours[index - 1];
                     rb.Checked = true;
                     break;
                 case "3":
                     //毎日
-                    rb = (RadioButton)RadioDays[index];
+                    rb = (RadioButton)RadioDays[index - 1];
                     rb.Checked = true;
                     break;
 
                 case "4":
                     //毎週
-                    rb = (RadioButton)RadioWeeks[index];
+                    rb = (RadioButton)RadioWeeks[index - 1];
                     rb.Checked = true;
                     break;
 
                 case "5":
                     //毎月
-                    rb = (RadioButton)RadioMonths[index];
+                    rb = (RadioButton)RadioMonths[index-1];
                     rb.Checked = true;
                     break;
             }
@@ -597,11 +598,6 @@ namespace moss_AP
 
         }
 
-        //キャンセル
-        private void button8_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
 
         private void m_endDate_ValueChanged(object sender, EventArgs e)
         {
@@ -885,7 +881,65 @@ namespace moss_AP
             }
             return 1;
         }
+        void task_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            //	e.Item = _item[e.ItemIndex];
+            if (task_list.Rows.Count > 0)
+            {
 
+                DataRow row = this.task_list.Rows[e.ItemIndex];
+                e.Item = new ListViewItem(
+                    new String[]
+                    {
+
+                Convert.ToString(row[0]),
+                Convert.ToString(row[1]),
+                Convert.ToString(row[2]),
+                Convert.ToString(row[3]),
+                Convert.ToString(row[4]),
+                Convert.ToString(row[5]),
+                Convert.ToString(row[6]),
+                Convert.ToString(row[7]),
+                Convert.ToString(row[8]),
+                Convert.ToString(row[9]),
+                Convert.ToString(row[10]),
+                Convert.ToString(row[11]),
+                Convert.ToString(row[12]),
+                Convert.ToString(row[13]),
+                Convert.ToString(row[14]),
+                Convert.ToString(row[15]),
+                Convert.ToString(row[16]),
+                Convert.ToString(row[17]),
+                Convert.ToString(row[18]),
+                Convert.ToString(row[19]),
+                Convert.ToString(row[20]),
+                Convert.ToString(row[21]),
+                Convert.ToString(row[22]),
+                Convert.ToString(row[23]),
+                Convert.ToString(row[24]),
+                Convert.ToString(row[25]),
+                Convert.ToString(row[26]),
+                Convert.ToString(row[27]),
+                Convert.ToString(row[28]),
+                Convert.ToString(row[29]),
+                Convert.ToString(row[30]),
+                Convert.ToString(row[31]),
+                Convert.ToString(row[32]),
+                Convert.ToString(row[33]),
+                Convert.ToString(row[34]),
+                Convert.ToString(row[35]),
+                Convert.ToString(row[36]),
+                Convert.ToString(row[37]),
+                Convert.ToString(row[38]),
+                Convert.ToString(row[39]),
+                Convert.ToString(row[40]),
+                Convert.ToString(row[41]),
+                Convert.ToString(row[42]),
+                Convert.ToString(row[43])
+                    });
+            }
+
+        }
         //アラートデータ
         public void make_alert(int scheNO, string taskkubun, int index)
         {
@@ -1177,11 +1231,7 @@ namespace moss_AP
             }
             return 1;
         }
-        //
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
 
-        }
 
         //対象の日時にデータタイムを取得する
         private void timer_datetime(int group_idx,int repeat_kubun)
@@ -1405,7 +1455,478 @@ namespace moss_AP
         //検索ボタン
         private void m_selectBtn_Click(object sender, EventArgs e)
         {
-            
+            m_taskList.Clear();
+            List<taskDS> taskdsList = new List<taskDS>();
+            Dictionary<string, string> param_dict = new Dictionary<string, string>();
+            Class_Detaget dg = new Class_Detaget();
+
+            if (m_selecttext.Text != "")
+            {
+
+                if (this.m_selectKoumoku.SelectedIndex.ToString() != "")
+                {
+                    switch (this.m_selectKoumoku.SelectedIndex)
+                    {
+
+                        case 0:
+                            param_dict["schedule_no"] = m_selecttext.Text;
+                            break;
+
+                        case 1:
+
+                            if (m_selecttext.Text == "インシデント")
+                                param_dict["schedule_type"] = "1";
+                            else if (m_selecttext.Text == "定期作業")
+                                param_dict["schedule_type"] = "2";
+                            else if (m_selecttext.Text == "計画作業")
+                                param_dict["schedule_type"] = "3";
+                            else if (m_selecttext.Text == "特別作業")
+                                param_dict["schedule_type"] = "4";
+
+                            break;
+                        case 2:// カスタマ名
+                            param_dict["username"] = m_selecttext.Text;
+                            break;
+
+                        case 3://テンプレート
+                            param_dict["templeteno"] = m_selecttext.Text;
+                            break;
+
+                        case 4: //開始日時
+
+                            param_dict["startdate"] = m_selecttext.Text;
+                            break;
+
+                        case 5:
+                            param_dict["enddate"] = m_selecttext.Text;
+                            break;
+
+                        case 6: // ステータス
+                            if (m_selecttext.Text == "有効")
+                                param_dict["status"] = "1";
+                            else if (m_selecttext.Text == "無効")
+                                param_dict["status"] = "0";
+                            break;
+
+                        case 7: // 内容
+                            param_dict["naiyou"] = m_selecttext.Text;
+                            break;
+                        case 8: // 備考
+                            param_dict["biko"] = m_selecttext.Text;
+                            break;
+
+                        case 9: //タイマー名
+                            param_dict["timername_timer"] = m_selecttext.Text;
+                            break;
+                        case 10: //アラート日時
+                            param_dict["alert_time_timer"] = m_selecttext.Text;
+                            break;
+                        case 11: //繰り返し区分
+
+                            string words = m_selecttext.Text;
+                            if (words == "1回")
+                                param_dict["repeat_type_timer"] = "1";
+                            else if (words == "毎時")
+                                param_dict["repeat_type_timer"] = "2";
+                            else if (words == "毎日")
+                                param_dict["repeat_type_timer"] = "3";
+                            else if (words == "毎週")
+                                param_dict["repeat_type_timer"] = "4";
+                            else if (words == "毎月")
+                                param_dict["repeat_type_timer"] = "5";
+
+                            break;
+                        case 12: //タイマー開始日時
+                            param_dict["start_date_timer"] = m_selecttext.Text;
+                            break;
+                        case 13: //タイマー終了日時
+                            param_dict["end_date_timer"] = m_selecttext.Text;
+                            break;
+
+                        case 14: //作成日時
+                            param_dict["ins_date"] = m_selecttext.Text;
+                            break;
+                        case 15: //作成者
+                            param_dict["ins_name_id"] = m_selecttext.Text;
+                            break;
+                        case 16:  //更新日時
+                            param_dict["chk_date"] = m_selecttext.Text;
+                            break;
+
+                        case 17: //更新者
+                            param_dict["chk_name_id"] = m_selecttext.Text;
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+            //まず件数を取得する
+            Int64 count = dg.getTaskListCount((Form_MainList)this.Owner, param_dict, con);
+            if (MessageBox.Show(count.ToString() + "件ヒットしました。表示しますか？", "ホスト", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            {
+                return;
+            }
+            //タスク一覧を取得する
+            taskDSlist = dg.getTaskList((Form_MainList)this.Owner, param_dict, con);
+
+            this.splitContainer1.SplitterDistance = 230;
+
+            this.m_taskList.VirtualMode = true;
+            // １行全体選択
+            this.m_taskList.FullRowSelect = true;
+            this.m_taskList.HideSelection = false;
+            this.m_taskList.HeaderStyle = ColumnHeaderStyle.Clickable;
+            //Hook up handlers for VirtualMode events.
+            this.m_taskList.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(task_RetrieveVirtualItem);
+            this.m_taskList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            this.m_taskList.Scrollable = true;
+
+            this.m_taskList.Columns.Insert(0, "タスク通番", 30, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(1, "タスク区分", 50, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(2, "カスタマ通番", 90, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(3, "カスタマ名", 90, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(4, "テンプレート", 90, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(5, "開始日時", 80, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(6, "終了日時", 300, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(7, "ステータス", 50, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(8, "内容", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(9, "備考", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(10, "作成日時", 50, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(11, "作成者", 50, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(12, "更新日時", 110, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(13, "更新者", 50, HorizontalAlignment.Left);
+
+            this.m_taskList.Columns.Insert(14, "タイマー名1", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(15, "アラート日時1", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(16, "繰り返し区分1", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(17, "タイマーステータス1", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(18, "タイマー開始日時1", 50, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(19, "タイマー終了日時1", 50, HorizontalAlignment.Left);
+
+            this.m_taskList.Columns.Insert(20, "タイマー名2", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(21, "アラート日時2", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(22, "繰り返し区分2", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(23, "タイマーステータス2", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(24, "タイマー開始日時2", 50, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(25, "タイマー終了日時2", 50, HorizontalAlignment.Left);
+
+            this.m_taskList.Columns.Insert(26, "タイマー名3", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(27, "アラート日時3", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(28, "繰り返し区分3", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(29, "タイマーステータス3", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(30, "タイマー開始日時3", 50, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(31, "タイマー終了日時3", 50, HorizontalAlignment.Left);
+        
+            this.m_taskList.Columns.Insert(32, "タイマー名4", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(33, "アラート日時4", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(34, "繰り返し区分4", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(35, "タイマーステータス4", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(36, "タイマー開始日時4", 50, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(37, "タイマー終了日時4", 50, HorizontalAlignment.Left);
+
+            this.m_taskList.Columns.Insert(38, "タイマー名5", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(39, "アラート日時5", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(40, "繰り返し区分5", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(41, "タイマーステータス5", 120, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(42, "タイマー開始日時5", 50, HorizontalAlignment.Left);
+            this.m_taskList.Columns.Insert(43, "タイマー終了日時5", 50, HorizontalAlignment.Left);
+
+            //リストビューを初期化する
+            task_list = new DataTable("table1");
+            task_list.Columns.Add("タスク通番", Type.GetType("System.Int32"));
+            task_list.Columns.Add("タスク区分", Type.GetType("System.String"));
+            task_list.Columns.Add("カスタマ番号", Type.GetType("System.String"));
+            task_list.Columns.Add("カスタマ名", Type.GetType("System.String"));
+            task_list.Columns.Add("テンプレート", Type.GetType("System.String"));
+            task_list.Columns.Add("開始日時", Type.GetType("System.String"));
+            task_list.Columns.Add("終了日時", Type.GetType("System.String"));
+            task_list.Columns.Add("ステータス", Type.GetType("System.String"));
+            task_list.Columns.Add("内容", Type.GetType("System.String"));
+            task_list.Columns.Add("備考", Type.GetType("System.String"));
+            task_list.Columns.Add("作成日時", Type.GetType("System.String"));
+            task_list.Columns.Add("作成者", Type.GetType("System.String"));
+            task_list.Columns.Add("更新日時", Type.GetType("System.String"));
+            task_list.Columns.Add("更新者", Type.GetType("System.String"));
+
+            task_list.Columns.Add("タイマー名1", Type.GetType("System.String"));
+            task_list.Columns.Add("アラート日時1", Type.GetType("System.String"));
+            task_list.Columns.Add("繰り返し区分1", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマーステータス1", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマー開始日時1", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマー終了日時1", Type.GetType("System.String"));
+
+            task_list.Columns.Add("タイマー名2", Type.GetType("System.String"));
+            task_list.Columns.Add("アラート日時2", Type.GetType("System.String"));
+            task_list.Columns.Add("繰り返し区分2", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマーステータス2", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマー開始日時2", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマー終了日時2", Type.GetType("System.String"));
+
+            task_list.Columns.Add("タイマー名3", Type.GetType("System.String"));
+            task_list.Columns.Add("アラート日時3", Type.GetType("System.String"));
+            task_list.Columns.Add("繰り返し区分3", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマーステータス3", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマー開始日時3", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマー終了日時3", Type.GetType("System.String"));
+
+            task_list.Columns.Add("タイマー名4", Type.GetType("System.String"));
+            task_list.Columns.Add("アラート日時4", Type.GetType("System.String"));
+            task_list.Columns.Add("繰り返し区分4", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマーステータス4", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマー開始日時4", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマー終了日時4", Type.GetType("System.String"));
+
+            task_list.Columns.Add("タイマー名5", Type.GetType("System.String"));
+            task_list.Columns.Add("アラート日時5", Type.GetType("System.String"));
+            task_list.Columns.Add("繰り返し区分5", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマーステータス5", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマー開始日時5", Type.GetType("System.String"));
+            task_list.Columns.Add("タイマー終了日時5", Type.GetType("System.String"));
+
+
+
+
+            //リストに表示
+            if (taskDSlist != null)
+            {
+                m_taskList.BeginUpdate();
+                foreach (taskDS s_ds in taskDSlist)
+                {
+
+
+                    DataRow urow = task_list.NewRow();
+                    urow["タスク通番"] = s_ds.schedule_no;
+
+                    urow["ステータス"] = s_ds.status;
+                    urow["カスタマ番号"] = s_ds.userno;
+                    urow["カスタマ名"] = s_ds.username;
+
+                    //1:インシデント
+                    //2:定期作業
+                    //3:計画作業
+                    //4:特別作業
+                    string typestr = "";
+                    if (s_ds.schedule_type == "1")
+                        typestr = "インシデント";
+                    else if (s_ds.schedule_type == "2")
+                        typestr = "定期作業";
+                    else if (s_ds.schedule_type == "3")
+                        typestr = "計画作業";
+                    else if (s_ds.schedule_type == "4")
+                        typestr = "特別作業";
+
+                    urow["タスク区分"] = typestr;
+
+                    urow["テンプレート"] = s_ds.templeteno;
+
+
+                    urow["開始日時"] = s_ds.startdate;
+
+                    urow["終了日時"] = s_ds.enddate;
+                    urow["内容"] = s_ds.naiyou;
+                    urow["備考"] = s_ds.biko;
+                    urow["作成日時"] = s_ds.ins_date;
+                    urow["作成者"] = s_ds.ins_name_id;
+                    urow["更新日時"] = s_ds.chk_date;
+                    urow["更新者"] = s_ds.chk_name_id;
+
+                    if (s_ds.timerDS_Dict.Count > 0)
+                    {
+
+                        if (s_ds.timerDS_Dict.ContainsKey("1"))
+                        {
+                            if (s_ds.timerDS_Dict["1"].timername != "")
+                            {
+                                urow["タイマー名1"] = s_ds.timerDS_Dict["1"].timername;
+                                urow["アラート日時1"] = s_ds.timerDS_Dict["1"].alert_time;
+                                string words = "";
+                                switch(s_ds.timerDS_Dict["1"].repeat_type)
+                                {
+                                    case "1":
+                                        words = "1回";
+                                        break;
+
+                                    case "2":
+                                        words = "毎時";
+                                        break;
+                                    case "3":
+                                        words = "毎日";
+                                        break;
+                                    case "4":
+                                        words = "毎週";
+                                        break;
+                                    case "5":
+                                        words = "毎月";
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                urow["繰り返し区分1"] = words;
+                                urow["タイマーステータス1"] = s_ds.timerDS_Dict["1"].status;
+                                urow["タイマー開始日時1"] = s_ds.timerDS_Dict["1"].start_date;
+                                urow["タイマー終了日時1"] = s_ds.timerDS_Dict["1"].end_date;
+                            }
+                        }
+                        if (s_ds.timerDS_Dict.ContainsKey("2") )
+                        {
+                            if (s_ds.timerDS_Dict["2"].timername != "")
+                            {
+                                urow["タイマー名2"] = s_ds.timerDS_Dict["2"].timername;
+                                urow["アラート日時2"] = s_ds.timerDS_Dict["2"].alert_time;
+                                string words = "";
+                                switch (s_ds.timerDS_Dict["2"].repeat_type)
+                                {
+                                    case "1":
+                                        words = "1回";
+                                        break;
+
+                                    case "2":
+                                        words = "毎時";
+                                        break;
+                                    case "3":
+                                        words = "毎日";
+                                        break;
+                                    case "4":
+                                        words = "毎週";
+                                        break;
+                                    case "5":
+                                        words = "毎月";
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+
+                                urow["繰り返し区分2"] = words;
+                                urow["タイマーステータス2"] = s_ds.timerDS_Dict["2"].status;
+                                urow["タイマー開始日時2"] = s_ds.timerDS_Dict["2"].start_date;
+                                urow["タイマー終了日時2"] = s_ds.timerDS_Dict["2"].end_date;
+                            }
+                        }
+                        if (s_ds.timerDS_Dict.ContainsKey("3"))
+                        {
+                            if (s_ds.timerDS_Dict["3"].timername != "")
+                            {
+
+                                urow["タイマー名3"] = s_ds.timerDS_Dict["3"].timername;
+                                urow["アラート日時3"] = s_ds.timerDS_Dict["3"].alert_time;
+                                string words = "";
+                                switch (s_ds.timerDS_Dict["3"].repeat_type)
+                                {
+                                    case "1":
+                                        words = "1回";
+                                        break;
+
+                                    case "2":
+                                        words = "毎時";
+                                        break;
+                                    case "3":
+                                        words = "毎日";
+                                        break;
+                                    case "4":
+                                        words = "毎週";
+                                        break;
+                                    case "5":
+                                        words = "毎月";
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+
+                                urow["繰り返し区分3"] = words;
+
+                                urow["タイマーステータス3"] = s_ds.timerDS_Dict["3"].status;
+                                urow["タイマー開始日時3"] = s_ds.timerDS_Dict["3"].start_date;
+                                urow["タイマー終了日時3"] = s_ds.timerDS_Dict["3"].end_date;
+                            }
+                        }
+                        if (s_ds.timerDS_Dict.ContainsKey("4"))
+                        {
+                            if (s_ds.timerDS_Dict["4"].timername != "")
+                            {
+
+                                urow["タイマー名4"] = s_ds.timerDS_Dict["4"].timername;
+                                urow["アラート日時4"] = s_ds.timerDS_Dict["4"].alert_time;
+                                string words = "";
+                                switch (s_ds.timerDS_Dict["4"].repeat_type)
+                                {
+                                    case "1":
+                                        words = "1回";
+                                        break;
+
+                                    case "2":
+                                        words = "毎時";
+                                        break;
+                                    case "3":
+                                        words = "毎日";
+                                        break;
+                                    case "4":
+                                        words = "毎週";
+                                        break;
+                                    case "5":
+                                        words = "毎月";
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+
+                                urow["繰り返し区分4"] = words;
+                                urow["タイマーステータス4"] = s_ds.timerDS_Dict["4"].status;
+                                urow["タイマー開始日時4"] = s_ds.timerDS_Dict["4"].start_date;
+                                urow["タイマー終了日時4"] = s_ds.timerDS_Dict["4"].end_date;
+                            }
+                        }
+                        if (s_ds.timerDS_Dict.ContainsKey("5"))
+                        {
+                            if (s_ds.timerDS_Dict["5"].timername != "")
+                            {
+
+                                urow["タイマー名5"] = s_ds.timerDS_Dict["5"].timername;
+                                urow["アラート日時5"] = s_ds.timerDS_Dict["5"].alert_time;
+
+                                string words = "";
+                                switch (s_ds.timerDS_Dict["5"].repeat_type)
+                                {
+                                    case "1":
+                                        words = "1回";
+                                        break;
+
+                                    case "2":
+                                        words = "毎時";
+                                        break;
+                                    case "3":
+                                        words = "毎日";
+                                        break;
+                                    case "4":
+                                        words = "毎週";
+                                        break;
+                                    case "5":
+                                        words = "毎月";
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+
+                                urow["繰り返し区分5"] = words;
+                                urow["タイマーステータス5"] = s_ds.timerDS_Dict["5"].status;
+                                urow["タイマー開始日時5"] = s_ds.timerDS_Dict["5"].start_date;
+                                urow["タイマー終了日時5"] = s_ds.timerDS_Dict["5"].end_date;
+                            }
+                        }
+                    }
+
+                    task_list.Rows.Add(urow);
+                }
+                this.m_taskList.VirtualListSize = task_list.Rows.Count;
+                this.m_taskList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                m_taskList.EndUpdate();
+            }
         }
         //キャンセル
         private void button8_Click_1(object sender, EventArgs e)
@@ -1961,6 +2482,321 @@ namespace moss_AP
                 return -1;
             }
             return 1;
+        }
+        //カスタマコンボボックスが変更された時
+        private void m_usernameCombo_SelectionChangeCommitted_1(object sender, EventArgs e)
+        {
+            if (m_usernameCombo.Text == "")
+            {
+                m_userno.Text = "";
+                return;
+            }
+            m_userno.Text = m_usernameCombo.SelectedValue.ToString();
+
+
+        }
+        //キャンセルボタン
+        private void button8_Click_2(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void m_taskList_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (this.task_list == null)
+                return;
+            if (this.task_list.Rows.Count <= 0)
+                return;
+            //DataViewクラス ソートするためのクラス
+            DataView dv = new DataView(task_list);
+
+            //一時クラス
+            DataTable dttmp = new DataTable();
+
+            String strSort = "";
+
+            //0なら昇順にソート
+            if (sort_kind == 0)
+            {
+                strSort = " ASC";
+                sort_kind = 1;
+            }
+            else
+            {
+                //１の時は昇順にソート
+                strSort = " DESC";
+                sort_kind = 0;
+            }
+
+            //コピーを作成
+            dttmp = task_list.Clone();
+            //ソートを実行
+            dv.Sort = task_list.Columns[e.Column].ColumnName + strSort;
+
+            // ソートされたレコードのコピー
+            foreach (DataRowView drv in dv)
+            {
+                // 一時テーブルに格納
+                dttmp.ImportRow(drv.Row);
+            }
+            //格納したテーブルデータを上書く
+            task_list = dttmp.Copy();
+
+            //行が存在するかチェックを行う。
+            if (this.m_taskList.TopItem != null)
+            {
+                //現在一番上の行に表示されている行を取得
+                int start = m_taskList.TopItem.Index;
+                // ListView画面の再表示を行う
+                m_taskList.RedrawItems(start, m_taskList.Items.Count - 1, true);
+            }
+        }
+        //ダブルクリック
+        private void m_taskList_DoubleClick(object sender, EventArgs e)
+        {
+           
+            ListView.SelectedIndexCollection item = m_taskList.SelectedIndices;
+            string schedule_type = "";
+            string status = "";
+            taskDS taskdt = new taskDS();
+            
+            //タスク通番
+            taskdt.schedule_no = this.m_taskList.Items[item[0]].SubItems[0].Text;
+
+            //タスク区分
+            if (this.m_taskList.Items[item[0]].SubItems[1].Text == "インシデント")
+                schedule_type = "1";
+            else if (this.m_taskList.Items[item[0]].SubItems[1].Text == "定期作業")
+                schedule_type = "2";
+            else if (this.m_taskList.Items[item[0]].SubItems[1].Text == "計画作業")
+                schedule_type = "3";
+            else if (this.m_taskList.Items[item[0]].SubItems[1].Text == "特別対応")
+                schedule_type = "4";
+
+            taskdt.schedule_type = schedule_type;
+
+            //カスタマ通番
+            taskdt.userno = this.m_taskList.Items[item[0]].SubItems[2].Text;
+            //カスタマ名
+            taskdt.username = this.m_taskList.Items[item[0]].SubItems[3].Text;
+
+            //テンプレート
+            taskdt.templeteno = this.m_taskList.Items[item[0]].SubItems[4].Text;
+
+            //開始日時
+            taskdt.enddate = this.m_taskList.Items[item[0]].SubItems[5].Text;
+            //終了日時
+            taskdt.startdate = this.m_taskList.Items[item[0]].SubItems[6].Text;
+
+            //ステータス
+            taskdt.status = this.m_taskList.Items[item[0]].SubItems[7].Text;
+            //内容
+            taskdt.naiyou = this.m_taskList.Items[item[0]].SubItems[8].Text;
+            //備考
+            taskdt.biko = this.m_taskList.Items[item[0]].SubItems[9].Text;
+
+            //作成日時
+            taskdt.ins_date = this.m_taskList.Items[item[0]].SubItems[10].Text;
+
+            //作成者
+            taskdt.ins_name_id = this.m_taskList.Items[item[0]].SubItems[11].Text;
+
+            //更新日時
+            taskdt.chk_date = this.m_taskList.Items[item[0]].SubItems[12].Text;
+
+            //更新者
+            taskdt.chk_name_id = this.m_taskList.Items[item[0]].SubItems[13].Text;
+
+            //タイマー①
+            timerDS timeDS = new timerDS();
+            if(this.m_taskList.Items[item[0]].SubItems[14].Text != "")
+            {
+                timeDS.timername= this.m_taskList.Items[item[0]].SubItems[14].Text;
+                timeDS.alert_time = this.m_taskList.Items[item[0]].SubItems[15].Text;
+                string repeat_type = "";
+                //1:1回、2:1時間毎、3:日毎、4:週毎、5:月毎
+                switch (this.m_taskList.Items[item[0]].SubItems[16].Text)
+                {
+                    case "1回":
+                        repeat_type = "1";
+                        break;
+                    case "1時間毎":
+                        repeat_type = "2";
+                        break;
+                    case "日毎":
+                        repeat_type = "3";
+                        break;
+                    case "週毎":
+                        repeat_type = "4";
+                        break;
+                    case "月毎":
+                        repeat_type = "5";
+                        break;
+                    default:
+                        repeat_type = "";
+                        break;
+                }
+
+                timeDS.repeat_type = repeat_type;
+
+                timeDS.status = this.m_taskList.Items[item[0]].SubItems[17].Text;
+                timeDS.start_date = this.m_taskList.Items[item[0]].SubItems[18].Text;
+                timeDS.end_date= this.m_taskList.Items[item[0]].SubItems[19].Text;
+            }
+            //タイマー②
+            timeDS = new timerDS();
+            if (this.m_taskList.Items[item[0]].SubItems[20].Text != "")
+            {
+                timeDS.timername = this.m_taskList.Items[item[0]].SubItems[20].Text;
+                timeDS.alert_time = this.m_taskList.Items[item[0]].SubItems[21].Text;
+                string repeat_type = "";
+                //1:1回、2:1時間毎、3:日毎、4:週毎、5:月毎
+                switch (this.m_taskList.Items[item[0]].SubItems[22].Text)
+                {
+                    case "1回":
+                        repeat_type = "1";
+                        break;
+                    case "1時間毎":
+                        repeat_type = "2";
+                        break;
+                    case "日毎":
+                        repeat_type = "3";
+                        break;
+                    case "週毎":
+                        repeat_type = "4";
+                        break;
+                    case "月毎":
+                        repeat_type = "5";
+                        break;
+                    default:
+                        repeat_type = "";
+                        break;
+                }
+
+                timeDS.repeat_type = repeat_type;
+
+                timeDS.status = this.m_taskList.Items[item[0]].SubItems[23].Text;
+                timeDS.start_date = this.m_taskList.Items[item[0]].SubItems[24].Text;
+                timeDS.end_date = this.m_taskList.Items[item[0]].SubItems[25].Text;
+            }
+            //タイマー③
+            timeDS = new timerDS();
+            if (this.m_taskList.Items[item[0]].SubItems[26].Text != "")
+            {
+                timeDS.timername = this.m_taskList.Items[item[0]].SubItems[26].Text;
+                timeDS.alert_time = this.m_taskList.Items[item[0]].SubItems[27].Text;
+                string repeat_type = "";
+                //1:1回、2:1時間毎、3:日毎、4:週毎、5:月毎
+                switch (this.m_taskList.Items[item[0]].SubItems[28].Text)
+                {
+                    case "1回":
+                        repeat_type = "1";
+                        break;
+                    case "1時間毎":
+                        repeat_type = "2";
+                        break;
+                    case "日毎":
+                        repeat_type = "3";
+                        break;
+                    case "週毎":
+                        repeat_type = "4";
+                        break;
+                    case "月毎":
+                        repeat_type = "5";
+                        break;
+                    default:
+                        repeat_type = "";
+                        break;
+                }
+
+                timeDS.repeat_type = repeat_type;
+
+                timeDS.status = this.m_taskList.Items[item[0]].SubItems[29].Text;
+                timeDS.start_date = this.m_taskList.Items[item[0]].SubItems[30].Text;
+                timeDS.end_date = this.m_taskList.Items[item[0]].SubItems[31].Text;
+            }
+
+            //タイマー④
+            timeDS = new timerDS();
+            if (this.m_taskList.Items[item[0]].SubItems[32].Text != "")
+            {
+                timeDS.timername = this.m_taskList.Items[item[0]].SubItems[32].Text;
+                timeDS.alert_time = this.m_taskList.Items[item[0]].SubItems[33].Text;
+                string repeat_type = "";
+                //1:1回、2:1時間毎、3:日毎、4:週毎、5:月毎
+                switch (this.m_taskList.Items[item[0]].SubItems[34].Text)
+                {
+                    case "1回":
+                        repeat_type = "1";
+                        break;
+                    case "1時間毎":
+                        repeat_type = "2";
+                        break;
+                    case "日毎":
+                        repeat_type = "3";
+                        break;
+                    case "週毎":
+                        repeat_type = "4";
+                        break;
+                    case "月毎":
+                        repeat_type = "5";
+                        break;
+                    default:
+                        repeat_type = "";
+                        break;
+                }
+
+                timeDS.repeat_type = repeat_type;
+
+                timeDS.status = this.m_taskList.Items[item[0]].SubItems[35].Text;
+                timeDS.start_date = this.m_taskList.Items[item[0]].SubItems[36].Text;
+                timeDS.end_date = this.m_taskList.Items[item[0]].SubItems[37].Text;
+            }
+
+            //タイマー⑤
+            timeDS = new timerDS();
+            if (this.m_taskList.Items[item[0]].SubItems[38].Text != "")
+            {
+                timeDS.timername = this.m_taskList.Items[item[0]].SubItems[38].Text;
+                timeDS.alert_time = this.m_taskList.Items[item[0]].SubItems[39].Text;
+                string repeat_type = "";
+                //1:1回、2:1時間毎、3:日毎、4:週毎、5:月毎
+                switch (this.m_taskList.Items[item[0]].SubItems[40].Text)
+                {
+                    case "1回":
+                        repeat_type = "1";
+                        break;
+                    case "1時間毎":
+                        repeat_type = "2";
+                        break;
+                    case "日毎":
+                        repeat_type = "3";
+                        break;
+                    case "週毎":
+                        repeat_type = "4";
+                        break;
+                    case "月毎":
+                        repeat_type = "5";
+                        break;
+                    default:
+                        repeat_type = "";
+                        break;
+                }
+
+                timeDS.repeat_type = repeat_type;
+
+                timeDS.status = this.m_taskList.Items[item[0]].SubItems[41].Text;
+                timeDS.start_date = this.m_taskList.Items[item[0]].SubItems[42].Text;
+                timeDS.end_date = this.m_taskList.Items[item[0]].SubItems[43].Text;
+            }
+
+
+
+
+            //getKeikaku(taskdt);
+
+            //koumokuDisable();
+            //firstflg = false;
         }
     }
 }

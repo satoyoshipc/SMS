@@ -350,6 +350,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="sagyoDS.cs" />
+    <Compile Include="taskDS_DISP.cs" />
     <Compile Include="timerDS.cs" />
     <Compile Include="taskDS.cs" />
     <Compile Include="scheduleDS.cs" />

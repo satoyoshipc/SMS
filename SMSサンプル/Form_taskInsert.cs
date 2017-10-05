@@ -386,7 +386,6 @@ namespace moss_AP
 
                 String timerID = "";
                 String title = "";
-                String repeat_type = "";
                 DateTime alert_time ;
                 DateTime? start_date =null;
                 DateTime? end_date = null;
@@ -473,7 +472,7 @@ namespace moss_AP
                     cmd.Parameters.Add(new NpgsqlParameter("schedule_no", DbType.Int32) { Value = currval });
                     cmd.Parameters.Add(new NpgsqlParameter("timerID", DbType.Int32) { Value = timerID });
                     cmd.Parameters.Add(new NpgsqlParameter("timername", DbType.String) { Value = title });
-                    cmd.Parameters.Add(new NpgsqlParameter("repeat_type", DbType.String) { Value = repeat_type });
+                    cmd.Parameters.Add(new NpgsqlParameter("repeat_type", DbType.String) { Value = rep_type });
                     cmd.Parameters.Add(new NpgsqlParameter("alert_time", DbType.DateTime) { Value = alert_time });
                     cmd.Parameters.Add(new NpgsqlParameter("start_date", DbType.DateTime) { Value = start_date });
                     cmd.Parameters.Add(new NpgsqlParameter("end_date", DbType.DateTime) { Value = end_date });

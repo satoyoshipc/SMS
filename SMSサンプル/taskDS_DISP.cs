@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace moss_AP
 {
-    public class taskDS
+    public class taskDS_DISP
     {
-
-        
         public String schedule_no { get; set; }
         public String schedule_type { get; set; }
         public String templeteno { get; set; }
@@ -43,8 +41,7 @@ namespace moss_AP
         public String chk_date { get; set; }
         public String chk_name_id { get; set; }
 
-        //タイマー類
-        public Dictionary<String, timerDS> timerDS_Dict { get ; set; }
-        public taskDS() { timerDS_Dict = new Dictionary<String, timerDS>(); }
+
+
     }
 }

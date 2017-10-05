@@ -4115,6 +4115,9 @@ namespace moss_AP
                 //SELECT実行
                 cmd = new NpgsqlCommand(@"SELECT t.schedule_no,t.timerid,t.timername,t.repeat_type,t.alert_time,t.start_date,t.end_date,t.status,t.chk_date,t.chk_name_id FROM timer t " + searchstring, con);
                 var dataReader = cmd.ExecuteReader();
+#if DEBUG
+                Console.WriteLine(cmd.ToString());
+#endif
 
                 //テンプレート情報の取得
                 retList = new List<timerDS>();
@@ -4149,6 +4152,561 @@ namespace moss_AP
             return retList;
 
         }
+        //タスク情報の取得
+        public Int64 getTaskListCount(Form_MainList ownerForm, Dictionary<string, string> param_dict, NpgsqlConnection con)
+        {
+
+            String sql = "SELECT Count(*) FROM task ta " +
+            "LEFT OUTER JOIN user_tbl u ON ta.userno = u.userno " +
+            "LEFT OUTER JOIN timer ti ON ti.schedule_no = ta.schedule_no ";
+
+            NpgsqlCommand cmd;
+            String param = "";
+            Int64 Count = 0;
+
+            if (param_dict.Count > 0)
+            {
+                int i = 0;
+                foreach (KeyValuePair<string, string> vdict in param_dict)
+                {
+                    //数値項目
+                    if (vdict.Key == "schedule_no" || vdict.Key == "templeteno" || vdict.Key == "userno" )
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "ta." + vdict.Key + "=" + vdict.Value;
+                    }
+
+                    //カスタマ名
+                    else if (vdict.Key == "username")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "u." + vdict.Key + " like '%" + vdict.Value + "%'";
+
+                    }
+                    //タイマー
+                    else if (vdict.Key == "timername_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "ti.timername=\"" + vdict.Value + "\" ";
+                    }
+                    //アラート日時
+                    else if (vdict.Key == "alert_time_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        DateTime dt = DateTime.Parse(vdict.Value);
+                        DateTime dt1 = dt.AddDays(1);
+                        param += " ti.alert_time >= '" + dt.ToString() + "' AND ti.alert_time <= '" + dt1.ToString() + "' ";
+
+                    }
+                    //タイマー開始日時
+                    else if (vdict.Key == "start_date_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        DateTime dt = DateTime.Parse(vdict.Value);
+                        DateTime dt1 = dt.AddDays(1);
+                        param += " ti.start_date >= '" + dt.ToString() + "' AND ti.start_date <= '" + dt1.ToString() + "' ";
+
+                    }
+                    //タイマー終了日時
+                    else if (vdict.Key == "end_date_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        DateTime dt = DateTime.Parse(vdict.Value);
+                        DateTime dt1 = dt.AddDays(1);
+                        param += " ti.end_date >= '" + dt.ToString() + "' AND ti.end_date <= '" + dt1.ToString() + "' ";
+
+                    }
+                    //繰り返し区分
+                    else if (vdict.Key == "repeat_type_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "ti.repeat_type=\"" + vdict.Value + "\" ";
+                    }
+                    //タイマー開始日時
+                    else if (vdict.Key == "start_date_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "ti.start_date=\"" + vdict.Value + "\" ";
+                    }
+                    //タイマー終了日時
+                    else if (vdict.Key == "end_date_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "ti.end_date=\"" + vdict.Value + "\" ";
+                    }
+
+                    //タスクの日付のとき
+                    else if (0 <= vdict.Key.IndexOf("date"))
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        DateTime dt = DateTime.Parse(vdict.Value);
+                        DateTime dt1 = dt.AddDays(1);
+                        param += " ta." + vdict.Key + " >='" + dt.ToString() + "' AND ta." +
+                            vdict.Key + " <= '" + dt1.ToString() + "' ";
+                    }
+                    else
+                    {
+                        //文字列
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+                        param += " ta." + vdict.Key + "='" + vdict.Value + "'";
+                    }
+                }
+
+                sql += param;
+            }
+
+            //DB接続
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+# if DEBUG
+                Console.WriteLine(sql);
+
+#endif
+                //SELECT実行
+                cmd = new NpgsqlCommand(@sql, con);
+                Count = (Int64)cmd.ExecuteScalar();
+
+            }
+            catch (Exception ex)
+            {
+                con.Close();
+                MessageBox.Show("タスク情報の取得に失敗しました。" + ex.Message, "タスク情報検索", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("タスク情報の取得に失敗しました メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
+            }
+            return Count;
+
+        }
+
+        //タスク情報の取得(検索)
+        public List<taskDS> getTaskList(Form_MainList ownerForm, Dictionary<string, string> param_dict, NpgsqlConnection con)
+        {
+            String sql = "SELECT ta.schedule_no,ta.schedule_type,ta.status,ta.templeteno," +
+            "ta.naiyou,ta.startdate,ta.enddate,ta.biko,ta.userno,u.username,ta.ins_date,ta.ins_name_id,ta.chk_date,ta.chk_name_id," +
+            "ti.timerid,ti.timername,ti.repeat_type,ti.alert_time,ti.start_date,ti.end_date,ti.status,ti.chk_date chk_date_timer,ti.chk_name_id chk_name_id_timer FROM task ta " +
+            "LEFT OUTER JOIN timer ti ON ta.schedule_no = ti.schedule_no LEFT OUTER JOIN user_tbl u ON ta.userno = u.userno order by ta.schedule_no,ti.timerid ";
+
+
+            NpgsqlCommand cmd;
+            taskDS task_ds= null;
+            timerDS timer_ds = null;
+            String param = "";
+
+            List<taskDS> task_List = null;
+
+            if (param_dict.Count > 0)
+            {
+                int i = 0;
+                foreach (KeyValuePair<string, string> vdict in param_dict)
+                {
+                    //数値項目
+                    if (vdict.Key == "schedule_no" || vdict.Key == "templeteno" || vdict.Key == "userno")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "ta." + vdict.Key + "=" + vdict.Value;
+                    }
+
+                    //カスタマ名
+                    else if (vdict.Key == "username")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "u." + vdict.Key + " like '%" + vdict.Value + "%'";
+
+                    }
+                    //タイマー
+                    else if (vdict.Key == "timername_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "ti.timername=\"" + vdict.Value + "\" ";
+                    }
+                    //アラート日時
+                    else if (vdict.Key == "alert_time_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        DateTime dt = DateTime.Parse(vdict.Value);
+                        DateTime dt1 = dt.AddDays(1);
+                        param += " ti.alert_time >= '" + dt.ToString() + "' AND ti.alert_time <= '" + dt1.ToString() + "' ";
+
+                    }
+                    //タイマー開始日時
+                    else if (vdict.Key == "start_date_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        DateTime dt = DateTime.Parse(vdict.Value);
+                        DateTime dt1 = dt.AddDays(1);
+                        param += " ti.start_date >= '" + dt.ToString() + "' AND ti.start_date <= '" + dt1.ToString() + "' ";
+
+                    }
+                    //タイマー終了日時
+                    else if (vdict.Key == "end_date_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        DateTime dt = DateTime.Parse(vdict.Value);
+                        DateTime dt1 = dt.AddDays(1);
+                        param += " ti.end_date >= '" + dt.ToString() + "' AND ti.end_date <= '" + dt1.ToString() + "' ";
+
+                    }
+                    //繰り返し区分
+                    else if (vdict.Key == "repeat_type_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "ti.repeat_type=\"" + vdict.Value + "\" ";
+                    }
+                    //タイマー開始日時
+                    else if (vdict.Key == "start_date_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "ti.start_date=\"" + vdict.Value + "\" ";
+                    }
+                    //タイマー終了日時
+                    else if (vdict.Key == "end_date_timer")
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        param += "ti.end_date=\"" + vdict.Value + "\" ";
+                    }
+
+                    //タスクの日付のとき
+                    else if (0 <= vdict.Key.IndexOf("date"))
+                    {
+                        //番号
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+
+                        DateTime dt = DateTime.Parse(vdict.Value);
+                        DateTime dt1 = dt.AddDays(1);
+                        param += " ta." + vdict.Key + " >='" + dt.ToString() + "' AND ta." +
+                            vdict.Key + " <= '" + dt1.ToString() + "' ";
+                    }
+                    else
+                    {
+                        //文字列
+                        if (i == 0)
+                        {
+                            param += " WHERE ";
+                            i++;
+                        }
+                        else
+                        {
+                            param += " AND ";
+                        }
+                        param += " ta." + vdict.Key + "='" + vdict.Value + "'";
+                    }
+                }
+
+                sql += param;
+            }
+            //DB接続
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+#if DEBUG
+                Console.WriteLine(sql);
+
+#endif
+                //SELECT実行
+                cmd = new NpgsqlCommand(@sql, con);
+                var dataReader = cmd.ExecuteReader();
+
+                //構成情報の取得
+                task_List = new List<taskDS>();
+                string  schedule_no ="";
+                int i = 0;
+                while (dataReader.Read())
+                {
+                    i++;
+                    if (schedule_no != dataReader["schedule_no"].ToString())
+                    {
+                        if (task_ds != null)
+                            task_List.Add(task_ds);
+
+                        task_ds = new taskDS();
+
+                        task_ds.schedule_no = dataReader["schedule_no"].ToString();
+                        schedule_no = task_ds.schedule_no;
+
+                        task_ds.schedule_type = dataReader["schedule_type"].ToString();
+
+                        task_ds.status = dataReader["status"].ToString();
+                        task_ds.templeteno = dataReader["templeteno"].ToString();
+                        task_ds.naiyou = dataReader["naiyou"].ToString();
+
+                        task_ds.startdate = dataReader["startdate"].ToString();
+                        task_ds.enddate = dataReader["enddate"].ToString();
+                        task_ds.biko = dataReader["biko"].ToString();
+                        task_ds.userno = dataReader["userno"].ToString();
+                        task_ds.username = dataReader["username"].ToString();
+
+                        task_ds.ins_date = dataReader["ins_date"].ToString();
+                        task_ds.ins_name_id = dataReader["ins_name_id"].ToString();
+                        task_ds.chk_date = dataReader["chk_date"].ToString();
+                        task_ds.chk_name_id = dataReader["chk_name_id"].ToString();
+
+                        if (dataReader["timerid"].ToString() != null && dataReader["timerid"].ToString() != "")
+                        { 
+                            timer_ds = new timerDS();
+                            timer_ds.timerid = dataReader["timerid"].ToString();
+                            timer_ds.timername = dataReader["timername"].ToString();
+                            timer_ds.repeat_type = dataReader["repeat_type"].ToString();
+                            timer_ds.alert_time = dataReader["alert_time"].ToString();
+                            timer_ds.start_date = dataReader["start_date"].ToString();
+                            timer_ds.end_date = dataReader["end_date"].ToString();
+                            timer_ds.status = dataReader["status"].ToString();
+                            timer_ds.chk_date = dataReader["chk_date_timer"].ToString();
+                            timer_ds.chk_name_id = dataReader["chk_name_id_timer"].ToString();
+
+                            //ディクショナリーに追加
+
+                            task_ds.timerDS_Dict[timer_ds.timerid] = timer_ds;
+                        }
+                    }
+                    else if (schedule_no == dataReader["schedule_no"].ToString())
+                    {
+
+                        if (timer_ds != null)
+                        {
+                            timer_ds = new timerDS();
+                            timer_ds.timerid = dataReader["timerid"].ToString();
+                            timer_ds.timername = dataReader["timername"].ToString();
+                            timer_ds.repeat_type = dataReader["repeat_type"].ToString();
+                            timer_ds.alert_time = dataReader["alert_time"].ToString();
+                            timer_ds.start_date = dataReader["start_date"].ToString();
+                            timer_ds.end_date = dataReader["end_date"].ToString();
+                            timer_ds.status = dataReader["status"].ToString();
+                            timer_ds.chk_date = dataReader["chk_date_timer"].ToString();
+                            timer_ds.chk_name_id = dataReader["chk_name_id_timer"].ToString();
+
+                            //ディクショナリーに追加
+
+                            task_ds.timerDS_Dict[timer_ds.timerid] = timer_ds;
+                        }
+                    }
+
+                }
+                //最後のやつを入れる
+                if (task_ds != null)
+                    task_List.Add(task_ds);
+            }
+            catch (Exception ex)
+            {
+                con.Close();
+                MessageBox.Show("タスク情報の取得に失敗しました。" + ex.Message, "タスク情報検索", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("タスク情報の取得に失敗しました メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+
+            }
+            return task_List;
+
+        }
+
+
+
+
 
     }
 }

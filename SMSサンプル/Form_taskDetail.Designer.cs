@@ -223,6 +223,7 @@
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -276,6 +277,8 @@
             this.m_taskList.TabIndex = 1;
             this.m_taskList.UseCompatibleStateImageBehavior = false;
             this.m_taskList.View = System.Windows.Forms.View.Details;
+            this.m_taskList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_taskList_ColumnClick);
+            this.m_taskList.DoubleClick += new System.EventHandler(this.m_taskList_DoubleClick);
             // 
             // m_inputope
             // 
@@ -948,7 +951,7 @@
             this.button8.TabIndex = 235;
             this.button8.Text = "キャンセル";
             this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click_1);
+            this.button8.Click += new System.EventHandler(this.button8_Click_2);
             // 
             // button9
             // 
@@ -1445,6 +1448,7 @@
             this.m_usernameCombo.Name = "m_usernameCombo";
             this.m_usernameCombo.Size = new System.Drawing.Size(326, 20);
             this.m_usernameCombo.TabIndex = 220;
+            this.m_usernameCombo.SelectionChangeCommitted += new System.EventHandler(this.m_usernameCombo_SelectionChangeCommitted_1);
             // 
             // Form_taskDetail
             // 
