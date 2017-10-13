@@ -57,6 +57,9 @@ namespace moss_AP
             this.m_alerm_list.Columns.Insert(7, "インシデント番号", 50, HorizontalAlignment.Left);
 
             Boolean flg = false;
+
+            Boolean soundflg = false;
+            
             //リストに表示
             foreach (alermDS ads in almList)
             {
@@ -89,47 +92,6 @@ namespace moss_AP
 
                 }
                 
-                
-                //インシデントのは特定の音 
-                //オーブコムの定期作業のときも
-                if(type == "1" || (ads.username == "オーブコムジャパン" && ads.systemname == "衛星運用監視" ))
-                {
-                    
-                    String s_path = System.Configuration.ConfigurationManager.AppSettings["sound_path"];
-                    ads.sound = s_path + "標準サウンド.wav";
-
-                }
-
-
-                //拡張子がwavファイル
-                string stExtension = System.IO.Path.GetExtension(ads.sound);
-                if (stExtension != ".wav")
-                {
-                    MessageBox.Show("wavファイルが見つかりませんでした。", "サウンドテスト", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-                else {
-
-                    if(flg == false) {
-                        //音の再生
-                        //Form_testSound soundfm = new Form_testSound();
-                           
-
-                        //再生ダイアログは1画面以上は表示しない
-                        Form_testSound.Instance.strParam = ads.sound;
-                        Form_testSound.Instance.Show();
-                        Form_testSound.Instance.play(ads.sound);
-                        //soundfm.strParam = ads.sound;
-                        //soundfm.Show();
-                        //1回で1音のみ鳴らす
-                        flg = true;
-                        //読み込む
-                        //System.Media.SoundPlayer player = null;
-                        //player = new System.Media.SoundPlayer(ads.sound);
-                        //非同期再生する
-                        //player.Play();
-                    }
-                }
-
                 ListViewItem itemx1 = new ListViewItem();
                 itemx1.Text = ads.userno;
                 //表示しない項目
@@ -147,8 +109,52 @@ namespace moss_AP
 
                 //計画情報の表示
                 //MessageBox.Show(ads.alerm_message, title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                //インシデントのは特定の音 
+                //オーブコムの定期作業のときも
+                if (type == "1" || (ads.username == "オーブコムジャパン" && ads.systemname == "衛星運用監視"))
+                {
 
+                    String s_path = System.Configuration.ConfigurationManager.AppSettings["sound_path"];
+                    ads.sound = s_path + "標準サウンド.wav";
+
+                }
+
+
+                //拡張子がwavファイル
+                string stExtension = System.IO.Path.GetExtension(ads.sound);
+                if (stExtension != ".wav")
+                {
+                    soundflg = false;
+                }
+                else
+                {
+                    soundflg = true;
+                    if (flg == false)
+                    {
+                        //音の再生
+                        //Form_testSound soundfm = new Form_testSound();
+
+
+                        //再生ダイアログは1画面以上は表示しない
+                        Form_testSound.Instance.strParam = ads.sound;
+                        Form_testSound.Instance.Show();
+                        Form_testSound.Instance.play(ads.sound);
+                        //soundfm.strParam = ads.sound;
+                        //soundfm.Show();
+                        //1回で1音のみ鳴らす
+                        flg = true;
+                        //読み込む
+                        //System.Media.SoundPlayer player = null;
+                        //player = new System.Media.SoundPlayer(ads.sound);
+                        //非同期再生する
+                        //player.Play();
+                    }
+                }
             }
+            
+            if(soundflg==false && flg == false)
+                MessageBox.Show("wavファイルが見つかりませんでした。", "サウンドテスト", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
         }
 
         //登録

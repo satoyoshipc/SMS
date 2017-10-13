@@ -317,7 +317,7 @@
             this.Controls.Add(this.m_tantou_name);
             this.Controls.Add(this.label2);
             this.Name = "Form_UserTantouInsert";
-            this.Text = "担当カスタマ登録";
+            this.Text = "カスタマ担当者登録";
             this.Load += new System.EventHandler(this.Form_UserTantouInsert_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

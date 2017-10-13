@@ -34,6 +34,12 @@
             this.m_schedule_combo = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radioGroup1 = new System.Windows.Forms.GroupBox();
+            this.m_radio_month1 = new System.Windows.Forms.RadioButton();
+            this.m_radio_week1 = new System.Windows.Forms.RadioButton();
+            this.m_radio_day1 = new System.Windows.Forms.RadioButton();
+            this.m_radio_hour1 = new System.Windows.Forms.RadioButton();
+            this.m_radio_one1 = new System.Windows.Forms.RadioButton();
             this.m_statusCombo1 = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
             this.m_title1 = new System.Windows.Forms.TextBox();
@@ -53,6 +59,12 @@
             this.m_statusCombo = new System.Windows.Forms.ComboBox();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.radioGroup2 = new System.Windows.Forms.GroupBox();
+            this.m_radio_month2 = new System.Windows.Forms.RadioButton();
+            this.m_radio_week2 = new System.Windows.Forms.RadioButton();
+            this.m_radio_day2 = new System.Windows.Forms.RadioButton();
+            this.m_radio_hour2 = new System.Windows.Forms.RadioButton();
+            this.m_radio_one2 = new System.Windows.Forms.RadioButton();
             this.m_statusCombo2 = new System.Windows.Forms.ComboBox();
             this.label18 = new System.Windows.Forms.Label();
             this.m_title2 = new System.Windows.Forms.TextBox();
@@ -64,6 +76,12 @@
             this.m_alermDate2 = new System.Windows.Forms.DateTimePicker();
             this.label23 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.radioGroup3 = new System.Windows.Forms.GroupBox();
+            this.m_radio_month3 = new System.Windows.Forms.RadioButton();
+            this.m_radio_week3 = new System.Windows.Forms.RadioButton();
+            this.m_radio_day3 = new System.Windows.Forms.RadioButton();
+            this.m_radio_hour3 = new System.Windows.Forms.RadioButton();
+            this.m_radio_one3 = new System.Windows.Forms.RadioButton();
             this.m_statusCombo3 = new System.Windows.Forms.ComboBox();
             this.label24 = new System.Windows.Forms.Label();
             this.m_title3 = new System.Windows.Forms.TextBox();
@@ -84,6 +102,12 @@
             this.m_startDate = new System.Windows.Forms.DateTimePicker();
             this.label31 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.radioGroup5 = new System.Windows.Forms.GroupBox();
+            this.m_radio_month5 = new System.Windows.Forms.RadioButton();
+            this.m_radio_week5 = new System.Windows.Forms.RadioButton();
+            this.m_radio_day5 = new System.Windows.Forms.RadioButton();
+            this.m_radio_hour5 = new System.Windows.Forms.RadioButton();
+            this.m_radio_one5 = new System.Windows.Forms.RadioButton();
             this.m_statusCombo5 = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.m_title5 = new System.Windows.Forms.TextBox();
@@ -95,6 +119,12 @@
             this.m_alermDate5 = new System.Windows.Forms.DateTimePicker();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.radioGroup4 = new System.Windows.Forms.GroupBox();
+            this.m_radio_month4 = new System.Windows.Forms.RadioButton();
+            this.m_radio_week4 = new System.Windows.Forms.RadioButton();
+            this.m_radio_day4 = new System.Windows.Forms.RadioButton();
+            this.m_radio_hour4 = new System.Windows.Forms.RadioButton();
+            this.m_radio_one4 = new System.Windows.Forms.RadioButton();
             this.m_statusCombo4 = new System.Windows.Forms.ComboBox();
             this.label22 = new System.Windows.Forms.Label();
             this.m_title4 = new System.Windows.Forms.TextBox();
@@ -105,46 +135,16 @@
             this.label33 = new System.Windows.Forms.Label();
             this.m_alermDate4 = new System.Windows.Forms.DateTimePicker();
             this.label34 = new System.Windows.Forms.Label();
-            this.radioGroup1 = new System.Windows.Forms.GroupBox();
-            this.m_radio_month1 = new System.Windows.Forms.RadioButton();
-            this.m_radio_week1 = new System.Windows.Forms.RadioButton();
-            this.m_radio_day1 = new System.Windows.Forms.RadioButton();
-            this.m_radio_hour1 = new System.Windows.Forms.RadioButton();
-            this.m_radio_one1 = new System.Windows.Forms.RadioButton();
-            this.radioGroup2 = new System.Windows.Forms.GroupBox();
-            this.m_radio_month2 = new System.Windows.Forms.RadioButton();
-            this.m_radio_week2 = new System.Windows.Forms.RadioButton();
-            this.m_radio_day2 = new System.Windows.Forms.RadioButton();
-            this.m_radio_hour2 = new System.Windows.Forms.RadioButton();
-            this.m_radio_one2 = new System.Windows.Forms.RadioButton();
-            this.radioGroup3 = new System.Windows.Forms.GroupBox();
-            this.m_radio_month3 = new System.Windows.Forms.RadioButton();
-            this.m_radio_week3 = new System.Windows.Forms.RadioButton();
-            this.m_radio_day3 = new System.Windows.Forms.RadioButton();
-            this.m_radio_hour3 = new System.Windows.Forms.RadioButton();
-            this.m_radio_one3 = new System.Windows.Forms.RadioButton();
-            this.radioGroup4 = new System.Windows.Forms.GroupBox();
-            this.m_radio_month4 = new System.Windows.Forms.RadioButton();
-            this.m_radio_week4 = new System.Windows.Forms.RadioButton();
-            this.m_radio_day4 = new System.Windows.Forms.RadioButton();
-            this.m_radio_hour4 = new System.Windows.Forms.RadioButton();
-            this.m_radio_one4 = new System.Windows.Forms.RadioButton();
-            this.radioGroup5 = new System.Windows.Forms.GroupBox();
-            this.m_radio_month5 = new System.Windows.Forms.RadioButton();
-            this.m_radio_week5 = new System.Windows.Forms.RadioButton();
-            this.m_radio_day5 = new System.Windows.Forms.RadioButton();
-            this.m_radio_hour5 = new System.Windows.Forms.RadioButton();
-            this.m_radio_one5 = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.radioGroup1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.radioGroup2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.radioGroup3.SuspendLayout();
-            this.radioGroup4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.radioGroup5.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.radioGroup4.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -184,7 +184,7 @@
             "1:インシデント",
             "2:定期作業",
             "3:計画作業",
-            "4:特別作業"});
+            "4:特別対応"});
             this.m_schedule_combo.Location = new System.Drawing.Point(72, 7);
             this.m_schedule_combo.Name = "m_schedule_combo";
             this.m_schedule_combo.Size = new System.Drawing.Size(324, 21);
@@ -220,6 +220,76 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "タイマー①";
             // 
+            // radioGroup1
+            // 
+            this.radioGroup1.Controls.Add(this.m_radio_month1);
+            this.radioGroup1.Controls.Add(this.m_radio_week1);
+            this.radioGroup1.Controls.Add(this.m_radio_day1);
+            this.radioGroup1.Controls.Add(this.m_radio_hour1);
+            this.radioGroup1.Controls.Add(this.m_radio_one1);
+            this.radioGroup1.Location = new System.Drawing.Point(88, 64);
+            this.radioGroup1.Name = "radioGroup1";
+            this.radioGroup1.Size = new System.Drawing.Size(282, 32);
+            this.radioGroup1.TabIndex = 163;
+            this.radioGroup1.TabStop = false;
+            // 
+            // m_radio_month1
+            // 
+            this.m_radio_month1.AutoSize = true;
+            this.m_radio_month1.Location = new System.Drawing.Point(216, 11);
+            this.m_radio_month1.Name = "m_radio_month1";
+            this.m_radio_month1.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_month1.TabIndex = 11;
+            this.m_radio_month1.Text = "毎月";
+            this.m_radio_month1.UseVisualStyleBackColor = true;
+            this.m_radio_month1.CheckedChanged += new System.EventHandler(this.m_radio_month1_CheckedChanged);
+            // 
+            // m_radio_week1
+            // 
+            this.m_radio_week1.AutoSize = true;
+            this.m_radio_week1.Location = new System.Drawing.Point(164, 11);
+            this.m_radio_week1.Name = "m_radio_week1";
+            this.m_radio_week1.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_week1.TabIndex = 10;
+            this.m_radio_week1.Text = "毎週";
+            this.m_radio_week1.UseVisualStyleBackColor = true;
+            this.m_radio_week1.CheckedChanged += new System.EventHandler(this.m_radio_week1_CheckedChanged);
+            // 
+            // m_radio_day1
+            // 
+            this.m_radio_day1.AutoSize = true;
+            this.m_radio_day1.Location = new System.Drawing.Point(112, 11);
+            this.m_radio_day1.Name = "m_radio_day1";
+            this.m_radio_day1.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_day1.TabIndex = 9;
+            this.m_radio_day1.Text = "毎日";
+            this.m_radio_day1.UseVisualStyleBackColor = true;
+            this.m_radio_day1.CheckedChanged += new System.EventHandler(this.m_radio_day1_CheckedChanged);
+            // 
+            // m_radio_hour1
+            // 
+            this.m_radio_hour1.AutoSize = true;
+            this.m_radio_hour1.Location = new System.Drawing.Point(59, 11);
+            this.m_radio_hour1.Name = "m_radio_hour1";
+            this.m_radio_hour1.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_hour1.TabIndex = 8;
+            this.m_radio_hour1.Text = "毎時";
+            this.m_radio_hour1.UseVisualStyleBackColor = true;
+            this.m_radio_hour1.CheckedChanged += new System.EventHandler(this.m_radio_hour1_CheckedChanged);
+            // 
+            // m_radio_one1
+            // 
+            this.m_radio_one1.AutoSize = true;
+            this.m_radio_one1.Checked = true;
+            this.m_radio_one1.Location = new System.Drawing.Point(12, 11);
+            this.m_radio_one1.Name = "m_radio_one1";
+            this.m_radio_one1.Size = new System.Drawing.Size(41, 16);
+            this.m_radio_one1.TabIndex = 7;
+            this.m_radio_one1.TabStop = true;
+            this.m_radio_one1.Text = "1回";
+            this.m_radio_one1.UseVisualStyleBackColor = true;
+            this.m_radio_one1.CheckedChanged += new System.EventHandler(this.m_radio_one1_CheckedChanged);
+            // 
             // m_statusCombo1
             // 
             this.m_statusCombo1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -248,6 +318,7 @@
             this.m_title1.Name = "m_title1";
             this.m_title1.Size = new System.Drawing.Size(355, 19);
             this.m_title1.TabIndex = 0;
+            this.m_title1.TextChanged += new System.EventHandler(this.m_title1_TextChanged);
             // 
             // label15
             // 
@@ -410,6 +481,76 @@
             this.groupBox2.Text = "タイマー②";
             this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
+            // radioGroup2
+            // 
+            this.radioGroup2.Controls.Add(this.m_radio_month2);
+            this.radioGroup2.Controls.Add(this.m_radio_week2);
+            this.radioGroup2.Controls.Add(this.m_radio_day2);
+            this.radioGroup2.Controls.Add(this.m_radio_hour2);
+            this.radioGroup2.Controls.Add(this.m_radio_one2);
+            this.radioGroup2.Location = new System.Drawing.Point(88, 67);
+            this.radioGroup2.Name = "radioGroup2";
+            this.radioGroup2.Size = new System.Drawing.Size(282, 35);
+            this.radioGroup2.TabIndex = 219;
+            this.radioGroup2.TabStop = false;
+            // 
+            // m_radio_month2
+            // 
+            this.m_radio_month2.AutoSize = true;
+            this.m_radio_month2.Location = new System.Drawing.Point(217, 12);
+            this.m_radio_month2.Name = "m_radio_month2";
+            this.m_radio_month2.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_month2.TabIndex = 11;
+            this.m_radio_month2.Text = "毎月";
+            this.m_radio_month2.UseVisualStyleBackColor = true;
+            this.m_radio_month2.CheckedChanged += new System.EventHandler(this.m_radio_month2_CheckedChanged);
+            // 
+            // m_radio_week2
+            // 
+            this.m_radio_week2.AutoSize = true;
+            this.m_radio_week2.Location = new System.Drawing.Point(165, 12);
+            this.m_radio_week2.Name = "m_radio_week2";
+            this.m_radio_week2.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_week2.TabIndex = 10;
+            this.m_radio_week2.Text = "毎週";
+            this.m_radio_week2.UseVisualStyleBackColor = true;
+            this.m_radio_week2.CheckedChanged += new System.EventHandler(this.m_radio_week2_CheckedChanged);
+            // 
+            // m_radio_day2
+            // 
+            this.m_radio_day2.AutoSize = true;
+            this.m_radio_day2.Location = new System.Drawing.Point(113, 12);
+            this.m_radio_day2.Name = "m_radio_day2";
+            this.m_radio_day2.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_day2.TabIndex = 9;
+            this.m_radio_day2.Text = "毎日";
+            this.m_radio_day2.UseVisualStyleBackColor = true;
+            this.m_radio_day2.CheckedChanged += new System.EventHandler(this.m_radio_day2_CheckedChanged);
+            // 
+            // m_radio_hour2
+            // 
+            this.m_radio_hour2.AutoSize = true;
+            this.m_radio_hour2.Location = new System.Drawing.Point(60, 12);
+            this.m_radio_hour2.Name = "m_radio_hour2";
+            this.m_radio_hour2.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_hour2.TabIndex = 8;
+            this.m_radio_hour2.Text = "毎時";
+            this.m_radio_hour2.UseVisualStyleBackColor = true;
+            this.m_radio_hour2.CheckedChanged += new System.EventHandler(this.m_radio_hour2_CheckedChanged);
+            // 
+            // m_radio_one2
+            // 
+            this.m_radio_one2.AutoSize = true;
+            this.m_radio_one2.Checked = true;
+            this.m_radio_one2.Location = new System.Drawing.Point(13, 12);
+            this.m_radio_one2.Name = "m_radio_one2";
+            this.m_radio_one2.Size = new System.Drawing.Size(41, 16);
+            this.m_radio_one2.TabIndex = 7;
+            this.m_radio_one2.TabStop = true;
+            this.m_radio_one2.Text = "1回";
+            this.m_radio_one2.UseVisualStyleBackColor = true;
+            this.m_radio_one2.CheckedChanged += new System.EventHandler(this.m_radio_one2_CheckedChanged);
+            // 
             // m_statusCombo2
             // 
             this.m_statusCombo2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -438,6 +579,7 @@
             this.m_title2.Name = "m_title2";
             this.m_title2.Size = new System.Drawing.Size(355, 19);
             this.m_title2.TabIndex = 0;
+            this.m_title2.TextChanged += new System.EventHandler(this.m_title2_TextChanged);
             // 
             // label19
             // 
@@ -522,6 +664,76 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "タイマー③";
             // 
+            // radioGroup3
+            // 
+            this.radioGroup3.Controls.Add(this.m_radio_month3);
+            this.radioGroup3.Controls.Add(this.m_radio_week3);
+            this.radioGroup3.Controls.Add(this.m_radio_day3);
+            this.radioGroup3.Controls.Add(this.m_radio_hour3);
+            this.radioGroup3.Controls.Add(this.m_radio_one3);
+            this.radioGroup3.Location = new System.Drawing.Point(88, 64);
+            this.radioGroup3.Name = "radioGroup3";
+            this.radioGroup3.Size = new System.Drawing.Size(282, 34);
+            this.radioGroup3.TabIndex = 220;
+            this.radioGroup3.TabStop = false;
+            // 
+            // m_radio_month3
+            // 
+            this.m_radio_month3.AutoSize = true;
+            this.m_radio_month3.Location = new System.Drawing.Point(220, 12);
+            this.m_radio_month3.Name = "m_radio_month3";
+            this.m_radio_month3.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_month3.TabIndex = 11;
+            this.m_radio_month3.Text = "毎月";
+            this.m_radio_month3.UseVisualStyleBackColor = true;
+            this.m_radio_month3.CheckedChanged += new System.EventHandler(this.m_radio_month3_CheckedChanged);
+            // 
+            // m_radio_week3
+            // 
+            this.m_radio_week3.AutoSize = true;
+            this.m_radio_week3.Location = new System.Drawing.Point(168, 12);
+            this.m_radio_week3.Name = "m_radio_week3";
+            this.m_radio_week3.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_week3.TabIndex = 10;
+            this.m_radio_week3.Text = "毎週";
+            this.m_radio_week3.UseVisualStyleBackColor = true;
+            this.m_radio_week3.CheckedChanged += new System.EventHandler(this.m_radio_week3_CheckedChanged);
+            // 
+            // m_radio_day3
+            // 
+            this.m_radio_day3.AutoSize = true;
+            this.m_radio_day3.Location = new System.Drawing.Point(116, 12);
+            this.m_radio_day3.Name = "m_radio_day3";
+            this.m_radio_day3.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_day3.TabIndex = 9;
+            this.m_radio_day3.Text = "毎日";
+            this.m_radio_day3.UseVisualStyleBackColor = true;
+            this.m_radio_day3.CheckedChanged += new System.EventHandler(this.m_radio_day3_CheckedChanged);
+            // 
+            // m_radio_hour3
+            // 
+            this.m_radio_hour3.AutoSize = true;
+            this.m_radio_hour3.Location = new System.Drawing.Point(63, 12);
+            this.m_radio_hour3.Name = "m_radio_hour3";
+            this.m_radio_hour3.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_hour3.TabIndex = 8;
+            this.m_radio_hour3.Text = "毎時";
+            this.m_radio_hour3.UseVisualStyleBackColor = true;
+            this.m_radio_hour3.CheckedChanged += new System.EventHandler(this.m_radio_hour3_CheckedChanged);
+            // 
+            // m_radio_one3
+            // 
+            this.m_radio_one3.AutoSize = true;
+            this.m_radio_one3.Checked = true;
+            this.m_radio_one3.Location = new System.Drawing.Point(16, 12);
+            this.m_radio_one3.Name = "m_radio_one3";
+            this.m_radio_one3.Size = new System.Drawing.Size(41, 16);
+            this.m_radio_one3.TabIndex = 7;
+            this.m_radio_one3.TabStop = true;
+            this.m_radio_one3.Text = "1回";
+            this.m_radio_one3.UseVisualStyleBackColor = true;
+            this.m_radio_one3.CheckedChanged += new System.EventHandler(this.m_radio_one3_CheckedChanged);
+            // 
             // m_statusCombo3
             // 
             this.m_statusCombo3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -550,6 +762,7 @@
             this.m_title3.Name = "m_title3";
             this.m_title3.Size = new System.Drawing.Size(355, 19);
             this.m_title3.TabIndex = 0;
+            this.m_title3.TextChanged += new System.EventHandler(this.m_title3_TextChanged);
             // 
             // label25
             // 
@@ -719,6 +932,76 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "タイマー⑤";
             // 
+            // radioGroup5
+            // 
+            this.radioGroup5.Controls.Add(this.m_radio_month5);
+            this.radioGroup5.Controls.Add(this.m_radio_week5);
+            this.radioGroup5.Controls.Add(this.m_radio_day5);
+            this.radioGroup5.Controls.Add(this.m_radio_hour5);
+            this.radioGroup5.Controls.Add(this.m_radio_one5);
+            this.radioGroup5.Location = new System.Drawing.Point(88, 63);
+            this.radioGroup5.Name = "radioGroup5";
+            this.radioGroup5.Size = new System.Drawing.Size(282, 33);
+            this.radioGroup5.TabIndex = 222;
+            this.radioGroup5.TabStop = false;
+            // 
+            // m_radio_month5
+            // 
+            this.m_radio_month5.AutoSize = true;
+            this.m_radio_month5.Location = new System.Drawing.Point(220, 12);
+            this.m_radio_month5.Name = "m_radio_month5";
+            this.m_radio_month5.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_month5.TabIndex = 11;
+            this.m_radio_month5.Text = "毎月";
+            this.m_radio_month5.UseVisualStyleBackColor = true;
+            this.m_radio_month5.CheckedChanged += new System.EventHandler(this.m_radio_month5_CheckedChanged);
+            // 
+            // m_radio_week5
+            // 
+            this.m_radio_week5.AutoSize = true;
+            this.m_radio_week5.Location = new System.Drawing.Point(168, 12);
+            this.m_radio_week5.Name = "m_radio_week5";
+            this.m_radio_week5.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_week5.TabIndex = 10;
+            this.m_radio_week5.Text = "毎週";
+            this.m_radio_week5.UseVisualStyleBackColor = true;
+            this.m_radio_week5.CheckedChanged += new System.EventHandler(this.m_radio_week5_CheckedChanged);
+            // 
+            // m_radio_day5
+            // 
+            this.m_radio_day5.AutoSize = true;
+            this.m_radio_day5.Location = new System.Drawing.Point(116, 12);
+            this.m_radio_day5.Name = "m_radio_day5";
+            this.m_radio_day5.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_day5.TabIndex = 9;
+            this.m_radio_day5.Text = "毎日";
+            this.m_radio_day5.UseVisualStyleBackColor = true;
+            this.m_radio_day5.CheckedChanged += new System.EventHandler(this.m_radio_day5_CheckedChanged);
+            // 
+            // m_radio_hour5
+            // 
+            this.m_radio_hour5.AutoSize = true;
+            this.m_radio_hour5.Location = new System.Drawing.Point(63, 12);
+            this.m_radio_hour5.Name = "m_radio_hour5";
+            this.m_radio_hour5.Size = new System.Drawing.Size(47, 16);
+            this.m_radio_hour5.TabIndex = 8;
+            this.m_radio_hour5.Text = "毎時";
+            this.m_radio_hour5.UseVisualStyleBackColor = true;
+            this.m_radio_hour5.CheckedChanged += new System.EventHandler(this.m_radio_hour5_CheckedChanged);
+            // 
+            // m_radio_one5
+            // 
+            this.m_radio_one5.AutoSize = true;
+            this.m_radio_one5.Checked = true;
+            this.m_radio_one5.Location = new System.Drawing.Point(16, 12);
+            this.m_radio_one5.Name = "m_radio_one5";
+            this.m_radio_one5.Size = new System.Drawing.Size(41, 16);
+            this.m_radio_one5.TabIndex = 7;
+            this.m_radio_one5.TabStop = true;
+            this.m_radio_one5.Text = "1回";
+            this.m_radio_one5.UseVisualStyleBackColor = true;
+            this.m_radio_one5.CheckedChanged += new System.EventHandler(this.m_radio_one5_CheckedChanged);
+            // 
             // m_statusCombo5
             // 
             this.m_statusCombo5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -747,6 +1030,7 @@
             this.m_title5.Name = "m_title5";
             this.m_title5.Size = new System.Drawing.Size(355, 19);
             this.m_title5.TabIndex = 0;
+            this.m_title5.TextChanged += new System.EventHandler(this.m_title5_TextChanged);
             // 
             // label6
             // 
@@ -831,308 +1115,6 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "タイマー④";
             // 
-            // m_statusCombo4
-            // 
-            this.m_statusCombo4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.m_statusCombo4.FormattingEnabled = true;
-            this.m_statusCombo4.Items.AddRange(new object[] {
-            "無効",
-            "有効"});
-            this.m_statusCombo4.Location = new System.Drawing.Point(532, 20);
-            this.m_statusCombo4.Name = "m_statusCombo4";
-            this.m_statusCombo4.Size = new System.Drawing.Size(68, 20);
-            this.m_statusCombo4.TabIndex = 7;
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(474, 23);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(50, 12);
-            this.label22.TabIndex = 162;
-            this.label22.Text = "ステータス";
-            // 
-            // m_title4
-            // 
-            this.m_title4.Location = new System.Drawing.Point(88, 21);
-            this.m_title4.Multiline = true;
-            this.m_title4.Name = "m_title4";
-            this.m_title4.Size = new System.Drawing.Size(355, 19);
-            this.m_title4.TabIndex = 0;
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(9, 25);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(53, 12);
-            this.label28.TabIndex = 160;
-            this.label28.Text = "タイマー名";
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(474, 73);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(53, 12);
-            this.label32.TabIndex = 157;
-            this.label32.Text = "終了日時";
-            // 
-            // m_endDate4
-            // 
-            this.m_endDate4.CustomFormat = "yyyy年M月d日(dddd) HH:mm";
-            this.m_endDate4.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_endDate4.Location = new System.Drawing.Point(532, 70);
-            this.m_endDate4.Name = "m_endDate4";
-            this.m_endDate4.Size = new System.Drawing.Size(206, 19);
-            this.m_endDate4.TabIndex = 9;
-            // 
-            // m_startDate4
-            // 
-            this.m_startDate4.CustomFormat = "yyyy年M月d日(dddd) HH:mm";
-            this.m_startDate4.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_startDate4.Location = new System.Drawing.Point(532, 46);
-            this.m_startDate4.Name = "m_startDate4";
-            this.m_startDate4.Size = new System.Drawing.Size(206, 19);
-            this.m_startDate4.TabIndex = 8;
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(474, 51);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(53, 12);
-            this.label33.TabIndex = 155;
-            this.label33.Text = "開始日時";
-            // 
-            // m_alermDate4
-            // 
-            this.m_alermDate4.CustomFormat = "yyyy年M月d日(dddd) HH:mm";
-            this.m_alermDate4.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.m_alermDate4.Location = new System.Drawing.Point(88, 46);
-            this.m_alermDate4.Name = "m_alermDate4";
-            this.m_alermDate4.Size = new System.Drawing.Size(206, 19);
-            this.m_alermDate4.TabIndex = 1;
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(10, 51);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(76, 12);
-            this.label34.TabIndex = 149;
-            this.label34.Text = "アラート日時♪";
-            // 
-            // radioGroup1
-            // 
-            this.radioGroup1.Controls.Add(this.m_radio_month1);
-            this.radioGroup1.Controls.Add(this.m_radio_week1);
-            this.radioGroup1.Controls.Add(this.m_radio_day1);
-            this.radioGroup1.Controls.Add(this.m_radio_hour1);
-            this.radioGroup1.Controls.Add(this.m_radio_one1);
-            this.radioGroup1.Location = new System.Drawing.Point(88, 64);
-            this.radioGroup1.Name = "radioGroup1";
-            this.radioGroup1.Size = new System.Drawing.Size(282, 32);
-            this.radioGroup1.TabIndex = 163;
-            this.radioGroup1.TabStop = false;
-            // 
-            // m_radio_month1
-            // 
-            this.m_radio_month1.AutoSize = true;
-            this.m_radio_month1.Location = new System.Drawing.Point(216, 11);
-            this.m_radio_month1.Name = "m_radio_month1";
-            this.m_radio_month1.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_month1.TabIndex = 11;
-            this.m_radio_month1.Text = "毎月";
-            this.m_radio_month1.UseVisualStyleBackColor = true;
-            this.m_radio_month1.CheckedChanged += new System.EventHandler(this.m_radio_month1_CheckedChanged);
-            // 
-            // m_radio_week1
-            // 
-            this.m_radio_week1.AutoSize = true;
-            this.m_radio_week1.Location = new System.Drawing.Point(164, 11);
-            this.m_radio_week1.Name = "m_radio_week1";
-            this.m_radio_week1.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_week1.TabIndex = 10;
-            this.m_radio_week1.Text = "毎週";
-            this.m_radio_week1.UseVisualStyleBackColor = true;
-            this.m_radio_week1.CheckedChanged += new System.EventHandler(this.m_radio_week1_CheckedChanged);
-            // 
-            // m_radio_day1
-            // 
-            this.m_radio_day1.AutoSize = true;
-            this.m_radio_day1.Location = new System.Drawing.Point(112, 11);
-            this.m_radio_day1.Name = "m_radio_day1";
-            this.m_radio_day1.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_day1.TabIndex = 9;
-            this.m_radio_day1.Text = "毎日";
-            this.m_radio_day1.UseVisualStyleBackColor = true;
-            this.m_radio_day1.CheckedChanged += new System.EventHandler(this.m_radio_day1_CheckedChanged);
-            // 
-            // m_radio_hour1
-            // 
-            this.m_radio_hour1.AutoSize = true;
-            this.m_radio_hour1.Location = new System.Drawing.Point(59, 11);
-            this.m_radio_hour1.Name = "m_radio_hour1";
-            this.m_radio_hour1.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_hour1.TabIndex = 8;
-            this.m_radio_hour1.Text = "毎時";
-            this.m_radio_hour1.UseVisualStyleBackColor = true;
-            this.m_radio_hour1.CheckedChanged += new System.EventHandler(this.m_radio_hour1_CheckedChanged);
-            // 
-            // m_radio_one1
-            // 
-            this.m_radio_one1.AutoSize = true;
-            this.m_radio_one1.Checked = true;
-            this.m_radio_one1.Location = new System.Drawing.Point(12, 11);
-            this.m_radio_one1.Name = "m_radio_one1";
-            this.m_radio_one1.Size = new System.Drawing.Size(41, 16);
-            this.m_radio_one1.TabIndex = 7;
-            this.m_radio_one1.TabStop = true;
-            this.m_radio_one1.Text = "1回";
-            this.m_radio_one1.UseVisualStyleBackColor = true;
-            this.m_radio_one1.CheckedChanged += new System.EventHandler(this.m_radio_one1_CheckedChanged);
-            // 
-            // radioGroup2
-            // 
-            this.radioGroup2.Controls.Add(this.m_radio_month2);
-            this.radioGroup2.Controls.Add(this.m_radio_week2);
-            this.radioGroup2.Controls.Add(this.m_radio_day2);
-            this.radioGroup2.Controls.Add(this.m_radio_hour2);
-            this.radioGroup2.Controls.Add(this.m_radio_one2);
-            this.radioGroup2.Location = new System.Drawing.Point(88, 67);
-            this.radioGroup2.Name = "radioGroup2";
-            this.radioGroup2.Size = new System.Drawing.Size(282, 35);
-            this.radioGroup2.TabIndex = 219;
-            this.radioGroup2.TabStop = false;
-            // 
-            // m_radio_month2
-            // 
-            this.m_radio_month2.AutoSize = true;
-            this.m_radio_month2.Location = new System.Drawing.Point(217, 12);
-            this.m_radio_month2.Name = "m_radio_month2";
-            this.m_radio_month2.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_month2.TabIndex = 11;
-            this.m_radio_month2.Text = "毎月";
-            this.m_radio_month2.UseVisualStyleBackColor = true;
-            this.m_radio_month2.CheckedChanged += new System.EventHandler(this.m_radio_month2_CheckedChanged);
-            // 
-            // m_radio_week2
-            // 
-            this.m_radio_week2.AutoSize = true;
-            this.m_radio_week2.Location = new System.Drawing.Point(165, 12);
-            this.m_radio_week2.Name = "m_radio_week2";
-            this.m_radio_week2.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_week2.TabIndex = 10;
-            this.m_radio_week2.Text = "毎週";
-            this.m_radio_week2.UseVisualStyleBackColor = true;
-            this.m_radio_week2.CheckedChanged += new System.EventHandler(this.m_radio_week2_CheckedChanged);
-            // 
-            // m_radio_day2
-            // 
-            this.m_radio_day2.AutoSize = true;
-            this.m_radio_day2.Location = new System.Drawing.Point(113, 12);
-            this.m_radio_day2.Name = "m_radio_day2";
-            this.m_radio_day2.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_day2.TabIndex = 9;
-            this.m_radio_day2.Text = "毎日";
-            this.m_radio_day2.UseVisualStyleBackColor = true;
-            this.m_radio_day2.CheckedChanged += new System.EventHandler(this.m_radio_day2_CheckedChanged);
-            // 
-            // m_radio_hour2
-            // 
-            this.m_radio_hour2.AutoSize = true;
-            this.m_radio_hour2.Location = new System.Drawing.Point(60, 12);
-            this.m_radio_hour2.Name = "m_radio_hour2";
-            this.m_radio_hour2.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_hour2.TabIndex = 8;
-            this.m_radio_hour2.Text = "毎時";
-            this.m_radio_hour2.UseVisualStyleBackColor = true;
-            this.m_radio_hour2.CheckedChanged += new System.EventHandler(this.m_radio_hour2_CheckedChanged);
-            // 
-            // m_radio_one2
-            // 
-            this.m_radio_one2.AutoSize = true;
-            this.m_radio_one2.Checked = true;
-            this.m_radio_one2.Location = new System.Drawing.Point(13, 12);
-            this.m_radio_one2.Name = "m_radio_one2";
-            this.m_radio_one2.Size = new System.Drawing.Size(41, 16);
-            this.m_radio_one2.TabIndex = 7;
-            this.m_radio_one2.TabStop = true;
-            this.m_radio_one2.Text = "1回";
-            this.m_radio_one2.UseVisualStyleBackColor = true;
-            this.m_radio_one2.CheckedChanged += new System.EventHandler(this.m_radio_one2_CheckedChanged);
-            // 
-            // radioGroup3
-            // 
-            this.radioGroup3.Controls.Add(this.m_radio_month3);
-            this.radioGroup3.Controls.Add(this.m_radio_week3);
-            this.radioGroup3.Controls.Add(this.m_radio_day3);
-            this.radioGroup3.Controls.Add(this.m_radio_hour3);
-            this.radioGroup3.Controls.Add(this.m_radio_one3);
-            this.radioGroup3.Location = new System.Drawing.Point(88, 64);
-            this.radioGroup3.Name = "radioGroup3";
-            this.radioGroup3.Size = new System.Drawing.Size(282, 34);
-            this.radioGroup3.TabIndex = 220;
-            this.radioGroup3.TabStop = false;
-            // 
-            // m_radio_month3
-            // 
-            this.m_radio_month3.AutoSize = true;
-            this.m_radio_month3.Location = new System.Drawing.Point(220, 12);
-            this.m_radio_month3.Name = "m_radio_month3";
-            this.m_radio_month3.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_month3.TabIndex = 11;
-            this.m_radio_month3.Text = "毎月";
-            this.m_radio_month3.UseVisualStyleBackColor = true;
-            this.m_radio_month3.CheckedChanged += new System.EventHandler(this.m_radio_month3_CheckedChanged);
-            // 
-            // m_radio_week3
-            // 
-            this.m_radio_week3.AutoSize = true;
-            this.m_radio_week3.Location = new System.Drawing.Point(168, 12);
-            this.m_radio_week3.Name = "m_radio_week3";
-            this.m_radio_week3.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_week3.TabIndex = 10;
-            this.m_radio_week3.Text = "毎週";
-            this.m_radio_week3.UseVisualStyleBackColor = true;
-            this.m_radio_week3.CheckedChanged += new System.EventHandler(this.m_radio_week3_CheckedChanged);
-            // 
-            // m_radio_day3
-            // 
-            this.m_radio_day3.AutoSize = true;
-            this.m_radio_day3.Location = new System.Drawing.Point(116, 12);
-            this.m_radio_day3.Name = "m_radio_day3";
-            this.m_radio_day3.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_day3.TabIndex = 9;
-            this.m_radio_day3.Text = "毎日";
-            this.m_radio_day3.UseVisualStyleBackColor = true;
-            this.m_radio_day3.CheckedChanged += new System.EventHandler(this.m_radio_day3_CheckedChanged);
-            // 
-            // m_radio_hour3
-            // 
-            this.m_radio_hour3.AutoSize = true;
-            this.m_radio_hour3.Location = new System.Drawing.Point(63, 12);
-            this.m_radio_hour3.Name = "m_radio_hour3";
-            this.m_radio_hour3.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_hour3.TabIndex = 8;
-            this.m_radio_hour3.Text = "毎時";
-            this.m_radio_hour3.UseVisualStyleBackColor = true;
-            this.m_radio_hour3.CheckedChanged += new System.EventHandler(this.m_radio_hour3_CheckedChanged);
-            // 
-            // m_radio_one3
-            // 
-            this.m_radio_one3.AutoSize = true;
-            this.m_radio_one3.Checked = true;
-            this.m_radio_one3.Location = new System.Drawing.Point(16, 12);
-            this.m_radio_one3.Name = "m_radio_one3";
-            this.m_radio_one3.Size = new System.Drawing.Size(41, 16);
-            this.m_radio_one3.TabIndex = 7;
-            this.m_radio_one3.TabStop = true;
-            this.m_radio_one3.Text = "1回";
-            this.m_radio_one3.UseVisualStyleBackColor = true;
-            this.m_radio_one3.CheckedChanged += new System.EventHandler(this.m_radio_one3_CheckedChanged);
-            // 
             // radioGroup4
             // 
             this.radioGroup4.Controls.Add(this.m_radio_month4);
@@ -1203,75 +1185,98 @@
             this.m_radio_one4.UseVisualStyleBackColor = true;
             this.m_radio_one4.CheckedChanged += new System.EventHandler(this.m_radio_one4_CheckedChanged);
             // 
-            // radioGroup5
+            // m_statusCombo4
             // 
-            this.radioGroup5.Controls.Add(this.m_radio_month5);
-            this.radioGroup5.Controls.Add(this.m_radio_week5);
-            this.radioGroup5.Controls.Add(this.m_radio_day5);
-            this.radioGroup5.Controls.Add(this.m_radio_hour5);
-            this.radioGroup5.Controls.Add(this.m_radio_one5);
-            this.radioGroup5.Location = new System.Drawing.Point(88, 63);
-            this.radioGroup5.Name = "radioGroup5";
-            this.radioGroup5.Size = new System.Drawing.Size(282, 33);
-            this.radioGroup5.TabIndex = 222;
-            this.radioGroup5.TabStop = false;
+            this.m_statusCombo4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_statusCombo4.FormattingEnabled = true;
+            this.m_statusCombo4.Items.AddRange(new object[] {
+            "無効",
+            "有効"});
+            this.m_statusCombo4.Location = new System.Drawing.Point(532, 20);
+            this.m_statusCombo4.Name = "m_statusCombo4";
+            this.m_statusCombo4.Size = new System.Drawing.Size(68, 20);
+            this.m_statusCombo4.TabIndex = 7;
             // 
-            // m_radio_month5
+            // label22
             // 
-            this.m_radio_month5.AutoSize = true;
-            this.m_radio_month5.Location = new System.Drawing.Point(220, 12);
-            this.m_radio_month5.Name = "m_radio_month5";
-            this.m_radio_month5.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_month5.TabIndex = 11;
-            this.m_radio_month5.Text = "毎月";
-            this.m_radio_month5.UseVisualStyleBackColor = true;
-            this.m_radio_month5.CheckedChanged += new System.EventHandler(this.m_radio_month5_CheckedChanged);
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(474, 23);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(50, 12);
+            this.label22.TabIndex = 162;
+            this.label22.Text = "ステータス";
             // 
-            // m_radio_week5
+            // m_title4
             // 
-            this.m_radio_week5.AutoSize = true;
-            this.m_radio_week5.Location = new System.Drawing.Point(168, 12);
-            this.m_radio_week5.Name = "m_radio_week5";
-            this.m_radio_week5.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_week5.TabIndex = 10;
-            this.m_radio_week5.Text = "毎週";
-            this.m_radio_week5.UseVisualStyleBackColor = true;
-            this.m_radio_week5.CheckedChanged += new System.EventHandler(this.m_radio_week5_CheckedChanged);
+            this.m_title4.Location = new System.Drawing.Point(88, 21);
+            this.m_title4.Multiline = true;
+            this.m_title4.Name = "m_title4";
+            this.m_title4.Size = new System.Drawing.Size(355, 19);
+            this.m_title4.TabIndex = 0;
+            this.m_title4.TextChanged += new System.EventHandler(this.m_title4_TextChanged);
             // 
-            // m_radio_day5
+            // label28
             // 
-            this.m_radio_day5.AutoSize = true;
-            this.m_radio_day5.Location = new System.Drawing.Point(116, 12);
-            this.m_radio_day5.Name = "m_radio_day5";
-            this.m_radio_day5.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_day5.TabIndex = 9;
-            this.m_radio_day5.Text = "毎日";
-            this.m_radio_day5.UseVisualStyleBackColor = true;
-            this.m_radio_day5.CheckedChanged += new System.EventHandler(this.m_radio_day5_CheckedChanged);
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(9, 25);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(53, 12);
+            this.label28.TabIndex = 160;
+            this.label28.Text = "タイマー名";
             // 
-            // m_radio_hour5
+            // label32
             // 
-            this.m_radio_hour5.AutoSize = true;
-            this.m_radio_hour5.Location = new System.Drawing.Point(63, 12);
-            this.m_radio_hour5.Name = "m_radio_hour5";
-            this.m_radio_hour5.Size = new System.Drawing.Size(47, 16);
-            this.m_radio_hour5.TabIndex = 8;
-            this.m_radio_hour5.Text = "毎時";
-            this.m_radio_hour5.UseVisualStyleBackColor = true;
-            this.m_radio_hour5.CheckedChanged += new System.EventHandler(this.m_radio_hour5_CheckedChanged);
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(474, 73);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(53, 12);
+            this.label32.TabIndex = 157;
+            this.label32.Text = "終了日時";
             // 
-            // m_radio_one5
+            // m_endDate4
             // 
-            this.m_radio_one5.AutoSize = true;
-            this.m_radio_one5.Checked = true;
-            this.m_radio_one5.Location = new System.Drawing.Point(16, 12);
-            this.m_radio_one5.Name = "m_radio_one5";
-            this.m_radio_one5.Size = new System.Drawing.Size(41, 16);
-            this.m_radio_one5.TabIndex = 7;
-            this.m_radio_one5.TabStop = true;
-            this.m_radio_one5.Text = "1回";
-            this.m_radio_one5.UseVisualStyleBackColor = true;
-            this.m_radio_one5.CheckedChanged += new System.EventHandler(this.m_radio_one5_CheckedChanged);
+            this.m_endDate4.CustomFormat = "yyyy年M月d日(dddd) HH:mm";
+            this.m_endDate4.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.m_endDate4.Location = new System.Drawing.Point(532, 70);
+            this.m_endDate4.Name = "m_endDate4";
+            this.m_endDate4.Size = new System.Drawing.Size(206, 19);
+            this.m_endDate4.TabIndex = 9;
+            // 
+            // m_startDate4
+            // 
+            this.m_startDate4.CustomFormat = "yyyy年M月d日(dddd) HH:mm";
+            this.m_startDate4.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.m_startDate4.Location = new System.Drawing.Point(532, 46);
+            this.m_startDate4.Name = "m_startDate4";
+            this.m_startDate4.Size = new System.Drawing.Size(206, 19);
+            this.m_startDate4.TabIndex = 8;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(474, 51);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(53, 12);
+            this.label33.TabIndex = 155;
+            this.label33.Text = "開始日時";
+            // 
+            // m_alermDate4
+            // 
+            this.m_alermDate4.CustomFormat = "yyyy年M月d日(dddd) HH:mm";
+            this.m_alermDate4.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.m_alermDate4.Location = new System.Drawing.Point(88, 46);
+            this.m_alermDate4.Name = "m_alermDate4";
+            this.m_alermDate4.Size = new System.Drawing.Size(206, 19);
+            this.m_alermDate4.TabIndex = 1;
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(10, 51);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(76, 12);
+            this.label34.TabIndex = 149;
+            this.label34.Text = "アラート日時♪";
             // 
             // Form_taskInsert
             // 
@@ -1311,24 +1316,24 @@
             this.Load += new System.EventHandler(this.Form_taskInsert_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.radioGroup1.ResumeLayout(false);
             this.radioGroup1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.radioGroup2.ResumeLayout(false);
             this.radioGroup2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.radioGroup3.ResumeLayout(false);
             this.radioGroup3.PerformLayout();
-            this.radioGroup4.ResumeLayout(false);
-            this.radioGroup4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.radioGroup5.ResumeLayout(false);
             this.radioGroup5.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.radioGroup4.ResumeLayout(false);
+            this.radioGroup4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

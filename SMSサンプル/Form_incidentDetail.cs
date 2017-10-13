@@ -1149,7 +1149,6 @@ namespace moss_AP
             //総件数を変更し再表示を行う
             this.m_incidentList.VirtualListSize = items.Count;
 
-
         }
 
         //削除

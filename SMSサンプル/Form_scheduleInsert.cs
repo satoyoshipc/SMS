@@ -683,7 +683,7 @@ namespace moss_AP
                 //m_endDate.Enabled = true;
 
             }
-            //特別作業の場合開始終了は不要
+            //特別対応の場合開始終了は不要
             else if (m_schedule_combo.SelectedIndex == 3)
             {
                 //m_alerm_group.Enabled = false;

@@ -89,7 +89,7 @@
             "",
             "2:定期作業",
             "3:計画作業",
-            "4:特別作業"});
+            "4:特別対応"});
             this.m_schedule_combo.Location = new System.Drawing.Point(88, 115);
             this.m_schedule_combo.Name = "m_schedule_combo";
             this.m_schedule_combo.Size = new System.Drawing.Size(447, 21);

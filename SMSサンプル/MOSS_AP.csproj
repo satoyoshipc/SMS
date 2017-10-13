@@ -106,6 +106,12 @@
     <Compile Include="Form_Import.Designer.cs">
       <DependentUpon>Form_Import.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_IncidentMailSend.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_IncidentMailSend.Designer.cs">
+      <DependentUpon>Form_IncidentMailSend.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_incidentSummary.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -362,6 +368,9 @@
     <Compile Include="watch_InterfaceDS.cs" />
     <EmbeddedResource Include="Form_Import.resx">
       <DependentUpon>Form_Import.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_IncidentMailSend.resx">
+      <DependentUpon>Form_IncidentMailSend.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_incidentSummary.resx">
       <DependentUpon>Form_incidentSummary.cs</DependentUpon>

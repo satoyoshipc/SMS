@@ -34,6 +34,7 @@
             this.m_selecttext = new System.Windows.Forms.TextBox();
             this.m_selectKoumoku = new System.Windows.Forms.ComboBox();
             this.m_taskList = new System.Windows.Forms.ListView();
+            this.button1 = new System.Windows.Forms.Button();
             this.m_inputope = new System.Windows.Forms.TextBox();
             this.label38 = new System.Windows.Forms.Label();
             this.label37 = new System.Windows.Forms.Label();
@@ -182,6 +183,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.button1);
             this.splitContainer1.Panel2.Controls.Add(this.m_inputope);
             this.splitContainer1.Panel2.Controls.Add(this.label38);
             this.splitContainer1.Panel2.Controls.Add(this.label37);
@@ -216,8 +218,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.label1);
             this.splitContainer1.Panel2.Controls.Add(this.m_userno);
             this.splitContainer1.Panel2.Controls.Add(this.m_usernameCombo);
-            this.splitContainer1.Size = new System.Drawing.Size(935, 703);
-            this.splitContainer1.SplitterDistance = 103;
+            this.splitContainer1.Size = new System.Drawing.Size(935, 827);
+            this.splitContainer1.SplitterDistance = 138;
             this.splitContainer1.TabIndex = 0;
             // 
             // splitContainer2
@@ -237,7 +239,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.m_taskList);
-            this.splitContainer2.Size = new System.Drawing.Size(935, 103);
+            this.splitContainer2.Size = new System.Drawing.Size(935, 138);
             this.splitContainer2.SplitterDistance = 32;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -273,16 +275,28 @@
             this.m_taskList.GridLines = true;
             this.m_taskList.Location = new System.Drawing.Point(0, 0);
             this.m_taskList.Name = "m_taskList";
-            this.m_taskList.Size = new System.Drawing.Size(935, 67);
+            this.m_taskList.Size = new System.Drawing.Size(935, 102);
             this.m_taskList.TabIndex = 1;
             this.m_taskList.UseCompatibleStateImageBehavior = false;
             this.m_taskList.View = System.Windows.Forms.View.Details;
             this.m_taskList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.m_taskList_ColumnClick);
             this.m_taskList.DoubleClick += new System.EventHandler(this.m_taskList_DoubleClick);
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button1.ForeColor = System.Drawing.Color.Red;
+            this.button1.Location = new System.Drawing.Point(847, 5);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(76, 27);
+            this.button1.TabIndex = 253;
+            this.button1.Text = "削除";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // m_inputope
             // 
-            this.m_inputope.Location = new System.Drawing.Point(527, 473);
+            this.m_inputope.Location = new System.Drawing.Point(527, 510);
             this.m_inputope.Name = "m_inputope";
             this.m_inputope.ReadOnly = true;
             this.m_inputope.Size = new System.Drawing.Size(199, 19);
@@ -292,7 +306,7 @@
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(468, 476);
+            this.label38.Location = new System.Drawing.Point(468, 513);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(41, 12);
             this.label38.TabIndex = 252;
@@ -301,7 +315,7 @@
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(468, 455);
+            this.label37.Location = new System.Drawing.Point(468, 492);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(53, 12);
             this.label37.TabIndex = 250;
@@ -309,7 +323,7 @@
             // 
             // m_update
             // 
-            this.m_update.Location = new System.Drawing.Point(527, 498);
+            this.m_update.Location = new System.Drawing.Point(527, 535);
             this.m_update.Name = "m_update";
             this.m_update.ReadOnly = true;
             this.m_update.Size = new System.Drawing.Size(199, 19);
@@ -319,7 +333,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(468, 502);
+            this.label36.Location = new System.Drawing.Point(468, 539);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(53, 12);
             this.label36.TabIndex = 249;
@@ -356,7 +370,7 @@
             this.groupBox5.Controls.Add(this.label10);
             this.groupBox5.Controls.Add(this.m_alermDate5);
             this.groupBox5.Controls.Add(this.label11);
-            this.groupBox5.Location = new System.Drawing.Point(467, 295);
+            this.groupBox5.Location = new System.Drawing.Point(467, 294);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(457, 142);
             this.groupBox5.TabIndex = 231;
@@ -560,7 +574,7 @@
             // 
             // m_idlabel
             // 
-            this.m_idlabel.Location = new System.Drawing.Point(527, 525);
+            this.m_idlabel.Location = new System.Drawing.Point(527, 562);
             this.m_idlabel.Name = "m_idlabel";
             this.m_idlabel.ReadOnly = true;
             this.m_idlabel.Size = new System.Drawing.Size(199, 19);
@@ -569,7 +583,7 @@
             // 
             // m_labelinputOpe
             // 
-            this.m_labelinputOpe.Location = new System.Drawing.Point(527, 451);
+            this.m_labelinputOpe.Location = new System.Drawing.Point(527, 488);
             this.m_labelinputOpe.Name = "m_labelinputOpe";
             this.m_labelinputOpe.ReadOnly = true;
             this.m_labelinputOpe.Size = new System.Drawing.Size(199, 19);
@@ -768,7 +782,7 @@
             this.groupBox4.Controls.Add(this.label33);
             this.groupBox4.Controls.Add(this.m_alermDate4);
             this.groupBox4.Controls.Add(this.label34);
-            this.groupBox4.Location = new System.Drawing.Point(467, 152);
+            this.groupBox4.Location = new System.Drawing.Point(467, 151);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(457, 141);
             this.groupBox4.TabIndex = 230;
@@ -937,7 +951,7 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(468, 528);
+            this.label30.Location = new System.Drawing.Point(468, 565);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(41, 12);
             this.label30.TabIndex = 243;
@@ -945,7 +959,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(847, 551);
+            this.button8.Location = new System.Drawing.Point(847, 588);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(76, 33);
             this.button8.TabIndex = 235;
@@ -955,11 +969,11 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(758, 551);
+            this.button9.Location = new System.Drawing.Point(758, 588);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(76, 33);
             this.button9.TabIndex = 234;
-            this.button9.Text = "登録";
+            this.button9.Text = "更新";
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.button9_Click_1);
             // 
@@ -977,16 +991,16 @@
             // 
             // m_biko
             // 
-            this.m_biko.Location = new System.Drawing.Point(504, 94);
+            this.m_biko.Location = new System.Drawing.Point(504, 123);
             this.m_biko.Multiline = true;
             this.m_biko.Name = "m_biko";
-            this.m_biko.Size = new System.Drawing.Size(420, 54);
+            this.m_biko.Size = new System.Drawing.Size(420, 25);
             this.m_biko.TabIndex = 226;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(469, 96);
+            this.label13.Location = new System.Drawing.Point(469, 125);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(29, 12);
             this.label13.TabIndex = 241;
@@ -995,7 +1009,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(468, 10);
+            this.label12.Location = new System.Drawing.Point(468, 39);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(29, 12);
             this.label12.TabIndex = 240;
@@ -1011,6 +1025,7 @@
             this.m_templeteCombo.Name = "m_templeteCombo";
             this.m_templeteCombo.Size = new System.Drawing.Size(376, 21);
             this.m_templeteCombo.TabIndex = 221;
+            this.m_templeteCombo.SelectionChangeCommitted += new System.EventHandler(this.m_templeteCombo_SelectionChangeCommitted_1);
             // 
             // label17
             // 
@@ -1398,11 +1413,12 @@
             "1:インシデント",
             "2:定期作業",
             "3:計画作業",
-            "4:特別作業"});
+            "4:特別対応"});
             this.m_schedule_combo.Location = new System.Drawing.Point(74, 28);
             this.m_schedule_combo.Name = "m_schedule_combo";
             this.m_schedule_combo.Size = new System.Drawing.Size(376, 21);
             this.m_schedule_combo.TabIndex = 219;
+            this.m_schedule_combo.SelectionChangeCommitted += new System.EventHandler(this.m_schedule_combo_SelectionChangeCommitted_1);
             // 
             // label2
             // 
@@ -1415,11 +1431,11 @@
             // 
             // m_naiyou
             // 
-            this.m_naiyou.Location = new System.Drawing.Point(504, 7);
+            this.m_naiyou.Location = new System.Drawing.Point(504, 36);
             this.m_naiyou.Multiline = true;
             this.m_naiyou.Name = "m_naiyou";
             this.m_naiyou.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.m_naiyou.Size = new System.Drawing.Size(420, 84);
+            this.m_naiyou.Size = new System.Drawing.Size(420, 79);
             this.m_naiyou.TabIndex = 225;
             // 
             // label1
@@ -1455,7 +1471,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(935, 703);
+            this.ClientSize = new System.Drawing.Size(935, 827);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form_taskDetail";
             this.Text = "タスク情報";
@@ -1616,5 +1632,6 @@
         private System.Windows.Forms.TextBox m_inputope;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -42,7 +42,6 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.m_taskInsert_lnk = new System.Windows.Forms.LinkLabel();
             this.m_tokubetu_umu_check = new System.Windows.Forms.CheckBox();
             this.m_keikaku_umu_check = new System.Windows.Forms.CheckBox();
             this.m_teiki_umu_check = new System.Windows.Forms.CheckBox();
@@ -155,6 +154,7 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tokubetuContext = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.linkLabel10 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -325,7 +325,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.m_taskInsert_lnk);
+            this.tabPage1.Controls.Add(this.linkLabel10);
             this.tabPage1.Controls.Add(this.m_tokubetu_umu_check);
             this.tabPage1.Controls.Add(this.m_keikaku_umu_check);
             this.tabPage1.Controls.Add(this.m_teiki_umu_check);
@@ -358,17 +358,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "タスク管理";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // m_taskInsert_lnk
-            // 
-            this.m_taskInsert_lnk.AutoSize = true;
-            this.m_taskInsert_lnk.Location = new System.Drawing.Point(76, 192);
-            this.m_taskInsert_lnk.Name = "m_taskInsert_lnk";
-            this.m_taskInsert_lnk.Size = new System.Drawing.Size(54, 12);
-            this.m_taskInsert_lnk.TabIndex = 213;
-            this.m_taskInsert_lnk.TabStop = true;
-            this.m_taskInsert_lnk.Text = "タスク登録";
-            this.m_taskInsert_lnk.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.m_taskInsert_lnk_LinkClicked);
             // 
             // m_tokubetu_umu_check
             // 
@@ -444,7 +433,7 @@
             // m_incident_count
             // 
             this.m_incident_count.AutoSize = true;
-            this.m_incident_count.Location = new System.Drawing.Point(200, 14);
+            this.m_incident_count.Location = new System.Drawing.Point(243, 14);
             this.m_incident_count.Name = "m_incident_count";
             this.m_incident_count.Size = new System.Drawing.Size(23, 12);
             this.m_incident_count.TabIndex = 205;
@@ -475,7 +464,7 @@
             // print_incident
             // 
             this.print_incident.AutoSize = true;
-            this.print_incident.Location = new System.Drawing.Point(148, 14);
+            this.print_incident.Location = new System.Drawing.Point(191, 14);
             this.print_incident.Name = "print_incident";
             this.print_incident.Size = new System.Drawing.Size(29, 12);
             this.print_incident.TabIndex = 201;
@@ -560,7 +549,7 @@
             // linkLabel8
             // 
             this.linkLabel8.AutoSize = true;
-            this.linkLabel8.Location = new System.Drawing.Point(136, 192);
+            this.linkLabel8.Location = new System.Drawing.Point(111, 192);
             this.linkLabel8.Name = "linkLabel8";
             this.linkLabel8.Size = new System.Drawing.Size(29, 12);
             this.linkLabel8.TabIndex = 195;
@@ -612,7 +601,7 @@
             // linkLabel7
             // 
             this.linkLabel7.AutoSize = true;
-            this.linkLabel7.Location = new System.Drawing.Point(111, 14);
+            this.linkLabel7.Location = new System.Drawing.Point(154, 14);
             this.linkLabel7.Name = "linkLabel7";
             this.linkLabel7.Size = new System.Drawing.Size(29, 12);
             this.linkLabel7.TabIndex = 192;
@@ -1616,6 +1605,17 @@
             this.toolStripMenuItem2.Text = "変更";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
+            // linkLabel10
+            // 
+            this.linkLabel10.AutoSize = true;
+            this.linkLabel10.Location = new System.Drawing.Point(111, 13);
+            this.linkLabel10.Name = "linkLabel10";
+            this.linkLabel10.Size = new System.Drawing.Size(29, 12);
+            this.linkLabel10.TabIndex = 213;
+            this.linkLabel10.TabStop = true;
+            this.linkLabel10.Text = "登録";
+            this.linkLabel10.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel10_LinkClicked_1);
+            // 
             // Form_MainList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1806,7 +1806,7 @@
         private System.Windows.Forms.CheckBox m_system_umu_check;
         private System.Windows.Forms.Button m_inc_templete_update_btn;
         private System.Windows.Forms.Button m_inc_templete_insert_btn;
-        private System.Windows.Forms.LinkLabel m_taskInsert_lnk;
+        private System.Windows.Forms.LinkLabel linkLabel10;
     }
 }
 

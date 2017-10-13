@@ -54,7 +54,7 @@ namespace moss_AP
             m_user_tanntouList.ListViewItemSorter = _columnSorter2;
 
 
-            m_selectKoumoku.Items.Add("ユーザID(通番)");
+            m_selectKoumoku.Items.Add("カスタマ担当者、オペレータID(通番)");
             m_selectKoumoku.Items.Add("カスタマ名");
 
             m_selectKoumoku.Items.Add("アドレス番号");
@@ -90,8 +90,8 @@ namespace moss_AP
             m_listviewobj.HeaderStyle = ColumnHeaderStyle.Clickable;
 
             m_listviewobj.Columns.Insert(0, "ユーザ区分", 30, HorizontalAlignment.Left);
-            m_listviewobj.Columns.Insert(1, "ユーザID", 40, HorizontalAlignment.Left);
-            m_listviewobj.Columns.Insert(2, "ユーザ名", 120, HorizontalAlignment.Left);
+            m_listviewobj.Columns.Insert(1, "カスタマ担当者、オペレータID(通番)", 40, HorizontalAlignment.Left);
+            m_listviewobj.Columns.Insert(2, "カスタマ担当者、オペレータ名", 120, HorizontalAlignment.Left);
             m_listviewobj.Columns.Insert(3, "カスタマ名", 100, HorizontalAlignment.Left);
             m_listviewobj.Columns.Insert(4, "アドレス番号", 40, HorizontalAlignment.Left);
             m_listviewobj.Columns.Insert(5, "メールアドレス", 150, HorizontalAlignment.Left);

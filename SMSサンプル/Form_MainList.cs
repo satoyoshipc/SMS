@@ -250,33 +250,33 @@ namespace moss_AP
 
 
                 //システム名を表示
-                foreach (systemDS s in systemDSListsub)
-                {
-                    TreeNode NodeSystem = new TreeNode(s.systemname, 1, 1);
-                    NodeSystem.ToolTipText = s.systemno;
+//                foreach (systemDS s in systemDSListsub)
+//                {
+//                    TreeNode NodeSystem = new TreeNode(s.systemname, 1, 1);
+//                    NodeSystem.ToolTipText = s.systemno;
 
                     TreeNode NodeTimer1 = new TreeNode("インシデント", 2, 2);
                     NodeTimer1.ToolTipText = "1";
-                    NodeSystem.Nodes.Add(NodeTimer1);
+                    NodeUser.Nodes.Add(NodeTimer1);
                     TreeNode NodeTimer2 = new TreeNode("定期作業", 2, 2);
                     NodeTimer2.ToolTipText = "2";
-                    NodeSystem.Nodes.Add(NodeTimer2);
+                    NodeUser.Nodes.Add(NodeTimer2);
                     TreeNode NodeTimer3 = new TreeNode("計画作業", 2, 2);
                     NodeTimer3.ToolTipText = "3";
-                    NodeSystem.Nodes.Add(NodeTimer3);
+                    NodeUser.Nodes.Add(NodeTimer3);
 
                     TreeNode NodeTimer4 = new TreeNode("特別対応", 2, 2);
                     NodeTimer4.ToolTipText = "4";
-                    NodeSystem.Nodes.Add(NodeTimer4);
+                    NodeUser.Nodes.Add(NodeTimer4);
 
                     Dictionary<string, string> param_dict = new Dictionary<string, string>();
 
 
-                    param_dict["userno"] = s.userno;
-//                    param_dict["systemno"] = s.systemno;
+                    param_dict["userno"] = v.userno;
+                //                    param_dict["userno"] = s.userno;
 
-                    //スケジュール情報を取得する
-                    List<taskDS> taskDSListsub = getuser.getTimerList(param_dict, con);
+                //スケジュール情報を取得する
+                List<taskDS> taskDSListsub = getuser.getTimerList(param_dict, con);
 
                     //特別対応のみ別に取得する
                     List<taskDS> tokubetu_list = getuser.gettokubetulist(param_dict, con);
@@ -372,8 +372,8 @@ namespace moss_AP
                         }
                     }
 
-                    NodeUser.Nodes.Add(NodeSystem);
-                }
+                    //NodeUser.Nodes.Add(NodeSystem);
+                //}
 
                 // 最上位階層に対してまとめて項目（ノード）を追加
                 treeView1.Nodes.Add(NodeUser);
@@ -621,8 +621,7 @@ namespace moss_AP
                 Convert.ToString(row[8]),
                 Convert.ToString(row[9]),
                 Convert.ToString(row[10]),
-                Convert.ToString(row[11]),
-                Convert.ToString(row[12])
+                Convert.ToString(row[11])
                     });
             }
 
@@ -857,14 +856,13 @@ namespace moss_AP
             this.m_teiki_List.Columns.Insert(3, "カスタマ名", 50, HorizontalAlignment.Left);
             this.m_teiki_List.Columns.Insert(4, "内容", 50, HorizontalAlignment.Left);
 
-            this.m_teiki_List.Columns.Insert(5, "テンプレートNO", 180, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(6, "開始日時", 110, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(7, "終了日時", 110, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(8, "備考", 110, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(9, "登録日時", 180, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(10, "登録者", 80, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(11, "更新日時", 80, HorizontalAlignment.Left);
-            this.m_teiki_List.Columns.Insert(12, "更新者", 80, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(5, "開始日時", 110, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(6, "終了日時", 110, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(7, "備考", 110, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(8, "登録日時", 180, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(9, "登録者", 80, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(10, "更新日時", 80, HorizontalAlignment.Left);
+            this.m_teiki_List.Columns.Insert(11, "更新者", 80, HorizontalAlignment.Left);
 
             //リストビューを初期化する
             teiki_sagyo_list = new DataTable("table12");
@@ -873,7 +871,6 @@ namespace moss_AP
             teiki_sagyo_list.Columns.Add("カスタマ通番", Type.GetType("System.String"));
             teiki_sagyo_list.Columns.Add("カスタマ名", Type.GetType("System.String"));
             teiki_sagyo_list.Columns.Add("内容", Type.GetType("System.String"));
-            teiki_sagyo_list.Columns.Add("テンプレートNO", Type.GetType("System.String"));
             teiki_sagyo_list.Columns.Add("開始日時", Type.GetType("System.String"));
             teiki_sagyo_list.Columns.Add("終了日時", Type.GetType("System.String"));
             teiki_sagyo_list.Columns.Add("備考", Type.GetType("System.String"));
@@ -899,21 +896,21 @@ namespace moss_AP
                     DataRow urow = teiki_sagyo_list.NewRow();
 
                     urow["No"] = v.schedule_no;
-                    urow["スタータス"] = v.status;
+                    urow["ステータス"] = v.status;
                     urow["カスタマ通番"] = v.userno;
                     urow["カスタマ名"] = v.username;
                     urow["内容"] = v.naiyou;
-                    urow["テンプレートNO"] = v.templeteno;
+                    //urow["テンプレートNO"] = v.templeteno;
 
-                    //1:インシデント処理 2:定期作業業務促し 3:計画作業 4:特別作業
-                    if (v.schedule_type == "1")
-                        urow["予定区分"] = "インシデント処理";
-                    else if (v.schedule_type == "2")
-                        urow["予定区分"] = "定期作業";
-                    else if (v.schedule_type == "3")
-                        urow["予定区分"] = "計画作業";
-                    else if (v.schedule_type == "4")
-                        urow["予定区分"] = "特別対応";
+                    //1:インシデント処理 2:定期作業業務促し 3:計画作業 4:特別対応
+                    //if (v.schedule_type == "1")
+                    //    urow["予定区分"] = "インシデント処理";
+                    //else if (v.schedule_type == "2")
+                    //    urow["予定区分"] = "定期作業";
+                    //else if (v.schedule_type == "3")
+                    //    urow["予定区分"] = "計画作業";
+                    //else if (v.schedule_type == "4")
+                    //    urow["予定区分"] = "特別対応";
 
 
                     urow["開始日時"] = v.startdate;
@@ -998,7 +995,7 @@ namespace moss_AP
                     urow["カスタマ通番"] = v.userno;
                     urow["カスタマ名"] = v.username;
 
-                    //1:インシデント処理 2:定期作業業務促し 3:計画作業 4:特別作業
+                    //1:インシデント処理 2:定期作業業務促し 3:計画作業 4:特別対応
                     //if (v.schedule_type == "1")
                     //    urow["予定区分"] = "インシデント処理";
                     //else if (v.schedule_type == "2")
@@ -1222,15 +1219,15 @@ namespace moss_AP
                     urow["カスタマ通番"] = v.userno;
                     urow["カスタマ名"] = v.username;
 
-                    //1:インシデント処理 2:定期作業業務促し 3:計画作業 4:特別作業
-                    if (v.schedule_type == "1")
-                        urow["予定区分"] = "インシデント処理";
-                    else if (v.schedule_type == "2")
-                        urow["予定区分"] = "定期作業";
-                    else if (v.schedule_type == "3")
-                        urow["予定区分"] = "計画作業";
-                    else if (v.schedule_type == "4")
-                        urow["予定区分"] = "特別対応";
+                    //1:インシデント処理 2:定期作業業務促し 3:計画作業 4:特別対応
+                    //if (v.schedule_type == "1")
+                    //    urow["予定区分"] = "インシデント処理";
+                    //else if (v.schedule_type == "2")
+                    //    urow["予定区分"] = "定期作業";
+                    //else if (v.schedule_type == "3")
+                    //    urow["予定区分"] = "計画作業";
+                    //else if (v.schedule_type == "4")
+                    //    urow["予定区分"] = "特別対応";
                     urow["内容"] = v.naiyou;
                     urow["テンプレートNO"] = v.templeteno;
                     urow["開始日時"] = v.startdate;
@@ -1955,7 +1952,7 @@ namespace moss_AP
             try
             {
                 String teskNO;
-                if (e.Node.Level == 3)
+                if (e.Node.Level == 2)
                 {
 
                     teskNO = e.Node.ToolTipText;
@@ -2838,31 +2835,30 @@ namespace moss_AP
         private void linkLabel8_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
 
-            Form_scheduleInsert timerfm = new Form_scheduleInsert();
-            if (userDSList != null)
-                timerfm.userList = userDSList;
-            if (systemDSList != null)
-                timerfm.systemList = systemDSList;
-            if (siteDSList != null)
-                timerfm.siteList = siteDSList;
-            timerfm.con = con;
-            timerfm.loginDS = loginDS;
-            timerfm.Show(this);
+            Form_taskInsert taskinsert = new Form_taskInsert();
+            taskinsert.con = con;
+            if (userList != null)
+                taskinsert.userList = userDSList;
+            taskinsert.systemList = systemDSList;
+            taskinsert.loginDS = loginDS;
+            taskinsert.Show();
         }
         //計画作業登録
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Form_scheduleInsert timerfm = new Form_scheduleInsert();
-            if (userDSList != null)
-                timerfm.userList = userDSList;
-            if (systemDSList != null)
-                timerfm.systemList = systemDSList;
-            if (siteDSList != null)
-                timerfm.siteList = siteDSList;
 
-            timerfm.con = con;
-            timerfm.loginDS = loginDS;
-            timerfm.ShowDialog(this);
+            Form_scheduleInsert taskinsert = new Form_scheduleInsert();
+            taskinsert.con = con;
+            if (userList != null)
+                taskinsert.userList = userDSList;
+            if (systemDSList != null)
+                taskinsert.systemList = systemDSList;
+            if (siteDSList != null)
+                taskinsert.siteList = siteDSList;
+            taskinsert.loginDS = loginDS;
+            taskinsert.Show();
+
+
         }
 
         //計画作業列をダブルクリック
@@ -4058,17 +4054,17 @@ namespace moss_AP
             if (treeView1.SelectedNode.Level == 0)
             {
                 m_usernameCombo.Text = "";
-                m_systemCombo.Text = "";
+                //m_systemCombo.Text = "";
                 //選択されたノード
                 m_usernameCombo.Text = treeView1.SelectedNode.Text;
             }
             else if (treeView1.SelectedNode.Level == 1)
             {
                 m_usernameCombo.Text = "";
-                m_systemCombo.Text = "";
-                //システム名がダブルクリック
+                //m_systemCombo.Text = "";
+                //がダブルクリック
                 m_usernameCombo.Text = treeView1.SelectedNode.Parent.Text;                
-                m_systemCombo.Text = treeView1.SelectedNode.Text;
+                //m_systemCombo.Text = treeView1.SelectedNode.Text;
             }
         }
         //カスタマメンテ
@@ -6238,13 +6234,25 @@ namespace moss_AP
         //タスク登録ボタン
         private void m_taskInsert_lnk_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Form_taskInsert taskinsert = new Form_taskInsert();
-            taskinsert.con = con;
-            if (userList != null)
-                taskinsert.userList = userDSList;
-            taskinsert.systemList = systemDSList;
-            taskinsert.loginDS = loginDS;
-            taskinsert.Show();
+
+        }
+        //メール出力画面
+        private void linkLabel10_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Form_IncidentMailSend formdetail = new Form_IncidentMailSend();
+            formdetail.con = con;
+
+            if (userDSList != null)
+                formdetail.userDSList = userDSList;
+            if (systemDSList != null)
+                formdetail.systemDSList = systemDSList;
+
+            if (siteDSList != null)
+                formdetail.siteDSList = siteDSList;
+
+
+            formdetail.Show();
+            //formdetail.Owner = this;
         }
     }
 

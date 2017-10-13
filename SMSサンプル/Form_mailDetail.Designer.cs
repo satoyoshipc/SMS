@@ -118,10 +118,10 @@
             // 
             this.m_username.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_username.Location = new System.Drawing.Point(143, 84);
+            this.m_username.Location = new System.Drawing.Point(188, 84);
             this.m_username.Name = "m_username";
             this.m_username.ReadOnly = true;
-            this.m_username.Size = new System.Drawing.Size(270, 19);
+            this.m_username.Size = new System.Drawing.Size(225, 19);
             this.m_username.TabIndex = 114;
             // 
             // label7
@@ -137,10 +137,10 @@
             // 
             this.m_Customername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_Customername.Location = new System.Drawing.Point(143, 60);
+            this.m_Customername.Location = new System.Drawing.Point(188, 60);
             this.m_Customername.Name = "m_Customername";
             this.m_Customername.ReadOnly = true;
-            this.m_Customername.Size = new System.Drawing.Size(270, 19);
+            this.m_Customername.Size = new System.Drawing.Size(225, 19);
             this.m_Customername.TabIndex = 112;
             // 
             // label6
@@ -231,47 +231,47 @@
             // 
             this.m_addressname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_addressname.Location = new System.Drawing.Point(143, 154);
+            this.m_addressname.Location = new System.Drawing.Point(188, 154);
             this.m_addressname.Name = "m_addressname";
-            this.m_addressname.Size = new System.Drawing.Size(270, 19);
+            this.m_addressname.Size = new System.Drawing.Size(225, 19);
             this.m_addressname.TabIndex = 102;
             // 
             // m_address
             // 
             this.m_address.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_address.Location = new System.Drawing.Point(143, 130);
+            this.m_address.Location = new System.Drawing.Point(188, 130);
             this.m_address.Name = "m_address";
-            this.m_address.Size = new System.Drawing.Size(270, 19);
+            this.m_address.Size = new System.Drawing.Size(225, 19);
             this.m_address.TabIndex = 101;
             // 
             // m_addressno
             // 
             this.m_addressno.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_addressno.Location = new System.Drawing.Point(143, 107);
+            this.m_addressno.Location = new System.Drawing.Point(188, 107);
             this.m_addressno.Name = "m_addressno";
-            this.m_addressno.Size = new System.Drawing.Size(270, 19);
+            this.m_addressno.Size = new System.Drawing.Size(225, 19);
             this.m_addressno.TabIndex = 98;
             // 
             // m_userid
             // 
             this.m_userid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_userid.Location = new System.Drawing.Point(143, 35);
+            this.m_userid.Location = new System.Drawing.Point(188, 35);
             this.m_userid.Name = "m_userid";
             this.m_userid.ReadOnly = true;
-            this.m_userid.Size = new System.Drawing.Size(270, 19);
+            this.m_userid.Size = new System.Drawing.Size(225, 19);
             this.m_userid.TabIndex = 97;
             // 
             // m_kubun
             // 
             this.m_kubun.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_kubun.Location = new System.Drawing.Point(143, 11);
+            this.m_kubun.Location = new System.Drawing.Point(188, 11);
             this.m_kubun.Name = "m_kubun";
             this.m_kubun.ReadOnly = true;
-            this.m_kubun.Size = new System.Drawing.Size(270, 19);
+            this.m_kubun.Size = new System.Drawing.Size(225, 19);
             this.m_kubun.TabIndex = 95;
             // 
             // label5
@@ -306,9 +306,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(9, 39);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(132, 12);
+            this.label2.Size = new System.Drawing.Size(173, 12);
             this.label2.TabIndex = 99;
-            this.label2.Text = "ユーザ、オペレータID(通番)";
+            this.label2.Text = "カスタマ担当者、オペレータID(通番)";
             // 
             // label1
             // 

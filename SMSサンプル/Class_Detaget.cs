@@ -89,6 +89,41 @@ namespace moss_AP
             }
             return userid;
         }
+        //カスタマ名からカスタマ通番を取得する
+        public string getCustomerIDlike(string username, NpgsqlConnection con)
+        {
+            NpgsqlCommand cmd;
+            string userid = "";
+            NpgsqlDataReader dataReader1 = null;
+            try
+            {
+
+                if (con.FullState != ConnectionState.Open) con.Open();
+
+                cmd = new NpgsqlCommand(@"select userno,username FROM user_tbl WHERE username like :name", con);
+                cmd.Parameters.Add(new NpgsqlParameter("name", DbType.String) { Value = "%" + username + "%" });
+
+                dataReader1 = cmd.ExecuteReader();
+                if (dataReader1.HasRows)
+                {
+
+                    dataReader1.Read();
+                    userid = dataReader1["userno"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("カスタマ通番の取得に失敗しました。 " + ex.Message, "カスタマ通番取得", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("カスタマ通番の取得に失敗しました。MSG：{0} userno = {1}", ex.Message, userid);
+            }
+            finally
+            {
+                if (dataReader1 != null)
+                    dataReader1.Close();
+
+            }
+            return userid;
+        }
         //システム通番からシステム名を取得する
         public string getSystemname(string systemno)
         {
@@ -2923,7 +2958,9 @@ namespace moss_AP
 
                 cmd = new NpgsqlCommand(@"SELECT sc.schedule_no,sc.schedule_type,sc.status,sc.templeteno,sc.naiyou,sc.startdate,sc.enddate,sc.biko,sc.userno,u.username,sc.ins_date,sc.ins_name_id,sc.chk_date,sc.chk_name_id " +
                     "FROM task sc LEFT OUTER JOIN user_tbl u ON sc.userno = u.userno " + searchstring, con);
-
+#if DEBUG
+                Console.WriteLine(cmd.CommandText);
+#endif
 
                 var dataReader = cmd.ExecuteReader();
 
@@ -3854,7 +3891,7 @@ namespace moss_AP
                                 searchstring += "t.userno = 0";
                             }
                             else { 
-                                userid = getCustomerID(username,con);
+                                userid = getCustomerIDlike(username,con);
                                 if (i > 1)
                                     searchstring += "AND ";
 
@@ -3971,7 +4008,7 @@ namespace moss_AP
                         }
                         else
                         {
-                            userid = getCustomerID(username, con);
+                            userid = getCustomerIDlike(username, con);
                             if (i > 1)
                                 searchstring += "AND ";
 
@@ -4367,10 +4404,7 @@ namespace moss_AP
             try
             {
                 if (con.FullState != ConnectionState.Open) con.Open();
-# if DEBUG
-                Console.WriteLine(sql);
 
-#endif
                 //SELECT実行
                 cmd = new NpgsqlCommand(@sql, con);
                 Count = (Int64)cmd.ExecuteScalar();
@@ -4393,7 +4427,7 @@ namespace moss_AP
             String sql = "SELECT ta.schedule_no,ta.schedule_type,ta.status,ta.templeteno," +
             "ta.naiyou,ta.startdate,ta.enddate,ta.biko,ta.userno,u.username,ta.ins_date,ta.ins_name_id,ta.chk_date,ta.chk_name_id," +
             "ti.timerid,ti.timername,ti.repeat_type,ti.alert_time,ti.start_date,ti.end_date,ti.status,ti.chk_date chk_date_timer,ti.chk_name_id chk_name_id_timer FROM task ta " +
-            "LEFT OUTER JOIN timer ti ON ta.schedule_no = ti.schedule_no LEFT OUTER JOIN user_tbl u ON ta.userno = u.userno order by ta.schedule_no,ti.timerid ";
+            "LEFT OUTER JOIN timer ti ON ta.schedule_no = ti.schedule_no LEFT OUTER JOIN user_tbl u ON ta.userno = u.userno ";
 
 
             NpgsqlCommand cmd;
@@ -4601,15 +4635,12 @@ namespace moss_AP
 
                 sql += param;
             }
+            sql += "order by ta.schedule_no,ti.timerid";
             //DB接続
             try
             {
                 if (con.FullState != ConnectionState.Open) con.Open();
 
-#if DEBUG
-                Console.WriteLine(sql);
-
-#endif
                 //SELECT実行
                 cmd = new NpgsqlCommand(@sql, con);
                 var dataReader = cmd.ExecuteReader();
@@ -4701,12 +4732,6 @@ namespace moss_AP
 
             }
             return task_List;
-
         }
-
-
-
-
-
     }
 }

@@ -58,10 +58,12 @@ namespace moss_AP
             m_endDate2.MaxDate = DateTime.Now.AddYears(3);
             m_endDate3.MaxDate = DateTime.Now.AddYears(3);
 
-            m_statusCombo.Text = "有効";
-            m_statusCombo1.Text = "有効";
-            m_statusCombo2.Text = "有効";
-            m_statusCombo3.Text = "有効";
+            m_statusCombo.Text = "";
+            m_statusCombo1.Text = "";
+            m_statusCombo2.Text = "";
+            m_statusCombo3.Text = "";
+            m_statusCombo4.Text = "";
+            m_statusCombo5.Text = "";
 
 
             m_idlabel.Text = loginDS.opeid;
@@ -159,12 +161,11 @@ namespace moss_AP
             //1:インシデント
             //2:定期作業
             //3:計画作業
-            //4:特別作業
+            //4:特別対応
 
             if (m_schedule_combo.SelectedItem.ToString() == "3:計画作業")
             {
                 //計画作業が選択された場合は一覧を取得する
-                m_templeteCombo.Enabled = true;
                 m_templeteCombo.Enabled = true;
 
                 string userno = m_userno.Text;
@@ -1026,6 +1027,52 @@ namespace moss_AP
             //チェックされていたら日時を利用可にする
             if (m_radio_month5.Checked)
                 timer_datetime(4, 5);
+        }
+
+        private void m_title1_TextChanged(object sender, EventArgs e)
+        {
+            //ステータスを有効にする
+            if(m_title1.Text != "")
+            { 
+                m_statusCombo1.SelectedIndex = 1;
+            }
+        }
+
+        private void m_title2_TextChanged(object sender, EventArgs e)
+        {
+            //ステータスを有効にする
+            if (m_title2.Text != "")
+            {
+                m_statusCombo2.SelectedIndex = 1;
+            }
+        }
+
+        private void m_title3_TextChanged(object sender, EventArgs e)
+        {
+            //ステータスを有効にする
+            if (m_title3.Text != "")
+            {
+                m_statusCombo3.SelectedIndex = 1;
+            }
+
+        }
+
+        private void m_title4_TextChanged(object sender, EventArgs e)
+        {
+            //ステータスを有効にする
+            if (m_title4.Text != "")
+            {
+                m_statusCombo4.SelectedIndex = 1;
+            }
+        }
+
+        private void m_title5_TextChanged(object sender, EventArgs e)
+        {
+            //ステータスを有効にする
+            if (m_title5.Text != "")
+            {
+                m_statusCombo5.SelectedIndex = 1;
+            }
         }
     }
 }

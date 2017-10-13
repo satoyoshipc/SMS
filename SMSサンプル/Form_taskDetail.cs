@@ -43,7 +43,13 @@ namespace moss_AP
         public timerDS timerds { get; set; }
         public List<timerDS> timerList { get; set; }
 
+        //テンプレート
+        public templeteDS templetedt { get; set; }
 
+        //テンプレート一覧
+        public List<templeteDS> templList { get; set; }
+        //テンプレート一覧
+        DataTable templ_list;
 
         //ListViewのソートの際に使用する
         private int sort_kind = 0;
@@ -57,10 +63,11 @@ namespace moss_AP
         //表示前
         private void Form_taskDetail_Load(object sender, EventArgs e)
         {
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(0, 0);
+
+
             this.splitContainer1.SplitterDistance = 32;
-
-
-
 
             m_selectKoumoku.Items.Add("タスク通番");
             m_selectKoumoku.Items.Add("タスク区分");
@@ -103,13 +110,17 @@ namespace moss_AP
         //タスクを取得する
         void gettask (taskDS taskds,List<timerDS> timerList)
         {
-            System.DateTime dd1;
+            System.DateTime? dd1;
 
             this.m_taskno.Text = taskds.schedule_no;
+            string temptype = (int.Parse(taskds.schedule_type) - 1).ToString();
             this.m_schedule_combo.SelectedIndex = int.Parse(taskds.schedule_type)-1;
             this.m_userno.Text = taskds.userno;
 
-            //            this.m_templeteCombo.Text = taskds.templeteno;
+
+            //テンプレートコンボボックス変更
+            dispTempleteCombo();
+
             this.m_statusCombo.Text = taskds.status;
 
             this.m_naiyou.Text = taskds.naiyou;
@@ -120,10 +131,13 @@ namespace moss_AP
 
             //登録日時
             this.m_labelinputOpe.Text = taskds.ins_date;
+
             //登録者
             this.m_inputope.Text = taskds.ins_name_id;
+
             //更新日時
             this.m_update.Text = taskds.chk_date;
+
             //更新者
             this.m_idlabel.Text = taskds.chk_name_id;
 
@@ -146,7 +160,7 @@ namespace moss_AP
                         //dd1 = DateTime.ParseExact(timerds.alert_time, "yyyy/MM/dd HH:mm:ss", null);
 
                         dd1 = DateTime.Parse(timerds.alert_time);
-                        this.m_alermDate1.Value = dd1;
+                        this.m_alermDate1.Value = (DateTime)dd1;
                     }
 
 
@@ -157,7 +171,7 @@ namespace moss_AP
 
                         //dd1 = DateTime.ParseExact(timerds.start_date, "yyyy/MM/dd HH:mm:ss", null);
                         dd1 = DateTime.Parse(timerds.start_date);
-                        this.m_startDate1.Value = dd1;
+                        this.m_startDate1.Value = (DateTime)dd1;
                     }
                     else
                     {
@@ -170,16 +184,16 @@ namespace moss_AP
                         m_endDate1.Checked = true;
                         //dd1 = DateTime.ParseExact(timerds.end_date, "yyyy/MM/dd HH:mm:ss", null);
                         dd1 = DateTime.Parse(timerds.end_date);
+                        
+
                         if (dd1 > m_endDate1.MaxDate)
                             dd1 = m_endDate1.MaxDate;
-                        this.m_endDate1.Value = dd1;
+                        this.m_endDate1.Value = (DateTime)dd1;
                     }
                     else
                     {
                         m_endDate1.Checked = false;
-
                     }
-
                 }
 
                 //タイマー②
@@ -200,7 +214,7 @@ namespace moss_AP
                         this.m_alermDate2.Enabled = true;
                         dd1 = DateTime.Parse(timerds.alert_time);
                         //dd1 = DateTime.ParseExact(timerds.alert_time, "yyyy/MM/dd HH:mm:ss", null);
-                        this.m_alermDate2.Value = dd1;
+                        this.m_alermDate2.Value = (DateTime)dd1;
                     }
 
 
@@ -210,7 +224,7 @@ namespace moss_AP
                         m_startDate2.Checked = true;
                         //dd1 = DateTime.ParseExact(timerds.start_date, "yyyy/MM/dd HH:mm:ss", null);
                         dd1 = DateTime.Parse(timerds.start_date);
-                        this.m_startDate2.Value = dd1;
+                        this.m_startDate2.Value = (DateTime)dd1;
                     }
                     else
 
@@ -225,7 +239,7 @@ namespace moss_AP
                         dd1 = DateTime.Parse(timerds.end_date);
                         if (dd1 > m_endDate2.MaxDate)
                             dd1 = m_endDate2.MaxDate;
-                        this.m_endDate2.Value = dd1;
+                        this.m_endDate2.Value = (DateTime)dd1;
                     }
                     else
                         m_endDate2.Checked = false;
@@ -250,7 +264,7 @@ namespace moss_AP
                         this.m_alermDate3.Enabled = true;
                         //dd1 = DateTime.ParseExact(timerds.alert_time, "yyyy/MM/dd HH:mm:ss", null);
                         dd1 = DateTime.Parse(timerds.alert_time);
-                        this.m_alermDate3.Value = dd1;
+                        this.m_alermDate3.Value = (DateTime)dd1;
                     }
 
 
@@ -259,7 +273,7 @@ namespace moss_AP
                     {
                         //dd1 = DateTime.ParseExact(timerds.start_date, "yyyy/MM/dd HH:mm:ss", null);
                         dd1 = DateTime.Parse(timerds.start_date);
-                        this.m_startDate3.Value = dd1;
+                        this.m_startDate3.Value = (DateTime)dd1;
                     }
                     else
                     {
@@ -273,7 +287,7 @@ namespace moss_AP
                         dd1 = DateTime.Parse(timerds.end_date);
                         if (dd1 > m_endDate3.MaxDate)
                             dd1 = m_endDate3.MaxDate;
-                        this.m_endDate3.Value = dd1;
+                        this.m_endDate3.Value = (DateTime)dd1;
                     }
                     else
                         m_endDate3.Checked = false;
@@ -297,7 +311,7 @@ namespace moss_AP
                         this.m_alermDate4.Enabled = true;
                         //dd1 = DateTime.ParseExact(timerds.alert_time, "yyyy/MM/dd HH:mm:ss", null);
                         dd1 = DateTime.Parse(timerds.alert_time);
-                        this.m_alermDate4.Value = dd1;
+                        this.m_alermDate4.Value = (DateTime)dd1;
                     }
 
 
@@ -307,7 +321,7 @@ namespace moss_AP
                         m_startDate4.Checked = true;
                         //dd1 = DateTime.ParseExact(timerds.start_date, "yyyy/MM/dd HH:mm:ss", null);
                         dd1 = DateTime.Parse(timerds.start_date);
-                        this.m_startDate4.Value = dd1;
+                        this.m_startDate4.Value = (DateTime)dd1;
                     }
                     else
                     {
@@ -321,11 +335,10 @@ namespace moss_AP
                         dd1 = DateTime.Parse(timerds.end_date);
                         if (dd1 > m_endDate4.MaxDate)
                             dd1 = m_endDate4.MaxDate;
-                        this.m_endDate4.Value = dd1;
+                        this.m_endDate4.Value = (DateTime)dd1;
                     }
                     else
                         m_endDate4.Checked = false;
-
 
                 }
 
@@ -348,7 +361,7 @@ namespace moss_AP
                         //dd1 = DateTime.ParseExact(timerds.alert_time, "yyyy/MM/dd HH:mm:ss", null);
                         dd1 = DateTime.Parse(timerds.alert_time);
 
-                        this.m_alermDate5.Value = dd1;
+                        this.m_alermDate5.Value = (DateTime)dd1;
                     }
 
 
@@ -358,7 +371,7 @@ namespace moss_AP
                         m_startDate5.Checked = true;
                         //dd1 = DateTime.ParseExact(timerds.start_date, "yyyy/MM/dd HH:mm:ss", null);
                         dd1 = DateTime.Parse(timerds.start_date);
-                        this.m_startDate5.Value = dd1;
+                        this.m_startDate5.Value = (DateTime)dd1;
                     }
                     else
                     {
@@ -372,12 +385,10 @@ namespace moss_AP
                         dd1 = DateTime.Parse(timerds.end_date);
                         if (dd1 > m_endDate5.MaxDate)
                             dd1 = m_endDate5.MaxDate;
-                        this.m_endDate5.Value = dd1;
+                        this.m_endDate5.Value = (DateTime)dd1;
                     }
                     else
                         m_endDate5.Checked = false;
-
-
                 }
 
             }
@@ -388,6 +399,93 @@ namespace moss_AP
             m_usernameCombo.SelectedValue = taskds.userno;
 
         }
+        //テンプレートコンボボックスが変更されたとき
+        private void dispTempleteCombo()
+        {
+            //テンプレート
+            m_templeteCombo.Enabled = true;
+
+            string userno = m_userno.Text;
+            //計画作業もしくはインシデントのときは一覧を取得する
+            if (m_schedule_combo.SelectedItem.ToString() == "1:インシデント" ||
+                m_schedule_combo.SelectedItem.ToString() == "3:計画作業")
+            {
+                string temlete_type = "";
+                if (m_schedule_combo.SelectedItem.ToString() == "1:インシデント")
+                    temlete_type = "1";
+
+                else if (m_schedule_combo.SelectedItem.ToString() == "3:計画作業")
+                    temlete_type = "2";
+
+                //計画作業が選択された場合は一覧を取得する
+                m_templeteCombo.Enabled = true;
+
+                m_templeteCombo.DataSource = null;
+                Class_Detaget dg = new Class_Detaget();
+
+                //1.インシデント、2:計画作業
+                templist
+                   = dg.getTempleteList(userno, temlete_type, con, true);
+
+                //コンボボックス
+                DataTable templeteTable = new DataTable();
+                templeteTable.Columns.Add("ID", typeof(string));
+                templeteTable.Columns.Add("NAME", typeof(string));
+
+                if (templist == null)
+                    return;
+
+                //空白行を追加
+                templeteDS tmp = new templeteDS();
+                tmp.templeteno = "";
+                tmp.templetename = "";
+                List<templeteDS> templeteDSList = new List<templeteDS>();
+                templeteDSList.Add(tmp);
+
+                //テンプレート情報を取得する
+                foreach (templeteDS v in templist)
+                {
+                    DataRow row = templeteTable.NewRow();
+                    row["ID"] = v.templeteno;
+                    row["NAME"] = v.templetename;
+                    templeteTable.Rows.Add(row);
+                }
+
+                //データテーブルを割り当てる
+                m_templeteCombo.DataSource = templeteTable;
+                m_templeteCombo.DisplayMember = "NAME";
+                m_templeteCombo.ValueMember = "ID";
+
+                //初期値を反映させる
+                templeteComboSelect(taskds.templeteno);
+            }
+            else
+            {
+                m_templeteCombo.Enabled = false;
+                //m_title.Text = "";
+                m_naiyou.Text = "";
+                m_templeteCombo.DataSource = null;
+            }
+
+        }
+        //選択表示時
+        private void templeteComboSelect(String templete_no)
+        {
+
+            //テンプレート件数分ループを行う
+            foreach (templeteDS v in templist)
+            {
+                if (templete_no != null && templete_no != "")
+                {
+
+                    if (v.templeteno == templete_no)
+                    {
+                        m_templeteCombo.SelectedValue = v.templeteno;
+                    }
+                }
+            }
+        }
+
         void Read_CustomerCombo()
         {
             m_userno.Text = "";
@@ -492,21 +590,22 @@ namespace moss_AP
         }
 
         //テンプレート選択
-        private void m_templeteCombo_SelectionChangeCommitted(object sender, EventArgs e)
+        private void m_templeteCombo_SelectionChangeCommitted_1(object sender, EventArgs e)
         {
             templeteSelect();
 
         }
+        //テンプレート選択した後
         private void templeteSelect()
         {
-            //m_title.Text = "";
-            m_naiyou.Text = "";
 
             //テンプレート件数分ループを行う
             foreach (templeteDS v in templist)
             {
                 if (m_templeteCombo.SelectedValue != null)
                 {
+                    
+
                     if (v.templeteno == m_templeteCombo.SelectedValue.ToString())
                     {
                         //m_title.Text = v.title;
@@ -528,12 +627,10 @@ namespace moss_AP
             //1:インシデント
             //2:定期作業
             //3:計画作業
-            //4:特別作業
-
+            //4:特別対応
             if (m_schedule_combo.SelectedItem.ToString() == "3:計画作業")
             {
                 //計画作業が選択された場合は一覧を取得する
-                m_templeteCombo.Enabled = true;
                 m_templeteCombo.Enabled = true;
 
                 string userno = m_userno.Text;
@@ -595,9 +692,7 @@ namespace moss_AP
 
             m_title1.Text = "開始5分前タイマー";
 
-
         }
-
 
         private void m_endDate_ValueChanged(object sender, EventArgs e)
         {
@@ -641,7 +736,7 @@ namespace moss_AP
             }
 
             //確認画面
-            if (MessageBox.Show("タスク情報を登録します。よろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            if (MessageBox.Show("タスク情報を更新します。よろしいですか？", "更新確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
 
             string schedule_type = m_schedule_combo.Text;
@@ -703,7 +798,7 @@ namespace moss_AP
 
                     if (rowsaffected != 1)
                     {
-                        MessageBox.Show("登録できませんでした。", "タスク登録");
+                        MessageBox.Show("更新できませんでした。", "タスク更新");
                     }
                     else
                     {
@@ -719,7 +814,7 @@ namespace moss_AP
                                 transaction.Commit();
 
                                 //登録成功
-                                MessageBox.Show("登録完了 " + "スケジュール番号" + currval, "タイマー登録");
+                                MessageBox.Show("更新完了 " + "スケジュール番号" + currval, "タイマー更新");
                                 //this.Close();
                             }
                         }
@@ -727,7 +822,7 @@ namespace moss_AP
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("タイマー登録エラー " + ex.Message);
+                    MessageBox.Show("タイマー更新エラー " + ex.Message);
                     return;
                 }
             }
@@ -1473,16 +1568,15 @@ namespace moss_AP
                             break;
 
                         case 1:
-
-                            if (m_selecttext.Text == "インシデント")
+                            
+                            if (0 <= m_selecttext.Text.IndexOf("インシデント"))
                                 param_dict["schedule_type"] = "1";
-                            else if (m_selecttext.Text == "定期作業")
+                            else if (0 <= m_selecttext.Text.IndexOf("定期作業"))
                                 param_dict["schedule_type"] = "2";
-                            else if (m_selecttext.Text == "計画作業")
+                            else if (0 <= m_selecttext.Text.IndexOf("計画作業"))
                                 param_dict["schedule_type"] = "3";
-                            else if (m_selecttext.Text == "特別作業")
+                            else if (0 <= m_selecttext.Text.IndexOf("特別対応"))
                                 param_dict["schedule_type"] = "4";
-
                             break;
                         case 2:// カスタマ名
                             param_dict["username"] = m_selecttext.Text;
@@ -1571,7 +1665,7 @@ namespace moss_AP
             //タスク一覧を取得する
             taskDSlist = dg.getTaskList((Form_MainList)this.Owner, param_dict, con);
 
-            this.splitContainer1.SplitterDistance = 230;
+            this.splitContainer1.SplitterDistance = 170;
 
             this.m_taskList.VirtualMode = true;
             // １行全体選択
@@ -1706,7 +1800,7 @@ namespace moss_AP
                     //1:インシデント
                     //2:定期作業
                     //3:計画作業
-                    //4:特別作業
+                    //4:特別対応
                     string typestr = "";
                     if (s_ds.schedule_type == "1")
                         typestr = "インシデント";
@@ -1715,7 +1809,7 @@ namespace moss_AP
                     else if (s_ds.schedule_type == "3")
                         typestr = "計画作業";
                     else if (s_ds.schedule_type == "4")
-                        typestr = "特別作業";
+                        typestr = "特別対応";
 
                     urow["タスク区分"] = typestr;
 
@@ -1952,12 +2046,12 @@ namespace moss_AP
                 MessageBox.Show("カスタマ通番が取得できませんでした。", "タスク情報更新", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            if (m_templeteCombo.Text == "")
-            {
-                MessageBox.Show("テンプレートが取得できませんでした。", "タスク情報更新", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            if (m_statusCombo.Text == "")
+            //if (m_templeteCombo.Text == "")
+            //{
+            //MessageBox.Show("テンプレートが取得できませんでした。", "タスク情報更新", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //return;
+            //}
+             if (m_statusCombo.Text == "")
             {
                 MessageBox.Show("ステータスが取得できませんでした。", "タスク情報更新", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
@@ -1983,9 +2077,17 @@ namespace moss_AP
             //計画作業
             else if (m_schedule_combo.SelectedIndex == 2)
                 yoteikbn = "3";
-            //特別作業
+            //特別対応
             else if (m_schedule_combo.SelectedIndex == 3)
                 yoteikbn = "4";
+
+
+
+            int? tempint = null;
+            if(m_templeteCombo.Text != "")
+            {
+                tempint = int.Parse(m_templeteCombo.SelectedValue.ToString());
+            }
 
 
             if (this.con.FullState != ConnectionState.Open) this.con.Open();
@@ -2012,13 +2114,13 @@ namespace moss_AP
                 command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = m_taskno.Text });
                 command.Parameters.Add(new NpgsqlParameter("schedule_type", DbType.String) { Value = yoteikbn });
                 command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
-                command.Parameters.Add(new NpgsqlParameter("templeteno", DbType.Int32) { Value = enddate });
+                command.Parameters.Add(new NpgsqlParameter("templeteno", DbType.Int32) { Value = tempint });
                 command.Parameters.Add(new NpgsqlParameter("startdate", DbType.DateTime) { Value = startdate });
                 command.Parameters.Add(new NpgsqlParameter("enddate", DbType.DateTime) { Value = enddate });
                 command.Parameters.Add(new NpgsqlParameter("naiyou", DbType.String) { Value = m_naiyou.Text });
                 command.Parameters.Add(new NpgsqlParameter("biko", DbType.String) { Value = m_biko.Text });
-                command.Parameters.Add(new NpgsqlParameter("userno", DbType.Binary) { Value = m_userno.Text });
-                command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.Int32) { Value = loginDS.opeid });
+                command.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = int.Parse(m_userno.Text) });
+                command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
                 Int32 rowsaffected;
                 try
                 {
@@ -2031,14 +2133,25 @@ namespace moss_AP
                     else
                     {
                         //タイマー情報も更新する
-                        int ret = updateTimertbl(schedule_type, yoteikbn);
+                        int ret = deleteTimertbl(m_taskno.Text);
+                        if (ret != 1)
+                        {
+                            //return -1;
+                        }
+                        //タイマー情報も更新する
+                        ret = updateTimertbl(m_taskno.Text, yoteikbn);
+
 
                         if (ret == 1)
                         {
 
                             transaction.Commit();
-                            MessageBox.Show("スケジュール情報を変更しました。", "スケジュール更新", MessageBoxButtons.OK);
-                        }                    
+                            MessageBox.Show("タスク情報を変更しました。", "タスク更新", MessageBoxButtons.OK);
+                        }
+                        else if (ret == -1)
+                        {
+
+                        }                
                     }
                 }
                 catch (Exception ex)
@@ -2207,12 +2320,7 @@ namespace moss_AP
                     DateTime alertdate;
                     alertdate = startdate + dtt;
 
-
                     int weeknumber = (int)dd.Value.DayOfWeek;
-
-
-
-
 
                     int startweekint = (int)startdate.DayOfWeek;
 
@@ -2220,7 +2328,6 @@ namespace moss_AP
                     DateTimePicker enddate = (DateTimePicker)end_dates[timeridx];
                     DateTime enddt = enddate.Value;
                     int endweekint = (int)enddate.Value.DayOfWeek;
-
 
                     int tmpweeknumber = startweekint;
                     while (true)
@@ -2267,8 +2374,6 @@ namespace moss_AP
 
                     TimeSpan dtt = alermdt.Value.TimeOfDay;
                     alertdate = alertdate + dtt;
-
-
 
                     while (true)
                     {
@@ -2383,29 +2488,32 @@ namespace moss_AP
                     obj = (DateTimePicker)start_dates[i];
 
 
-                    DateTime startdate = new DateTime();
-                    DateTime enddate = new DateTime();
+                    DateTime? startdate = null;
+                    DateTime? enddate = null;
 
-                    if (obj.Enabled)
+                    if (obj.Enabled && obj.Checked == true)
                         startdate = obj.Value;
 
                     obj = (DateTimePicker)end_dates[i];
 
-                    if (obj.Enabled)
+                    if (obj.Enabled && obj.Checked == true)
                         enddate = obj.Value;
 
                     if (con.FullState != ConnectionState.Open) con.Open();
 
-                    string sql = "update timer set timername=:timername,repeat_type=:repeat_type,alert_time=:alert_time,start_date=:start_date,end_date=:end_date,status=:status," +
-                         "chk_name_id=:chk_name_id where schedule_no = :no and timerid = :timerid";
+                    //                    string sql = "update timer set timername=:timername,repeat_type=:repeat_type,alert_time=:alert_time,start_date=:start_date,end_date=:end_date,status=:status," +
+                    //                         "chk_name_id=:chk_name_id where schedule_no = :no and timerid = :timerid";
 
+
+                    string sql = "insert into timer ( schedule_no,timerid,timername,repeat_type,alert_time,start_date,end_date,status," +
+                        "chk_name_id) values ( :schedule_no,:timerid,:timername,:repeat_type,:alert_time,:start_date,:end_date,:status,:chk_name_id ) ";
 
                     var command = new NpgsqlCommand(@sql, this.con);
 
                     int scheduleno = int.Parse(m_taskno.Text);
 
-                    command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = m_taskno.Text });
-                    command.Parameters.Add(new NpgsqlParameter("timerid", DbType.Int32) { Value = (i + 1).ToString() });
+                    command.Parameters.Add(new NpgsqlParameter("schedule_no", DbType.Int32) { Value = m_taskno.Text });
+                    command.Parameters.Add(new NpgsqlParameter("timerid", DbType.Int32) { Value = (i + 1) });
                     command.Parameters.Add(new NpgsqlParameter("timername", DbType.String) { Value = title });
                     command.Parameters.Add(new NpgsqlParameter("repeat_type", DbType.String) { Value = rep_type });
                     command.Parameters.Add(new NpgsqlParameter("alert_time", DbType.DateTime) { Value = alert_time });
@@ -2413,7 +2521,7 @@ namespace moss_AP
                     command.Parameters.Add(new NpgsqlParameter("end_date", DbType.DateTime) { Value = enddate });
                     command.Parameters.Add(new NpgsqlParameter("naiyou", DbType.String) { Value = m_naiyou.Text });
                     command.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
-                    command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.Int32) { Value = loginDS.opeid });
+                    command.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
                     Int32 rowsaffected;
 
 
@@ -2432,9 +2540,12 @@ namespace moss_AP
                         //正常に更新できたとき
                         //まず登録されているアラートは削除
                         int ret = deleteTimer(m_taskno.Text);
-
+                        if (ret != 1)
+                        {
+                            //return -1;
+                        }
                         //引き続きアラートデータを作成し登録する
-                        make_alert(i + 1, m_taskno.Text, yoteikbn);
+                        ret = make_alert(i + 1, m_taskno.Text, yoteikbn);
                         if (ret != 1)
                         {
                             return -1;
@@ -2451,7 +2562,41 @@ namespace moss_AP
             return 1;
 
         }
-        //削除
+        //タイマーテーブルの削除
+        public int deleteTimertbl(String scheduleno)
+        {
+            
+            //DB接続
+            NpgsqlCommand cmd;
+            try
+            {
+                if (con.FullState != ConnectionState.Open) con.Open();
+                Int32 rowsaffected;
+                //データ登録
+                cmd = new NpgsqlCommand(@"DELETE FROM timer WHERE schedule_no = :schedule_no", con);
+
+                cmd.Parameters.Add(new NpgsqlParameter("schedule_no", DbType.Int32) { Value = scheduleno });
+                rowsaffected = cmd.ExecuteNonQuery();
+
+                if (rowsaffected != 1)
+                {
+                    return 0;
+                }
+                else
+                {
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("削除エラー " + ex.Message, "タイマー削除", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return -1;
+            }
+            return 1;
+        }
+
+        //アラート削除
         public int deleteTimer(String scheduleno)
         {
             //DB接続
@@ -2483,6 +2628,7 @@ namespace moss_AP
             }
             return 1;
         }
+
         //カスタマコンボボックスが変更された時
         private void m_usernameCombo_SelectionChangeCommitted_1(object sender, EventArgs e)
         {
@@ -2493,6 +2639,8 @@ namespace moss_AP
             }
             m_userno.Text = m_usernameCombo.SelectedValue.ToString();
 
+            //テンプレートも変わる
+            dispTempleteCombo();
 
         }
         //キャンセルボタン
@@ -2559,7 +2707,8 @@ namespace moss_AP
             string schedule_type = "";
             string status = "";
             taskDS taskdt = new taskDS();
-            
+            List<timerDS> timerList = new List<timerDS>();
+
             //タスク通番
             taskdt.schedule_no = this.m_taskList.Items[item[0]].SubItems[0].Text;
 
@@ -2589,7 +2738,11 @@ namespace moss_AP
             taskdt.startdate = this.m_taskList.Items[item[0]].SubItems[6].Text;
 
             //ステータス
-            taskdt.status = this.m_taskList.Items[item[0]].SubItems[7].Text;
+            string stat = this.m_taskList.Items[item[0]].SubItems[7].Text;
+            if (stat == "有効")
+                taskdt.status = "1";
+            else if (stat == "無効")
+                taskdt.status = "0";
             //内容
             taskdt.naiyou = this.m_taskList.Items[item[0]].SubItems[8].Text;
             //備考
@@ -2611,6 +2764,7 @@ namespace moss_AP
             timerDS timeDS = new timerDS();
             if(this.m_taskList.Items[item[0]].SubItems[14].Text != "")
             {
+                timeDS.timerid = "1";
                 timeDS.timername= this.m_taskList.Items[item[0]].SubItems[14].Text;
                 timeDS.alert_time = this.m_taskList.Items[item[0]].SubItems[15].Text;
                 string repeat_type = "";
@@ -2642,11 +2796,13 @@ namespace moss_AP
                 timeDS.status = this.m_taskList.Items[item[0]].SubItems[17].Text;
                 timeDS.start_date = this.m_taskList.Items[item[0]].SubItems[18].Text;
                 timeDS.end_date= this.m_taskList.Items[item[0]].SubItems[19].Text;
+                timerList.Add(timeDS);
             }
             //タイマー②
             timeDS = new timerDS();
             if (this.m_taskList.Items[item[0]].SubItems[20].Text != "")
             {
+                timeDS.timerid = "2";
                 timeDS.timername = this.m_taskList.Items[item[0]].SubItems[20].Text;
                 timeDS.alert_time = this.m_taskList.Items[item[0]].SubItems[21].Text;
                 string repeat_type = "";
@@ -2678,11 +2834,13 @@ namespace moss_AP
                 timeDS.status = this.m_taskList.Items[item[0]].SubItems[23].Text;
                 timeDS.start_date = this.m_taskList.Items[item[0]].SubItems[24].Text;
                 timeDS.end_date = this.m_taskList.Items[item[0]].SubItems[25].Text;
+                timerList.Add(timeDS);
             }
             //タイマー③
             timeDS = new timerDS();
             if (this.m_taskList.Items[item[0]].SubItems[26].Text != "")
             {
+                timeDS.timerid = "3";
                 timeDS.timername = this.m_taskList.Items[item[0]].SubItems[26].Text;
                 timeDS.alert_time = this.m_taskList.Items[item[0]].SubItems[27].Text;
                 string repeat_type = "";
@@ -2714,12 +2872,14 @@ namespace moss_AP
                 timeDS.status = this.m_taskList.Items[item[0]].SubItems[29].Text;
                 timeDS.start_date = this.m_taskList.Items[item[0]].SubItems[30].Text;
                 timeDS.end_date = this.m_taskList.Items[item[0]].SubItems[31].Text;
+                timerList.Add(timeDS);
             }
 
             //タイマー④
             timeDS = new timerDS();
             if (this.m_taskList.Items[item[0]].SubItems[32].Text != "")
             {
+                timeDS.timerid = "4";
                 timeDS.timername = this.m_taskList.Items[item[0]].SubItems[32].Text;
                 timeDS.alert_time = this.m_taskList.Items[item[0]].SubItems[33].Text;
                 string repeat_type = "";
@@ -2751,12 +2911,14 @@ namespace moss_AP
                 timeDS.status = this.m_taskList.Items[item[0]].SubItems[35].Text;
                 timeDS.start_date = this.m_taskList.Items[item[0]].SubItems[36].Text;
                 timeDS.end_date = this.m_taskList.Items[item[0]].SubItems[37].Text;
+                timerList.Add(timeDS);
             }
 
             //タイマー⑤
             timeDS = new timerDS();
             if (this.m_taskList.Items[item[0]].SubItems[38].Text != "")
             {
+                timeDS.timerid = "5";
                 timeDS.timername = this.m_taskList.Items[item[0]].SubItems[38].Text;
                 timeDS.alert_time = this.m_taskList.Items[item[0]].SubItems[39].Text;
                 string repeat_type = "";
@@ -2788,15 +2950,186 @@ namespace moss_AP
                 timeDS.status = this.m_taskList.Items[item[0]].SubItems[41].Text;
                 timeDS.start_date = this.m_taskList.Items[item[0]].SubItems[42].Text;
                 timeDS.end_date = this.m_taskList.Items[item[0]].SubItems[43].Text;
+                timerList.Add(timeDS);
             }
 
+            //タスク情報の表示
 
+            //入力クリア
+            inputClear();
 
+            gettask(taskdt, timerList);
 
-            //getKeikaku(taskdt);
-
-            //koumokuDisable();
-            //firstflg = false;
         }
+
+        void inputClear()
+        {
+            m_taskno.Text = "";
+            
+            m_schedule_combo.SelectedIndex = 0;
+            m_userno.Text = "";
+            if(m_templeteCombo.Enabled == true)
+                m_templeteCombo.SelectedIndex = 0;
+
+            m_startDate.Value = DateTime.Now;
+            m_statusCombo.SelectedIndex = 0;
+            m_endDate.Value = DateTime.Now;
+            m_naiyou.Text = "";
+            m_biko.Text = "";
+
+            GroupBox[] radioGroup = new GroupBox[] { radioGroup1, radioGroup2, radioGroup3, radioGroup4, radioGroup5 };
+
+            Control[] titles = new Control[] { m_title1, m_title2, m_title3, m_title4, m_title5 };
+            Control[] alertDates = new Control[] { m_alermDate1, m_alermDate2, m_alermDate3, m_alermDate4, m_alermDate5 };
+            Control[] statuses = new Control[] { m_statusCombo1, m_statusCombo2, m_statusCombo3, m_statusCombo4, m_statusCombo5 };
+            Control[] start_dates = new Control[] { m_startDate1, m_startDate2, m_startDate3, m_startDate4, m_startDate5 };
+            Control[] end_dates = new Control[] { m_endDate1, m_endDate2, m_endDate3, m_endDate4, m_endDate5 };
+
+            Control[] Radioone = new Control[] { m_radio_one1, m_radio_one2, m_radio_one3, m_radio_one4, m_radio_one5 };
+            Control[] RadioHours = new Control[] { m_radio_hour1, m_radio_hour2, m_radio_hour3, m_radio_hour4, m_radio_hour5 };
+            Control[] RadioDays = new Control[] { m_radio_day1, m_radio_day2, m_radio_day3, m_radio_day4, m_radio_day5 };
+            Control[] RadioWeeks = new Control[] { m_radio_week1, m_radio_week2, m_radio_week3, m_radio_week4, m_radio_week5 };
+            Control[] RadioMonths = new Control[] { m_radio_month1, m_radio_month2, m_radio_month3, m_radio_month4, m_radio_month5 };
+
+            int i = 0;
+            int ridx = 0;
+            GroupBox gb = null;
+            for (i=0;i< 5; i++) {
+                gb = radioGroup[i];
+                ridx = 0;
+                //ラジオボタンの値を取得
+                foreach (RadioButton rb1 in gb.Controls)
+                {
+                    if (rb1.Text =="1回" )
+                    {
+                        rb1.Checked = true;
+                        break;
+                    }
+                    ridx++;
+                }
+            }
+
+            //タイマー名
+            foreach (Control title in titles)
+                title.Text = "";
+
+            //ステータス
+            foreach (Control statusobj in statuses)
+                statusobj.Text = "有効";
+
+            //開始日時
+            foreach (DateTimePicker start_d in start_dates) 
+                start_d.Checked = false ;
+
+            //終了日時
+            foreach (DateTimePicker end_d in end_dates)
+                end_d.Checked = false;
+
+        }
+        //タスク区分が変更されたとき
+        private void m_schedule_combo_SelectionChangeCommitted_1(object sender, EventArgs e)
+        {
+            dispTempleteCombo();
+        }
+        //削除ボタン
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
+            ListView.SelectedIndexCollection selectitem = m_taskList.SelectedIndices;
+            int count = selectitem.Count;
+
+
+            //確認メッセージ
+            if (MessageBox.Show("一覧に選択された行 " + count + "件 の削除を行います。その際参照している他のテーブルデータも削除されます。" + Environment.NewLine +
+                "よろしいですか？", "タスク削除", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
+
+            int ret = deleteschedule(selectitem);
+            if (ret == -1)
+                return;
+
+            //リストの表示上からけす
+            int i = 0;
+            //削除するインターフェイス番号の取得
+            int[] indices = new int[selectitem.Count];
+            int cnt = m_taskList.SelectedIndices.Count;
+
+
+            m_taskList.SelectedIndices.CopyTo(indices, 0);
+
+            DataRowCollection items = task_list.Rows;
+            for (i = cnt - 1; i >= 0; --i)
+                items.RemoveAt(indices[i]);
+
+            //総件数を変更し再表示を行う
+            this.m_taskList.VirtualListSize = items.Count;
+
+        }
+        private int deleteschedule(ListView.SelectedIndexCollection item)
+        {
+
+            string scheduleno;
+            int ret = 0;
+
+            if (con.FullState != ConnectionState.Open) con.Open();
+
+            string sql = "WITH DELETED AS (DELETE FROM timer_taiou where schedule_no = :no " +
+                "RETURNING schedule_no) " +
+                "DELETE FROM timer where schedule_no = :no";
+
+            using (var transaction = con.BeginTransaction())
+            {
+                int i = 0;
+                for (i = 0; i < item.Count; i++)
+                {
+                    scheduleno = this.m_taskList.Items[item[i]].SubItems[0].Text;
+
+                        var command = new NpgsqlCommand(@sql, con);
+                    command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = int.Parse(scheduleno) });
+
+                    Int32 rowsaffected;
+                    try
+                    {
+                        //削除処理
+                        rowsaffected = command.ExecuteNonQuery();
+
+                        if (rowsaffected < 1)
+                        {
+                            MessageBox.Show("削除できませんでした。タスク通番:" + scheduleno, "タスク情報削除");
+                            transaction.Rollback();
+                            return -1;
+                        }
+                        else
+                        {
+                            //タイマー情報を削除する
+                            ret = deleteTimer(scheduleno);
+                            if(ret != 1)
+                            {
+                                MessageBox.Show("削除できませんでした。タスク通番:" + scheduleno, "タスク情報削除");
+                                transaction.Rollback();
+                                return -1;
+
+                            }
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //エラー時メッセージ表示
+                        MessageBox.Show("タスク情報削除時エラーが発生しました。 " + ex.Message);
+                        if (transaction.Connection != null) transaction.Rollback();
+                        return -1;
+                    }
+                }
+                if (ret == 1)
+                {
+                    
+                    MessageBox.Show("削除完了しました。", "タスク情報削除");
+                    transaction.Commit();
+                }
+            }
+            return ret;
+        }
+
     }
 }
