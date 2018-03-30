@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
+using System.Collections;
 
 namespace moss_AP
 {
@@ -32,21 +34,12 @@ namespace moss_AP
         //インターフェイス
         public List<watch_InterfaceDS> interfaceDSList { get; set; }
 
+        //ログイン情報
+        public opeDS loginDS;
 
         public taskDS taskds { get; set; }
         public timerDS timerds { get; set; }
         public List<timerDS> timerDSList { get; set; }
-
-        //システム情報表示用
-        DataTable system_list;
-
-        //拠点情報表示用   
-        DataTable site_list;
-        //機器情報表示用
-        DataTable host_list;
-        //インターフェイス情報表示用
-        DataTable interface_list;
-
 
         //テンプレート
         public templeteDS templetedt { get; set; }
@@ -56,11 +49,6 @@ namespace moss_AP
 
         DISP_dataSet dsp_L;
 
-        //ListViewのソートの際に使用する
-        private int sort_kind_site = 0;
-        private int sort_kind_system = 0;
-        private int sort_kind_host = 0;
-        private int sort_kind_interface = 0;
 
         public Form_IncidentMailSend()
         {
@@ -73,236 +61,33 @@ namespace moss_AP
             // コンテキストメニューをクリア
             this.contextMenuStrip1.Items.Clear();
 
-            ToolStripMenuItem tsi1 = new ToolStripMenuItem();
-            tsi1.Text = "構成管理";
-            tsi1.ToolTipText = "選択されている構成管理情報を表示";
-
-            //カスタマ名
-            ToolStripMenuItem tsi2 = new ToolStripMenuItem();
-            tsi2.Text = m_usernameCombo.Text;
-            tsi2.ToolTipText = "選択されているカスタマ名";
-
-            // クリックイベントを追加する
-            // フォームで設定した ItemClicked イベントは第1階層の項目のみ発生する
-            tsi2.Click += new EventHandler(contextMenuStrip_SubMenuClick);
-
-            // 第1階層のメニューの最後尾に追加
-            tsi1.DropDownItems.Add(tsi2);
-
-            string sysname = "";
-            ListView.SelectedIndexCollection sysitem = m_system_List.SelectedIndices;
-
-            //選択項目を取得
-            if (sysitem.Count > 0 && this.m_system_List.Items[sysitem[0]].SubItems[2].Text != "")
-            {
-                sysname = this.m_system_List.Items[sysitem[0]].SubItems[2].Text;
-
-                ToolStripMenuItem tsi3 = new ToolStripMenuItem();
-
-
-                tsi3.Size = new Size(400,80);
-                //
-
-                tsi3.Text = sysname;
-                tsi3.ToolTipText = "選択されているシステム名";
-                tsi3.Click += new EventHandler(contextMenuStrip_SubMenuClick);
-
-
-                // 第1階層のメニューの最後尾に追加する
-                tsi1.DropDownItems.Add(tsi3);
-            }
-            else
-            {
-
-                if (systemDSList == null || systemDSList.Count == 0)
-                    return;
-
-                ToolStripComboBox sub_system = new ToolStripComboBox();
-                sub_system.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-
-                sub_system.Size = new Size(400, 80);
-
-                //選択されているシステムが存在しない場合は全件表示する
-                foreach (systemDS v in systemDSList) { 
-                    sub_system.ComboBox.Items.Add(v.systemname);
-                }
-
-                sub_system.ComboBox.SelectedIndex = 0;
-
-                sub_system.SelectedIndexChanged += new EventHandler(contextMenuStripCombo_SubMenuClick);
-
-
-                tsi1.DropDownItems.Add(sub_system);
-            }
-
-            //拠点情報
-            string sitename = "";
-            ListView.SelectedIndexCollection sitelist = m_site_List.SelectedIndices;
-            if (sitelist.Count > 0 && this.m_site_List.Items[sitelist[0]].SubItems[2].Text != "")
-            {
-                sitename = this.m_site_List.Items[sitelist[0]].SubItems[2].Text;
-
-                ToolStripMenuItem tsi4 = new ToolStripMenuItem();
-                tsi4.Size = new Size(400, 80);
-
-                tsi4.Text = sitename;
-                tsi4.ToolTipText = "選択されている拠点名";
-                //tsi3.Click += contextMenuStrip_SubMenuClick;
-
-                tsi4.Click += new EventHandler(contextMenuStrip_SubMenuClick);
-
-                // 第1階層のメニューの最後尾に追加する
-                tsi1.DropDownItems.Add(tsi4);
-            }
-            else
-            {
-
-                if (siteDSList != null && siteDSList.Count > 0) { 
-
-                    ToolStripComboBox sub_site = new ToolStripComboBox();
-                    sub_site.Size = new Size(400, 80);
-                    sub_site.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-
-                    //選択されている拠点が存在しない場合は全件表示する
-                    foreach (siteDS v in siteDSList)
-                        sub_site.ComboBox.Items.Add(v.sitename);
-
-                    //初期値0以外を選択する
-                    sub_site.ComboBox.SelectedIndex = 0;
-
-                    sub_site.SelectedIndexChanged += new EventHandler(contextMenuStripCombo_SubMenuClick);
-
-                    tsi1.DropDownItems.Add(sub_site);
-                }
-            }
-
-            //ホスト情報
-            string hostname = "";
-            ListView.SelectedIndexCollection hostlist = m_host_list.SelectedIndices;
-            if (hostlist.Count > 0 && this.m_host_list.Items[hostlist[0]].SubItems[2].Text != "")
-            {
-                hostname = this.m_host_list.Items[hostlist[0]].SubItems[2].Text;
-
-                ToolStripMenuItem sub_host = new ToolStripMenuItem();
-
-                sub_host.Size = new Size(400, 80);
-
-
-                sub_host.Text = hostname;
-                sub_host.ToolTipText = "選択されている拠点名";
-                //tsi3.Click += contextMenuStrip_SubMenuClick;
-
-                sub_host.Click += new EventHandler(contextMenuStrip_SubMenuClick);
-
-                // 第1階層のメニューの最後尾に追加する
-                tsi1.DropDownItems.Add(sub_host);
-            }
-            else
-            {
-
-                if (hostDSList != null && hostDSList.Count > 0)
-                {
-
-
-                    //コンボボックスにする
-                    ToolStripComboBox sub_host = new ToolStripComboBox();
-                    sub_host.Size = new Size(400, 80);
-                    sub_host.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-
-                    //選択されているホストが存在しない場合は全件表示する
-                    foreach (hostDS v in hostDSList)
-                        sub_host.ComboBox.Items.Add(v.hostname);
-
-                    sub_host.ComboBox.SelectedIndex = 0;
-                    sub_host.SelectedIndexChanged += new EventHandler(contextMenuStripCombo_SubMenuClick);
-
-                    tsi1.DropDownItems.Add(sub_host);
-                }
-            }
-
-            //インターフェイス情報
-            string interfacename = "";
-            ListView.SelectedIndexCollection interfacelist = m_host_list.SelectedIndices;
-            if (interfacelist.Count > 0 && this.m_interface_List.Items[interfacelist[0]].SubItems[2].Text != "")
-            {
-                interfacename = this.m_interface_List.Items[interfacelist[0]].SubItems[2].Text;
-
-                ToolStripMenuItem sub_interface = new ToolStripMenuItem();
-                sub_interface.Size = new Size(400, 80);
-
-
-                sub_interface.Text = interfacename;
-                sub_interface.ToolTipText = "選択されている拠点名";
-                //tsi3.Click += contextMenuStrip_SubMenuClick;
-
-                sub_interface.Click += new EventHandler(contextMenuStrip_SubMenuClick);
-
-                // 第1階層のメニューの最後尾に追加する
-                tsi1.DropDownItems.Add(sub_interface);
-            }
-            else
-            {
-                if (interfaceDSList != null && interfaceDSList.Count > 0)
-                {
-                    ToolStripMenuItem sub_interface = new ToolStripMenuItem();
-                    sub_interface.Size = new Size(400, 80);
-                    sub_interface.Text = "監視インターフェイス";
-
-                    ToolStripComboBox sub_interfacename = new ToolStripComboBox();
-                    ToolStripComboBox sub_ipaddress = new ToolStripComboBox();
-                    ToolStripComboBox sub_ipaddressNAT = new ToolStripComboBox();
-                    ToolStripComboBox sub_kanshiKoumoku = new ToolStripComboBox();
-
-                    sub_interfacename.Size = new Size(400, 80);
-                    sub_interfacename.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-                    sub_ipaddress.Size = new Size(400, 80);
-                    sub_ipaddress.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-                    sub_ipaddressNAT.Size = new Size(400, 80);
-                    sub_ipaddressNAT.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-                    sub_kanshiKoumoku.Size = new Size(400, 80);
-                    sub_kanshiKoumoku.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-
-                    //選択されているホストが存在しない場合は全件表示する
-                    foreach (watch_InterfaceDS v in interfaceDSList)
-                    {
-                        sub_interfacename.ComboBox.Items.Add(v.interfacename);
-
-                        sub_ipaddress.ComboBox.Items.Add(v.IPaddress);
-                        sub_ipaddressNAT.ComboBox.Items.Add(v.IPaddressNAT);
-                        sub_kanshiKoumoku.ComboBox.Items.Add(v.kanshi);
-                    }
-
-
-                    sub_interfacename.ComboBox.SelectedIndex = 0;
-                    sub_ipaddress.ComboBox.SelectedIndex = 0;
-                    sub_ipaddressNAT.ComboBox.SelectedIndex = 0;
-                    sub_kanshiKoumoku.ComboBox.SelectedIndex = 0;
-
-                    sub_interfacename.SelectedIndexChanged += new EventHandler(contextMenuStripCombo_SubMenuClick);
-
-                    sub_interface.DropDownItems.Add(sub_interfacename);
-                    sub_interface.DropDownItems.Add(sub_ipaddress);
-                    sub_interface.DropDownItems.Add(sub_ipaddressNAT);
-                    sub_interface.DropDownItems.Add(sub_kanshiKoumoku);
-
-
-                    tsi1.DropDownItems.Add(sub_interface);
-                }
-            }
-
-            // コンテキストメニューに第1階層のメニューを追加する
-            this.contextMenuStrip1.Items.Add(tsi1);
-
-            ToolStripMenuItem closemenu = new ToolStripMenuItem();
-            closemenu.Size = new Size(400, 80);
-
-
-            closemenu.Text = "閉じる";
-            closemenu.ToolTipText = "メニューを閉じる";
-
-            closemenu.Click += new EventHandler(contextMenuStrip_closeClick);
-
-            this.contextMenuStrip1.Items.Add(closemenu);
+            DateTime dd = m_date.Value;
+            dd.ToString() ;
+            contextMenuStrip1.Items.Add(dd.ToString("yyyy/MM/dd HH:mm"), null, date_click);
+            contextMenuStrip1.Items.Add(dd.ToShortDateString(), null, shortdate_click);
+            contextMenuStrip1.Items.Add(dd.ToString("MM/dd"), null, tukihi_click);
+            contextMenuStrip1.Items.Add(dd.ToShortTimeString(), null, time_click);
+        }
+        private void date_click(object sender, EventArgs e)
+        {
+
+            string[] str = { m_date.Value.ToString("yyyy/MM/dd hh:mm") };
+            insertChangeWords(str);
+        }
+        private void shortdate_click(object sender, EventArgs e)
+        {
+            string[] str = { m_date.Value.ToShortDateString() };
+            insertChangeWords(str);
+        }
+        private void tukihi_click(object sender, EventArgs e)
+        {
+            string[] str = { m_date.Value.ToString("MM/dd") };
+            insertChangeWords(str);
+        }
+        private void time_click(object sender, EventArgs e)
+        {
+            string[] str = { m_date.Value.ToShortTimeString() };
+            insertChangeWords(str);
         }
         private void contextMenuStrip_closeClick(object sender, EventArgs e)
         {
@@ -316,7 +101,7 @@ namespace moss_AP
 
             ToolStripMenuItem contextmenu = (ToolStripMenuItem)sender;
             str = contextmenu.Text;
-            insertChangeWords(str);
+            //insertChangeWords(str);
 #if DEBUG
             Console.WriteLine(str);
 #endif
@@ -334,7 +119,7 @@ namespace moss_AP
 
             ToolStripComboBox combo = (ToolStripComboBox)sender;
             str = combo.Text;
-            insertChangeWords(str);
+           // insertChangeWords(str);
 #if DEBUG
             Console.WriteLine(str);
 #endif
@@ -343,27 +128,61 @@ namespace moss_AP
 
         }
         //パラメータの文字列を挿入して色を変える
-        private void insertChangeWords(String words)
+        private void insertChangeWords(IEnumerable<String> words)
         {
-            //選択状態を解除しておく
-            m_body.SelectedText = "";
-            m_body.SelectionLength = 0;
+            
+            //文字列の選択状態
+            if(m_body.SelectedText.Length > 0){
 
-            //赤にする
-            m_body.SelectionColor = Color.Red;
-            //BoidをFontStyleに追加したFontを作成する
-            Font baseFont = m_body.SelectionFont;
-            Font fnt = new Font(baseFont.FontFamily,
-                baseFont.Size,
-                baseFont.Style | FontStyle.Bold);
-            //Fontを変更する
-            m_body.SelectionFont = fnt;
-            //文字列を挿入する
-            m_body.SelectedText = words;
+                //選択状態を解除しておく
+                m_body.SelectedText = "";
+                m_body.SelectionLength = 0;
 
-            baseFont.Dispose();
-            fnt.Dispose();
+                //赤にする
+                m_body.SelectionColor = Color.Red;
+                //BoidをFontStyleに追加したFontを作成する
+                Font baseFont = m_body.SelectionFont;
+                Font fnt = new Font(baseFont.FontFamily,
+                    baseFont.Size,
+                    baseFont.Style | FontStyle.Bold);
 
+                //Fontを変更する
+                m_body.SelectionFont = fnt;
+
+                //文字列を挿入する
+                m_body.SelectedText = string.Join(", ", words.Select(x => x.ToString()));
+
+                baseFont.Dispose();
+                fnt.Dispose();
+            }
+            else if(m_templetename.SelectedText.Length > 0)
+            {
+                //選択状態を解除しておく
+                m_templetename.SelectedText = "";
+                m_templetename.SelectionLength = 0;
+
+                //赤にする
+                m_templetename.SelectionColor = Color.Red;
+                //BoidをFontStyleに追加したFontを作成する
+                Font baseFont = m_templetename.SelectionFont;
+                Font fnt = new Font(baseFont.FontFamily,
+                    baseFont.Size,
+                    baseFont.Style | FontStyle.Bold);
+                //Fontを変更する
+                m_templetename.SelectionFont = fnt;
+
+                //文字列を挿入する
+
+                m_templetename.SelectedText = string.Join(", ", words.Select(x => x.ToString()));
+
+                baseFont.Dispose();
+                fnt.Dispose();
+            }
+            else
+            {
+
+                MessageBox.Show("挿入対象が選択されていません");
+            }
 
         }
 
@@ -402,7 +221,11 @@ namespace moss_AP
             //Read_systemCombo();
             //ラベルに反映
             if (m_usernameCombo.SelectedValue != null)
+            {
                 m_userno.Text = m_usernameCombo.SelectedValue.ToString();
+                m_cutomername.Text = m_usernameCombo.Text;
+            }
+
         }
 
         //カスタマ名コンボボックスが変更されたとき
@@ -415,7 +238,10 @@ namespace moss_AP
             }
             //ラベルに反映
             if (m_usernameCombo.SelectedValue != null)
+            { 
                 m_userno.Text = m_usernameCombo.SelectedValue.ToString();
+                m_cutomername.Text = m_usernameCombo.Text;
+            }
             taskchange();
         }
         //タスク区分コンボが変更された時
@@ -469,6 +295,7 @@ namespace moss_AP
             //m_title.Text = "";
             //mailsendaddressDS?te.Text = "";
 
+
             //テンプレート件数分ループを行う
             foreach (templeteDS v in templist)
             {
@@ -496,11 +323,10 @@ namespace moss_AP
             this.m_selectBtn.Enabled = false;
             try
             {
-
-                m_system_List.Clear();
-                m_site_List.Clear();
-                m_host_list.Clear();
-                m_interface_List.Clear();
+                m_system_list.Rows.Clear();
+                m_site_list.Rows.Clear();
+                m_host_list.Rows.Clear();
+                m_interface_list.Rows.Clear();
 
 
                 Dictionary<string, string> param_dict = new Dictionary<string, string>();
@@ -549,37 +375,7 @@ namespace moss_AP
         //システム情報の表示
         private void disp_system(DISP_dataSet dsp_L)
         {
-            //システムリスト
-            this.m_system_List.VirtualMode = true;
-
-            // １行全体選択
-            //this.m_system_List.FullRowSelect = false;
-            this.m_system_List.HideSelection = false;
-            this.m_system_List.HeaderStyle = ColumnHeaderStyle.Clickable;
-            //Hook up handlers for VirtualMode events.
-            this.m_system_List.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(systemList_RetrieveVirtualItem);
-            this.m_system_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
-            // Column追加
-            this.m_system_List.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-            this.m_system_List.Columns.Insert(1, "有効", 50, HorizontalAlignment.Left);
-            this.m_system_List.Columns.Insert(2, "システム名", 180, HorizontalAlignment.Left);
-            this.m_system_List.Columns.Insert(3, "システム名カナ", 50, HorizontalAlignment.Left);
-            this.m_system_List.Columns.Insert(4, "備考", 30, HorizontalAlignment.Left);
-            this.m_system_List.Columns.Insert(5, "更新日時", 80, HorizontalAlignment.Left);
-            this.m_system_List.Columns.Insert(6, "更新者", 80, HorizontalAlignment.Left);
-
-            //リストビューを初期化する
-            system_list = new DataTable("table3");
-            system_list.Columns.Add("No", Type.GetType("System.Int32"));
-            system_list.Columns.Add("有効", Type.GetType("System.String"));
-            system_list.Columns.Add("システム名", Type.GetType("System.String"));
-            system_list.Columns.Add("システム名カナ", Type.GetType("System.String"));
-
-            system_list.Columns.Add("備考", Type.GetType("System.String"));
-            system_list.Columns.Add("更新日時", Type.GetType("System.String"));
-            system_list.Columns.Add("更新者", Type.GetType("System.String"));
-
+ 
             //システム情報
             if (dsp_L.system_L != null)
             {
@@ -592,20 +388,32 @@ namespace moss_AP
 
                     if (fastline == sys.systemno)
                         continue;
-                    //チェックボックスがOFFになっている場合は表示しない
-    //                if (this.m_system_umu_check.Checked == false && sys.status == "無効")
-    //                    continue;
 
-                    DataRow row = system_list.NewRow();
-                    row["No"] = sys.systemno;
-                    row["有効"] = sys.status;
-                    row["システム名"] = sys.systemname;
-                    row["システム名カナ"] = sys.systemkana;
-                    row["備考"] = sys.biko;
-                    row["更新日時"] = sys.chk_date;
-                    row["更新者"] = sys.chk_name_id;
-                    system_list.Rows.Add(row);
+                    string[] h = Enumerable.Range(1, 7).Select(x =>
+                                 {
+                                     switch (x)
+                                     {
+                                         case 1:
+                                             return sys.systemno == null || sys.systemno == "" ? "" : sys.systemno;
+                                         case 2:
+                                             return sys.status == null || sys.status == "" ? "" : sys.status;
+                                         case 3:
+                                             return sys.systemname == null || sys.systemname == "" ? "" : sys.systemname;
+                                         case 4:
+                                             return sys.systemkana == null || sys.systemkana == "" ? "" : sys.systemkana;
+                                         case 5:
+                                             return sys.biko == null || sys.biko == "" ? "" : sys.biko;
+                                         case 6:
+                                             return sys.chk_date == null || sys.chk_date == "" ? "" : sys.chk_date;
+                                         case 7:
+                                             return sys.chk_name_id == null || sys.chk_name_id == "" ? "" : sys.chk_name_id;
+                                         default: return "";
+                                     }
 
+                                 }).ToArray();
+
+                    //システム情報の表示
+                    this.m_system_list.Rows.Add(h);
                     fastline = sys.systemno;
 
                     systemDSList.Add(sys);
@@ -613,48 +421,14 @@ namespace moss_AP
                 //件数を書き込む
                 //this.m_system_count.Text = system_list.Rows.Count.ToString() + "件";
 
-                this.m_system_List.VirtualListSize = system_list.Rows.Count;
-                this.m_system_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                //dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                m_system_list.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
 
             }
         }
         //拠点情報一覧の表示
         private void disp_site(DISP_dataSet dsp_L, String systemno = null)
         {
-            //拠点
-            this.m_site_List.VirtualMode = true;
-            // １行全体選択
-            //this.m_site_List.FullRowSelect = true;
-            this.m_site_List.HideSelection = false;
-            this.m_site_List.HeaderStyle = ColumnHeaderStyle.Clickable;
-
-            //Hook up handlers for VirtualMode events.
-            this.m_site_List.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(siteList_RetrieveVirtualItem);
-            this.m_site_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
-            // Column追加
-            this.m_site_List.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-            this.m_site_List.Columns.Insert(1, "有効", 30, HorizontalAlignment.Left);
-            this.m_site_List.Columns.Insert(2, "拠点名", 180, HorizontalAlignment.Left);
-            this.m_site_List.Columns.Insert(3, "郵便番号", 50, HorizontalAlignment.Left);
-            this.m_site_List.Columns.Insert(4, "住所", 50, HorizontalAlignment.Left);
-            this.m_site_List.Columns.Insert(5, "TEL/FAX", 80, HorizontalAlignment.Left);
-            this.m_site_List.Columns.Insert(6, "備考", 180, HorizontalAlignment.Left);
-            this.m_site_List.Columns.Insert(7, "更新日時", 80, HorizontalAlignment.Left);
-            this.m_site_List.Columns.Insert(8, "更新者", 80, HorizontalAlignment.Left);
-
-            //リストビューを初期化する
-            site_list = new DataTable("table4");
-            site_list.Columns.Add("No", Type.GetType("System.Int32"));
-            site_list.Columns.Add("有効", Type.GetType("System.String"));
-            site_list.Columns.Add("拠点名", Type.GetType("System.String"));
-            site_list.Columns.Add("郵便番号", Type.GetType("System.String"));
-            site_list.Columns.Add("住所", Type.GetType("System.String"));
-            site_list.Columns.Add("TEL/FAX", Type.GetType("System.String"));
-            site_list.Columns.Add("備考", Type.GetType("System.String"));
-            site_list.Columns.Add("更新日時", Type.GetType("System.String"));
-            site_list.Columns.Add("更新者", Type.GetType("System.String"));
-
 
             if (dsp_L == null)
                 return;
@@ -679,17 +453,32 @@ namespace moss_AP
                             //重複チェック
                             if (ary1.Add(s.siteno))
                             {
-                                DataRow row = site_list.NewRow();
-                                row["No"] = s.siteno;
-                                row["有効"] = s.status;
-                                row["拠点名"] = s.sitename;
-                                row["郵便番号"] = s.address1;
-                                row["住所"] = s.address2;
-                                row["TEL/FAX"] = s.telno;
-                                row["備考"] = s.biko;
-                                row["更新日時"] = s.chk_date;
-                                row["更新者"] = s.chk_name_id;
-                                site_list.Rows.Add(row);
+
+                                string[] si = Enumerable.Range(1, 9)
+                                    .Select(x =>
+                                    {
+                                        switch (x)
+                                        {
+                                            case 1: return s.siteno == null || s.siteno == "" ? "" : s.siteno;
+                                            case 2: return s.status == null || s.status == "" ? "" : s.status;
+                                   
+                                            case 3: return s.sitename == null || s.sitename == "" ? "" : s.sitename;
+                                                //郵便番号
+                                            case 4: return s.address1 == null || s.address1 == "" ? "" : s.address1;
+                                                //住所
+                                            case 5: return s.address2 == null || s.address2 == "" ? "" : s.address2;
+                                            case 6: return s.telno == null || s.telno == "" ? "" : s.telno;
+                                            case 7: return s.biko == null || s.biko == "" ? "" : s.biko;
+                                            case 8: return s.chk_date == null || s.chk_date == "" ? "" : s.chk_date;
+                                            case 9: return s.chk_name_id == null || s.chk_name_id == "" ? "" : s.chk_name_id;
+                                            default: return "";
+                                        }
+                                    }).ToArray();
+
+
+                                //拠点情報の表示
+                                this.m_site_list.Rows.Add(si);
+
                                 siteDSList.Add(s);
                             }
                         }
@@ -699,82 +488,48 @@ namespace moss_AP
                         //重複チェック
                         if (ary1.Add(s.siteno))
                         {
-                            DataRow row = site_list.NewRow();
-                            row["No"] = s.siteno;
-                            row["有効"] = s.status;
-                            row["拠点名"] = s.sitename;
-                            row["郵便番号"] = s.address1;
-                            row["住所"] = s.address2;
-                            row["TEL/FAX"] = s.telno;
-                            row["備考"] = s.biko;
-                            row["更新日時"] = s.chk_date;
-                            row["更新者"] = s.chk_name_id;
-                            site_list.Rows.Add(row);
+
+
+                            string[] si = Enumerable.Range(1, 9)
+                                .Select(x =>
+                                {
+                                    switch (x)
+                                    {
+                                        case 1: return s.siteno == null || s.siteno == "" ? "" : s.siteno;
+                                        case 2: return s.status == null || s.status == "" ? "" : s.status;
+                                        case 3: return s.sitename == null || s.sitename == "" ? "" : s.sitename;
+                                        //郵便番号
+                                        case 4: return s.address1 == null || s.address1 == "" ? "" : s.address1;
+                                        //住所
+                                        case 5: return s.address2 == null || s.address2 == "" ? "" : s.address2;
+                                        case 6: return s.telno == null || s.telno == "" ? "" : s.telno;
+                                        case 7: return s.biko == null || s.biko == "" ? "" : s.biko;
+                                        case 8: return s.chk_date == null || s.chk_date == "" ? "" : s.chk_date;
+                                        case 9: return s.chk_name_id == null || s.chk_name_id == "" ? "" : s.chk_name_id;
+                                        default: return "";
+                                    }
+                                }).ToArray();
+
+                            //拠点情報の表示
+                            this.m_site_list.Rows.Add(si);
                             siteDSList.Add(s);
                         }
                     }
                 }
                 //件数を書き込む
-    //            this.m_site_count.Text = site_list.Rows.Count.ToString() + "件";
-
-                this.m_site_List.VirtualListSize = site_list.Rows.Count;
-                this.m_site_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                //            this.m_site_count.Text = site_list.Rows.Count.ToString() + "件";
+                m_site_list.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
 
             }
-
         }
-
 
         //ホスト
         private void disp_host(DISP_dataSet dsp_L, String siteno = null)
         {
             //機器
-            this.m_host_list.VirtualMode = true;
-            // １行全体選択
-            //this.m_host_list.FullRowSelect = true;
-            this.m_host_list.HideSelection = false;
-            this.m_host_list.HeaderStyle = ColumnHeaderStyle.Clickable;
-            //Hook up handlers for VirtualMode events.
-            this.m_host_list.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(hostList_RetrieveVirtualItem);
-            this.m_host_list.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            if (dsp_L == null)
+                return;
 
-            // Column追加
-            this.m_host_list.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-            this.m_host_list.Columns.Insert(1, "有効", 30, HorizontalAlignment.Left);
-            this.m_host_list.Columns.Insert(2, "ホスト名", 180, HorizontalAlignment.Left);
-            this.m_host_list.Columns.Insert(3, "機種", 30, HorizontalAlignment.Left);
-            this.m_host_list.Columns.Insert(4, "設置場所", 80, HorizontalAlignment.Left);
-            this.m_host_list.Columns.Insert(5, "用途", 180, HorizontalAlignment.Left);
-            this.m_host_list.Columns.Insert(6, "装置機器ID", 180, HorizontalAlignment.Left);
-            this.m_host_list.Columns.Insert(7, "監視開始日時", 180, HorizontalAlignment.Left);
-            this.m_host_list.Columns.Insert(8, "監視終了日時", 180, HorizontalAlignment.Left);
-            this.m_host_list.Columns.Insert(9, "保守管理番号", 180, HorizontalAlignment.Left);
-            this.m_host_list.Columns.Insert(10, "保守情報", 180, HorizontalAlignment.Left);
-            this.m_host_list.Columns.Insert(11, "備考", 180, HorizontalAlignment.Left);
-            this.m_host_list.Columns.Insert(12, "更新日時", 80, HorizontalAlignment.Left);
-            this.m_host_list.Columns.Insert(13, "更新者", 180, HorizontalAlignment.Left);
-
-            //リストビューを初期化する
-            host_list = new DataTable("table5");
-            host_list.Columns.Add("No", Type.GetType("System.Int32"));
-            host_list.Columns.Add("有効", Type.GetType("System.String"));
-            host_list.Columns.Add("ホスト名", Type.GetType("System.String"));
-            host_list.Columns.Add("機種", Type.GetType("System.String"));
-            host_list.Columns.Add("設置場所", Type.GetType("System.String"));
-            host_list.Columns.Add("用途", Type.GetType("System.String"));
-            host_list.Columns.Add("装置機器ID", Type.GetType("System.String"));
-            host_list.Columns.Add("監視開始日時", Type.GetType("System.String"));
-            host_list.Columns.Add("監視終了日時", Type.GetType("System.String"));
-            host_list.Columns.Add("保守管理番号", Type.GetType("System.String"));
-            host_list.Columns.Add("保守情報", Type.GetType("System.String"));
-            host_list.Columns.Add("備考", Type.GetType("System.String"));
-            host_list.Columns.Add("更新日時", Type.GetType("System.String"));
-            host_list.Columns.Add("更新者", Type.GetType("System.String"));
-
-
-                if (dsp_L == null)
-
-                    return;
             //機器情報
             if (dsp_L.host_L != null)
             {
@@ -796,22 +551,32 @@ namespace moss_AP
                             //重複チェック
                             if (ary1.Add(h.host_no))
                             {
-                                DataRow row = host_list.NewRow();
-                                row["No"] = h.host_no;
-                                row["有効"] = h.status;
-                                row["ホスト名"] = h.hostname;
-                                row["機種"] = h.device;
-                                row["設置場所"] = h.location;
-                                row["用途"] = h.usefor;
-                                row["装置機器ID"] = h.settikikiid;
-                                row["監視開始日時"] = h.kansiStartdate;
-                                row["監視終了日時"] = h.kansiEndsdate;
-                                row["保守管理番号"] = h.hosyukanri;
-                                row["保守情報"] = h.hosyuinfo;
-                                row["備考"] = h.biko;
-                                row["更新日時"] = h.chk_date;
-                                row["更新者"] = h.chk_name_id;
-                                host_list.Rows.Add(row);
+
+                                string[] hos = Enumerable.Range(1, 14).Select(x =>
+                               {
+                                   switch (x)
+                                   {
+                                       case 1: return h.host_no == null || h.host_no == "" ? "" : h.host_no;
+                                       case 2: return h.status == null || h.status == "" ? "" : h.status;
+                                       case 3: return h.hostname == null || h.hostname == "" ? "" : h.hostname;
+                                       case 4: return h.device == null || h.device == "" ? "" : h.device;
+                                       case 5: return h.location == null || h.location == "" ? "" : h.location;
+                                       case 6: return h.usefor == null || h.usefor == "" ? "" : h.usefor;
+                                       case 7: return h.settikikiid == null || h.settikikiid == "" ? "" : h.settikikiid;
+                                       case 8: return h.kansiStartdate == null || h.kansiStartdate == "" ? "" : h.kansiStartdate;
+                                       case 9: return h.kansiEndsdate == null || h.kansiEndsdate == "" ? "" : h.kansiEndsdate;
+                                       case 10: return h.hosyukanri == null || h.hosyukanri == "" ? "" : h.hosyukanri;
+                                       case 11: return h.hosyuinfo == null || h.hosyuinfo == "" ? "" : h.hosyuinfo;
+                                       case 12: return h.biko == null || h.biko == "" ? "" : h.biko;
+                                       case 13: return h.chk_date == null || h.chk_date == "" ? "" : h.chk_date;
+                                       case 14: return h.chk_name_id == null || h.chk_name_id == "" ? "" : h.chk_name_id;
+                                       default: return "";
+                                   }
+                               }).ToArray();
+
+
+                                //ホスト情報の表示
+                                this.m_host_list.Rows.Add(hos);
                                 hostDSList.Add(h);
                             }
 
@@ -822,81 +587,45 @@ namespace moss_AP
                         //重複チェック
                         if (ary1.Add(h.host_no))
                         {
-                            DataRow row = host_list.NewRow();
-                            row["No"] = h.host_no;
-                            row["有効"] = h.status;
-                            row["ホスト名"] = h.hostname;
-                            row["機種"] = h.device;
-                            row["設置場所"] = h.location;
-                            row["用途"] = h.usefor;
-                            row["装置機器ID"] = h.settikikiid;
-                            row["監視開始日時"] = h.kansiStartdate;
-                            row["監視終了日時"] = h.kansiEndsdate;
-                            row["保守管理番号"] = h.hosyukanri;
-                            row["保守情報"] = h.hosyuinfo;
-                            row["備考"] = h.biko;
-                            row["更新日時"] = h.chk_date;
-                            row["更新者"] = h.chk_name_id;
-                                host_list.Rows.Add(row);
+                            string[] hos = Enumerable.Range(1, 14).Select(x =>
+                            {
+                                switch (x)
+                                {
+                                    case 1: return h.host_no == null || h.host_no == "" ? "" : h.host_no;
+                                    case 2: return h.status == null || h.status == "" ? "" : h.status;
+                                    case 3: return h.hostname == null || h.hostname == "" ? "" : h.hostname;
+                                    case 4: return h.device == null || h.device == "" ? "" : h.device;
+                                    case 5: return h.location == null || h.location == "" ? "" : h.location;
+                                    case 6: return h.usefor == null || h.usefor == "" ? "" : h.usefor;
+                                    case 7: return h.settikikiid == null || h.settikikiid == "" ? "" : h.settikikiid;
+                                    case 8: return h.kansiStartdate == null || h.kansiStartdate == "" ? "" : h.kansiStartdate;
+                                    case 9: return h.kansiEndsdate == null || h.kansiEndsdate == "" ? "" : h.kansiEndsdate;
+                                    case 10: return h.hosyukanri == null || h.hosyukanri == "" ? "" : h.hosyukanri;
+                                    case 11: return h.hosyuinfo == null || h.hosyuinfo == "" ? "" : h.hosyuinfo;
+                                    case 12: return h.biko == null || h.biko == "" ? "" : h.biko;
+                                    case 13: return h.chk_date == null || h.chk_date == "" ? "" : h.chk_date;
+                                    case 14: return h.chk_name_id == null || h.chk_name_id == "" ? "" : h.chk_name_id;
+                                    default: return "";
+                                }
+                            }).ToArray();
+
+                            //ホスト情報の表示
+                            this.m_host_list.Rows.Add(hos);
+
                             hostDSList.Add(h);
                         }
                     }
                 }
                 //件数を書き込む
-    //            this.m_host_count.Text = m_host_list.Rows.Count.ToString() + "件";
-                this.m_host_list.VirtualListSize = host_list.Rows.Count;
-                this.m_host_list.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                //            this.m_host_count.Text = m_host_list.Rows.Count.ToString() + "件";
+                m_host_list.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
             }
 
         }
         //インターフェイス
         private void disp_interface(DISP_dataSet dsp_L, String siteno = null, String hostno = null)
         {
-            //インターフェイス
-            this.m_interface_List.VirtualMode = true;
-            // １行全体選択
-            //this.m_interface_List.FullRowSelect = true;
-            this.m_interface_List.HideSelection = false;
-            this.m_interface_List.HeaderStyle = ColumnHeaderStyle.Clickable;
-            //Hook up handlers for VirtualMode events.
-            this.m_interface_List.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(interfaceList_RetrieveVirtualItem);
-            this.m_interface_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
-            // Column追加
-            this.m_interface_List.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(1, "有効", 30, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(2, "インターフェイス名", 180, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(3, "監視タイプ", 30, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(4, "監視項目名", 180, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(5, "閾値", 30, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(6, "IPアドレス", 100, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(7, "IPアドレス(NAT)", 100, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(8, "備考", 100, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(9, "ホスト通番", 80, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(10, "カスタマ通番", 80, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(11, "システム通番", 80, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(12, "拠点通番", 80, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(13, "更新日時", 80, HorizontalAlignment.Left);
-            this.m_interface_List.Columns.Insert(14, "更新者", 80, HorizontalAlignment.Left);
-
-            //リストビューを初期化する
-            interface_list = new DataTable("table6");
-            interface_list.Columns.Add("No", Type.GetType("System.String"));
-            interface_list.Columns.Add("有効", Type.GetType("System.String"));
-            interface_list.Columns.Add("インターフェイス名", Type.GetType("System.String"));
-            interface_list.Columns.Add("監視タイプ", Type.GetType("System.String"));
-            interface_list.Columns.Add("監視項目名", Type.GetType("System.String"));
-            interface_list.Columns.Add("閾値", Type.GetType("System.String"));
-            interface_list.Columns.Add("IPアドレス", Type.GetType("System.String"));
-            interface_list.Columns.Add("IPアドレス(NAT)", Type.GetType("System.String"));
-            interface_list.Columns.Add("備考", Type.GetType("System.String"));
-            interface_list.Columns.Add("ホスト通番", Type.GetType("System.String"));
-            interface_list.Columns.Add("カスタマ通番", Type.GetType("System.String"));
-            interface_list.Columns.Add("システム通番", Type.GetType("System.String"));
-            interface_list.Columns.Add("拠点通番", Type.GetType("System.String"));
-
-            interface_list.Columns.Add("更新日時", Type.GetType("System.String"));
-            interface_list.Columns.Add("更新者", Type.GetType("System.String"));
             if (dsp_L == null)
                 return;
             //インターフェイス情報
@@ -940,350 +669,133 @@ namespace moss_AP
                         //重複チェック
                         if (ary1.Add(w.watch_Interfaceno))
                         {
-                            DataRow row = interface_list.NewRow();
-                            row["No"] = w.watch_Interfaceno;
-                            row["有効"] = w.status;
-                            row["インターフェイス名"] = w.interfacename;
-                            row["監視タイプ"] = w.type;
-                            row["監視項目名"] = w.kanshi;
-                            row["閾値"] = w.border;
-                            row["IPアドレス"] = w.IPaddress;
-                            row["IPアドレス(NAT)"] = w.IPaddressNAT;
-                            row["備考"] = w.biko;
-                            row["ホスト通番"] = w.host_no;
-                            row["カスタマ通番"] = w.userno;
-                            row["システム通番"] = w.systemno;
-                            row["拠点通番"] = w.siteno;
-                            row["更新日時"] = w.chk_date;
-                            row["更新者"] = w.chk_name_id;
 
-                            interface_list.Rows.Add(row);
+                            string[] wi = Enumerable.Range(1, 12)
+                                .Select(x =>
+                                {
+                                    switch (x)
+                                    {
+                                        case 1: return w.watch_Interfaceno == null || w.watch_Interfaceno == "" ? "" : w.watch_Interfaceno;
+                                        case 2: return w.status == null || w.status == "" ? "" : w.status;
+                                        case 3: return w.interfacename == null || w.interfacename == "" ? "" : w.interfacename;
+                                        case 4: return w.type == null || w.type == "" ? "" : w.type;
+                                        case 5: return w.kanshi == null || w.kanshi == "" ? "" : w.kanshi;
+                                        case 6: return w.border == null || w.border == "" ? "" : w.border;
+                                        case 7: return w.IPaddress == null || w.IPaddress == "" ? "" : w.IPaddress;
+                                        case 8: return w.IPaddressNAT == null || w.IPaddressNAT == "" ? "" : w.IPaddressNAT;
+                                        case 9: return w.biko == null || w.biko == "" ? "" : w.biko;
+                                        case 10: return w.chk_date == null || w.chk_date == "" ? "" : w.chk_date;
+                                        case 11: return w.chk_name_id == null || w.chk_name_id == "" ? "" : w.chk_name_id;
+                                        default: return "";
+                                    }
+                                }).ToArray();
+
+                            //インターフェイス情報の表示
+                            this.m_interface_list.Rows.Add(wi);
                             interfaceDSList.Add(w);
-
                         }
                     }
                 }
 
                 //件数を書き込む
-    //            this.m_interface_count.Text = interface_list.Rows.Count.ToString() + "件";
+                //            this.m_interface_count.Text = interface_list.Rows.Count.ToString() + "件";
 
-                this.m_interface_List.VirtualListSize = interface_list.Rows.Count;
-                this.m_interface_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                m_interface_list.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
             }
         }
-        //システム
-        void systemList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
-        {
-            if (system_list.Rows.Count > 0)
-            {
-                //	e.Item = _item[e.ItemIndex];
-                DataRow row = system_list.Rows[e.ItemIndex];
-                e.Item = new ListViewItem(
-                new String[]
-                {
-                        Convert.ToString(row[0]),
-                        Convert.ToString(row[1]),
-                        Convert.ToString(row[2]),
-                        Convert.ToString(row[3]),
-                        Convert.ToString(row[4]),
-                        Convert.ToString(row[5]),
-                        Convert.ToString(row[6])
 
-                });
-            }
-
-
-        }
-        //拠点情報
-        void siteList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
-        {
-            if (site_list.Rows.Count > 0)
-            {
-                //	e.Item = _item[e.ItemIndex];
-                DataRow row = site_list.Rows[e.ItemIndex];
-                e.Item = new ListViewItem(
-                new String[]
-                {
-                    Convert.ToString(row[0]),
-                    Convert.ToString(row[1]),
-                    Convert.ToString(row[2]),
-                    Convert.ToString(row[3]),
-                    Convert.ToString(row[4]),
-                    Convert.ToString(row[5]),
-                    Convert.ToString(row[6]),
-                    Convert.ToString(row[7]),
-                    Convert.ToString(row[8])
-
-                });
-            }
-        }
-        //機器情報一覧更新
-        void hostList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
-        {
-
-            if (host_list.Rows.Count > 0)
-            {
-                //	e.Item = _item[e.ItemIndex];
-                DataRow row = host_list.Rows[e.ItemIndex];
-                e.Item = new ListViewItem(
-                    new String[]
-                    {
-                        Convert.ToString(row[0]),
-                        Convert.ToString(row[1]),
-                        Convert.ToString(row[2]),
-                        Convert.ToString(row[3]),
-                        Convert.ToString(row[4]),
-                        Convert.ToString(row[5]),
-                        Convert.ToString(row[6]),
-                        Convert.ToString(row[7]),
-                        Convert.ToString(row[8]),
-                        Convert.ToString(row[9]),
-                        Convert.ToString(row[10]),
-                        Convert.ToString(row[11]),
-                        Convert.ToString(row[12]),
-                        Convert.ToString(row[13])
-
-                    });
-            }
-        }
-        //インターフェイス監視一覧
-        void interfaceList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
-        {
-            if (interface_list.Rows.Count > 0)
-            {
-                //	e.Item = _item[e.ItemIndex];
-                DataRow row = this.interface_list.Rows[e.ItemIndex];
-                e.Item = new ListViewItem(
-                    new String[]
-                    {
-                    Convert.ToString(row[0]),
-                    Convert.ToString(row[1]),
-                    Convert.ToString(row[2]),
-                    Convert.ToString(row[3]),
-                    Convert.ToString(row[4]),
-                    Convert.ToString(row[5]),
-                    Convert.ToString(row[6]),
-                    Convert.ToString(row[7]),
-                    Convert.ToString(row[8]),
-                    Convert.ToString(row[9]),
-                    Convert.ToString(row[10]),
-                    Convert.ToString(row[11]),
-                    Convert.ToString(row[12]),
-                    Convert.ToString(row[13]),
-                    Convert.ToString(row[14])
-
-                    });
-            }
-        }
-        //システムリストのカラムクリック
-        private void m_system_List_ColumnClick(object sender, ColumnClickEventArgs e)
-        {
-            if (this.system_list == null)
-                return;
-            if (this.system_list.Rows.Count <= 0)
-                return;
-            //DataViewクラス ソートするためのクラス
-            DataView dv = new DataView(system_list);
-
-            //一時クラス
-            DataTable dttmp = new DataTable();
-
-            String strSort = "";
-
-            //0なら昇順にソート
-            if (sort_kind_system == 0)
-            {
-                strSort = " ASC";
-                sort_kind_system = 1;
-            }
-            else
-            {
-                //１の時は昇順にソート
-                strSort = " DESC";
-                sort_kind_system = 0;
-            }
-
-            //コピーを作成
-            dttmp = system_list.Clone();
-            //ソートを実行
-            dv.Sort = system_list.Columns[e.Column].ColumnName + strSort;
-
-            // ソートされたレコードのコピー
-            foreach (DataRowView drv in dv)
-            {
-                // 一時テーブルに格納
-                dttmp.ImportRow(drv.Row);
-            }
-            //格納したテーブルデータを上書く
-            system_list = dttmp.Copy();
-
-            //行が存在するかチェックを行う。
-            if (m_system_List.TopItem != null)
-            {
-                //現在一番上の行に表示されている行を取得
-                int start = m_system_List.TopItem.Index;
-                // ListView画面の再表示を行う
-                m_system_List.RedrawItems(start, m_system_List.Items.Count - 1, true);
-            }
-        }
-        //拠点リストのカラムクリック
-        private void m_site_List_ColumnClick(object sender, ColumnClickEventArgs e)
-        {
-            if (this.site_list == null)
-                return;
-            if (this.site_list.Rows.Count <= 0)
-                return;
-            //DataViewクラス ソートするためのクラス
-            DataView dv = new DataView(site_list);
-
-            //一時クラス
-            DataTable dttmp = new DataTable();
-
-            String strSort = "";
-
-            //0なら昇順にソート
-            if (sort_kind_site == 0)
-            {
-                strSort = " ASC";
-                sort_kind_site = 1;
-            }
-            else
-            {
-                //１の時は昇順にソート
-                strSort = " DESC";
-                sort_kind_site = 0;
-            }
-
-            //コピーを作成
-            dttmp = site_list.Clone();
-            //ソートを実行
-            dv.Sort = site_list.Columns[e.Column].ColumnName + strSort;
-
-            // ソートされたレコードのコピー
-            foreach (DataRowView drv in dv)
-            {
-                // 一時テーブルに格納
-                dttmp.ImportRow(drv.Row);
-            }
-            //格納したテーブルデータを上書く
-            site_list = dttmp.Copy();
-
-            //行が存在するかチェックを行う。
-            if (m_site_List.TopItem != null)
-            {
-                //現在一番上の行に表示されている行を取得
-                int start = m_site_List.TopItem.Index;
-                // ListView画面の再表示を行う
-                m_site_List.RedrawItems(start, m_site_List.Items.Count - 1, true);
-            }
-        }
-        //ホストリストのカラムクリック
-        private void m_host_list_ColumnClick(object sender, ColumnClickEventArgs e)
-        {
-            if (this.host_list == null)
-                return;
-            if (this.host_list.Rows.Count <= 0)
-                return;
-            //DataViewクラス ソートするためのクラス
-            DataView dv = new DataView(host_list);
-
-            //一時クラス
-            DataTable dttmp = new DataTable();
-
-            String strSort = "";
-
-            //0なら昇順にソート
-            if (sort_kind_host == 0)
-            {
-                strSort = " ASC";
-                sort_kind_host = 1;
-            }
-            else
-            {
-                //１の時は昇順にソート
-                strSort = " DESC";
-                sort_kind_host = 0;
-            }
-
-            //コピーを作成
-            dttmp = host_list.Clone();
-            //ソートを実行
-            dv.Sort = host_list.Columns[e.Column].ColumnName + strSort;
-
-            // ソートされたレコードのコピー
-            foreach (DataRowView drv in dv)
-            {
-                // 一時テーブルに格納
-                dttmp.ImportRow(drv.Row);
-            }
-            //格納したテーブルデータを上書く
-            host_list = dttmp.Copy();
-
-            //行が存在するかチェックを行う。
-            if (this.m_host_list.TopItem != null)
-            {
-                //現在一番上の行に表示されている行を取得
-                int start = m_host_list.TopItem.Index;
-                // ListView画面の再表示を行う
-                m_host_list.RedrawItems(start, m_host_list.Items.Count - 1, true);
-            }
-        }
-        //インターフェイスリストのカラムクリック
-        private void m_interface_List_ColumnClick(object sender, ColumnClickEventArgs e)
-        {
-            if (this.interface_list == null)
-                return;
-            if (this.interface_list.Rows.Count <= 0)
-                return;
-            //DataViewクラス ソートするためのクラス
-            DataView dv = new DataView(interface_list);
-
-            //一時クラス
-            DataTable dttmp = new DataTable();
-
-            String strSort = "";
-
-            //0なら昇順にソート
-            if (sort_kind_interface == 0)
-            {
-                strSort = " ASC";
-                sort_kind_interface = 1;
-            }
-            else
-            {
-                //１の時は昇順にソート
-                strSort = " DESC";
-                sort_kind_interface = 0;
-            }
-
-            //コピーを作成
-            dttmp = interface_list.Clone();
-            //ソートを実行
-            dv.Sort = interface_list.Columns[e.Column].ColumnName + strSort;
-
-            // ソートされたレコードのコピー
-            foreach (DataRowView drv in dv)
-            {
-                // 一時テーブルに格納
-                dttmp.ImportRow(drv.Row);
-            }
-            //格納したテーブルデータを上書く
-            interface_list = dttmp.Copy();
-
-            //行が存在するかチェックを行う。
-            if (this.m_interface_List.TopItem != null)
-            {
-                //現在一番上の行に表示されている行を取得
-                int start = m_interface_List.TopItem.Index;
-                // ListView画面の再表示を行う
-                m_interface_List.RedrawItems(start, m_interface_List.Items.Count - 1, true);
-            }
-        }
         //キャンセルボタン
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-    }
 
+        //システムリストダブルクリック
+        private void m_system_List_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            string st = "";
+
+            for (int j = 0; j < m_system_list.Columns.Count; j++)
+            {
+                if (this.m_system_list.Rows[e.RowIndex].Cells[j].Value != null)
+                   st = m_system_list.Rows[e.RowIndex].Cells[j].Value.ToString();
+            }
+        }
+
+        private void kousei_menu_Click(object sender, EventArgs e)
+        {
+
+        }
+        //挿入
+        private void m_insertLink_Click(object sender, EventArgs e)
+        {
+            DataGridView source;
+
+            Control menu = contextMenuDataGrid.SourceControl;
+            if(menu != null)
+            {
+                source = (DataGridView)menu;
+                //単語のインサート
+                ins_word(source);
+            }
+
+        }
+        //選択された文字列を挿入する
+        private void ins_word(DataGridView gridview)
+        {
+
+            //選択されている件数
+            int selcnt = gridview.GetCellCount(DataGridViewElementStates.Selected);
+            
+            //選択された文字列を配列で取得
+            String[] selectname = Enumerable.Range(1, selcnt).Where(x =>
+                gridview.SelectedCells[x - 1].FormattedValueType == Type.GetType("System.String"))
+                .Select(x =>
+                {
+                    return gridview.SelectedCells[x - 1].FormattedValue.ToString();
+                }).ToArray();
+
+            //文字列を挿入
+            insertChangeWords(selectname);
+        }
+        //選択クリアボタン
+        private void m_selectclearlink_Click(object sender, EventArgs e)
+        {
+            Control c = this.ActiveControl;
+            if (0 <= c.Name.IndexOf("_list")) { 
+                //選択をクリアする
+                DataGridView gridview = (DataGridView)c;
+                gridview.ClearSelection();
+            }
+        }
+        //カスタマ名ラベルの挿入
+        private void 挿入ctrlcToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(m_cutomername.Text != "")
+            {
+                string[] str = new string[] { m_cutomername.Text };
+                //文字列を挿入
+                insertChangeWords(str);
+            }
+        }
+        //送信ボタン
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form_DispMail maildisp = new Form_DispMail();
+            mailTempleteDS maildt = new mailTempleteDS();
+            
+            maildt.subject = m_templetename.Text;
+            maildt.body = m_body.Text.Replace("\n", "\r\n");
+            maildisp.mailtempDS = maildt;
+
+            maildisp.con = con;
+            maildisp.loginDS = loginDS;
+
+            //テンプレート表示
+            maildisp.Show();
+
+        }
+    }
 }

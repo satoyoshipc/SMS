@@ -41,18 +41,16 @@
             this.m_syoriDate = new System.Windows.Forms.DateTimePicker();
             this.m_alermno = new System.Windows.Forms.TextBox();
             this.m_customer_name = new System.Windows.Forms.TextBox();
-            this.m_system_name = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // m_alerm_list
             // 
             this.m_alerm_list.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_alerm_list.Location = new System.Drawing.Point(12, 160);
+            this.m_alerm_list.Location = new System.Drawing.Point(12, 151);
             this.m_alerm_list.Name = "m_alerm_list";
-            this.m_alerm_list.Size = new System.Drawing.Size(516, 127);
+            this.m_alerm_list.Size = new System.Drawing.Size(516, 151);
             this.m_alerm_list.TabIndex = 5;
             this.m_alerm_list.UseCompatibleStateImageBehavior = false;
             this.m_alerm_list.View = System.Windows.Forms.View.Details;
@@ -63,7 +61,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 145);
+            this.label1.Location = new System.Drawing.Point(15, 136);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 12);
             this.label1.TabIndex = 1;
@@ -132,11 +130,11 @@
             // 
             this.m_alerm_message.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_alerm_message.Location = new System.Drawing.Point(12, 102);
+            this.m_alerm_message.Location = new System.Drawing.Point(12, 81);
             this.m_alerm_message.Multiline = true;
             this.m_alerm_message.Name = "m_alerm_message";
             this.m_alerm_message.ReadOnly = true;
-            this.m_alerm_message.Size = new System.Drawing.Size(516, 39);
+            this.m_alerm_message.Size = new System.Drawing.Size(516, 50);
             this.m_alerm_message.TabIndex = 4;
             // 
             // label5
@@ -177,16 +175,6 @@
             this.m_customer_name.Size = new System.Drawing.Size(463, 19);
             this.m_customer_name.TabIndex = 2;
             // 
-            // m_system_name
-            // 
-            this.m_system_name.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_system_name.Location = new System.Drawing.Point(65, 79);
-            this.m_system_name.Name = "m_system_name";
-            this.m_system_name.ReadOnly = true;
-            this.m_system_name.Size = new System.Drawing.Size(463, 19);
-            this.m_system_name.TabIndex = 3;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -196,23 +184,12 @@
             this.label2.TabIndex = 18;
             this.label2.Text = "カスタマ";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(10, 83);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(43, 12);
-            this.label6.TabIndex = 19;
-            this.label6.Text = "システム";
-            // 
             // Form_alermlist
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(541, 397);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.m_system_name);
             this.Controls.Add(this.m_customer_name);
             this.Controls.Add(this.m_alermno);
             this.Controls.Add(this.m_syoriDate);
@@ -248,9 +225,7 @@
         private System.Windows.Forms.TextBox m_alermtitle;
         private System.Windows.Forms.DateTimePicker m_syoriDate;
         private System.Windows.Forms.TextBox m_alermno;
-        private System.Windows.Forms.TextBox m_system_name;
         private System.Windows.Forms.TextBox m_customer_name;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label2;
     }
 }

@@ -38,6 +38,9 @@ namespace moss_AP
         //回線情報表示用
         DataTable kasen_list;
 
+        //インシデント情報
+        DataTable incident_sagyo_list;
+
         //作業情報
         DataTable teiki_sagyo_list;
 
@@ -47,8 +50,11 @@ namespace moss_AP
         //特別対応
         DataTable tokubetu_sagyo_list;
 
-        //インシデント情報
-        DataTable incident_List;
+        //テンプレート
+        public List<templeteDS> templList { get; set; }
+
+        //システム
+        public templeteDS templetedt { get; set; }
 
         private Class_ListViewColumnSorter _columnSorter;
 
@@ -72,11 +78,12 @@ namespace moss_AP
         List<watch_InterfaceDS> interfaceDSList;
 
         List<taskDS> schDSList;
+        List<taskDS> scheduleList_incident;
         List<taskDS> scheduleList_keikaku;
         List<taskDS> scheduleList_teiki;
         List<taskDS> scheduleList_tokubetu;
 
-        List<incidentDS> incidentDSList;
+
 
         //タイマーフォーム
         Form_alermlist alermdlg;
@@ -122,9 +129,8 @@ namespace moss_AP
                 //インシデント一覧データを取得
                 Class_Detaget dg_class = new Class_Detaget();
                 //List<incidentDS> incidentList ;
-                incidentDSList = dg_class.getOpenIncident(con);
+ //               incidentDSList = dg_class.getOpenIncident(con);
                 //インシデント一覧を表示
-                disp_Incident(incidentDSList);
                 disp_sagyoList(schDSList);
                 timer1.Start();
 
@@ -238,7 +244,6 @@ namespace moss_AP
                 TreeNode NodeUser = new TreeNode(v.username, 0, 0);
                 NodeUser.ToolTipText = v.userno;
 
-
                 //システム名を取得
                 List<systemDS> systemDSListsub = getuser.getSystemList(v.userno, true);
 
@@ -316,7 +321,7 @@ namespace moss_AP
                                 NodeTimer1.Parent.ForeColor = Color.Red;
                                 NodeTimer1.ForeColor = Color.Red;
                                 NodeTimer1.Nodes.Add(NodeTimerDetail);
-                                scheduleDS ds = new scheduleDS();
+                                //scheduleDS ds = new scheduleDS();
 
                             }
                             //計画作業
@@ -564,12 +569,12 @@ namespace moss_AP
             }
         }
         //インシデント一覧
-        void incidentList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        void m_incident_List_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
             //	e.Item = _item[e.ItemIndex];
-            if (this.incident_List.Rows.Count > 0)
+            if (this.incident_sagyo_list.Rows.Count > 0)
             {
-                DataRow row = this.incident_List.Rows[e.ItemIndex];
+                DataRow row = this.incident_sagyo_list.Rows[e.ItemIndex];
                 e.Item = new ListViewItem(
                     new String[]
                     {
@@ -584,16 +589,7 @@ namespace moss_AP
                 Convert.ToString(row[8]),
                 Convert.ToString(row[9]),
                 Convert.ToString(row[10]),
-                Convert.ToString(row[11]),
-                Convert.ToString(row[12]),
-                Convert.ToString(row[13]),
-                Convert.ToString(row[14]),
-                Convert.ToString(row[15]),
-                Convert.ToString(row[16]),
-                Convert.ToString(row[17]),
-                Convert.ToString(row[18]),
-                Convert.ToString(row[19]),
-                Convert.ToString(row[20])
+                Convert.ToString(row[11])
                     });
             }
 
@@ -624,7 +620,6 @@ namespace moss_AP
                 Convert.ToString(row[11])
                     });
             }
-
         }
         //計画作業
         void keikaku_sagyoList_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
@@ -812,6 +807,7 @@ namespace moss_AP
         //作業一覧を表示する
         private void disp_sagyoList(List<taskDS> scheduleList)
         {
+            scheduleList_incident = new List<taskDS>();
             scheduleList_keikaku = new List<taskDS>();
             scheduleList_teiki = new List<taskDS>();
             scheduleList_tokubetu = new List<taskDS>();
@@ -821,20 +817,127 @@ namespace moss_AP
             { 
                 foreach (taskDS schedata in scheduleList)
                 {
-                    //1:インシデント処理 2:定期 3:作業 4:特別 5:サブタスク
+
+                    //1:インシデントタスク 2:定期 3:作業 4:特別 5:サブタスク
+                    if (schedata.schedule_type == "1")
+                        scheduleList_incident.Add(schedata);
                     if (schedata.schedule_type == "2")
                         scheduleList_teiki.Add(schedata);
                     else if (schedata.schedule_type == "3")
                         scheduleList_keikaku.Add(schedata);
                     else if (schedata.schedule_type == "4")
                         scheduleList_tokubetu.Add(schedata);
+
                 }
             }
+            disp_incident();
             disp_teiki_list();
             disp_scheduleList_keikaku();
             disp_tokubetu_list();
             
         }
+        
+
+
+        //インシデントの表示
+        private void disp_incident()
+        {
+
+            this.m_incident_List.VirtualMode = true;
+            // １行全体選択
+            this.m_incident_List.FullRowSelect = true;
+            this.m_incident_List.HideSelection = false;
+            this.m_incident_List.HeaderStyle = ColumnHeaderStyle.Clickable;
+            //Hook up handlers for VirtualMode events.
+            this.m_incident_List.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(m_incident_List_RetrieveVirtualItem);
+            this.m_incident_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            this.m_incident_List.Scrollable = true;
+
+            // Column追加
+            this.m_incident_List.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(1, "ステータス", 30, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(2, "カスタマ通番", 50, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(3, "カスタマ名", 50, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(4, "内容", 50, HorizontalAlignment.Left);
+
+            this.m_incident_List.Columns.Insert(5, "開始日時", 110, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(6, "終了日時", 110, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(7, "備考", 110, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(8, "登録日時", 180, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(9, "登録者", 80, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(10, "更新日時", 80, HorizontalAlignment.Left);
+            this.m_incident_List.Columns.Insert(11, "更新者", 80, HorizontalAlignment.Left);
+
+            //リストビューを初期化する
+            incident_sagyo_list = new DataTable("table12");
+            incident_sagyo_list.Columns.Add("No", Type.GetType("System.Int32"));
+            incident_sagyo_list.Columns.Add("ステータス", Type.GetType("System.String"));
+            incident_sagyo_list.Columns.Add("カスタマ通番", Type.GetType("System.String"));
+            incident_sagyo_list.Columns.Add("カスタマ名", Type.GetType("System.String"));
+            incident_sagyo_list.Columns.Add("内容", Type.GetType("System.String"));
+            incident_sagyo_list.Columns.Add("開始日時", Type.GetType("System.String"));
+            incident_sagyo_list.Columns.Add("終了日時", Type.GetType("System.String"));
+            incident_sagyo_list.Columns.Add("備考", Type.GetType("System.String"));
+            incident_sagyo_list.Columns.Add("登録日時", Type.GetType("System.String"));
+            incident_sagyo_list.Columns.Add("登録者", Type.GetType("System.String"));
+            incident_sagyo_list.Columns.Add("更新日時", Type.GetType("System.String"));
+            incident_sagyo_list.Columns.Add("更新者", Type.GetType("System.String"));
+
+            //データの挿入
+            if (scheduleList_incident != null)
+            {
+                foreach (taskDS v in scheduleList_incident)
+                {
+                    //チェックボックスがOFFになっている場合は表示しない
+                    if (this.m_incident_umu_check.Checked == false && v.status == "無効")
+                        continue;
+
+
+                    //if (fastline == v.incident_no)
+                    //    continue;
+
+                    DataRow urow = incident_sagyo_list.NewRow();
+
+                    urow["No"] = v.schedule_no;
+                    urow["ステータス"] = v.status;
+                    urow["カスタマ通番"] = v.userno;
+                    urow["カスタマ名"] = v.username;
+                    urow["内容"] = v.naiyou;
+                    //urow["テンプレートNO"] = v.templeteno;
+
+                    //1:インシデント処理 2:定期作業業務促し 3:計画作業 4:特別対応
+                    //if (v.schedule_type == "1")
+                    //    urow["予定区分"] = "インシデント処理";
+                    //else if (v.schedule_type == "2")
+                    //    urow["予定区分"] = "定期作業";
+                    //else if (v.schedule_type == "3")
+                    //    urow["予定区分"] = "計画作業";
+                    //else if (v.schedule_type == "4")
+                    //    urow["予定区分"] = "特別対応";
+
+
+                    urow["開始日時"] = v.startdate;
+                    urow["終了日時"] = v.enddate;
+                    urow["備考"] = v.biko;
+                    urow["登録日時"] = v.ins_date;
+                    urow["登録者"] = v.ins_name_id;
+                    urow["更新日時"] = v.chk_date;
+                    urow["更新者"] = v.chk_name_id;
+                    incident_sagyo_list.Rows.Add(urow);
+                }
+                //件数を書き込む
+                this.m_incident_count.Text = incident_sagyo_list.Rows.Count.ToString() + "件";
+
+                this.m_incident_List.VirtualListSize = incident_sagyo_list.Rows.Count;
+                this.m_incident_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+            }
+
+        }
+
+
+
+
         //定期作業の表示
         private void disp_teiki_list()
         {
@@ -1025,134 +1128,7 @@ namespace moss_AP
             }
 
         }
-        //インシデント情報の表示
-        private void disp_Incident(List<incidentDS> incidentList)
-        {
-            this.m_incident_List.VirtualMode = true;
-            // １行全体選択
-            this.m_incident_List.FullRowSelect = true;
-            this.m_incident_List.HideSelection = false;
-            this.m_incident_List.HeaderStyle = ColumnHeaderStyle.Clickable;
-            //Hook up handlers for VirtualMode events.
-            this.m_incident_List.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(incidentList_RetrieveVirtualItem);
-            this.m_incident_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-            this.m_incident_List.Scrollable = true;
 
-            // Column追加
-            this.m_incident_List.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(1, "完了", 30, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(2, "カスタマ", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(3, "システム", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(4, "拠点", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(5, "ホスト", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(6, "MPMSインシデント番号", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(7, "S-cude事例ID", 30, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(8, "インシデント区分", 30, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(9, "インシデント内容(タイトル)", 80, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(10, "MAT対応", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(11, "MAT対応コマンド", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(12, "受付日時", 30, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(13, "手配日時", 30, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(14, "復旧日時", 80, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(15, "完了日時", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(16, "アラート日時", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(17, "担当者番号", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(18, "オペレータID", 180, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(19, "更新日時", 80, HorizontalAlignment.Left);
-            this.m_incident_List.Columns.Insert(20, "更新者", 80, HorizontalAlignment.Left);
-
-            //リストビューを初期化する
-            incident_List = new DataTable("table14");
-            incident_List.Columns.Add("No", Type.GetType("System.Int32"));
-            incident_List.Columns.Add("完了", Type.GetType("System.String"));
-            incident_List.Columns.Add("カスタマ", Type.GetType("System.String"));
-            incident_List.Columns.Add("システム", Type.GetType("System.String"));
-            incident_List.Columns.Add("拠点", Type.GetType("System.String"));
-            incident_List.Columns.Add("ホスト", Type.GetType("System.String"));
-            incident_List.Columns.Add("MPMSインシデント番号", Type.GetType("System.String"));
-            incident_List.Columns.Add("S-cude事例ID", Type.GetType("System.String"));
-            incident_List.Columns.Add("インシデント区分", Type.GetType("System.String"));
-            incident_List.Columns.Add("インシデント内容(タイトル)", Type.GetType("System.String"));
-            incident_List.Columns.Add("MAT対応", Type.GetType("System.String"));
-            incident_List.Columns.Add("MAT対応コマンド", Type.GetType("System.String"));
-            incident_List.Columns.Add("受付日時", Type.GetType("System.String"));
-            incident_List.Columns.Add("手配日時", Type.GetType("System.String"));
-            incident_List.Columns.Add("復旧日時", Type.GetType("System.String"));
-            incident_List.Columns.Add("完了日時", Type.GetType("System.String"));
-            incident_List.Columns.Add("アラート日時", Type.GetType("System.String"));
-            incident_List.Columns.Add("担当者番号", Type.GetType("System.String"));
-            incident_List.Columns.Add("オペレータID", Type.GetType("System.String"));
-            incident_List.Columns.Add("更新日時", Type.GetType("System.String"));
-            incident_List.Columns.Add("更新者", Type.GetType("System.String"));
-
-
-            //データの挿入
-            if (incidentList != null)
-            {
-                string fastline = "";
-                foreach (incidentDS v in incidentList)
-                {
-                    //チェックボックスがOFFになっている場合は表示しない
-                    if (this.m_incident_umu_check.Checked == false && v.status == "無効")
-                        continue;
-
-                    if (fastline == v.incident_no)
-                        continue;
-
-                    DataRow urow = incident_List.NewRow();
-
-                    urow["No"] = v.incident_no;
-                    urow["完了"] = v.status;
-                    urow["カスタマ"] = v.username;
-                    urow["システム"] = v.systemname;
-                    urow["拠点"] = v.sitename;
-                    urow["ホスト"] = v.hostname;
-                    urow["MPMSインシデント番号"] = v.mpms_incident;
-                    urow["S-cude事例ID"] = v.s_cube_id;
-                    //1:アラーム検知 2:障害申告 3:問い合わせ
-                    if (v.incident_type == "1")
-                    {
-                        urow["インシデント区分"] = "アラーム検知";
-                    }
-                    else if (v.incident_type == "2")
-                    {
-                        urow["インシデント区分"] = "障害申告";
-                    }
-                    else if (v.incident_type == "3")
-                    {
-                        urow["インシデント区分"] = "問い合わせ";
-                    }
-
-                    urow["インシデント内容(タイトル)"] = v.content;
-
-                    if (v.matflg == "1")
-                        urow["MAT対応"] = "あり";
-                    if (v.matflg == "0")
-                        urow["MAT対応"] = "なし";
-
-                    urow["MAT対応コマンド"] = v.matcommand;
-                    urow["受付日時"] = v.uketukedate;
-                    urow["手配日時"] = v.tehaidate;
-                    urow["復旧日時"] = v.fukyudate;
-                    urow["完了日時"] = v.enddate;
-                    urow["アラート日時"] = v.timer;
-                    urow["担当者番号"] = v.user_tantou_no;
-                    urow["オペレータID"] = v.opename;
-                    urow["更新日時"] = v.chk_date;
-                    urow["更新者"] = v.chk_name_id;
-                    incident_List.Rows.Add(urow);
-
-                    fastline = v.incident_no;
-
-                }
-
-                //件数を書き込む
-                this.m_incident_count.Text = incident_List.Rows.Count.ToString() + "件";
-
-                this.m_incident_List.VirtualListSize = incident_List.Rows.Count;
-                this.m_incident_List.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-            }
-        }
 
         //特別対応の表示
         private void disp_tokubetu_list()
@@ -1366,27 +1342,31 @@ namespace moss_AP
             //システム情報
             if (dsp_L.system_L != null)
             {
+                HashSet<string> ary1 = new HashSet<string>();
+
                 string fastline = "";
                 foreach (systemDS sys in dsp_L.system_L)
                 {
-
                     if (fastline == sys.systemno)
                         continue;
                     //チェックボックスがOFFになっている場合は表示しない
                     if (this.m_system_umu_check.Checked == false && sys.status == "無効")
                         continue;
+                    //重複チェック
+                    if (ary1.Add(sys.systemno))
+                    {
+                        DataRow row = system_list.NewRow();
+                        row["No"] = sys.systemno;
+                        row["有効"] = sys.status;
+                        row["システム名"] = sys.systemname;
+                        row["システム名カナ"] = sys.systemkana;
+                        row["備考"] = sys.biko;
+                        row["更新日時"] = sys.chk_date;
+                        row["更新者"] = sys.chk_name_id;
+                        system_list.Rows.Add(row);
 
-                    DataRow row = system_list.NewRow();
-                    row["No"] = sys.systemno;
-                    row["有効"] = sys.status;
-                    row["システム名"] = sys.systemname;
-                    row["システム名カナ"] = sys.systemkana;
-                    row["備考"] = sys.biko;
-                    row["更新日時"] = sys.chk_date;
-                    row["更新者"] = sys.chk_name_id;
-                    system_list.Rows.Add(row);
-
-                    fastline = sys.systemno;
+                        fastline = sys.systemno;
+                    }
                 }
                 //件数を書き込む
                 this.m_system_count.Text = system_list.Rows.Count.ToString() + "件";
@@ -2222,10 +2202,10 @@ namespace moss_AP
             //インシデント一覧データを取得
             Class_Detaget dg_class = new Class_Detaget();
             //List<incidentDS> incidentList;
-            incidentDSList = dg_class.getOpenIncident(con);
+            //incidentDSList = dg_class.getOpenIncident(con);
 
             //インシデント一覧を表示
-            disp_Incident(incidentDSList);
+           // disp_Incident(incidentDSList);
             disp_sagyoList(schDSList);
 
 
@@ -2761,8 +2741,7 @@ namespace moss_AP
         //タイマー1分毎にサーバを見に行く
         private void timer1_Tick(object sender, EventArgs e)
         {
-
-            //            System.Console.WriteLine("Timer1_Tick()_Begin");
+            logger.InfoFormat("Timer1_Tick()_Begin");
             try
             {
                 //時間になったタイマーの問い合わせ
@@ -2771,6 +2750,9 @@ namespace moss_AP
                 List<alermDS> alermlist;
                 alermlist = dataget.getAlert(this, con);
 
+                logger.InfoFormat("getAlert " + alermlist.Count.ToString() + "件");
+
+                
                 //1件以上あればメッセージ表示
                 if (alermlist != null && alermlist.Count > 0)
                 {
@@ -2785,6 +2767,7 @@ namespace moss_AP
                     else
                     {
                         alermdlg.Close();
+                        alermdlg = null;
                         alermdlg = new Form_alermlist();
                         alermdlg.almList = alermlist;
                         alermdlg.con = con;
@@ -2802,6 +2785,9 @@ namespace moss_AP
                 MessageBox.Show("タイマー表示 " + ex.Message);
                 return ;
             }
+
+            logger.InfoFormat("Timer1_Tick()_END");
+
         }
 
         //フォームが閉じるとき
@@ -2831,35 +2817,7 @@ namespace moss_AP
             incidentfm.Show();
 
         }
-        //定期作業登録
-        private void linkLabel8_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
 
-            Form_taskInsert taskinsert = new Form_taskInsert();
-            taskinsert.con = con;
-            if (userList != null)
-                taskinsert.userList = userDSList;
-            taskinsert.systemList = systemDSList;
-            taskinsert.loginDS = loginDS;
-            taskinsert.Show();
-        }
-        //計画作業登録
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-
-            Form_scheduleInsert taskinsert = new Form_scheduleInsert();
-            taskinsert.con = con;
-            if (userList != null)
-                taskinsert.userList = userDSList;
-            if (systemDSList != null)
-                taskinsert.systemList = systemDSList;
-            if (siteDSList != null)
-                taskinsert.siteList = siteDSList;
-            taskinsert.loginDS = loginDS;
-            taskinsert.Show();
-
-
-        }
 
         //計画作業列をダブルクリック
         private void m_keikaku_list_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -2869,7 +2827,7 @@ namespace moss_AP
         }
         private void m_incident_List_KeyDown(object sender, KeyEventArgs e)
         {
-            //disp_schedule();
+            disp_schedule();
         }
 
         private void disp_schedule()
@@ -2987,17 +2945,18 @@ namespace moss_AP
         {
             ListView.SelectedIndexCollection collection = m_teiki_List.SelectedIndices;
             int count = collection.Count; // 選択されている個数がcountに
-            MessageBox.Show(count.ToString() + "件　更新します。よろしいですか?", "定期作業ステータス更新", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if(MessageBox.Show(count.ToString() + "件　更新します。よろしいですか?", "定期作業ステータス更新", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            return;
             foreach (int i in collection)
             {
                 // iに選択されているリストのインデックスが順次入る（当然0からの値）
                 string scheduleid = this.m_teiki_List.Items[i].SubItems[0].Text;
                 string status = this.m_teiki_List.Items[i].SubItems[1].Text;
-                if (status == "未完了")
+                if (status == "有効")
                 {
                     if (con.FullState != ConnectionState.Open) con.Open();
 
-                    string sql = "update schedule set status =:state,chk_name_id =:id, chk_date=:date where schedule_no = :a";
+                    string sql = "update task set status =:state,chk_name_id =:id, chk_date=:date where schedule_no = :a";
                     using (var transaction = con.BeginTransaction())
                     {
                         var command = new NpgsqlCommand(@sql, con);
@@ -3016,6 +2975,7 @@ namespace moss_AP
                                 MessageBox.Show("定期作業ステータス更新時エラーが発生しました。","");
                                 logger.ErrorFormat("定期作業ステータス読込エラー：{0}", sql);
                             }
+                            MessageBox.Show("定期作業ステータス更新しました。", "定期作業ステータス更新");
 
                         }
                         catch (Exception ex)
@@ -3037,17 +2997,20 @@ namespace moss_AP
             
             ListView.SelectedIndexCollection collection = m_keikaku_list.SelectedIndices;
             int count = collection.Count; // 選択されている個数がcountに
-            MessageBox.Show(count.ToString() + "件　更新します。よろしいですか?", "計画作業ステータス更新", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (MessageBox.Show(count.ToString() + "件　更新します。よろしいですか?", "計画作業ステータス更新", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
             foreach (int i in collection)
             {
                 // iに選択されているリストのインデックスが順次入る（当然0からの値）
                 string scheduleid = this.m_keikaku_list.Items[i].SubItems[0].Text;
                 string status = this.m_keikaku_list.Items[i].SubItems[1].Text;
-                if (status == "未完了")
+                if (status == "有効")
                 {
                     if (con.FullState != ConnectionState.Open) con.Open();
 
-                    string sql = "update schedule set status =:state,chk_name_id =:id, chk_date=:date where schedule_no = :a";
+                    //string sql = "update schedule set status =:state,chk_name_id =:id, chk_date=:date where schedule_no = :a";
+                    string sql = "update task set status =:state,chk_name_id =:id, chk_date=:date where schedule_no = :a";
+
                     using (var transaction = con.BeginTransaction())
                     {
                         var command = new NpgsqlCommand(@sql, con);
@@ -3067,6 +3030,8 @@ namespace moss_AP
                                 MessageBox.Show("更新できませんでした。", "計画作業ステータス更新");
                                 logger.ErrorFormat("計画作業ステータス更新エラー：sql:{0}", sql);
                             }
+                            MessageBox.Show("計画作業ステータス更新しました。", "計画作業ステータス更新");
+
                         }
                         catch (Exception ex)
                         {
@@ -3134,62 +3099,59 @@ namespace moss_AP
             formdetail.Owner = this;
             formdetail.Show();
         }
+
         //インシデント情報をダブルクリック
-        private void m_incident_List_DoubleClick(object sender, EventArgs e)
+        private void m_incident_List_MouseDoubleClick(object sender, MouseEventArgs e)
         {
 
             ListView.SelectedIndexCollection item = m_incident_List.SelectedIndices;
-            Form_incidentDetail formdetail = new Form_incidentDetail();
+            Form_taskDetail formdetail = new Form_taskDetail();
             formdetail.con = con;
 
-            string incidentno = this.m_incident_List.Items[item[0]].SubItems[0].Text;
+            string scheduleno = this.m_incident_List.Items[item[0]].SubItems[0].Text;
 
-            formdetail.incidentdt = new incidentDS();
+            formdetail.taskds = new taskDS();
 
             string status = "0";
-            foreach (incidentDS sch in incidentDSList)
+            foreach (taskDS sch in scheduleList_incident)
             {
-                if (incidentno == sch.incident_no)
+                if (scheduleno == sch.schedule_no)
                 {
-                    formdetail.incidentdt = sch;
+                    formdetail.taskds = sch;
                     if (sch.status != null)
                         if (sch.status == "有効")
                             status = "1";
                         else if (sch.status == "無効")
                             status = "0";
 
-                    formdetail.incidentdt.incident_no = sch.incident_no;
-                    formdetail.incidentdt.status = status;
-                    formdetail.incidentdt.mpms_incident = sch.mpms_incident;
-                    formdetail.incidentdt.s_cube_id = sch.s_cube_id;
-                    formdetail.incidentdt.incident_type = sch.incident_type;
-                    formdetail.incidentdt.content = sch.content;
-                    formdetail.incidentdt.matflg = sch.matflg;
-                    formdetail.incidentdt.matcommand = sch.matcommand;
-                    formdetail.incidentdt.uketukedate = sch.uketukedate;
-                    formdetail.incidentdt.tehaidate = sch.tehaidate;
-                    formdetail.incidentdt.fukyudate = sch.fukyudate;
-                    formdetail.incidentdt.enddate = sch.enddate;
-                    formdetail.incidentdt.userno = sch.userno;
-                    formdetail.incidentdt.systemno = sch.systemno;
-                    formdetail.incidentdt.chk_date = sch.chk_date;
-                    formdetail.incidentdt.chk_name_id = sch.chk_name_id;
+                    formdetail.taskds.schedule_no = sch.schedule_no;
+                    formdetail.taskds.schedule_type = sch.schedule_type;
+                    formdetail.taskds.status = status;
+
+                    formdetail.taskds.schedule_type = sch.schedule_type;
+                    formdetail.taskds.templeteno = sch.templeteno;
+                    formdetail.taskds.naiyou = sch.naiyou;
+                    formdetail.taskds.startdate = sch.startdate;
+                    formdetail.taskds.enddate = sch.enddate;
+                    formdetail.taskds.biko = sch.biko;
+                    formdetail.taskds.userno = sch.userno;
+                    formdetail.taskds.username = sch.username;
+                    formdetail.taskds.ins_date = sch.ins_date;
+                    formdetail.taskds.ins_name_id = sch.ins_name_id;
+                    formdetail.taskds.chk_date = sch.chk_date;
+                    formdetail.taskds.chk_name_id = sch.chk_name_id;
 
                     break;
                 }
             }
+            //
             if (userDSList != null)
                 formdetail.userList = userDSList;
-            if (systemDSList != null)
-                formdetail.systemList = systemDSList;
-            if (siteDSList != null)
-                formdetail.siteList = siteDSList;
             formdetail.loginDS = loginDS;
             formdetail.con = con;
             formdetail.Owner = this;
             formdetail.Show();
         }
-
         //メールの作成
         private void button1_Click(object sender, EventArgs e)
         {
@@ -3641,14 +3603,15 @@ namespace moss_AP
 
         }
         //インシデント情報をクリックしたとき
-        private void m_incident_List_ColumnClick(object sender, ColumnClickEventArgs e)
+
+        private void m_incident_List_ColumnClick_1(object sender, ColumnClickEventArgs e)
         {
-            if (this.incident_List == null)
+           if (this.incident_sagyo_list == null)
                 return;
-            if (this.incident_List.Rows.Count <= 0)
+            if (this.incident_sagyo_list.Rows.Count <= 0)
                 return;
             //DataViewクラス ソートするためのクラス
-            DataView dv = new DataView(incident_List);
+            DataView dv = new DataView(incident_sagyo_list);
 
             //一時クラス
             DataTable dttmp = new DataTable();
@@ -3668,9 +3631,9 @@ namespace moss_AP
             }
 
             //コピーを作成
-            dttmp = incident_List.Clone();
+            dttmp = incident_sagyo_list.Clone();
             //ソートを実行
-            dv.Sort = incident_List.Columns[e.Column].ColumnName + strSort;
+            dv.Sort = incident_sagyo_list.Columns[e.Column].ColumnName + strSort;
 
             // ソートされたレコードのコピー
             foreach (DataRowView drv in dv)
@@ -3679,7 +3642,7 @@ namespace moss_AP
                 dttmp.ImportRow(drv.Row);
             }
             //格納したテーブルデータを上書く
-            incident_List = dttmp.Copy();
+            incident_sagyo_list = dttmp.Copy();
 
             //行が存在するかチェックを行う。
             if (this.m_incident_List.TopItem != null)
@@ -3689,7 +3652,9 @@ namespace moss_AP
                 // ListView画面の再表示を行う
                 m_incident_List.RedrawItems(start, m_incident_List.Items.Count - 1, true);
             }
+       
         }
+
         //計画作業情報のカラムをクリックした時
         private void m_teiki_List_ColumnClick(object sender, ColumnClickEventArgs e)
         {
@@ -3926,21 +3891,7 @@ namespace moss_AP
 
         }
 
-        //特別対応登録ボタン
-        private void linkLabel9_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Form_scheduleInsert timerfm = new Form_scheduleInsert();
-            if (userDSList != null)
-                timerfm.userList = userDSList;
-            if (systemDSList != null)
-                timerfm.systemList = systemDSList;
-            if (siteDSList != null)
-                timerfm.siteList = siteDSList;
 
-            timerfm.con = con;
-            timerfm.loginDS = loginDS;
-            timerfm.ShowDialog(this);
-        }
         //全ノード展開
         private void button3_Click(object sender, EventArgs e)
         {
@@ -3971,7 +3922,7 @@ namespace moss_AP
 
             form.con = con;
 
-            form.incidentDSList = incidentDSList;
+            //form.incidentDSList = incidentDSList;
             form.kubunstr = "インシデント対応";
             form.Show();
 
@@ -4100,7 +4051,7 @@ namespace moss_AP
         //キーダウン
         private void Form_MainList_KeyDown(object sender, KeyEventArgs e)
         {
-            //F1キーが押されたか調べる
+            //F5キーが押されたか調べる
             if (e.KeyData == Keys.F5)
                 m_refresh_btn.PerformClick();
         }
@@ -6184,18 +6135,16 @@ namespace moss_AP
 
             disp_kaisen(dset);
         }
-
-        private void m_incident_umu_check_CheckedChanged(object sender, EventArgs e)
+        private void m_incident_umu_check_CheckedChanged_1(object sender, EventArgs e)
         {
             m_incident_List.Clear();
-            this.disp_Incident(incidentDSList);
+            this.disp_incident();
         }
 
         private void m_teiki_umu_check_CheckedChanged(object sender, EventArgs e)
         {
             m_teiki_List.Clear();
             this.disp_teiki_list();
-
         }
 
 
@@ -6236,8 +6185,189 @@ namespace moss_AP
         {
 
         }
-        //メール出力画面
-        private void linkLabel10_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
+
+
+        private void テンプレートインポートToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //1:インシデントテンプレート　2:作業テンプレート
+        private void ImportTemplete(string incidentflg)
+        {
+            //ファイル選択ダイアログ
+            string filePath = Disp_FileSelectDlg();
+            if (filePath == "")
+                return;
+
+            List<templeteDS> templetedt_list = new List<templeteDS>();
+            String context = "";
+            try
+            {
+
+                TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(","); // 区切り文字はコンマ
+
+                String username = "";
+
+
+
+                while (!parser.EndOfData)
+                {
+                    templetedt = new templeteDS();
+                    string[] cols = parser.ReadFields(); // 1行読み込み                         //ステータス
+
+                    //1行目#はコメント
+                    string str = "";
+                    str = cols[0];
+                    if (str.StartsWith("#"))
+                        continue;
+
+                    //インシデントテンプレート
+                    if (incidentflg == "1") {
+                        context = "インシデントメール";
+
+
+                        templetedt.title = cols[2];
+                    }
+                    else
+                    {
+                        context = "計画作業メール";
+                    }
+                    templetedt.templetename = cols[2];
+                    username = cols[2];
+                    string tat = cols[4];
+                    templetedt.text  = tat.Replace("\n", "\r\n");
+                    //更新日時
+                    templetedt.chk_date = cols[5];
+                    //更新ID
+                    templetedt.chk_name_id = cols[6];
+
+                    
+
+                    //カスタマNOの取得
+                    //ALLだったら0:全てのカスタマ
+                    if (username == "ALL")
+                    {
+                        templetedt.userno = "0";
+                        username = "全てのカスタマ";
+                    }
+                    else
+                    {
+                        templetedt.userno = getCustomerNo(username, con);
+                    }
+
+                    //カスタマ通番が取得できなかったら登録しない
+                    if (templetedt.userno == "")
+                        //継続
+                        continue;
+
+
+                    templetedt_list.Add(templetedt);
+                }
+                parser.Close();
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
+                logger.ErrorFormat("テンプレートのインポートエラー。CSVファイルの読み込み時にエラーが発生しました。");
+
+                return;
+            }
+
+            if (MessageBox.Show(templetedt_list.Count + "件のテンプレートを登録します。よろしいですか？", context + "テンプレートインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
+
+            //DB接続
+            if (con.FullState != ConnectionState.Open) con.Open();
+
+            NpgsqlCommand cmd;
+
+            using (var transaction = con.BeginTransaction())
+            {
+
+                //インサート文
+                int i = 0;
+                int cnt = 0;
+                foreach (templeteDS tempDS in templetedt_list)
+                {
+
+                    cmd = new NpgsqlCommand(@"insert into templete(templetetype,templetename,title,text,userno,chk_date,chk_name_id) 
+                    values (:templetetype,:templetename,:title,:text,:userno,:chk_date,:chk_name_id)", con);
+                    try
+                    {
+                        DateTime datet;
+                        DateTime.TryParse(tempDS.chk_date, out datet);
+
+                        Int32 rowsaffected;
+
+                        //データ登録
+                        int ret_userno;
+                        int.TryParse(tempDS.userno, out ret_userno);
+
+                        cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = ret_userno });
+                        cmd.Parameters.Add(new NpgsqlParameter("templetetype", DbType.String) { Value = incidentflg });
+                        cmd.Parameters.Add(new NpgsqlParameter("templetename", DbType.String) { Value = tempDS.templetename });
+                        cmd.Parameters.Add(new NpgsqlParameter("title", DbType.String) { Value = tempDS.title });
+                        cmd.Parameters.Add(new NpgsqlParameter("text", DbType.String) { Value = tempDS.text });
+                        cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.String) { Value = tempDS.userno });
+                        cmd.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = datet });
+                        cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+
+                        rowsaffected = cmd.ExecuteNonQuery();
+
+                        if (rowsaffected != 1)
+                        {
+
+                            //if (MessageBox.Show("メールアドレスを登録できませんでした。担当者名:" + si.user_tantou_name + Environment.NewLine + " 継続しますか？", "担当者情報(電話)のインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            //{
+                            //    transaction.Rollback();
+                            //    return;
+                            //}
+                        }
+                        else
+                        {
+                            //登録成功
+                            i++;
+                            //MessageBox.Show("登録完了", "システム名");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(context + "テンプレートインポート時" + cnt + "件目でエラーが発生しました。" + ex.Message);
+                        logger.ErrorFormat(context + "テンプレートインポート時{0}件目でエラーが発生しました。:{1}", i, ex.Message);
+
+                        //transaction.Rollback();
+                        return;
+                    }
+
+                }
+                //終わったらコミットする
+                transaction.Commit();
+                MessageBox.Show("テンプレートのインポート" + i + "件 ");
+
+            }
+
+
+
+        }
+        private void インシデントテンプレートToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            //インポートを行う
+            ImportTemplete("1");
+
+        }
+
+        private void 作業テンプレートToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //インポートを行う
+            ImportTemplete("2");
+        }
+        //インシデントメールボタン
+        private void button2_Click_1(object sender, EventArgs e)
         {
             Form_IncidentMailSend formdetail = new Form_IncidentMailSend();
             formdetail.con = con;
@@ -6250,9 +6380,80 @@ namespace moss_AP
             if (siteDSList != null)
                 formdetail.siteDSList = siteDSList;
 
+            formdetail.con = con;
+            formdetail.loginDS = loginDS;
 
             formdetail.Show();
             //formdetail.Owner = this;
+        }
+        //インシデントタスク登録
+        private void linkLabel7_LinkClicked_2(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+
+            Form_taskInsert taskinsert = new Form_taskInsert();
+            taskinsert.schedule_type = 1-1;
+            taskinsert.con = con;
+            if (userList != null)
+                taskinsert.userList = userDSList;
+            taskinsert.loginDS = loginDS;
+            taskinsert.Show();
+        }
+
+        //定期作業登録
+        private void linkLabel8_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+            Form_taskInsert taskinsert = new Form_taskInsert();
+            taskinsert.schedule_type = 2 - 1;
+
+            taskinsert.con = con;
+            if (userList != null)
+                taskinsert.userList = userDSList;
+            taskinsert.systemList = systemDSList;
+            taskinsert.loginDS = loginDS;
+            taskinsert.Show();
+        }
+        //計画作業登録
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+            Form_taskInsert taskinsert = new Form_taskInsert();
+            taskinsert.schedule_type = 3 - 1;
+
+            taskinsert.con = con;
+            if (userList != null)
+                taskinsert.userList = userDSList;
+            if (systemDSList != null)
+                taskinsert.systemList = systemDSList;
+            if (siteDSList != null)
+                taskinsert.siteList = siteDSList;
+
+            taskinsert.loginDS = loginDS;
+            taskinsert.Show();
+        }
+
+        //特別対応登録ボタン
+        private void linkLabel9_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Form_taskInsert timerfm = new Form_taskInsert();
+            if (userDSList != null)
+                timerfm.userList = userDSList;
+            if (systemDSList != null)
+                timerfm.systemList = systemDSList;
+            if (siteDSList != null)
+                timerfm.siteList = siteDSList;
+            timerfm.schedule_type = 4 - 1;
+            timerfm.con = con;
+            timerfm.loginDS = loginDS;
+            timerfm.ShowDialog(this);
+        }
+
+        private void tabControl1_KeyDown(object sender, KeyEventArgs e)
+        {
+            //F5キーが押されたか調べる
+            if (e.KeyData == Keys.F5)
+                m_refresh_btn.PerformClick();
         }
     }
 

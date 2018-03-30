@@ -48,6 +48,7 @@ namespace moss_AP
 
         //テンプレート一覧
         public List<templeteDS> templList { get; set; }
+
         //テンプレート一覧
         DataTable templ_list;
 
@@ -58,7 +59,6 @@ namespace moss_AP
         {
             InitializeComponent();
         }
-
 
         //表示前
         private void Form_taskDetail_Load(object sender, EventArgs e)
@@ -958,7 +958,7 @@ namespace moss_AP
                         if (currval > 0)
                         {
                             //引き続きアラートデータを作成し登録する
-                            make_alert(currval, taskkubun, i+1);
+                            make_alert(i + 1,currval.ToString(), taskkubun );
 
                             //登録成功
   //                          MessageBox.Show("登録完了 " + "タスク番号" + currval, "タイマー登録");
@@ -1035,264 +1035,9 @@ namespace moss_AP
             }
 
         }
-        //アラートデータ
-        public void make_alert(int scheNO, string taskkubun, int index)
-        {
 
-            Control[] titles = new Control[] { m_title1, m_title2, m_title3, m_title4, m_title5 };
-            Control[] alertDates = new Control[] { m_alermDate1, m_alermDate2, m_alermDate3, m_alermDate4, m_alermDate5 };
-            Control[] statuses = new Control[] { m_statusCombo1, m_statusCombo2, m_statusCombo3, m_statusCombo4, m_statusCombo5 };
-            Control[] start_dates = new Control[] { m_startDate1, m_startDate2, m_startDate3, m_startDate4, m_startDate5 };
-            Control[] end_dates = new Control[] { m_endDate1, m_endDate2, m_endDate3, m_endDate4, m_endDate5 };
-
-            Control[] RadioHours = new Control[] { m_radio_hour1, m_radio_hour2, m_radio_hour3, m_radio_hour4, m_radio_hour5 };
-            Control[] RadioDays = new Control[] { m_radio_day1, m_radio_day2, m_radio_day3, m_radio_day4, m_radio_day5 };
-            Control[] RadioWeeks = new Control[] { m_radio_week1, m_radio_week2, m_radio_week3, m_radio_week4, m_radio_week5 };
-            Control[] RadioMonths = new Control[] { m_radio_month1, m_radio_month2, m_radio_month3, m_radio_month4, m_radio_month5 };
-
-
-            GroupBox gb = null;
-            if(index == 1)
-                gb = radioGroup1;
-            else if(index == 2)
-                gb = radioGroup2;
-            else if (index == 3)
-                gb = radioGroup3;
-            else if (index == 4)
-                gb = radioGroup4;
-            else if (index == 5)
-                gb = radioGroup5;
-
-            foreach ( RadioButton rb1 in gb.Controls)
-            {
-                if (rb1.Checked)
-                {
-                    if (rb1.Text == "1回")
-                    {
-                        //入力された日時を登録する
-                        DateTimePicker obj;
-                        obj = (DateTimePicker)alertDates[index - 1];
-                        DateTime dd = obj.Value;
-
-                        alerm_insert(scheNO, taskkubun, dd);
-
-                    }
-                    else if (rb1.Text == "毎時")
-                    {
-                        DateTimePicker obj;
-                        obj = (DateTimePicker)alertDates[index - 1];
-
-                        DateTime alertdate = obj.Value.Date;
-                        TimeSpan dtt = obj.Value.TimeOfDay;
-                        alertdate = alertdate + dtt;
-
-                        //開始日
-                        DateTimePicker startdate = (DateTimePicker)start_dates[index - 1];
-                        //終了日
-                        DateTimePicker enddate = (DateTimePicker)end_dates[index - 1];
-
-                        //開始日、終了日が入力されていなかったら登録しない
-                        if (startdate == null || enddate == null)
-                        {
-                            MessageBox.Show("開始日、終了日が入力されていません。");
-                            return;
-                        }
-
-                        DateTime startdt = startdate.Value;
-
-                        DateTime enddt = enddate.Value;
-
-                        while (true)
-                        {
-                            //開始日時以前なら登録しない
-                            if (startdt > alertdate)
-                            {
-                                alertdate = alertdate.AddHours(1);
-                                continue;
-                            }
-
-                            //終了日まで登録する。
-                            if (enddt <= alertdate.AddMinutes(-1))
-                                break;
-
-                            //時間毎に登録
-                            int ret = alerm_insert(scheNO, taskkubun, alertdate);
-                            if (ret == -1)
-                                break;
-
-                            //1時間プラス
-                            alertdate = alertdate.AddHours(1);
-                            //i++;
-                        }
-
-                    }
-                    else if (rb1.Text == "毎日")
-                    {
-                        DateTimePicker obj;
-                        obj = (DateTimePicker)alertDates[index - 1];
-
-                        DateTime alertdate = obj.Value.Date;
-                        TimeSpan dtt = obj.Value.TimeOfDay;
-                        alertdate = alertdate + dtt;
-
-                        //開始日
-                        DateTimePicker startdate = (DateTimePicker)start_dates[index - 1];
-                        //終了日
-                        DateTimePicker enddate = (DateTimePicker)end_dates[index - 1];
-
-                        //開始日、終了日が入力されていなかったら登録しない
-                        if (startdate == null || enddate == null)
-                        {
-                            MessageBox.Show("開始日、終了日が入力されていません。");
-                            return;
-                        }
-
-                        DateTime startdt = startdate.Value;
-
-                        DateTime enddt = enddate.Value;
-
-
-                        while (true)
-                        {
-
-                            //開始日時以前なら登録しない
-                            if (startdt > alertdate)
-                            {
-                                alertdate = alertdate.AddDays(1);
-                                continue;
-                            }
-
-                            //終了日まで登録する。
-                            if (enddt <= alertdate.AddMinutes(-1))
-                                break;
-
-                            //日付毎に登録
-                            int ret = alerm_insert(scheNO, taskkubun, alertdate);
-                            if (ret == -1)
-                                break;
-
-                            //1日プラス
-                            alertdate = alertdate.AddDays(1);
-
-                        }
-                    }
-                    else if (rb1.Text == "毎週")
-                    {
-                        DateTimePicker obj;
-                        obj = (DateTimePicker)alertDates[index - 1];
-
-                        DateTime alertdate = obj.Value.Date;
-                        TimeSpan dtt = obj.Value.TimeOfDay;
-                        alertdate = alertdate + dtt;
-                        
-                        
-                        //曜日を番号で取得
-                        int weeknumber = (int)obj.Value.DayOfWeek;
-
-                        //開始日
-                        DateTimePicker startdate = (DateTimePicker)start_dates[index - 1];
-                        //終了日
-                        DateTimePicker enddate = (DateTimePicker)end_dates[index - 1];
-
-
-
-                        //開始日
-                        DateTime startdt = startdate.Value;
-
-
-                        int startweekint = (int)startdate.Value.DayOfWeek;
-
-                        //終了日
-                        DateTime enddt = enddate.Value;
-                        int endweekint = (int)enddate.Value.DayOfWeek;
-
-
-                        int tmpweeknumber = startweekint;
-                        while (true)
-                        {
-
-                            //開始日時以前なら登録しない
-                            if (startdt > alertdate)
-                            {
-                                alertdate = alertdate.AddDays(1);
-                                tmpweeknumber = (int)alertdate.DayOfWeek;
-                                continue;
-                            }
-                            //終了日まで登録する。
-                            if (enddt <= alertdate.AddMinutes(-1))
-                                break;
-
-                            //同じ曜日であれば登録
-                            if (weeknumber == tmpweeknumber)
-                            {
-                                //日付毎に登録
-                                int ret = alerm_insert(scheNO, taskkubun, alertdate);
-                                if (ret == -1)
-                                    break;
-                            }
-                            //1日プラス
-                            alertdate = alertdate.AddDays(1);
-                            tmpweeknumber = (int)alertdate.DayOfWeek;
-                        }
-                    }
-                    else if (rb1.Text == "毎月")
-                    {
-                        DateTimePicker obj;
-                        obj = (DateTimePicker)alertDates[index - 1];
-
-                        DateTime alertdate = obj.Value.Date;
-                        TimeSpan dtt = obj.Value.TimeOfDay;
-                        alertdate = alertdate + dtt;
-
-                        //開始日
-                        DateTimePicker startdate = (DateTimePicker)start_dates[index - 1];
-                        //終了日
-                        DateTimePicker enddate = (DateTimePicker)end_dates[index - 1];
-
-                        //開始日、終了日が入力されていなかったら登録しない
-                        if (startdate == null || enddate == null)
-                        {
-                            MessageBox.Show("開始日、終了日が入力されていません。");
-                            return;
-                        }
-
-                        DateTime startdt = startdate.Value;
-
-                        DateTime enddt = enddate.Value;
-
-                        while (true)
-                        {
-
-                            //開始日時以前なら登録しない
-                            if (startdt > alertdate)
-                            {
-
-                                alertdate = alertdate.AddMonths(1);
-                                continue;
-                            }
-                            //終了日まで登録する。
-                            if (enddt <= alertdate.AddMinutes(-1))
-                                break;
-
-                            //日付毎に登録
-                            int ret = alerm_insert(scheNO, taskkubun, alertdate);
-                            if (ret == -1)
-                                break;
-
-                            //1月プラス
-                            alertdate = alertdate.AddMonths(1);
-                        }
-
-                        //IF文終わり
-                    }
-
-                }
-                //ループ終わり
-            }
-
-        }
         //タイマー対応テーブルに登録する
-        private int alerm_insert(int scheNO, string taskkubun, DateTime alertdatetime)
+        private int alerm_insert(int scheNO, string taskkubun, DateTime alertdatetime,int index)
         {
             //DB接続
             NpgsqlCommand cmd;
@@ -1301,11 +1046,13 @@ namespace moss_AP
                 if (con.FullState != ConnectionState.Open) con.Open();
                 Int32 rowsaffected;
                 //データ登録
-                cmd = new NpgsqlCommand(@"insert into timer_taiou(schedule_no,schedule_type,alertdatetime,chk_name_id) 
-                    values ( :schedule_no,:schedule_type,:alertdatetime,:chk_name_id) ", con);
+                cmd = new NpgsqlCommand(@"insert into timer_taiou(schedule_no,schedule_type,TimerID,alertdatetime,chk_name_id) 
+                    values ( :schedule_no,:schedule_type,:TimerID,:alertdatetime,:chk_name_id) ", con);
 
                 cmd.Parameters.Add(new NpgsqlParameter("schedule_no", DbType.Int32) { Value = scheNO });
                 cmd.Parameters.Add(new NpgsqlParameter("schedule_type", DbType.String) { Value = taskkubun });
+                cmd.Parameters.Add(new NpgsqlParameter("TimerID", DbType.Int32) { Value = index });
+
                 cmd.Parameters.Add(new NpgsqlParameter("alertdatetime", DbType.DateTime) { Value = alertdatetime });
                 cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
                 rowsaffected = cmd.ExecuteNonQuery();
@@ -1331,6 +1078,8 @@ namespace moss_AP
         //対象の日時にデータタイムを取得する
         private void timer_datetime(int group_idx,int repeat_kubun)
         {
+            Control[] alert_dates = new Control[] { m_alermDate1, m_alermDate2, m_alermDate3, m_alermDate4, m_alermDate5 };
+
             Control[] start_dates = new Control[] { m_startDate1, m_startDate2, m_startDate3, m_startDate4, m_startDate5 };
             Control[] end_dates = new Control[] { m_endDate1, m_endDate2, m_endDate3, m_endDate4, m_endDate5 };
 
@@ -1340,46 +1089,71 @@ namespace moss_AP
             { 
                 start_dates[group_idx].Enabled = false;
                 end_dates[group_idx].Enabled = false;
+
+                //DatetimeFormatを変更する
+                DateTimePicker dtp = (DateTimePicker)alert_dates[group_idx];
+                dtp.CustomFormat = "yyyy年M月d日(dddd) HH:mm";
             }
             //毎時
             else if (repeat_kubun == 2)
             {
                 start_dates[group_idx].Enabled = true;
                 end_dates[group_idx].Enabled = true;
+
+                //DatetimeFormatを変更する
+                DateTimePicker dtp = (DateTimePicker)alert_dates[group_idx];
+                dtp.CustomFormat = "mm分";
+
             }
             //毎日
             else if (repeat_kubun == 3)
             {
                 start_dates[group_idx].Enabled = true;
                 end_dates[group_idx].Enabled = true;
+
+                //DatetimeFormatを変更する
+                DateTimePicker dtp = (DateTimePicker)alert_dates[group_idx];
+                dtp.CustomFormat = "HH:mm";
+
             }
             //毎週
             else if (repeat_kubun == 4)
             {
                 start_dates[group_idx].Enabled = true;
                 end_dates[group_idx].Enabled = true;
+
+                //DatetimeFormatを変更する
+                DateTimePicker dtp = (DateTimePicker)alert_dates[group_idx];
+                dtp.CustomFormat = "(dddd) HH:mm";
             }
             //毎月
             else if (repeat_kubun == 5)
             {
                 start_dates[group_idx].Enabled = true;
                 end_dates[group_idx].Enabled = true;
+
+                //DatetimeFormatを変更する
+                DateTimePicker dtp = (DateTimePicker)alert_dates[group_idx];
+                dtp.CustomFormat = "d日  HH:mm";
             }
         }
 
         //タイマー①
         private void m_radio_one1_CheckedChanged(object sender, EventArgs e)
         {
-            //チェックされていたら日時を利用不可にする
+            //チェックされていたら日時を利用可にする
             if (m_radio_one1.Checked)
                 timer_datetime(0, 1);
+
+
         }
         //タイマー①
         private void m_radio_hour1_CheckedChanged(object sender, EventArgs e)
         {
-            //チェックされていたら日時を利用不可にする
+            //チェックされていたら日時を利用可にする
             if (m_radio_hour1.Checked)
                 timer_datetime(0, 2);
+
         }
         //タイマー①
         private void m_radio_day1_CheckedChanged(object sender, EventArgs e)
@@ -1448,7 +1222,7 @@ namespace moss_AP
         private void m_radio_hour3_CheckedChanged(object sender, EventArgs e)
         {
             //チェックされていたら日時を利用可にする
-            if (m_radio_month2.Checked)
+            if (m_radio_hour3.Checked)
                 timer_datetime(2, 2);
         }
         //タイマー③
@@ -1490,7 +1264,7 @@ namespace moss_AP
         private void m_radio_day4_CheckedChanged(object sender, EventArgs e)
         {
             //チェックされていたら日時を利用可にする
-            if (m_radio_day3.Checked)
+            if (m_radio_day4.Checked)
                 timer_datetime(3, 3);
         }
         //タイマー④
@@ -2202,7 +1976,7 @@ namespace moss_AP
                     break;
                 }
             }
-
+            int ret = 0;
             if (words == "1回")
                 rep_type = "1";
             else if (words == "毎時")
@@ -2226,7 +2000,7 @@ namespace moss_AP
                     DateTime alertdt = dd.Value;
 
                     //アラートデータの挿入
-                    alerm_insert(int.Parse(str_taskno), yoteikbn, alertdt);
+                    ret = alerm_insert(int.Parse(str_taskno), yoteikbn, alertdt, timeridx);
                 }
                 //毎時の時
                 else if (rep_type == "2")
@@ -2258,7 +2032,7 @@ namespace moss_AP
                             break;
 
                         //時間毎に登録
-                        int ret = alerm_insert(int.Parse(str_taskno), yoteikbn, alertdate);
+                        ret = alerm_insert(int.Parse(str_taskno), yoteikbn, alertdate, timeridx);
                         if (ret == -1)
                             break;
 
@@ -2299,7 +2073,7 @@ namespace moss_AP
                             break;
 
                         //日付毎に登録
-                        int ret = alerm_insert(int.Parse(str_taskno), yoteikbn, alertdate);
+                        ret = alerm_insert(int.Parse(str_taskno), yoteikbn, alertdate, timeridx);
                         if (ret == -1)
                             break;
 
@@ -2348,7 +2122,7 @@ namespace moss_AP
                         if (weeknumber == tmpweeknumber)
                         {
                             //日付毎に登録
-                            int ret = alerm_insert(int.Parse(str_taskno), yoteikbn, alertdate);
+                            ret = alerm_insert(int.Parse(str_taskno), yoteikbn, alertdate, timeridx);
                             if (ret == -1)
                                 break;
                         }
@@ -2390,7 +2164,7 @@ namespace moss_AP
                             break;
 
                         //日付毎に登録
-                        int ret = alerm_insert(int.Parse(str_taskno), yoteikbn, alertdate);
+                        ret = alerm_insert(int.Parse(str_taskno), yoteikbn, alertdate, timeridx);
                         if (ret == -1)
                             break;
 
@@ -2425,8 +2199,7 @@ namespace moss_AP
                 DateTime alert_time;
                 String status = "";
                 String words = "";
-                //DB接続
-                NpgsqlCommand cmd;
+
 
                 try
                 {
@@ -2613,7 +2386,7 @@ namespace moss_AP
 
                 if (rowsaffected != 1)
                 {
-                    return 0;
+                    //return 0;
                 }
                 else
                 {
@@ -2705,7 +2478,6 @@ namespace moss_AP
            
             ListView.SelectedIndexCollection item = m_taskList.SelectedIndices;
             string schedule_type = "";
-            string status = "";
             taskDS taskdt = new taskDS();
             List<timerDS> timerList = new List<timerDS>();
 
@@ -3073,9 +2845,9 @@ namespace moss_AP
 
             if (con.FullState != ConnectionState.Open) con.Open();
 
-            string sql = "WITH DELETED AS (DELETE FROM timer_taiou where schedule_no = :no " +
+            string sql = "WITH DELETED AS (DELETE FROM timer where schedule_no = :no " +
                 "RETURNING schedule_no) " +
-                "DELETE FROM timer where schedule_no = :no";
+                "DELETE FROM task where schedule_no = :no";
 
             using (var transaction = con.BeginTransaction())
             {
@@ -3093,14 +2865,14 @@ namespace moss_AP
                         //削除処理
                         rowsaffected = command.ExecuteNonQuery();
 
-                        if (rowsaffected < 1)
-                        {
-                            MessageBox.Show("削除できませんでした。タスク通番:" + scheduleno, "タスク情報削除");
-                            transaction.Rollback();
-                            return -1;
-                        }
-                        else
-                        {
+                        //if (rowsaffected < 1)
+                        //{
+                            //MessageBox.Show("削除できませんでした。タスク通番:" + scheduleno, "タスク情報削除");
+                            //transaction.Rollback();
+                            //return -1;
+                        //}
+                        //else
+                        //{
                             //タイマー情報を削除する
                             ret = deleteTimer(scheduleno);
                             if(ret != 1)
@@ -3111,7 +2883,7 @@ namespace moss_AP
 
                             }
 
-                        }
+                        //}
                     }
                     catch (Exception ex)
                     {

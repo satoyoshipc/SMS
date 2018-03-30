@@ -23,6 +23,15 @@ namespace moss_AP
         //DBコネクション
         public NpgsqlConnection con { get; set; }
 
+        //メールタイトル
+        public string mailTitle { get; set; }
+        //メール本文
+        public string mailBody { get; set; }
+
+        //インシデントメールフラグ
+        public bool incidentmail_flg { get; set; }
+
+
         //ListViewのソートの際に使用する
         private Class_ListViewColumnSorter _columnSorter;
 
@@ -36,8 +45,6 @@ namespace moss_AP
         {
             _columnSorter = new Class_ListViewColumnSorter();
             m_mailTempleteList.ListViewItemSorter = _columnSorter;
-
-
 
             List<mailTempleteDS> templeteList = new List<mailTempleteDS>();
             Dictionary<string, string> param_dict = new Dictionary<string, string>();
@@ -55,9 +62,20 @@ namespace moss_AP
             m_Bcc_list.Columns.Add("アドレス", 120);
             m_Bcc_list.Columns.Add("区分", 20);
 
+            //インシデントメールの場合
+            if (incidentmail_flg) { 
+                m_OK.Enabled = false;
+                this.splitContainer1.SplitterDistance = 32;
+            }
 
+            m_subject.Text =  mailTitle;
 
-            disp_mailtemplete(templeteList);
+            //アカウント
+            m_account.Text = System.Configuration.ConfigurationManager.AppSettings["mailsender_address"];
+
+            m_body.Text = mailBody;
+            if(( mailTitle == "" || mailTitle == null) && (mailBody == "" || mailBody == null))
+                disp_mailtemplete(templeteList);
         }
 
         //メールテンプレート一覧の表示
@@ -85,6 +103,7 @@ namespace moss_AP
             //リストに表示
             if (templeteList != null)
             {
+
                 foreach (mailTempleteDS t_ds in templeteList)
                 {
 
@@ -175,8 +194,7 @@ namespace moss_AP
             Dictionary<string, string> address = new Dictionary<string, string>();
             List<String> toList = new List<String>();
             List<String> CcList = new List<String>();
-            List<String> BccList = new List<String>();
- 
+            List<String> BccList = new List<String>(); 
 
             //宛先の表示
             foreach (mailsendaddressDS ms in mailsendaddressDSList)

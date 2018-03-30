@@ -48,6 +48,10 @@
             this.button1 = new System.Windows.Forms.Button();
             this.m_inc_templete_update_btn = new System.Windows.Forms.Button();
             this.m_inc_templete_insert_btn = new System.Windows.Forms.Button();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.メールテンプレートインポートTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.インシデントテンプレートIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.作業テンプレートSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,10 +73,13 @@
             this.拠点KToolStripMenuItem,
             this.ホストHToolStripMenuItem,
             this.インターフェイスkToolStripMenuItem,
-            this.回線情報LToolStripMenuItem});
+            this.toolStripSeparator1,
+            this.回線情報LToolStripMenuItem,
+            this.メールテンプレートインポートTToolStripMenuItem});
             this.インポートIToolStripMenuItem.Name = "インポートIToolStripMenuItem";
             this.インポートIToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
             this.インポートIToolStripMenuItem.Text = "インポート(&I)";
+            this.インポートIToolStripMenuItem.Click += new System.EventHandler(this.インポートIToolStripMenuItem_Click);
             // 
             // カスタマCToolStripMenuItem
             // 
@@ -152,8 +159,9 @@
             // 
             // button5
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.button5.Enabled = false;
             this.button5.Location = new System.Drawing.Point(29, 258);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(219, 37);
@@ -164,8 +172,9 @@
             // 
             // button6
             // 
-            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.button6.Enabled = false;
             this.button6.Location = new System.Drawing.Point(30, 301);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(218, 37);
@@ -176,7 +185,7 @@
             // 
             // button4
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button4.Location = new System.Drawing.Point(144, 37);
             this.button4.Name = "button4";
@@ -188,8 +197,9 @@
             // 
             // button2
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.Enabled = false;
             this.button2.Location = new System.Drawing.Point(30, 215);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(219, 37);
@@ -200,7 +210,7 @@
             // 
             // button3
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.Location = new System.Drawing.Point(30, 80);
             this.button3.Name = "button3";
@@ -212,7 +222,7 @@
             // 
             // button1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(30, 37);
             this.button1.Name = "button1";
@@ -241,6 +251,34 @@
             this.m_inc_templete_insert_btn.Text = "インシデント/タスクテンプレート登録";
             this.m_inc_templete_insert_btn.UseVisualStyleBackColor = true;
             this.m_inc_templete_insert_btn.Click += new System.EventHandler(this.m_inc_templete_insert_btn_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(263, 6);
+            // 
+            // メールテンプレートインポートTToolStripMenuItem
+            // 
+            this.メールテンプレートインポートTToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.インシデントテンプレートIToolStripMenuItem,
+            this.作業テンプレートSToolStripMenuItem});
+            this.メールテンプレートインポートTToolStripMenuItem.Name = "メールテンプレートインポートTToolStripMenuItem";
+            this.メールテンプレートインポートTToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
+            this.メールテンプレートインポートTToolStripMenuItem.Text = "メール テンプレートインポート(&T)";
+            // 
+            // インシデントテンプレートIToolStripMenuItem
+            // 
+            this.インシデントテンプレートIToolStripMenuItem.Name = "インシデントテンプレートIToolStripMenuItem";
+            this.インシデントテンプレートIToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.インシデントテンプレートIToolStripMenuItem.Text = "インシデントテンプレート(&I)";
+            this.インシデントテンプレートIToolStripMenuItem.Click += new System.EventHandler(this.インシデントテンプレートIToolStripMenuItem_Click);
+            // 
+            // 作業テンプレートSToolStripMenuItem
+            // 
+            this.作業テンプレートSToolStripMenuItem.Name = "作業テンプレートSToolStripMenuItem";
+            this.作業テンプレートSToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.作業テンプレートSToolStripMenuItem.Text = "作業テンプレート(&S)";
+            this.作業テンプレートSToolStripMenuItem.Click += new System.EventHandler(this.作業テンプレートSToolStripMenuItem_Click);
             // 
             // Form_kanri_menu
             // 
@@ -288,5 +326,9 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button m_inc_templete_update_btn;
         private System.Windows.Forms.Button m_inc_templete_insert_btn;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem メールテンプレートインポートTToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem インシデントテンプレートIToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 作業テンプレートSToolStripMenuItem;
     }
 }

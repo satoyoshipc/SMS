@@ -189,6 +189,7 @@
             this.m_schedule_combo.Name = "m_schedule_combo";
             this.m_schedule_combo.Size = new System.Drawing.Size(324, 21);
             this.m_schedule_combo.TabIndex = 0;
+            this.m_schedule_combo.SelectedIndexChanged += new System.EventHandler(this.m_schedule_combo_SelectedIndexChanged);
             this.m_schedule_combo.SelectionChangeCommitted += new System.EventHandler(this.m_schedule_combo_SelectionChangeCommitted);
             // 
             // label2

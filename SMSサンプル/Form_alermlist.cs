@@ -13,6 +13,7 @@ namespace moss_AP
 {
     public partial class Form_alermlist : Form
     {
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public Form_alermlist()
         {
@@ -35,6 +36,8 @@ namespace moss_AP
         //表示前
         private void Form_alermlist_Load(object sender, EventArgs e)
         {
+            logger.InfoFormat("Form_alermlist_Load " + almList.Count.ToString() + "件");
+
             _columnSorter = new Class_ListViewColumnSorter();
             m_alerm_list.ListViewItemSorter = _columnSorter;
 
@@ -50,23 +53,24 @@ namespace moss_AP
             this.m_alerm_list.Columns.Insert(0, "No", 30, HorizontalAlignment.Left);
             this.m_alerm_list.Columns.Insert(1, "インシデントタイプ", 90, HorizontalAlignment.Left);
             this.m_alerm_list.Columns.Insert(2, "アラーム日時", 120, HorizontalAlignment.Left);
-            this.m_alerm_list.Columns.Insert(3, "アラーム名", 90, HorizontalAlignment.Left);
-            this.m_alerm_list.Columns.Insert(4, "メッセージ", 120, HorizontalAlignment.Left);
+            this.m_alerm_list.Columns.Insert(3, "タイマー名", 90, HorizontalAlignment.Left);
+            this.m_alerm_list.Columns.Insert(4, "内容", 120, HorizontalAlignment.Left);
             this.m_alerm_list.Columns.Insert(5, "カスタマ名", 80, HorizontalAlignment.Left);
-            this.m_alerm_list.Columns.Insert(6, "システム名", 80, HorizontalAlignment.Left);
-            this.m_alerm_list.Columns.Insert(7, "インシデント番号", 50, HorizontalAlignment.Left);
+            this.m_alerm_list.Columns.Insert(6, "対応日時", 80, HorizontalAlignment.Left);
+            this.m_alerm_list.Columns.Insert(7, "対応者", 50, HorizontalAlignment.Left);
 
             Boolean flg = false;
 
             Boolean soundflg = false;
-            
+
             //リストに表示
             foreach (alermDS ads in almList)
             {
 
                 //対象のものはアラートを表示
                 string title;
-                //1:インシデント処理 2:定期作業業務促し 3:作業情報の警告 4:資料展開 5:サブタスク
+
+                //1:インシデント処理 2:定期作業 3:計画作業 4:特別作業
                 string type;
                 type = ads.schedule_type;
                 switch (type)
@@ -94,16 +98,17 @@ namespace moss_AP
                 
                 ListViewItem itemx1 = new ListViewItem();
                 itemx1.Text = ads.userno;
+
                 //表示しない項目
                 itemx1.Name = ads.schedule_no;
 
                 itemx1.SubItems.Add(title);
                 itemx1.SubItems.Add(ads.alertdatetime);
-                itemx1.SubItems.Add(ads.timer_name);
-                itemx1.SubItems.Add(ads.alerm_message);
+                itemx1.SubItems.Add(ads.timername);
+                itemx1.SubItems.Add(ads.naiyou);
                 itemx1.SubItems.Add(ads.username);
-                itemx1.SubItems.Add(ads.systemname);
-                itemx1.SubItems.Add(ads.incident_no);
+                itemx1.SubItems.Add(ads.opeid);
+                itemx1.SubItems.Add(ads.taioudate);
 
                 this.m_alerm_list.Items.Add(itemx1);
 
@@ -111,13 +116,13 @@ namespace moss_AP
                 //MessageBox.Show(ads.alerm_message, title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 //インシデントのは特定の音 
                 //オーブコムの定期作業のときも
-                if (type == "1" || (ads.username == "オーブコムジャパン" && ads.systemname == "衛星運用監視"))
-                {
+                //if (type == "1" || (ads.username == "オーブコムジャパン" && ads.systemname == "衛星運用監視"))
+                //{
 
                     String s_path = System.Configuration.ConfigurationManager.AppSettings["sound_path"];
-                    ads.sound = s_path + "標準サウンド.wav";
+                    ads.sound = s_path ;
 
-                }
+                //}
 
 
                 //拡張子がwavファイル
@@ -155,6 +160,7 @@ namespace moss_AP
             if(soundflg==false && flg == false)
                 MessageBox.Show("wavファイルが見つかりませんでした。", "サウンドテスト", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
+            logger.InfoFormat("Form_alermlist_Load END");
         }
 
         //登録
@@ -290,7 +296,6 @@ namespace moss_AP
             m_alerm_message.Text = this.m_alerm_list.SelectedItems[0].SubItems[4].Text;
 
             m_customer_name.Text = this.m_alerm_list.SelectedItems[0].SubItems[5].Text;
-            m_system_name.Text = this.m_alerm_list.SelectedItems[0].SubItems[6].Text;
             
         }
 
@@ -317,16 +322,16 @@ namespace moss_AP
 
         private void Form_alermlist_FormClosed(object sender, FormClosedEventArgs e)
         {
-            string strpath = "";
-            foreach (alermDS ads in almList)
-            {
+//            string strpath = "";
+//            foreach (alermDS ads in almList)
+//            {
 
-                strpath = ads.sound;
-                   if (strpath != null && strpath != "" && ads.sound != "標準サウンド.wav")
-                {
-                    System.IO.File.Delete(@strpath);
-                }
-            }
+//                strpath = ads.sound;
+//                   if (strpath != null && strpath != "" && ads.sound != "標準サウンド.wav")
+//                {
+//                    System.IO.File.Delete(@strpath);
+//                }
+//            }
         }
     }
 

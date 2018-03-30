@@ -155,31 +155,31 @@ namespace moss_AP
                         case 0:
                             param_dict["templeteno"] = m_selecttext.Text;
                             break;
-                        //テンプレートタイプ
+                        //テンプレート種別
                         case 1:
                             if (m_selecttext.Text == "インシデント")
                                 param_dict["templetetype"] = "1";
-                            else if (m_selecttext.Text == "タスク(インシデントタスク・計画作業)")
-                                param_dict["templetetype"] = "0";
+                            else if (m_selecttext.Text.IndexOf("タスク") > -1  || m_selecttext.Text.IndexOf("計画作業") > -1)
+                                param_dict["templetetype"] = "2";
                             break;
-                        //カスタマ通番
+                        //テンプレート名
                         case 2:
                             param_dict["templetename"] = m_selecttext.Text;
                             break;
 
-                        //タイトル
+                        //カスタマ名
                         case 3:
-                            param_dict["username"] = m_selecttext.Text;
+                             param_dict["username"] = m_selecttext.Text;
                             break;
 
-                        //本文
+
                         case 4:
-                            param_dict["text"] = m_selecttext.Text;
+                            param_dict["title"] = m_selecttext.Text;
                             break;
 
-                        
+                        //本文                     
                         case 5:
-                            param_dict["title"] = m_selecttext.Text;
+                            param_dict["text"] = m_selecttext.Text;
                             break;
 
                         //更新日時

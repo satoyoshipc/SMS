@@ -76,10 +76,10 @@ namespace moss_AP
             this.m_taioulist.Columns.Insert(3, "アラーム日時", 120, HorizontalAlignment.Left);
             this.m_taioulist.Columns.Insert(4, "対応者", 90, HorizontalAlignment.Left);
             this.m_taioulist.Columns.Insert(5, "対応日時", 120, HorizontalAlignment.Left);
-            this.m_taioulist.Columns.Insert(6, "タイマー名", 120, HorizontalAlignment.Left);
-            this.m_taioulist.Columns.Insert(7, "カスタマ名", 80, HorizontalAlignment.Left);
-            this.m_taioulist.Columns.Insert(8, "システム名", 80, HorizontalAlignment.Left);
-            this.m_taioulist.Columns.Insert(9, "拠点名", 80, HorizontalAlignment.Left);
+            this.m_taioulist.Columns.Insert(6, "タイマーID", 30, HorizontalAlignment.Left);
+            this.m_taioulist.Columns.Insert(7, "タイマー名", 120, HorizontalAlignment.Left);
+            this.m_taioulist.Columns.Insert(8, "内容", 80, HorizontalAlignment.Left);
+            this.m_taioulist.Columns.Insert(9, "カスタマ名", 80, HorizontalAlignment.Left);
 
 
 
@@ -138,14 +138,13 @@ namespace moss_AP
                     }
                     itemx1.SubItems.Add(str);
 
-
                     itemx1.SubItems.Add(ads.alertdatetime);
                     itemx1.SubItems.Add(ads.opeid);
-                    itemx1.SubItems.Add(ads.taiou_date);
-                    itemx1.SubItems.Add(ads.timer_name);
+                    itemx1.SubItems.Add(ads.taioudate);
+                    itemx1.SubItems.Add(ads.timerid);
+                    itemx1.SubItems.Add(ads.timername);
+                    itemx1.SubItems.Add(ads.naiyou);
                     itemx1.SubItems.Add(ads.username);
-                    itemx1.SubItems.Add(ads.systemname);
-                    itemx1.SubItems.Add(ads.incident_no);
 
                     this.m_taioulist.Items.Add(itemx1);
                 }
@@ -183,13 +182,16 @@ namespace moss_AP
 
             string scheduleno = "";
             string alertDtString = "";
+            string timerID = "";
+
+            
             int ret = 0;
 
             if (con.FullState != ConnectionState.Open) con.Open();
 
 
 
-            string sql = "DELETE FROM timer_taiou where schedule_no =:no AND alertdatetime=:alertdatetime";
+            string sql = "DELETE FROM timer_taiou where schedule_no =:no AND alertdatetime=:alertdatetime AND timerID=:timerID";
 
             using (var transaction = con.BeginTransaction())
             {
@@ -202,9 +204,13 @@ namespace moss_AP
                     //文字列からDatetimeに変換
                     System.DateTime dd1 = DateTime.ParseExact(alertDtString, "yyyy/MM/dd HH:mm:ss", null);
 
+                    timerID = item.SubItems[6].Text;
+
                     var command = new NpgsqlCommand(@sql, con);
                     command.Parameters.Add(new NpgsqlParameter("no", DbType.Int32) { Value = int.Parse(scheduleno) });
                     command.Parameters.Add(new NpgsqlParameter("alertdatetime",DbType.DateTime) { Value = dd1 });
+                    command.Parameters.Add(new NpgsqlParameter("timerID", DbType.Int32) { Value = timerID });
+
                     Int32 rowsaffected;
                     try
                     {

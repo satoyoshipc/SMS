@@ -285,9 +285,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(547, 349);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(198, 12);
+            this.label4.Size = new System.Drawing.Size(145, 12);
             this.label4.TabIndex = 55;
-            this.label4.Text = "添付ファイル有無と添付ファイル名を入力";
+            this.label4.Text = "添付ファイル(パス含む)を入力";
             // 
             // m_To_list
             // 

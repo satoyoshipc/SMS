@@ -2903,8 +2903,8 @@ namespace moss_AP
             }
             catch (Exception ex)
             {
-                MessageBox.Show("定期作業情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                logger.ErrorFormat("定期作業情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
+                MessageBox.Show("作業情報一覧取得エラー " + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.ErrorFormat("作業情報一覧取得エラー メソッド名：{0}。MSG：{1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.Message);
 
 
             }
@@ -3066,16 +3066,18 @@ namespace moss_AP
                 if (con.FullState != ConnectionState.Open) con.Open();
 
                 //SELECT実行
-                cmd = new NpgsqlCommand(@"select u.userno,u.username,sys.systemno,sys.systemname,s.timer_name,s.sound,s.incident_no,s.alerm_message,t.schedule_no,t.schedule_type, t.alertdatetime,t.chk_name_id,t.chk_date from " +
-                    "timer_taiou t INNER JOIN schedule s ON t.schedule_no = s.schedule_no " +
-                    "LEFT OUTER JOIN user_tbl u ON s.userno = u.userno " +
-                    "LEFT OUTER JOIN system sys ON s.systemno = sys.systemno " +
+                //                cmd = new NpgsqlCommand(@"select u.userno,u.username,sys.systemno,sys.systemname,s.timer_name,s.sound,s.incident_no,s.alerm_message,t.schedule_no,t.schedule_type, t.alertdatetime,t.chk_name_id,t.chk_date from " +
+                //                    "timer_taiou t INNER JOIN schedule s ON t.schedule_no = s.schedule_no " +
+                //"LEFT OUTER JOIN user_tbl u ON s.userno = u.userno " +
+                //"LEFT OUTER JOIN system sys ON s.systemno = sys.systemno " +
                 //                    "where s.status='1' and  s.start_date <= '" + nowString + "' and end_date >= '" + nowString + "' " +
                 //                    "and t.alertdatetime <= '" + nowString + "' and t.taioudate is null", con);
 
-                "where s.status='1' " +
-                "and t.alertdatetime <= '" + nowString + "' and t.taioudate is null", con);
-
+                cmd = new NpgsqlCommand(@"SELECT u.userno,u.username,s.schedule_no,s.schedule_type,s.naiyou,t.repeat_type,t.timerid,t.timername,t.start_date,t.end_date,
+t.status,tai.schedule_no,tai.schedule_type,tai.alertdatetime,tai.opeid,tai.taioudate, s.chk_name_id,s.chk_date " + 
+                                        "FROM task s INNER JOIN timer t ON t.schedule_no = s.schedule_no LEFT OUTER JOIN timer_taiou tai ON tai.schedule_no = t.schedule_no INNER JOIN user_tbl u ON u.userno = s.userno " + 
+                                        "where s.status='1' and tai.alertdatetime <= '" + nowString + "' and tai.taioudate is null", con);
+                logger.Info(cmd.CommandText);
                 var dataReader = cmd.ExecuteReader();
 
                 //スケジュール情報の取得
@@ -3088,40 +3090,23 @@ namespace moss_AP
                     ds = new alermDS();
                     ds.userno = dataReader["userno"].ToString();
                     ds.username = dataReader["username"].ToString();
-                    ds.systemno = dataReader["systemno"].ToString();
-                    ds.systemname = dataReader["systemname"].ToString();
-
-                    ds.alerm_message = dataReader["alerm_message"].ToString();
-
-                    ds.timer_name = dataReader["timer_name"].ToString();
-
-
-
-
-                    ds.incident_no = dataReader["incident_no"].ToString();
-                    ds.alerm_message = dataReader["alerm_message"].ToString();
                     ds.schedule_no = dataReader["schedule_no"].ToString();
                     ds.schedule_type = dataReader["schedule_type"].ToString();
-
-                    //インシデントのときは固定の音
-                    if (ds.schedule_type != "1")
-                    {
-                        ds.sound = dataReader["sound"].ToString();
-                        if (!dataReader.IsDBNull(dataReader.GetOrdinal("sound")))
-                        {
-                            File.WriteAllBytes("sound" + fileidx.ToString() + ".wav", (byte[])dataReader["sound"]);
-
-                            if (dataReader["sound"] != null)
-                                ds.sound = "sound" + fileidx.ToString() + ".wav";
-                        }
-                    }
+                    ds.naiyou = dataReader["naiyou"].ToString();
+                    ds.repeat_type = dataReader["repeat_type"].ToString();
+                    ds.timerid = dataReader["timerid"].ToString();
+                    ds.timername = dataReader["timername"].ToString();
+                    ds.start_date = dataReader["start_date"].ToString();
+                    ds.end_date = dataReader["end_date"].ToString();
+                    //アラート日時
                     if (dataReader["alertdatetime"].ToString() != "")
                     {
                         String formatString = Convert.ToDateTime(dataReader["alertdatetime"].ToString()).ToString("yyyy/MM/dd HH:mm:ss");
                         ds.alertdatetime = formatString;
                     }
-
-
+                    ds.status = dataReader["status"].ToString();
+                    ds.opeid = dataReader["opeid"].ToString();
+                    ds.taioudate = dataReader["taioudate"].ToString();
 
                     ds.chk_name_id = dataReader["chk_name_id"].ToString();
                     ds.chk_date = dataReader["chk_date"].ToString();
@@ -3627,11 +3612,10 @@ namespace moss_AP
                 if (con.FullState != ConnectionState.Open) con.Open();
 
                 //SELECT実行
-                cmd = new NpgsqlCommand(@"SELECT ta.schedule_no,ta.alertdatetime,ta.opeid,ta.taioudate,ss.timer_name,ss.schedule_type,ss.repeat_type,u.userno,u.username,sys.systemno,sys.systemname,s.siteno,s.sitename " +
-                                        "FROM timer_taiou ta LEFT OUTER JOIN schedule ss ON ta.schedule_no = ss.schedule_no " +
-                                        "LEFT OUTER JOIN user_tbl u ON ss.userno = u.userno " +
-                                        "LEFT OUTER JOIN system sys ON ss.systemno = sys.systemno " +
-                                        "LEFT OUTER JOIN site s ON ss.siteno = s.siteno" + sql, con);
+                cmd = new NpgsqlCommand(@"SELECT ta.schedule_no,ta.alertdatetime,ti.timerid,ta.opeid,ta.taioudate,ti.timername,ss.naiyou,ss.schedule_type,ti.repeat_type,u.userno,u.username " +
+                                        "FROM timer_taiou ta LEFT OUTER JOIN task ss ON ta.schedule_no = ss.schedule_no " +
+                                        "INNER JOIN timer ti ON ti.schedule_no = ss.schedule_no and  ta.timerid =ti.timerid " + 
+                                        "LEFT OUTER JOIN user_tbl u ON ss.userno = u.userno " + sql, con);
                 var dataReader = cmd.ExecuteReader();
 
                 //スケジュール情報の取得
@@ -3642,17 +3626,13 @@ namespace moss_AP
                     ds = new alermDS();
                     ds.userno = dataReader["userno"].ToString();
                     ds.username = dataReader["username"].ToString();
-                    ds.systemno = dataReader["systemno"].ToString();
-                    ds.systemname = dataReader["systemname"].ToString();
-                    ds.siteno = dataReader["siteno"].ToString();
-                    ds.sitename = dataReader["sitename"].ToString();
-
+                    ds.timerid = dataReader["timerid"].ToString();
                     ds.schedule_no = dataReader["schedule_no"].ToString();
                     ds.repeat_type = dataReader["repeat_type"].ToString();
-                    ds.taiou_date = dataReader["taioudate"].ToString();
-                    ds.timer_name = dataReader["timer_name"].ToString();
+                    ds.taioudate = dataReader["taioudate"].ToString();
+                    ds.naiyou = dataReader["naiyou"].ToString();
+                    ds.timername = dataReader["timername"].ToString();
                     ds.opeid = dataReader["opeid"].ToString();
-                    ds.taiou_date = dataReader["taioudate"].ToString();
 
 
                     ds.schedule_type = dataReader["schedule_type"].ToString();
@@ -3662,7 +3642,6 @@ namespace moss_AP
                         String formatString = Convert.ToDateTime(dataReader["alertdatetime"].ToString()).ToString("yyyy/MM/dd HH:mm:ss");
                         ds.alertdatetime = formatString;
                     }
-
 
                     retList.Add(ds);
                 }
@@ -3884,14 +3863,15 @@ namespace moss_AP
                             string username = vdict.Value;
 
                             //部分一致で検索しヒットした場合はカスタマ名は固定
-                            if (0 <= "全てのカスタマ".IndexOf(username))
+                            if (0 <= username.IndexOf("全てのカスタマ"))
                             {
                                 if (i > 1)
                                     searchstring += "AND ";
                                 searchstring += "t.userno = 0";
                             }
-                            else { 
-                                userid = getCustomerIDlike(username,con);
+                            else
+                            {
+                                userid = getCustomerIDlike(username, con);
                                 if (i > 1)
                                     searchstring += "AND ";
 
@@ -3905,13 +3885,33 @@ namespace moss_AP
                             searchstring += "(t.userno=" + userid + " OR t.userno=0) ";
                         }
                         //数値 (templeteno)のとき
-                        else if ( vdict.Key == "templeteno") {
+                        else if (vdict.Key == "templeteno")
+                        {
 
                             if (i > 1)
                                 searchstring += "AND ";
                             searchstring += "t." + vdict.Key + "=" + vdict.Value + " ";
                         }
-                            
+
+                        //タイトル
+                        else if (vdict.Key == "title")
+                        {
+
+                            if (i > 1)
+                                searchstring += "AND ";
+                            searchstring += "t." + vdict.Key + " like '%" + vdict.Value + "%' ";
+                        }
+
+                        //インシデントのとき
+                        else if (vdict.Key == "text")
+                        {
+
+                            if (i > 1)
+                                searchstring += "AND ";
+                            searchstring += "t." + vdict.Key + " like '%" + vdict.Value + "%' ";
+                        }
+
+
                         //日付のとき
                         else if (0 <= vdict.Key.IndexOf("date"))
                         {
@@ -3925,7 +3925,8 @@ namespace moss_AP
                             searchstring += "t." + vdict.Key + " >='" + dt.ToString() + "' AND t." +
                                 vdict.Key + " <= '" + dt1.ToString() + "' ";
                         }
-                        else {
+                        else
+                        {
                             if (i > 1)
                                 searchstring += "AND ";
                             searchstring += "t." + vdict.Key + "='" + vdict.Value + "' ";
@@ -3979,7 +3980,7 @@ namespace moss_AP
             string searchstring = "";
             string userid = "";
             NpgsqlCommand cmd;
-            String param = "";
+
             Int64 Count = 0;
 
             if (tepletetype != "")
@@ -4000,7 +4001,7 @@ namespace moss_AP
                         string username = vdict.Value;
 
                         //部分一致で検索しヒットした場合はカスタマ名は固定
-                        if (0 <= "全てのカスタマ".IndexOf(username))
+                        if (0 <= username.IndexOf("全てのカスタマ"))
                         {
                             if (i > 1)
                                 searchstring += "AND ";
@@ -4029,6 +4030,28 @@ namespace moss_AP
                             searchstring += "AND ";
                         searchstring += "t." + vdict.Key + "=" + vdict.Value + " ";
                     }
+
+                    //タイトル
+                    else if (vdict.Key == "title")
+                    {
+
+                        if (i > 1)
+                            searchstring += "AND ";
+                        searchstring += "t." + vdict.Key + " like '%" + vdict.Value + "%' ";
+                    }
+
+                    //インシデントのとき
+                    else if (vdict.Key == "text")
+                    {
+
+                        if (i > 1)
+                            searchstring += "AND ";
+                        searchstring += "t." + vdict.Key + " like '%" + vdict.Value + "%' ";
+                    }
+
+
+
+
 
                     //日付のとき
                     else if (0 <= vdict.Key.IndexOf("date"))
@@ -4079,7 +4102,6 @@ namespace moss_AP
         {
             string searchstring = "";
             String param = "";
-            string userid = "";
             NpgsqlCommand cmd;
             timerDS ds;
             List<timerDS> retList = null;
@@ -4193,7 +4215,7 @@ namespace moss_AP
         public Int64 getTaskListCount(Form_MainList ownerForm, Dictionary<string, string> param_dict, NpgsqlConnection con)
         {
 
-            String sql = "SELECT Count(*) FROM task ta " +
+            String sql = "SELECT count(distinct ta.schedule_no) FROM task ta " +
             "LEFT OUTER JOIN user_tbl u ON ta.userno = u.userno " +
             "LEFT OUTER JOIN timer ti ON ti.schedule_no = ta.schedule_no ";
 
@@ -4424,10 +4446,10 @@ namespace moss_AP
         //タスク情報の取得(検索)
         public List<taskDS> getTaskList(Form_MainList ownerForm, Dictionary<string, string> param_dict, NpgsqlConnection con)
         {
-            String sql = "SELECT ta.schedule_no,ta.schedule_type,ta.status,ta.templeteno," +
+            String sql = "SELECT DISTINCT ta.schedule_no,ta.schedule_type,ta.status,ta.templeteno," +
             "ta.naiyou,ta.startdate,ta.enddate,ta.biko,ta.userno,u.username,ta.ins_date,ta.ins_name_id,ta.chk_date,ta.chk_name_id," +
             "ti.timerid,ti.timername,ti.repeat_type,ti.alert_time,ti.start_date,ti.end_date,ti.status,ti.chk_date chk_date_timer,ti.chk_name_id chk_name_id_timer FROM task ta " +
-            "LEFT OUTER JOIN timer ti ON ta.schedule_no = ti.schedule_no LEFT OUTER JOIN user_tbl u ON ta.userno = u.userno ";
+            "LEFT OUTER JOIN user_tbl u ON ta.userno = u.userno LEFT OUTER JOIN timer ti ON ta.schedule_no = ti.schedule_no ";
 
 
             NpgsqlCommand cmd;

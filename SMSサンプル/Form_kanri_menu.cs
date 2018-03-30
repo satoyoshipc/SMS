@@ -20,6 +20,8 @@ namespace moss_AP
         public List<systemDS> systemList;
         public List<siteDS> siteList;
 
+        public templeteDS templetedt { get; set; }
+
         public Form_kanri_menu()
         {
             InitializeComponent();
@@ -133,7 +135,8 @@ namespace moss_AP
             userDS uds;
             List<userDS> list_userDS = new List<userDS>();
 
-            try { 
+            try
+            {
 
                 StreamReader reader = new StreamReader(filePath, Encoding.GetEncoding("Shift_JIS"));
 
@@ -149,7 +152,7 @@ namespace moss_AP
 
                     //1文字目#はコメント
                     string str = "";
-                    if(str.StartsWith("#"))
+                    if (str.StartsWith("#"))
                         continue;
                     uds.customerID = cols[6];
                     //カスタマ名
@@ -160,7 +163,7 @@ namespace moss_AP
                     uds.username_sum = cols[2];
 
                     //レポート有無
-                    if(cols[6] == "○")
+                    if (cols[6] == "○")
                         uds.report_status = "1";
                     else
                         uds.report_status = "0";
@@ -182,7 +185,7 @@ namespace moss_AP
                     return;
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
                 logger.ErrorFormat("カスタマのインポートエラー。CSVファイルの読み込み時にエラーが発生しました。 ");
@@ -206,7 +209,8 @@ namespace moss_AP
                 {
                     cmd = new NpgsqlCommand(@"insert into user_tbl(username, username_kana,username_sum,status,report_status,biko,chk_date,chk_name_id) 
                     values ( :username,:username_kana,:username_sum,:status,:report_status,:biko,:chk_date,:chk_name_id)", con);
-                    try { 
+                    try
+                    {
                         //ステータス
                         if (us.report_status == "有効")
                             rep_status = "1";
@@ -241,7 +245,7 @@ namespace moss_AP
                             //登録成功
                             i++;
                             //MessageBox.Show("登録完了", "カスタマ登録");
-                        }    
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -304,11 +308,12 @@ namespace moss_AP
             return retStr;
         }
 
-        private String getCustomerNo(String Customername,NpgsqlConnection con)
+        private String getCustomerNo(String Customername, NpgsqlConnection con)
         {
             String userno = "";
             NpgsqlCommand cmd;
-            try {
+            try
+            {
                 //DB接続
                 if (con.FullState != ConnectionState.Open) con.Open();
 
@@ -328,11 +333,11 @@ namespace moss_AP
                 //
                 if (userno == null || userno == "")
                 {
-                   // MessageBox.Show("カスタマNOが取得できませんでした。カスタマ名：" + Customername, "システムインポート", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    // MessageBox.Show("カスタマNOが取得できませんでした。カスタマ名：" + Customername, "システムインポート", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return "";
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("カスタマNOが取得できませんでした エラー : " + ex.Message);
                 logger.ErrorFormat("カスタマNOが取得できませんでした。カスタマ名:{0}", Customername);
@@ -345,7 +350,7 @@ namespace moss_AP
         }
 
         //システムNOの取得
-        private String getSystemNo(String userno,String Systemname, NpgsqlConnection con)
+        private String getSystemNo(String userno, String Systemname, NpgsqlConnection con)
         {
             String systemno = "";
             NpgsqlCommand cmd;
@@ -387,7 +392,7 @@ namespace moss_AP
                         }
                         else
                         {
-                            logger.Warn("システムNOが取得できませんでした。存在するシステムIDを返します。　システム名:" + Systemname );
+                            logger.Warn("システムNOが取得できませんでした。存在するシステムIDを返します。　システム名:" + Systemname);
 
                         }
 
@@ -404,9 +409,9 @@ namespace moss_AP
             return systemno;
 
         }
-        
+
         //拠点NOの取得
-        private String getSiteNo(String userno,String systemno,String sitename, NpgsqlConnection con)
+        private String getSiteNo(String userno, String systemno, String sitename, NpgsqlConnection con)
         {
             String siteno = "";
             NpgsqlCommand cmd;
@@ -445,7 +450,7 @@ namespace moss_AP
         }
 
         //ホスト名
-        private String getHostNo(String userno, String systemno, String siteno,String hostname, NpgsqlConnection con)
+        private String getHostNo(String userno, String systemno, String siteno, String hostname, NpgsqlConnection con)
         {
             String hostno = "";
             NpgsqlCommand cmd;
@@ -522,14 +527,14 @@ namespace moss_AP
         private void システムSToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-                //ファイル選択ダイアログ
-                string filePath = Disp_FileSelectDlg();
-                if(filePath == "")
-                {
-                    return;
-                }
-                systemDS sds;
-                List<systemDS> list_systemDS = new List<systemDS>();
+            //ファイル選択ダイアログ
+            string filePath = Disp_FileSelectDlg();
+            if (filePath == "")
+            {
+                return;
+            }
+            systemDS sds;
+            List<systemDS> list_systemDS = new List<systemDS>();
 
             try
             {
@@ -543,7 +548,7 @@ namespace moss_AP
                 {
                     sds = new systemDS();
                     string[] cols = parser.ReadFields(); // 1行読み込み
-                                                     
+
                     //1行目#はコメント
                     string str = "";
                     str = cols[0];
@@ -561,7 +566,7 @@ namespace moss_AP
                     sds.chk_date = cols[5];
 
                     list_systemDS.Add(sds);
-                
+
                 }
                 parser.Close();
             }
@@ -569,7 +574,7 @@ namespace moss_AP
             {
                 MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
                 logger.ErrorFormat("システム情報のインポートエラー。CSVファイルの読み込み時にエラーが発生しました。");
-                
+
                 return;
             }
             if (MessageBox.Show(list_systemDS.Count + "件登録します。よろしいですか？", "システムインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
@@ -588,11 +593,11 @@ namespace moss_AP
                 foreach (systemDS us in list_systemDS)
                 {
                     //カスタマNOの取得
-                    us.userno=getCustomerNo(us.username,con);
+                    us.userno = getCustomerNo(us.username, con);
                     if (us.userno == "")
                         //継続
                         continue;
-                    
+
 
                     cmd = new NpgsqlCommand(@"insert into system(systemname,biko,userno,chk_date,chk_name_id) 
                     values ( :systemname,:biko,:userno,:chk_date,:chk_name_id)", con);
@@ -630,7 +635,7 @@ namespace moss_AP
                     {
                         MessageBox.Show("システム情報のインポート" + ex.Message);
                         logger.ErrorFormat("システム情報のインポートエラー。{0} システム:{1}", ex.Message, us.systemname);
-                    
+
                         return;
                     }
 
@@ -654,7 +659,7 @@ namespace moss_AP
                 MessageBox.Show("システム情報のインポート" + i + "件 ");
 
             }
-            
+
         }
         //システムが存在しないカスタマがあるか確認する 件数を返す
         private Int64 check_noSystem()
@@ -717,7 +722,7 @@ namespace moss_AP
                         MessageBox.Show("固定のシステム「NW監視」が登録できませんでした。", "システムインサート", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         logger.ErrorFormat("固定のシステムが登録できませんでした。");
                         return;
-                        
+
                     }
                     else
                     {
@@ -738,7 +743,7 @@ namespace moss_AP
             }
 
         }
-        
+
         //拠点インポート
         private void 拠点KToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -804,7 +809,7 @@ namespace moss_AP
                 }
                 parser.Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
                 logger.ErrorFormat("拠点情報のインポートエラー。CSVファイルの読み込み時にエラーが発生しました。");
@@ -834,10 +839,10 @@ namespace moss_AP
                         continue;
 
                     //システム番号の取得
-                    si.systemno = getSystemNo(si.userno,si.systemname, con);
-//                    if (si.systemno == "")
-                        //継続
-                     //   continue;
+                    si.systemno = getSystemNo(si.userno, si.systemname, con);
+                    //                    if (si.systemno == "")
+                    //継続
+                    //   continue;
                     //ステータス
                     string stat = "";
                     if (si.status == "有効")
@@ -893,7 +898,7 @@ namespace moss_AP
                     catch (Exception ex)
                     {
                         logger.ErrorFormat("拠点情報のインポート時" + cnt + "件目でエラーが発生しました。{0}", ex.Message);
-                        MessageBox.Show("拠点情報のインポート時" + cnt + "件目でエラーが発生しました。" +  ex.Message);
+                        MessageBox.Show("拠点情報のインポート時" + cnt + "件目でエラーが発生しました。" + ex.Message);
                         //transaction.Rollback();
                         return;
                     }
@@ -1008,7 +1013,7 @@ namespace moss_AP
                         continue;
 
                     //システム番号の取得
-                    si.systemno = getSystemNo(si.userno,si.systemname, con);
+                    si.systemno = getSystemNo(si.userno, si.systemname, con);
 
                     //if (si.systemno == "")
                     //継続
@@ -1054,11 +1059,13 @@ namespace moss_AP
                         }
 
                         //監視終了日時
-                        if(si.kansiEndsdate == "" || si.kansiEndsdate == null) { 
+                        if (si.kansiEndsdate == "" || si.kansiEndsdate == null)
+                        {
 
                             cmd.Parameters.Add(new NpgsqlParameter("kansiendsdate", DbType.DateTime) { Value = null });
                         }
-                        else {
+                        else
+                        {
                             DateTime enddate;
                             DateTime.TryParse(si.kansiEndsdate, out enddate);
 
@@ -1402,7 +1409,7 @@ namespace moss_AP
             string filePath = Disp_FileSelectDlg();
             if (filePath == "")
                 return;
-            
+
             MailaddressDS sds;
             List<MailaddressDS> list_mailaddressDS = new List<MailaddressDS>();
 
@@ -1566,7 +1573,8 @@ namespace moss_AP
             kaisenDS kds;
             List<kaisenDS> list_kaisen = new List<kaisenDS>();
 
-            try { 
+            try
+            {
                 TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(","); // 区切り文字はコンマ
@@ -1616,11 +1624,13 @@ namespace moss_AP
 
                     //システムNOの取得
                     kds.systemno = getSystemNo(kds.userno, systemname, con);
-                    if (kds.systemno != "") {
+                    if (kds.systemno != "")
+                    {
 
                         //拠点NOの取得
                         kds.siteno = getSiteNo(kds.userno, kds.systemno, sitename, con);
-                        if (kds.siteno != "") {
+                        if (kds.siteno != "")
+                        {
                             //ホストNOの取得
                             kds.host_no = getHostNo(kds.userno, kds.systemno, kds.siteno, hostname, con);
                         }
@@ -1635,7 +1645,8 @@ namespace moss_AP
                 parser.Close();
             }
 
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
                 logger.ErrorFormat("回線情報のインポートエラー。CSVファイルの読み込み時にエラーが発生しました。");
 
@@ -1690,7 +1701,7 @@ namespace moss_AP
                         int.TryParse(sikds.siteno, out ret_siteno);
                         int.TryParse(sikds.host_no, out ret_host_no);
                         cmd.Parameters.Add(new NpgsqlParameter("status", DbType.String) { Value = status });
-                        cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = ret_userno  });
+                        cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = ret_userno });
                         cmd.Parameters.Add(new NpgsqlParameter("systemno", DbType.Int32) { Value = ret_systemno });
                         cmd.Parameters.Add(new NpgsqlParameter("siteno", DbType.Int32) { Value = ret_siteno });
                         cmd.Parameters.Add(new NpgsqlParameter("host_no", DbType.Int32) { Value = ret_host_no });
@@ -1858,7 +1869,7 @@ namespace moss_AP
                         status = "1";
                     }
                     if (sikds.status == "無効")
-                    {   
+                    {
                         status = "0";
 
                     }
@@ -1926,7 +1937,7 @@ namespace moss_AP
                     catch (Exception ex)
                     {
                         MessageBox.Show("監視インターフェイス情報のインポート時" + i + "件目でエラーが発生しました。" + ex.Message);
-                        logger.ErrorFormat("監視インターフェイス情報のインポート時{0}件目でエラーが発生しました。:{1}",i,ex.Message);
+                        logger.ErrorFormat("監視インターフェイス情報のインポート時{0}件目でエラーが発生しました。:{1}", i, ex.Message);
 
                         //transaction.Rollback();
                         return;
@@ -1968,5 +1979,184 @@ namespace moss_AP
             templeteUpdate.loginDS = loginDS;
             templeteUpdate.ShowDialog(this);
         }
+
+        private void インポートIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void インシデントテンプレートIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //インポートを行う
+            ImportTemplete("1");
+        }
+        private void 作業テンプレートSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //インポートを行う
+            ImportTemplete("2");
+        }
+        //1:インシデントテンプレート　2:作業テンプレート
+        private void ImportTemplete(string incidentflg)
+        {
+            //ファイル選択ダイアログ
+            string filePath = Disp_FileSelectDlg();
+            if (filePath == "")
+                return;
+
+            List<templeteDS> templetedt_list = new List<templeteDS>();
+            String context = "";
+            try
+            {
+
+                TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding("Shift_JIS"));
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(","); // 区切り文字はコンマ
+
+                String username = "";
+
+
+
+                while (!parser.EndOfData)
+                {
+                    templetedt = new templeteDS();
+                    string[] cols = parser.ReadFields(); // 1行読み込み                         //ステータス
+
+                    //1行目#はコメント
+                    string str = "";
+                    str = cols[0];
+                    if (str.StartsWith("#"))
+                        continue;
+
+                    //インシデントテンプレート
+                    if (incidentflg == "1")
+                    {
+                        context = "インシデントメール";
+
+
+                        templetedt.title = cols[2];
+                    }
+                    else
+                    {
+                        context = "計画作業メール";
+                    }
+                    templetedt.templetename = cols[2];
+                    username = cols[2];
+                    string tat = cols[4];
+                    templetedt.text = tat.Replace("\n", "\r\n");
+                    //更新日時
+                    templetedt.chk_date = cols[5];
+                    //更新ID
+                    templetedt.chk_name_id = cols[6];
+
+
+
+                    //カスタマNOの取得
+                    //ALLだったら0:全てのカスタマ
+                    if (username == "ALL")
+                    {
+                        templetedt.userno = "0";
+                        username = "全てのカスタマ";
+                    }
+                    else
+                    {
+                        templetedt.userno = getCustomerNo(username, con);
+                    }
+
+                    //カスタマ通番が取得できなかったら登録しない
+                    if (templetedt.userno == "")
+                        //継続
+                        continue;
+
+
+                    templetedt_list.Add(templetedt);
+                }
+                parser.Close();
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("CSVファイルの読み込み時にエラーが発生しました。" + ex.Message);
+                logger.ErrorFormat("テンプレートのインポートエラー。CSVファイルの読み込み時にエラーが発生しました。");
+
+                return;
+            }
+
+            if (MessageBox.Show(templetedt_list.Count + "件のテンプレートを登録します。よろしいですか？", context + "テンプレートインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
+
+            //DB接続
+            if (con.FullState != ConnectionState.Open) con.Open();
+
+            NpgsqlCommand cmd;
+
+            using (var transaction = con.BeginTransaction())
+            {
+
+                //インサート文
+                int i = 0;
+                int cnt = 0;
+                foreach (templeteDS tempDS in templetedt_list)
+                {
+
+                    cmd = new NpgsqlCommand(@"insert into templete(templetetype,templetename,title,text,userno,chk_date,chk_name_id) 
+                    values (:templetetype,:templetename,:title,:text,:userno,:chk_date,:chk_name_id)", con);
+                    try
+                    {
+                        DateTime datet;
+                        DateTime.TryParse(tempDS.chk_date, out datet);
+
+                        Int32 rowsaffected;
+
+                        //データ登録
+                        int ret_userno;
+                        int.TryParse(tempDS.userno, out ret_userno);
+
+                        cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.Int32) { Value = ret_userno });
+                        cmd.Parameters.Add(new NpgsqlParameter("templetetype", DbType.String) { Value = incidentflg });
+                        cmd.Parameters.Add(new NpgsqlParameter("templetename", DbType.String) { Value = tempDS.templetename });
+                        cmd.Parameters.Add(new NpgsqlParameter("title", DbType.String) { Value = tempDS.title });
+                        cmd.Parameters.Add(new NpgsqlParameter("text", DbType.String) { Value = tempDS.text });
+                        cmd.Parameters.Add(new NpgsqlParameter("userno", DbType.String) { Value = tempDS.userno });
+                        cmd.Parameters.Add(new NpgsqlParameter("chk_date", DbType.DateTime) { Value = datet });
+                        cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = loginDS.opeid });
+
+                        rowsaffected = cmd.ExecuteNonQuery();
+
+                        if (rowsaffected != 1)
+                        {
+
+                            //if (MessageBox.Show("メールアドレスを登録できませんでした。担当者名:" + si.user_tantou_name + Environment.NewLine + " 継続しますか？", "担当者情報(電話)のインポート", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            //{
+                            //    transaction.Rollback();
+                            //    return;
+                            //}
+                        }
+                        else
+                        {
+                            //登録成功
+                            i++;
+                            //MessageBox.Show("登録完了", "システム名");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(context + "テンプレートインポート時" + cnt + "件目でエラーが発生しました。" + ex.Message);
+                        logger.ErrorFormat(context + "テンプレートインポート時{0}件目でエラーが発生しました。:{1}", i, ex.Message);
+
+                        //transaction.Rollback();
+                        return;
+                    }
+
+                }
+                //終わったらコミットする
+                transaction.Commit();
+                MessageBox.Show("テンプレートのインポート" + i + "件 ");
+
+
+            }
+
+        }
+
     }
+    
 }

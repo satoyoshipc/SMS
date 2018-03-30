@@ -33,6 +33,9 @@ namespace moss_AP
         //拠点
         public List<siteDS> siteList { get; set; }
 
+        //タスクのインサートを行う
+        public int schedule_type { get; set; }
+
 
         public Form_taskInsert()
         {
@@ -68,6 +71,13 @@ namespace moss_AP
 
             m_idlabel.Text = loginDS.opeid;
             m_labelinputOpe.Text = loginDS.lastname + loginDS.fastname;
+
+            //1:インシデント
+            //2:定期作業
+            //3:計画作業
+            //4:特別対応
+            m_schedule_combo.SelectedIndex = schedule_type;
+
 
             //コンボボックス
             DataTable cutomerTable = new DataTable();
@@ -205,6 +215,48 @@ namespace moss_AP
                 //初期値を反映させる
                 templeteSelect();
             }
+            else if (m_schedule_combo.SelectedItem.ToString() == "1:インシデント")
+            {
+                //インシデントが選択された場合は一覧を取得する
+                m_templeteCombo.Enabled = true;
+
+                string userno = m_userno.Text;
+                m_templeteCombo.DataSource = null;
+                Class_Detaget dg = new Class_Detaget();
+                templist
+                   = dg.getTempleteList(userno, "1", con, true);
+
+                //コンボボックス
+                DataTable templeteTable = new DataTable();
+                templeteTable.Columns.Add("ID", typeof(string));
+                templeteTable.Columns.Add("NAME", typeof(string));
+
+                if (templist == null)
+                    return;
+
+                //空白行を追加
+                templeteDS tmp = new templeteDS();
+                tmp.templeteno = "";
+                tmp.templetename = "";
+                List<templeteDS> templeteDSList = new List<templeteDS>();
+                templeteDSList.Add(tmp);
+
+                //テンプレート情報を取得する
+                foreach (templeteDS v in templist)
+                {
+                    DataRow row = templeteTable.NewRow();
+                    row["ID"] = v.templeteno;
+                    row["NAME"] = v.templetename;
+                    templeteTable.Rows.Add(row);
+                }
+
+                //データテーブルを割り当てる
+                m_templeteCombo.DataSource = templeteTable;
+                m_templeteCombo.DisplayMember = "NAME";
+                m_templeteCombo.ValueMember = "ID";
+                //初期値を反映させる
+                templeteSelect();
+            }
             else
             {
                 m_templeteCombo.Enabled = false;
@@ -251,7 +303,7 @@ namespace moss_AP
             int ret = 0;
 
             //登録を行う
-            //カスタマ名
+            //タスク区分
             if (m_schedule_combo.Text == "")
             {
                 MessageBox.Show("タスク区分が入力されていません。", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -300,13 +352,14 @@ namespace moss_AP
             else
                 //有効
                 status = "1";
+            if (con.FullState != ConnectionState.Open) con.Open();
             using (var transaction = con.BeginTransaction())
             {
                 //DB接続
                 NpgsqlCommand cmd;
                 try
                 {
-                    if (con.FullState != ConnectionState.Open) con.Open();
+
                     Int32 rowsaffected;
                     //データ登録
                     cmd = new NpgsqlCommand(@"insert into task(schedule_type,userno,status,templeteno,naiyou,startdate,enddate,biko,ins_date,ins_name_id,chk_name_id) 
@@ -556,7 +609,7 @@ namespace moss_AP
                         obj = (DateTimePicker)alertDates[index - 1];
                         DateTime dd = obj.Value;
 
-                        alerm_insert(scheNO, taskkubun, dd);
+                        alerm_insert(scheNO, taskkubun, dd, index);
 
                     }
                     else if (rb1.Text == "毎時")
@@ -598,7 +651,7 @@ namespace moss_AP
                                 break;
 
                             //時間毎に登録
-                            int ret = alerm_insert(scheNO, taskkubun, alertdate);
+                            int ret = alerm_insert(scheNO, taskkubun, alertdate, index);
                             if (ret == -1)
                                 break;
 
@@ -649,7 +702,7 @@ namespace moss_AP
                                 break;
 
                             //日付毎に登録
-                            int ret = alerm_insert(scheNO, taskkubun, alertdate);
+                            int ret = alerm_insert(scheNO, taskkubun, alertdate, index);
                             if (ret == -1)
                                 break;
 
@@ -708,7 +761,7 @@ namespace moss_AP
                             if (weeknumber == tmpweeknumber)
                             {
                                 //日付毎に登録
-                                int ret = alerm_insert(scheNO, taskkubun, alertdate);
+                                int ret = alerm_insert(scheNO, taskkubun, alertdate, index);
                                 if (ret == -1)
                                     break;
                             }
@@ -757,7 +810,7 @@ namespace moss_AP
                                 break;
 
                             //日付毎に登録
-                            int ret = alerm_insert(scheNO, taskkubun, alertdate);
+                            int ret = alerm_insert(scheNO, taskkubun, alertdate,index);
                             if (ret == -1)
                                 break;
 
@@ -774,7 +827,7 @@ namespace moss_AP
 
         }
         //タイマー対応テーブルに登録する
-        private int alerm_insert(int scheNO, string taskkubun, DateTime alertdatetime)
+        private int alerm_insert(int scheNO, string taskkubun, DateTime alertdatetime,int timerID)
         {
             //DB接続
             NpgsqlCommand cmd;
@@ -783,11 +836,12 @@ namespace moss_AP
                 if (con.FullState != ConnectionState.Open) con.Open();
                 Int32 rowsaffected;
                 //データ登録
-                cmd = new NpgsqlCommand(@"insert into timer_taiou(schedule_no,schedule_type,alertdatetime,chk_name_id) 
-                    values ( :schedule_no,:schedule_type,:alertdatetime,:chk_name_id) ", con);
+                cmd = new NpgsqlCommand(@"insert into timer_taiou(schedule_no,schedule_type,timerID,alertdatetime,chk_name_id) 
+                    values ( :schedule_no,:schedule_type,:timerID,:alertdatetime,:chk_name_id) ", con);
 
                 cmd.Parameters.Add(new NpgsqlParameter("schedule_no", DbType.Int32) { Value = scheNO });
                 cmd.Parameters.Add(new NpgsqlParameter("schedule_type", DbType.String) { Value = taskkubun });
+                cmd.Parameters.Add(new NpgsqlParameter("timerID", DbType.Int32) { Value = timerID });
                 cmd.Parameters.Add(new NpgsqlParameter("alertdatetime", DbType.DateTime) { Value = alertdatetime });
                 cmd.Parameters.Add(new NpgsqlParameter("chk_name_id", DbType.String) { Value = m_idlabel.Text });
                 rowsaffected = cmd.ExecuteNonQuery();
@@ -817,6 +871,7 @@ namespace moss_AP
         //対象の日時にデータタイムを取得する
         private void timer_datetime(int group_idx,int repeat_kubun)
         {
+            Control[] alert_dates = new Control[] { m_alermDate1, m_alermDate2, m_alermDate3, m_alermDate4, m_alermDate5 };
             Control[] start_dates = new Control[] { m_startDate1, m_startDate2, m_startDate3, m_startDate4, m_startDate5 };
             Control[] end_dates = new Control[] { m_endDate1, m_endDate2, m_endDate3, m_endDate4, m_endDate5 };
 
@@ -826,30 +881,49 @@ namespace moss_AP
             { 
                 start_dates[group_idx].Enabled = false;
                 end_dates[group_idx].Enabled = false;
+
+                //DatetimeFormatを変更する
+                DateTimePicker dtp = (DateTimePicker)alert_dates[group_idx];
+                dtp.CustomFormat = "yyyy年M月d日(dddd) HH:mm";
             }
             //毎時
             else if (repeat_kubun == 2)
             {
                 start_dates[group_idx].Enabled = true;
                 end_dates[group_idx].Enabled = true;
+
+                //DatetimeFormatを変更する
+                DateTimePicker dtp = (DateTimePicker)alert_dates[group_idx];
+                dtp.CustomFormat = "mm分";
             }
             //毎日
             else if (repeat_kubun == 3)
             {
                 start_dates[group_idx].Enabled = true;
                 end_dates[group_idx].Enabled = true;
+                //DatetimeFormatを変更する
+                DateTimePicker dtp = (DateTimePicker)alert_dates[group_idx];
+                dtp.CustomFormat = "HH:mm";
             }
             //毎週
             else if (repeat_kubun == 4)
             {
                 start_dates[group_idx].Enabled = true;
                 end_dates[group_idx].Enabled = true;
+
+                //DatetimeFormatを変更する
+                DateTimePicker dtp = (DateTimePicker)alert_dates[group_idx];
+                dtp.CustomFormat = "(dddd) HH:mm";
             }
             //毎月
             else if (repeat_kubun == 5)
             {
                 start_dates[group_idx].Enabled = true;
                 end_dates[group_idx].Enabled = true;
+
+                //DatetimeFormatを変更する
+                DateTimePicker dtp = (DateTimePicker)alert_dates[group_idx];
+                dtp.CustomFormat = "d日  HH:mm";
             }
         }
 
@@ -859,6 +933,7 @@ namespace moss_AP
             //チェックされていたら日時を利用不可にする
             if (m_radio_one1.Checked)
                 timer_datetime(0, 1);
+
         }
         //タイマー①
         private void m_radio_hour1_CheckedChanged(object sender, EventArgs e)
@@ -866,6 +941,7 @@ namespace moss_AP
             //チェックされていたら日時を利用不可にする
             if (m_radio_hour1.Checked)
                 timer_datetime(0, 2);
+
         }
         //タイマー①
         private void m_radio_day1_CheckedChanged(object sender, EventArgs e)
@@ -873,6 +949,7 @@ namespace moss_AP
             //チェックされていたら日時を利用可にする
             if (m_radio_day1.Checked)
                 timer_datetime(0, 3);
+
         }
         //タイマー①
         private void m_radio_week1_CheckedChanged(object sender, EventArgs e)
@@ -1073,6 +1150,11 @@ namespace moss_AP
             {
                 m_statusCombo5.SelectedIndex = 1;
             }
+        }
+
+        private void m_schedule_combo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

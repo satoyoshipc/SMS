@@ -399,6 +399,7 @@
             this.m_radio_month5.TabIndex = 11;
             this.m_radio_month5.Text = "毎月";
             this.m_radio_month5.UseVisualStyleBackColor = true;
+            this.m_radio_month5.CheckedChanged += new System.EventHandler(this.m_radio_month5_CheckedChanged);
             // 
             // m_radio_week5
             // 
@@ -409,6 +410,7 @@
             this.m_radio_week5.TabIndex = 10;
             this.m_radio_week5.Text = "毎週";
             this.m_radio_week5.UseVisualStyleBackColor = true;
+            this.m_radio_week5.CheckedChanged += new System.EventHandler(this.m_radio_week5_CheckedChanged);
             // 
             // m_radio_day5
             // 
@@ -419,6 +421,7 @@
             this.m_radio_day5.TabIndex = 9;
             this.m_radio_day5.Text = "毎日";
             this.m_radio_day5.UseVisualStyleBackColor = true;
+            this.m_radio_day5.CheckedChanged += new System.EventHandler(this.m_radio_day5_CheckedChanged);
             // 
             // m_radio_hour5
             // 
@@ -429,6 +432,8 @@
             this.m_radio_hour5.TabIndex = 8;
             this.m_radio_hour5.Text = "毎時";
             this.m_radio_hour5.UseVisualStyleBackColor = true;
+            this.m_radio_hour5.CheckedChanged += new System.EventHandler(this.m_radio_hour5_CheckedChanged);
+
             // 
             // m_radio_one5
             // 
@@ -441,6 +446,7 @@
             this.m_radio_one5.TabStop = true;
             this.m_radio_one5.Text = "1回";
             this.m_radio_one5.UseVisualStyleBackColor = true;
+            this.m_radio_one5.CheckedChanged += new System.EventHandler(this.m_radio_one5_CheckedChanged);
             // 
             // m_statusCombo5
             // 
@@ -632,6 +638,7 @@
             this.m_radio_month2.TabIndex = 11;
             this.m_radio_month2.Text = "毎月";
             this.m_radio_month2.UseVisualStyleBackColor = true;
+            this.m_radio_month2.CheckedChanged += new System.EventHandler(this.m_radio_month2_CheckedChanged);
             // 
             // m_radio_week2
             // 
@@ -642,6 +649,7 @@
             this.m_radio_week2.TabIndex = 10;
             this.m_radio_week2.Text = "毎週";
             this.m_radio_week2.UseVisualStyleBackColor = true;
+            this.m_radio_week2.CheckedChanged += new System.EventHandler(this.m_radio_week2_CheckedChanged);
             // 
             // m_radio_day2
             // 
@@ -652,6 +660,7 @@
             this.m_radio_day2.TabIndex = 9;
             this.m_radio_day2.Text = "毎日";
             this.m_radio_day2.UseVisualStyleBackColor = true;
+            this.m_radio_day2.CheckedChanged += new System.EventHandler(this.m_radio_day2_CheckedChanged);
             // 
             // m_radio_hour2
             // 
@@ -662,6 +671,7 @@
             this.m_radio_hour2.TabIndex = 8;
             this.m_radio_hour2.Text = "毎時";
             this.m_radio_hour2.UseVisualStyleBackColor = true;
+            this.m_radio_hour2.CheckedChanged += new System.EventHandler(this.m_radio_hour2_CheckedChanged);
             // 
             // m_radio_one2
             // 
@@ -674,6 +684,7 @@
             this.m_radio_one2.TabStop = true;
             this.m_radio_one2.Text = "1回";
             this.m_radio_one2.UseVisualStyleBackColor = true;
+            this.m_radio_one2.CheckedChanged += new System.EventHandler(this.m_radio_one2_CheckedChanged);
             // 
             // m_statusCombo2
             // 
@@ -811,6 +822,7 @@
             this.m_radio_month4.TabIndex = 11;
             this.m_radio_month4.Text = "毎月";
             this.m_radio_month4.UseVisualStyleBackColor = true;
+            this.m_radio_month4.CheckedChanged += new System.EventHandler(this.m_radio_month4_CheckedChanged);
             // 
             // m_radio_week4
             // 
@@ -821,6 +833,7 @@
             this.m_radio_week4.TabIndex = 10;
             this.m_radio_week4.Text = "毎週";
             this.m_radio_week4.UseVisualStyleBackColor = true;
+            this.m_radio_week4.CheckedChanged += new System.EventHandler(this.m_radio_week4_CheckedChanged);
             // 
             // m_radio_day4
             // 
@@ -831,6 +844,7 @@
             this.m_radio_day4.TabIndex = 9;
             this.m_radio_day4.Text = "毎日";
             this.m_radio_day4.UseVisualStyleBackColor = true;
+            this.m_radio_day4.CheckedChanged += new System.EventHandler(this.m_radio_day4_CheckedChanged);
             // 
             // m_radio_hour4
             // 
@@ -841,6 +855,7 @@
             this.m_radio_hour4.TabIndex = 8;
             this.m_radio_hour4.Text = "毎時";
             this.m_radio_hour4.UseVisualStyleBackColor = true;
+            this.m_radio_hour4.CheckedChanged += new System.EventHandler(this.m_radio_hour4_CheckedChanged);
             // 
             // m_radio_one4
             // 
@@ -853,6 +868,7 @@
             this.m_radio_one4.TabStop = true;
             this.m_radio_one4.Text = "1回";
             this.m_radio_one4.UseVisualStyleBackColor = true;
+            this.m_radio_one4.CheckedChanged += new System.EventHandler(this.m_radio_one4_CheckedChanged);
             // 
             // m_statusCombo4
             // 
@@ -1087,6 +1103,7 @@
             this.m_radio_month3.TabIndex = 11;
             this.m_radio_month3.Text = "毎月";
             this.m_radio_month3.UseVisualStyleBackColor = true;
+            this.m_radio_month3.CheckedChanged += new System.EventHandler(this.m_radio_month3_CheckedChanged);
             // 
             // m_radio_week3
             // 
@@ -1097,6 +1114,7 @@
             this.m_radio_week3.TabIndex = 10;
             this.m_radio_week3.Text = "毎週";
             this.m_radio_week3.UseVisualStyleBackColor = true;
+            this.m_radio_week3.CheckedChanged += new System.EventHandler(this.m_radio_week3_CheckedChanged);
             // 
             // m_radio_day3
             // 
@@ -1107,6 +1125,7 @@
             this.m_radio_day3.TabIndex = 9;
             this.m_radio_day3.Text = "毎日";
             this.m_radio_day3.UseVisualStyleBackColor = true;
+            this.m_radio_day3.CheckedChanged += new System.EventHandler(this.m_radio_day3_CheckedChanged);
             // 
             // m_radio_hour3
             // 
@@ -1117,6 +1136,7 @@
             this.m_radio_hour3.TabIndex = 8;
             this.m_radio_hour3.Text = "毎時";
             this.m_radio_hour3.UseVisualStyleBackColor = true;
+            this.m_radio_hour3.CheckedChanged += new System.EventHandler(this.m_radio_hour3_CheckedChanged);
             // 
             // m_radio_one3
             // 
@@ -1129,6 +1149,7 @@
             this.m_radio_one3.TabStop = true;
             this.m_radio_one3.Text = "1回";
             this.m_radio_one3.UseVisualStyleBackColor = true;
+            this.m_radio_one3.CheckedChanged += new System.EventHandler(this.m_radio_one3_CheckedChanged);
             // 
             // m_statusCombo3
             // 
@@ -1267,6 +1288,7 @@
             this.m_radio_month1.TabIndex = 11;
             this.m_radio_month1.Text = "毎月";
             this.m_radio_month1.UseVisualStyleBackColor = true;
+            this.m_radio_month1.CheckedChanged += new System.EventHandler(this.m_radio_month1_CheckedChanged);
             // 
             // m_radio_week1
             // 
@@ -1277,6 +1299,7 @@
             this.m_radio_week1.TabIndex = 10;
             this.m_radio_week1.Text = "毎週";
             this.m_radio_week1.UseVisualStyleBackColor = true;
+            this.m_radio_week1.CheckedChanged += new System.EventHandler(this.m_radio_week1_CheckedChanged);
             // 
             // m_radio_day1
             // 
@@ -1287,6 +1310,7 @@
             this.m_radio_day1.TabIndex = 9;
             this.m_radio_day1.Text = "毎日";
             this.m_radio_day1.UseVisualStyleBackColor = true;
+            this.m_radio_day1.CheckedChanged += new System.EventHandler(this.m_radio_day1_CheckedChanged);
             // 
             // m_radio_hour1
             // 
@@ -1297,6 +1321,7 @@
             this.m_radio_hour1.TabIndex = 8;
             this.m_radio_hour1.Text = "毎時";
             this.m_radio_hour1.UseVisualStyleBackColor = true;
+            this.m_radio_hour1.CheckedChanged += new System.EventHandler(this.m_radio_hour1_CheckedChanged);
             // 
             // m_radio_one1
             // 
@@ -1309,6 +1334,7 @@
             this.m_radio_one1.TabStop = true;
             this.m_radio_one1.Text = "1回";
             this.m_radio_one1.UseVisualStyleBackColor = true;
+            this.m_radio_one1.CheckedChanged += new System.EventHandler(this.m_radio_one1_CheckedChanged);
             // 
             // m_statusCombo1
             // 

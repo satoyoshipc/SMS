@@ -140,7 +140,7 @@ namespace moss_AP
                 {
 
                     //未完了のみ
-                    if (il.status == "未完了")
+                    if (il.status == "有効")
                     {
                         str_b.Append("------------------------------------------------------------" + Environment.NewLine);
 
@@ -164,7 +164,7 @@ namespace moss_AP
                 {
 
                     //未完了のみ
-                    if (sl.status == "未完了")
+                    if (sl.status == "有効")
                     {
                         if (DateTime.Parse(sl.startdate) <= m_end_date.Value && DateTime.Parse(sl.enddate) >= m_start_date.Value)
                         {
@@ -193,7 +193,7 @@ namespace moss_AP
                 {
 
                     //未完了のみ
-                    if (sl.status == "未完了")
+                    if (sl.status == "有効")
                     {
                         str_b.Append("------------------------------------------------------------" + Environment.NewLine);
 

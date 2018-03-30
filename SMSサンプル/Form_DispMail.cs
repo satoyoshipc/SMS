@@ -13,9 +13,13 @@ namespace moss_AP
 {
     public partial class Form_DispMail : Form
     {
-        private string printingText;
-        private int printingPosition;
-        private Font printFont;
+        //DBコネクション
+        public NpgsqlConnection con { get; set; }
+        //アラームリスト
+        public List<alermDS> almList { get; set; }
+
+        //ログイン情報
+        public opeDS loginDS { get; set; }
 
         public Form_DispMail()
         {
@@ -26,7 +30,7 @@ namespace moss_AP
         //表示前処理
         private void Form_DispMail_Load(object sender, EventArgs e)
         {
-            //m_subject.Text = mailtempDS.subject;
+            m_subject.Text = mailtempDS.subject;
             m_body.Text = mailtempDS.body;
             //m_attach1.Text = mailtempDS.attach1;
             //m_attach2.Text = mailtempDS.attach2;
@@ -46,84 +50,16 @@ namespace moss_AP
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //印刷する文字列と位置を設定する
-            printingText = m_body.Text + Environment.NewLine + m_body.Text;
-            printingPosition = 0;
-            //印刷に使うフォントを指定する
-            printFont = new Font("ＭＳ Ｐゴシック", 10);
-            //PrintDocumentオブジェクトの作成
-            System.Drawing.Printing.PrintDocument pd =
-                new System.Drawing.Printing.PrintDocument();
-            //PrintPageイベントハンドラの追加
-            pd.PrintPage +=
-                new System.Drawing.Printing.PrintPageEventHandler(pd_PrintPage);
+            //メール作成画面を表示する
+            Form_mailTempleteList mailtmp = new Form_mailTempleteList();
+            mailtmp.mailBody = m_body.Text;
+            mailtmp.mailTitle = m_subject.Text;
 
-            //PrintPreviewDialogオブジェクトの作成
-            PrintPreviewDialog ppd = new PrintPreviewDialog();
-            //プレビューするPrintDocumentを設定
-            ppd.Document = pd;
-            //印刷プレビューダイアログを表示する
-            ppd.ShowDialog();
-
-
-            //印刷を開始する
-            //pd.Print();
+            mailtmp.incidentmail_flg = true;
+            mailtmp.con = con;
+            mailtmp.loginDS = loginDS;
+            mailtmp.Show();
         }
-        private void pd_PrintPage(object sender,System.Drawing.Printing.PrintPageEventArgs e)
-        {
-            if (printingPosition == 0)
-            {
-                //改行記号を'\n'に統一する
-                printingText = printingText.Replace("\r\n", "\n");
-                printingText = printingText.Replace("\r", "\n");
-            }
 
-            //印刷する初期位置を決定
-            int x = e.MarginBounds.Left;
-            int y = e.MarginBounds.Top;
-
-            //1ページに収まらなくなるか、印刷する文字がなくなるかまでループ
-            while (e.MarginBounds.Bottom > y + printFont.Height &&
-                printingPosition < printingText.Length)
-            {
-                string line = "";
-                for (;;)
-                {
-                    //印刷する文字がなくなるか、
-                    //改行の時はループから抜けて印刷する
-                    if (printingPosition >= printingText.Length ||
-                        printingText[printingPosition] == '\n')
-                    {
-                        printingPosition++;
-                        break;
-                    }
-                    //一文字追加し、印刷幅を超えるか調べる
-                    line += printingText[printingPosition];
-                    if (e.Graphics.MeasureString(line, printFont).Width
-                        > e.MarginBounds.Width)
-                    {
-                        //印刷幅を超えたため、折り返す
-                        line = line.Substring(0, line.Length - 1);
-                        break;
-                    }
-                    //印刷文字位置を次へ
-                    printingPosition++;
-                }
-                //一行書き出す
-                e.Graphics.DrawString(line, printFont, Brushes.Black, x, y);
-                //次の行の印刷位置を計算
-                y += (int)printFont.GetHeight(e.Graphics);
-            }
-
-            //次のページがあるか調べる
-            if (printingPosition >= printingText.Length)
-            {
-                e.HasMorePages = false;
-                //初期化する
-                printingPosition = 0;
-            }
-            else
-                e.HasMorePages = true;
-        }
     }
 }
